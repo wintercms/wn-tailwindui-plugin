@@ -1,0 +1,32 @@
+{
+    "name": "winter/wn-tailwindui-plugin",
+    "type": "winter-plugin",
+    "description": "Provides a TailwindUI-based skin for the Winter CMS backend.",
+    "homepage": "https://github.com/wintercms/wn-tailwindui-plugin",
+    "keywords": ["cms", "wintercms", "tailwind", "tailwindui", "skin"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joseph Blythe",
+            "homepage": "https://spatialmedia.io/"
+        },
+        {
+            "name": "Luke Towers",
+            "email": "wintercms@luketowers.ca"
+        },
+        {
+            "name": "Winter CMS Maintainers",
+            "homepage": "https://wintercms.com",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/wintercms/wn-tailwindui-plugin/issues",
+        "discord": "https://discord.gg/D5MFSPH6Ux",
+        "source": "https://github.com/wintercms/wn-tailwindui-plugin"
+    },
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.11"
+    }
+}

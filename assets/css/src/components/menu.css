@@ -1,0 +1,31 @@
+@layer components {
+    .quick-link {
+        @apply relative p-1 mr-2 rounded-full text-gray-400 hover:text-white placeholder:focus:outline-none focus:no-underline focus:text-white hover:no-underline;
+
+        &-light {
+            @apply text-gray-400 hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:no-underline;
+        }
+    }
+
+    .sidemenu {
+        button[data-toggle="collapse"] {
+            svg {
+                @apply text-gray-200 ml-3 flex-shrink-0 h-5 w-5 transform group-hover:text-white transition ease-in-out duration-150 pointer-events-none;
+            }
+
+            &.open svg {
+                @apply text-white rotate-90;
+            }
+        }
+
+        li.active a {
+            @apply bg-gray-700 text-white hover:text-white hover:bg-gray-600 focus:text-white;
+        }
+
+        li[data-menu-item]  {
+            svg {
+                @apply pointer-events-none;
+            }
+        }
+    }
+}

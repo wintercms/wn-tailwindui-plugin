@@ -1,0 +1,166 @@
+/* overrides for storm */
+html {
+    font-size: 100%;
+}
+
+@media (min-width: 640px) {
+    .sm\:block {
+        display: block !important;
+        visibility: visible !important;
+    }
+}
+
+@media (min-width: 640px) {
+    .sm\:flex {
+        display: flex !important;
+        visibility: visible !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .md\:block {
+        display: block !important;
+        visibility: visible !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .md\:flex {
+        display: flex !important;
+        visibility: visible !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .md\:table-cell {
+        display: table-cell !important;
+        visibility: visible !important;
+    }
+}
+
+.icon-tile,
+.icon-only,
+.icon-inline {
+    @apply w-full;
+    &[class^='icon-']:before {
+        @apply block mx-auto text-center;
+        font-size: 1.5rem;
+    }
+}
+
+a.bg-primary:hover {
+    @apply bg-primary-dark;
+}
+
+div[id^='headlessui-menu-items-'] {
+    /* all menus have z-index of 50 */
+    z-index: 999 !important;
+
+    a:hover {
+        @apply no-underline; /* all menu item links have no text-decoration: underline; */
+    }
+}
+
+/* widgets */
+.widget-welcome div.welcome-logo {
+    @apply bg-gray-300 w-[200px] p-4 float-left rounded-md;
+}
+
+.widget-control {
+    &.edit-widget,
+    &.close-widget {
+       display: none !important;
+    }
+}
+
+.btn:active {
+    @apply shadow-none;
+}
+
+.btn-group.open .dropdown-toggle {
+    @apply shadow-none;
+}
+
+.open .dropdown-toggle {
+    &.btn-default,
+    &.btn-secondary {
+        @apply text-gray-700 bg-gray-300 border-none;
+    }
+}
+
+/* winter.css overrides */
+.layout-sidenav-container {
+    width: 120px;
+
+    &-inline {
+        @apply w-[250px] max-w-[250px];
+    }
+
+    &-tile {
+        @apply w-[120px] max-w-[120px];
+    }
+}
+
+.layout > .layout-row.h-auto {
+    height: auto !important;
+}
+
+/* collapse styles */
+.collapse {
+    display: block;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+
+    &.show {
+        max-height: 99em;
+        transition: max-height 0.5s ease-in-out;
+    }
+}
+
+/* layout styles */
+
+.default-layout {
+
+    @apply grid w-screen h-screen;
+
+    @media screen {
+
+        &-top {
+            @apply grid-cols-1;
+
+            .layout-content > .layout {
+                @apply h-screen max-w-full;
+            }
+        }
+
+        &-side {
+
+            .layout-topmenu + .layout {
+                @apply h-screen;
+            }
+
+            &-inline {
+                @apply md:grid-cols-layout-inline print:grid-cols-1;
+            }
+
+            &-only {
+                @apply md:grid-cols-layout-only;
+            }
+
+            &-hidden {
+                @apply md:grid-cols-layout-hidden;
+            }
+
+            &-tile {
+                @apply md:grid-cols-layout-tile;
+            }
+        }
+    }
+}
+
+/* Hide buttons when loading indicator is showing. @see CA-1820. */
+.loading-indicator ~ .btn,
+.loading-indicator ~ .btn-text {
+    @apply hidden;
+}

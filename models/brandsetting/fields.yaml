@@ -1,0 +1,30 @@
+tabs:
+    fields:
+        auth_layout:
+            label: winter.tailwindui::lang.branding.auth_layout.label
+            tab: backend::lang.branding.navigation
+            type: balloon-selector
+            default: split
+            options:
+                simple: winter.tailwindui::lang.branding.auth_layout.simple
+                split: winter.tailwindui::lang.branding.auth_layout.split
+        menu_location:
+            label: winter.tailwindui::lang.branding.menu_location.label
+            tab: backend::lang.branding.navigation
+            type: balloon-selector
+            span: left
+            default: side
+            options:
+                top: winter.tailwindui::lang.branding.menu_location.top
+                side: winter.tailwindui::lang.branding.menu_location.side
+        icon_location:
+            label: winter.tailwindui::lang.branding.menu_icons.label
+            tab: backend::lang.branding.navigation
+            type: balloon-selector
+            span: right
+            default: inline
+            options:
+                tile: winter.tailwindui::lang.branding.menu_icons.tile
+                inline: winter.tailwindui::lang.branding.menu_icons.inline
+                hidden: winter.tailwindui::lang.branding.menu_icons.hidden
+                only: winter.tailwindui::lang.branding.menu_icons.only

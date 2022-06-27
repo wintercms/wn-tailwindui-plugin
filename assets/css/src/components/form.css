@@ -1,0 +1,113 @@
+@layer base {
+    [type='text'],
+    [type='email'],
+    [type='url'],
+    [type='password'],
+    [type='number'],
+    [type='date'],
+    [type='datetime-local'],
+    [type='month'],
+    [type='search'],
+    [type='tel'],
+    [type='time'],
+    [type='week'],
+    [multiple],
+    textarea,
+    select {
+        @apply block
+            w-full
+            border
+            rounded-md
+            border-gray-300
+            text-gray-900
+            bg-gray-50
+            focus:outline-none
+            focus:ring-primary
+            focus:border-primary
+            focus:z-10
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            dark:bg-gray-700
+            dark:border-gray-600
+            dark:placeholder-gray-400
+            dark:text-white
+            dark:focus:ring-primary
+            dark:focus:border-primary;
+    }
+
+    [type='text'],
+    [type='email'],
+    [type='url'],
+    [type='password'],
+    [type='number'],
+    [type='date'],
+    [type='datetime-local'],
+    [type='month'],
+    [type='search'],
+    [type='tel'],
+    [type='time'],
+    [type='week'],
+    [multiple],
+    textarea {
+        &.xs {
+            @apply text-xs px-3 py-2;
+        }
+
+        &.sm {
+            @apply text-sm px-3 py-2;
+        }
+
+        &.md {
+            @apply text-base px-5 py-2.5;
+        }
+
+        &.lg {
+            @apply text-lg px-5 py-3;
+        }
+
+        &.xl {
+            @apply text-xl px-6 py-3.5;
+        }
+    }
+
+    select {
+        &.xs {
+            @apply text-xs;
+        }
+
+        &.sm {
+            @apply text-sm;
+        }
+
+        &.md {
+            @apply text-base;
+        }
+
+        &.lg {
+            @apply text-lg;
+        }
+
+        &.xl {
+            @apply text-xl;
+        }
+    }
+
+    [type='checkbox'],
+    [type='radio'] {
+        @apply text-primary
+            focus:ring-primary
+            focus:border-primary
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            dark:bg-gray-700
+            dark:border-gray-600
+            dark:placeholder-gray-400
+            dark:text-primary
+            dark:focus:ring-primary
+            dark:focus:border-primary;
+    }
+
+    label {
+        @apply text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300 cursor-pointer;
+    }
+}

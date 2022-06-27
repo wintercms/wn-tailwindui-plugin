@@ -1,0 +1,15 @@
+@layer components {
+    .counter {
+        @apply text-xs bg-red-500 rounded-full font-semibold text-white;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: .25em .5em;
+        text-align: center;
+    }
+    span + .counter {
+        top: 50%;
+        right: 1em;
+        transform: translateY(-50%);
+    }
+}
