@@ -1,11 +1,11 @@
 <?php namespace Winter\TailwindUI;
 
 use Url;
-use Auth;
 use Yaml;
 use Event;
 use Config;
 use Request;
+use BackendAuth;
 use System\Classes\PluginBase;
 use Backend\Models\BrandSetting;
 use Backend\Classes\BackendController as CoreBackendController;
@@ -123,7 +123,7 @@ class Plugin extends PluginBase
 
         if (!empty($fieldDefaults)) {
             $settings = BrandSetting::instance();
-            $userSettings = (!is_null(Auth::user()))
+            $userSettings = (!is_null(BackendAuth::user()))
                 ? PreferenceModel::instance()
                 : null;
             foreach ($fieldDefaults as $name => $default) {
