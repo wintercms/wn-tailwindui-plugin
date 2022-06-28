@@ -1,6 +1,5 @@
 <?php namespace Winter\TailwindUI;
 
-use App;
 use Url;
 use Yaml;
 use Event;
@@ -80,9 +79,7 @@ class Plugin extends PluginBase
             // @TODO: Handle cache busting through some other method
             $cssLastModified = filemtime(plugins_path('winter/tailwindui/assets/css/dist/backend.css'));
 
-            if (App::runningInBackend()) {
-                $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
-            }
+            $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
 
             $this->extendBrandSettingsData();
         });
