@@ -107,7 +107,7 @@
             </div>
 
             <div class="hidden lg:block relative w-0 flex-1">
-                <img class="absolute inset-0 h-full w-full object-cover" src="<?= e(Url::asset(config('brand.backgroundImage'))); ?>" alt="">
+                <img class="absolute inset-0 h-full w-full object-cover" src="<?= e(Backend\Models\BrandSetting::instance()->backgroundImage->path); ?>" alt="">
             </div>
         </div>
 

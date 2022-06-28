@@ -1,5 +1,6 @@
 <?php namespace Winter\TailwindUI;
 
+use App;
 use Url;
 use Yaml;
 use Event;
@@ -79,7 +80,9 @@ class Plugin extends PluginBase
             // @TODO: Handle cache busting through some other method
             $cssLastModified = filemtime(plugins_path('winter/tailwindui/assets/css/dist/backend.css'));
 
-            $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
+            if (App::runningInBackend()) {
+                $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
+            }
 
             $this->extendBrandSettingsData();
         });
@@ -110,6 +113,10 @@ class Plugin extends PluginBase
      */
     protected function extendBrandSettingsData(): void
     {
+        BrandSetting::extend(function($model) {
+            $model->addAttachOneRelation('backgroundImage', ['System\Models\File']);
+        });
+
         // Initialize the backend branding data from the config if it's not set already
         $fieldDefaults = [];
         $fields = Yaml::parseFile(plugins_path('winter/tailwindui/models/brandsetting/fields.yaml'));
