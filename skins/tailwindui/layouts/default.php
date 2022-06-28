@@ -3,6 +3,13 @@
     <head>
         <?= $this->makeLayoutPartial('head') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'default']) ?>
+
+        <style>
+            :root {
+                --primary: <?= \Backend\Models\BrandSetting::get('primary_color', \Backend\Models\BrandSetting::PRIMARY_COLOR); ?>;
+                --secondary: <?= \Backend\Models\BrandSetting::get('secondary_color', \Backend\Models\BrandSetting::PRIMARY_COLOR); ?>;
+            }
+        </style>
     </head>
 
     <body class="relative <?= $this->bodyClass ?>">
