@@ -1,6 +1,7 @@
 <?php namespace Winter\TailwindUI;
 
 use Url;
+use Auth;
 use Yaml;
 use Event;
 use Config;
@@ -122,10 +123,13 @@ class Plugin extends PluginBase
 
         if (!empty($fieldDefaults)) {
             $settings = BrandSetting::instance();
-            $userSettings = PreferenceModel::instance();
+            $userSettings = (!is_null(Auth::user()))
+                ? PreferenceModel::instance()
+                : null;
             foreach ($fieldDefaults as $name => $default) {
                 // Check the current user for an overridden preference
-                $userValue = $userSettings->get($name);
+                $userValue = (!is_null($userSettings)) ? $userSettings->get($name) : null;
+
                 if (!empty($userValue)) {
                     $settings->setSettingsValue($name, $userValue);
                     $settings->attributes[$name] = $userValue;
