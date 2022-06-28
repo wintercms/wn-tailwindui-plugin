@@ -114,7 +114,7 @@ class Plugin extends PluginBase
     protected function extendBrandSettingsData(): void
     {
         BrandSetting::extend(function($model) {
-            $model->addAttachOneRelation('backgroundImage', ['System\Models\File']);
+            $model->addAttachOneRelation('backgroundImage', [\System\Models\File::class]);
         });
 
         // Initialize the backend branding data from the config if it's not set already
