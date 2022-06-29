@@ -110,10 +110,6 @@ class Plugin extends PluginBase
      */
     protected function extendBrandSettingsData(): void
     {
-        BrandSetting::extend(function($model) {
-            $model->addAttachOneRelation('backgroundImage', [\System\Models\File::class]);
-        });
-
         // Initialize the backend branding data from the config if it's not set already
         $fieldDefaults = [];
         $fields = Yaml::parseFile(plugins_path('winter/tailwindui/models/brandsetting/fields.yaml'));
@@ -152,6 +148,10 @@ class Plugin extends PluginBase
      */
     protected function extendBrandSettingsForm(): void
     {
+        BrandSetting::extend(function($model) {
+            $model->addAttachOneRelation('backgroundImage', [\System\Models\File::class]);
+        });
+
         Event::listen('backend.form.extendFields', function ($form) {
             // Only extend the desired form
             if (!(
