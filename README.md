@@ -1,5 +1,7 @@
 # Tailwind UI Backend Skin
 
+![Tailwind_UI_Plugin](https://user-images.githubusercontent.com/7253840/176566244-ff859f12-77a5-465e-9462-6380a47652a6.png)
+
 [Tailwind UI](https://tailwindui.com/) is a Tailwind CSS component library designed by the authors of [Tailwind CSS](https://tailwindcss.com/). This is a [Winter CMS](https://wintercms.com) plugin that provides a custom, TailwindUI-based skin for the backend.
 
 ### Configuration
