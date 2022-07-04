@@ -84,6 +84,13 @@
             $this->addCss('/modules/system/assets/css/framework.extras.css');
         ?>
 
+        <style>
+            :root {
+                --primary: <?= \Backend\Models\BrandSetting::get('primary_color', \Backend\Models\BrandSetting::PRIMARY_COLOR); ?>;
+                --secondary: <?= \Backend\Models\BrandSetting::get('secondary_color', \Backend\Models\BrandSetting::PRIMARY_COLOR); ?>;
+            }
+        </style>
+
         <?= $this->makeAssets() ?>
         <?= Block::placeholder('head') ?>
         <?= $this->makeLayoutPartial('custom_styles') ?>
