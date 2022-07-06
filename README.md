@@ -14,6 +14,8 @@ Environment File Supported Values:
 ## Credits
 This plugin was originally written by Joseph Blythe & Luke Towers for [Spatial Media](https://spatialmedia.io).
 
+[![Spatial Media logo](https://cdn.ca.spatialmedia.io/media/images/sm-logo-dark-full.svg)](https://spatialmedia.io)
+
 It has since been modified and re-released under the Winter namespace as a first party plugin for Winter CMS maintained by the Winter CMS team.
 
 If you would like to contribute to this plugin's development, please feel free to submit issues or pull requests to the plugin's repository here: https://github.com/wintercms/wn-tailwindui-plugin
