@@ -10,7 +10,6 @@
     },
     "devDependencies": {
         "postcss": "~8.4.x",
-        "postcss-color-mod-function": "~3.0.x",
         "postcss-import": "~14.1.x",
         "tailwindcss": "~3.0.x",
         "vue-loader": "~17.0.x"
