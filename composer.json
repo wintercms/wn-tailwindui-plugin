@@ -27,6 +27,12 @@
     },
     "require": {
         "php": ">=7.2",
-        "composer/installers": "~1.11"
+        "composer/installers": "~1.11",
+        "mexitek/phpcolors": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }
