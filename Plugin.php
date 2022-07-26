@@ -39,15 +39,16 @@ class Plugin extends PluginBase
 
     /**
      * Boot method, called right before the request route.
-     *
-     * @return array
      */
     public function boot()
     {
-        $this->applyBackendSkin();
-        $this->extendBackendControllers();
-        $this->extendBrandSettingsForm();
-        $this->extendBackendAuthController();
+        // Only apply skin modifications to the backend context
+        if ($this->app->runningInBackend()) {
+            $this->applyBackendSkin();
+            $this->extendBackendControllers();
+            $this->extendBrandSettingsForm();
+            $this->extendBackendAuthController();
+        }
     }
 
     /**
