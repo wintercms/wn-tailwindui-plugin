@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<?php
+    $brandSettings = Backend\Models\BrandSetting::instance();
+
+    $backgroundImage = Url::asset(Config::get('brand.backgroundImage'));
+    if (isset($brandSettings->backgroundImage)) {
+        $backgroundImage = $brandSettings->backgroundImage->path;
+    }
+?>
 <html lang="<?= App::getLocale() ?>" class="no-js">
     <head>
         <?= $this->makeLayoutPartial('head_auth') ?>
@@ -22,9 +30,7 @@
             </div>
 
             <div class="hidden lg:block relative w-0 flex-1">
-            <?php if ($background): ?>
-                <img class="absolute inset-0 h-full w-full object-cover" src="<?= e($background); ?>" alt="">
-            <?php endif; ?>
+                <img class="absolute inset-0 h-full w-full object-cover" src="<?= e($backgroundImage); ?>" alt="">
             </div>
         </div>
 
