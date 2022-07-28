@@ -28,6 +28,11 @@
             ];
             // Temporarily disable loading of default backend styling files
             $styles = [];
+            $brandSettings = Backend\Models\BrandSetting::instance();
+            $background = '';
+            if (isset($brandSettings->backgroundImage)) {
+                $background = $brandSettings->backgroundImage->path;
+            }
         ?>
 
         <?php foreach ($styles as $style) : ?>
@@ -107,7 +112,9 @@
             </div>
 
             <div class="hidden lg:block relative w-0 flex-1">
-                <img class="absolute inset-0 h-full w-full object-cover" src="<?= e(Backend\Models\BrandSetting::instance()->backgroundImage->path); ?>" alt="">
+            <?php if ($background): ?>
+                <img class="absolute inset-0 h-full w-full object-cover" src="<?= e($background); ?>" alt="">
+            <?php endif; ?>
             </div>
         </div>
 
