@@ -39,15 +39,16 @@ class Plugin extends PluginBase
 
     /**
      * Boot method, called right before the request route.
-     *
-     * @return array
      */
     public function boot()
     {
-        $this->applyBackendSkin();
-        $this->extendBackendControllers();
-        $this->extendBrandSettingsForm();
-        $this->extendBackendAuthController();
+        // Only apply skin modifications to the backend context
+        if ($this->app->runningInBackend()) {
+            $this->applyBackendSkin();
+            $this->extendBackendControllers();
+            $this->extendBrandSettingsForm();
+            $this->extendBackendAuthController();
+        }
     }
 
     /**
@@ -56,11 +57,13 @@ class Plugin extends PluginBase
     protected function applyBackendSkin()
     {
         Config::set('cms.backendSkin', \Winter\TailwindUI\Skins\TailwindUI::class);
+        Config::set('brand.backgroundImage', '/plugins/winter/tailwindui/assets/images/background.jpg');
 
         // Set a default logo that will work with the default dark sidebar as a fallback
-        // @TODO: Fix padding around the logo in the sidemenu
+        // @TODO: add support for light / dark modes / variations of all primary branding (logo, favicon, colour scheme) and apply as necessary
         if (empty(Config::get('brand.logoPath'))) {
             Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo-white.svg');
+            // Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo.svg');
         }
     }
 
