@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <?php
     $brandSettings = Backend\Models\BrandSetting::instance();
-
     $backgroundImage = Url::asset(Config::get('brand.backgroundImage'));
+
     if (isset($brandSettings->backgroundImage)) {
         $backgroundImage = $brandSettings->backgroundImage->path;
     }
