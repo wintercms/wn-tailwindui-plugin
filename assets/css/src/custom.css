@@ -122,7 +122,7 @@ div[id^='headlessui-menu-items-'] {
 
 .default-layout {
 
-    @apply grid w-screen h-screen;
+    @apply grid w-full h-screen;
 
     @media screen {
 
