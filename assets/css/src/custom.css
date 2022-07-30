@@ -137,7 +137,7 @@ div[id^='headlessui-menu-items-'] {
         &-side {
 
             .layout-topmenu + .layout {
-                @apply h-screen;
+                height: calc(100vh - 4rem);
             }
 
             &-inline {
