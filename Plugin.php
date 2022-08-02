@@ -180,6 +180,7 @@ class Plugin extends PluginBase
                 // Remove the auth layout options from the backend user preferences form
                 if ($form->model instanceof PreferenceModel) {
                     unset($fields['tabs']['fields']['auth_layout']);
+                    unset($fields['tabs']['fields']['background_image']);
                 }
                 $form->addTabFields($fields['tabs']['fields']);
             }
