@@ -9,7 +9,7 @@ tabs:
             options:
                 simple: winter.tailwindui::lang.branding.auth_layout.simple
                 split: winter.tailwindui::lang.branding.auth_layout.split
-        backgroundImage:
+        background_image:
             label: winter.tailwindui::lang.branding.background_image.label
             commentAbove: winter.tailwindui::lang.branding.background_image.comment
             tab: backend::lang.branding.navigation

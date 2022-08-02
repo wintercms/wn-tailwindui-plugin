@@ -3,8 +3,8 @@
     $brandSettings = Backend\Models\BrandSetting::instance();
     $backgroundImage = Url::asset(Config::get('brand.backgroundImage'));
 
-    if (isset($brandSettings->backgroundImage)) {
-        $backgroundImage = $brandSettings->backgroundImage->path;
+    if (isset($brandSettings->background_image)) {
+        $backgroundImage = $brandSettings->background_image->path;
     }
 ?>
 <html lang="<?= App::getLocale() ?>" class="no-js">

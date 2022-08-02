@@ -152,7 +152,7 @@ class Plugin extends PluginBase
     protected function extendBrandSettingsForm(): void
     {
         BrandSetting::extend(function($model) {
-            $model->addAttachOneRelation('backgroundImage', [\System\Models\File::class]);
+            $model->addAttachOneRelation('background_image', [\System\Models\File::class]);
         });
 
         Event::listen('backend.form.extendFields', function ($form) {
