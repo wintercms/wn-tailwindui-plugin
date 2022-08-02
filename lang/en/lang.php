@@ -7,6 +7,10 @@ return [
     ],
 
     'branding' => [
+        'background_image' => [
+            'label' => 'Background Image',
+            'comment' => 'Split Layout',
+        ],
         'auth_layout' => [
             'label' => 'Authentication Layout',
             'simple' => 'Simple (Centred)',
