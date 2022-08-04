@@ -7,6 +7,10 @@ return [
     ],
 
     'branding' => [
+        'background_image' => [
+            'label' => 'Background Image',
+            'comment' => 'The background image used on the Split Layout for the login screen.',
+        ],
         'auth_layout' => [
             'label' => 'Authentication Layout',
             'simple' => 'Simple (Centred)',

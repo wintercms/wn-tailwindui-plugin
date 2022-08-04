@@ -151,6 +151,10 @@ class Plugin extends PluginBase
      */
     protected function extendBrandSettingsForm(): void
     {
+        BrandSetting::extend(function($model) {
+            $model->addAttachOneRelation('background_image', [\System\Models\File::class]);
+        });
+
         Event::listen('backend.form.extendFields', function ($form) {
             // Only extend the desired form
             if (!(
@@ -176,6 +180,7 @@ class Plugin extends PluginBase
                 // Remove the auth layout options from the backend user preferences form
                 if ($form->model instanceof PreferenceModel) {
                     unset($fields['tabs']['fields']['auth_layout']);
+                    unset($fields['tabs']['fields']['background_image']);
                 }
                 $form->addTabFields($fields['tabs']['fields']);
             }
