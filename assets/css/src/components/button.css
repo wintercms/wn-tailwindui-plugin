@@ -17,7 +17,7 @@
         }
 
         &.btn-default.ml-btn {
-            @apply hover:text-gray-900
+            @apply hover:text-gray-900 mr-[8px] w-[initial];
         }
 
         &.btn-primary {
