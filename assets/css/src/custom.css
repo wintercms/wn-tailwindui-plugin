@@ -164,3 +164,19 @@ div[id^='headlessui-menu-items-'] {
 .loading-indicator ~ .btn-text {
     @apply hidden;
 }
+
+[data-control=toolbar] {
+    label {
+        display: inline-block;
+    }
+
+    .select2-container {
+        width: auto !important;
+    }
+
+    input {
+        min-width: 4em;
+        padding: 6px !important;
+        text-align: right;
+    }
+}
