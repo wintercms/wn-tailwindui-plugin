@@ -4,8 +4,8 @@
         .btn {
             @apply
                 border-solid
-                border-t
-                border-b;
+                border-t-0
+                border-b-0;
 
             &.btn-default {
                 @apply border-gray-200;
@@ -36,12 +36,11 @@
             }
 
             &:first-child {
-                @apply border-l border-r-0;
+                @apply border-l-0 border-r-0;
             }
 
             &:last-child {
-                border-right-width: 1px !important; /* storm.css overrirde */
-                @apply border-solid border-l-0 border-gray-300;
+                @apply border-solid border-l-0 border-r-0;
             }
         }
     }

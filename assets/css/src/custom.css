@@ -118,6 +118,19 @@ div[id^='headlessui-menu-items-'] {
     }
 }
 
+/* mediamanager */
+div[data-control='media-manager-crop-tool'] {
+    img {
+        max-width: initial;
+    }
+}
+
+.control-toolbar {
+    label {
+        display: inline-block;
+    }
+}
+
 /* layout styles */
 
 .default-layout {
