@@ -125,6 +125,12 @@ div[data-control='media-manager-crop-tool'] {
     }
 }
 
+.control-toolbar {
+    label {
+        display: inline-block;
+    }
+}
+
 /* layout styles */
 
 .default-layout {
