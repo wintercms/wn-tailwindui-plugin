@@ -9,13 +9,14 @@ $secondary = BrandSetting::get('secondary_color', BrandSetting::SECONDARY_COLOR)
 $getVariations = function ($colorString) {
     return Cache::remember("backend.brand.color.variations.{$colorString}", now()->addMonths(1), function () use ($colorString) {
         $color = new Color($colorString);
+        $luminance = $color->getHsl()['L'] * 100;
         return [
-            'dark' => $color->darken(0.20),
-            'darker' => $color->darken(0.30),
-            'darkest' => $color->darken(0.40),
-            'light' => $color->lighten(0.25),
-            'lighter' => $color->lighten(0.30),
-            'lightest' => $color->lighten(0.35),
+            'dark' => $color->darken(($luminance / 4)),
+            'darker' => $color->darken(($luminance / 4) * 2),
+            'darkest' => $color->darken(($luminance / 4) * 3),
+            'light' => $color->lighten((100 - $luminance) / 4),
+            'lighter' => $color->lighten((100 - $luminance) / 4 * 2),
+            'lightest' => $color->lighten((100 - $luminance) / 4 * 3),
         ];
     });
 };
