@@ -32,6 +32,11 @@
 
         this.$sideNavItems.click(function() {
             const $this = $(this);
+
+            if (!$this.data('menu-item')) {
+                return
+            }
+
             self.$sideNavItems.removeClass('active');
             $this.toggleClass('active');
 
