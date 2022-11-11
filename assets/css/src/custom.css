@@ -178,3 +178,15 @@ div[data-control='media-manager-crop-tool'] {
 .loading-indicator ~ .btn-text {
     @apply hidden;
 }
+
+/* fixes froala control chackbox label alignment */
+.fr-checkbox-line > label {
+    @apply inline-block;
+}
+
+/* fixes input group form control addons to be inline with input */
+.input-group {
+    .form-control + .input-group-addon {
+        @apply px-5 py-1.5;
+    }
+}
