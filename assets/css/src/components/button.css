@@ -1,6 +1,6 @@
 @layer components {
     .btn {
-        @apply text-sm text-center font-medium shadow-none rounded-md px-5 py-2.5 focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed;
+        @apply text-sm text-center font-medium shadow-none rounded-md px-5 py-2.5 disabled:opacity-50 disabled:cursor-not-allowed;
 
         &.btn-default:not(.ml-btn),
         &.btn-secondary {
@@ -21,23 +21,23 @@
         }
 
         &.btn-primary {
-            @apply text-white bg-primary hover:bg-primary-light focus:bg-primary-light dark:bg-primary dark:hover:bg-primary-dark dark:focus:ring-primary-darker;
+            @apply text-white bg-primary hover:bg-primary-light focus:bg-primary-light dark:bg-primary dark:hover:bg-primary-dark;
         }
 
         &.btn-success {
-            @apply text-white bg-green-500 hover:bg-green-700 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800;
+            @apply text-white bg-green-500 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700;
         }
 
         &.btn-danger {
-            @apply text-white bg-red-500 hover:bg-red-700 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900;
+            @apply text-white bg-red-500 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700;
         }
 
         &.btn-warning {
-            @apply text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-300 dark:focus:ring-yellow-900;
+            @apply text-white bg-yellow-400 hover:bg-yellow-500;
         }
 
         &.btn-info {
-            @apply text-white bg-blue-400 hover:bg-blue-500 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800;
+            @apply text-white bg-blue-400 hover:bg-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700;
         }
 
         &.btn-outline {
@@ -46,23 +46,21 @@
                 bg-transparent
                 hover:bg-gray-200
                 focus:bg-gray-200
-                focus:ring-gray-300
                 active:bg-gray-300
                 dark:bg-gray-400
-                dark:hover:bg-gray-500
-                dark:focus:ring-gray-500;
+                dark:hover:bg-gray-500;
         }
 
         &.btn-xs {
-            @apply text-xs px-1 py-0.5 focus:ring-0;
+            @apply text-xs px-1 py-0.5;
         }
 
         &.btn-sm {
-            @apply text-xs px-2 py-1.5 focus:ring-1;
+            @apply text-xs px-2 py-1.5;
         }
 
         &.btn-md {
-            @apply text-sm px-3 py-2.5 focus:ring-2;
+            @apply text-sm px-3 py-2.5;
         }
 
         &.btn-lg {
