@@ -18,7 +18,7 @@
     >
         <div class="flex flex-col">
             <nav
-                class="flex-1 px-2 bg-gray-800 max-w-6 <?= $itemMode === 'tile' ? 'space-y-2' : 'space-y-1' ?> "
+                class="flex-1 px-2 bg-gray-800 max-w-6 overflow-y-auto max-h-screen <?= $itemMode === 'tile' ? 'space-y-2' : 'space-y-1' ?> "
                 aria-label="Sidebar"
             >
                 <!-- logo -->
