@@ -1,0 +1,30 @@
+@layer components {
+    .nested-form > .form-widget > .layout-row > .control-tabs.primary-tabs {
+        .title {
+            &:before,
+            &:after {
+                transform: none !important;
+                display: none !important;
+            }
+
+            > span {
+                border: none !important;
+            }
+        }
+
+        .nav-tabs > li {
+            margin-right: -1.5px !important;
+
+            &:first-child {
+                padding-left: 0 !important;
+            }
+
+            > a {
+                border-left: 1.5px solid !important;
+                border-top: 1.5px solid !important;
+                border-right: 1.5px solid !important;
+                border-radius: 7px 7px 0 0 !important;
+            }
+        }
+    }
+}

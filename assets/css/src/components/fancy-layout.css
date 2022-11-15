@@ -1,6 +1,6 @@
 @layer components {
 
-    .layout.fancy-layout *:not(.nested-form) > .form-widget > .layout-row {
+    .layout.fancy-layout :not(.nested-form) > .form-widget > .layout-row {
 
         /* form fields */
         > .form-tabless-fields {
@@ -108,21 +108,17 @@
         /* secondary tabs */
         > .control-tabs.secondary-tabs {
 
-            > div ul.nav-tabs {
+            > div > ul.nav-tabs {
                 @apply flex items-center bg-secondary;
 
                 > li {
                     @apply flex items-center;
 
-                    a {
+                    > a {
                         @apply flex items-center text-white px-4 py-2.5;
 
-                        .title [class*="icon-"] {
+                        > .title [class*="icon-"] {
                             @apply mr-1;
-                        }
-
-                        &:not(:last-child) {
-                            @apply mr-4;
                         }
                     }
 
