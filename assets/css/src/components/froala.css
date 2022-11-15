@@ -1,0 +1,36 @@
+.fr-view {
+    /* headings */
+    h1 {
+        @apply text-3xl;
+    }
+
+    h2 {
+        @apply text-2xl;
+    }
+
+    h3 {
+        @apply text-xl;
+    }
+
+    h4 {
+        @apply text-base font-semibold;
+    }
+
+    /* lists */
+    ul, ol {
+        @apply space-y-1 list-inside;
+    }
+
+    ul {
+        @apply list-disc;
+    }
+
+    ol {
+        @apply list-decimal;
+    }
+
+    /* links */
+    a {
+        @apply text-blue-600 hover:text-blue-600 hover:underline;
+    }
+}
