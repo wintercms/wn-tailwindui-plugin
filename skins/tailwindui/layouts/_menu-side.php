@@ -22,7 +22,7 @@
                 aria-label="Sidebar"
             >
                 <!-- logo -->
-                <div class="flex items-center mb-4 h-16 flex-shrink-0">
+                <div class="flex items-center mb-4 h-16 shrink-0">
                     <img
                         class="h-12 w-auto <?= $itemMode === 'tile' ? 'm-auto' : '' ?>"
                         src="<?= e($logoImage) ?>"

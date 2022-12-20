@@ -99,7 +99,7 @@ div[id^='headlessui-menu-items-'] {
 }
 
 /* collapse styles */
-.collapse {
+.collapsible {
     display: block;
     max-height: 0px;
     overflow: hidden;

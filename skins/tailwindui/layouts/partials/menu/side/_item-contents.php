@@ -80,7 +80,7 @@
     <nav
         class="
             <?php if ($itemMode === 'inline') : ?>
-                mt-1 collapse<?= $isActive ? ' show' : '' ?>
+                mt-1 collapsible<?= $isActive ? ' show' : '' ?>
             <?php else: ?>
                 hidden group-hover:!block group-hover:!visible absolute left-[100%] top-0 p-2
                 bg-gray-800 z-[1000] rounded-tr-md rounded-br-md

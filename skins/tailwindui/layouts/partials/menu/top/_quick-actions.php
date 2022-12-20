@@ -7,7 +7,7 @@
         be used for the QuickCreate button as well as the UserProfile menu
         - Unhide when implemented
 -->
-<div class="flex-shrink-0 hidden">
+<div class="shrink-0 hidden">
     <headless-menu
         as="div"
         class="ml-3 relative"
@@ -17,8 +17,8 @@
             <plus-sm-icon class="ml-2 h-4 w-4" aria-hidden="true" />
         </headless-menu-button>
 
-        <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-            <headless-menu-items class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <transition enter-active-class="transition ease-out duration-100" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+            <headless-menu-items class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring/5 focus:outline-none">
             <div class="py-1">
                 <headless-menu-item v-slot="{ active }">
                 <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Something</a>
@@ -35,7 +35,7 @@
     </headless-menu>
 </div>
 
-<div class="flex items-center ml-4 flex-shrink-0">
+<div class="flex items-center ml-4 shrink-0">
     <!--
         Notifications item
         @TODO:
@@ -93,17 +93,17 @@
 
         <transition
             enter-active-class="transition ease-out duration-100"
-            enter-from-class="transform opacity-0 scale-95"
-            enter-to-class="transform opacity-100 scale-100"
+            enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100"
             leave-active-class="transition ease-in duration-75"
-            leave-from-class="transform opacity-100 scale-100"
-            leave-to-class="transform opacity-0 scale-95"
+            leave-from-class="opacity-100 scale-100"
+            leave-to-class="opacity-0 scale-95"
         >
             <headless-menu-items
-                class="origin-top-right absolute right-0 mt-2 py-1 w-64 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none z-50"
+                class="origin-top-right absolute right-0 mt-2 py-1 w-64 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring/5 divide-y divide-gray-200 dark:divide-gray-500 focus:outline-none z-50"
             >
                 <div class="px-4 py-3">
-                    <div class="flex-shrink-0 group block">
+                    <div class="shrink-0 group block">
                         <div class="flex items-center">
                             <div>
                                 <img class="inline-block h-8 w-8 rounded-full" src="<?= $this->user->getAvatarThumb(90, ['mode' => 'crop', 'extension' => 'png']) ?>" alt="<?= $this->user->full_name ?>" />
@@ -112,7 +112,7 @@
                                 <p class="text-sm">
                                     <?= e(trans('backend::lang.account.signed_in_as', ['full_name' => null])) ?>
                                 </p>
-                                <p class="text-sm font-medium text-gray-900 truncate">
+                                <p class="text-sm font-medium text-gray-900 dark:text-gray-500 truncate">
                                     <?= $this->user->full_name ?>
                                 </p>
                             </div>
@@ -125,7 +125,7 @@
                             <headless-menu-item>
                                 <a
                                     href="<?= $item->url ?>"
-                                    class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 hover:no-underline"
+                                    class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white dark:hover:bg-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:no-underline"
                                 >
                                     <i class="<?= $item->icon ?> mr-2 text-sm text-center min-w-[1.25em] text-gray-400 group-hover:text-gray-500"></i>
                                     <?= e(trans($item->label)) ?>
@@ -138,7 +138,7 @@
                     <headless-menu-item>
                         <a
                             href="<?= Backend::url('backend/auth/signout') ?>"
-                            class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 hover:no-underline"
+                            class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 hover:no-underline"
                         >
                             <i class="icon-sign-out mr-2 text-sm text-gray-400 group-hover:text-gray-500 text-center min-w-[1.25em]"></i>
                             <?php if (\BackendAuth::isImpersonator()) : ?>
