@@ -30,10 +30,10 @@ module.exports = {
                 'xxs': '.725rem',
             },
             gridTemplateColumns: {
-                'layout-inline': '200px 1fr',
-                'layout-only': '80px 1fr',
-                'layout-hidden': '175px 1fr',
-                'layout-tile': '120px 1fr',
+                'layout-inline': '180px 1fr',
+                'layout-only': '71px 1fr',
+                'layout-hidden': '148px 1fr',
+                'layout-tile': '124px 1fr',
             },
             width: {
                 '7.5': '1.875rem', // 30px
@@ -46,6 +46,10 @@ module.exports = {
                 '1/3': '33%',
                 '1/4': '25%',
                 'vw': '100vw',
+                'sidebar-inline': '180px',
+                'sidebar-only': '71px',
+                'sidebar-hidden': '148px',
+                'sidebar-tile': '124px',
             },
             minWidth: {
                 '6': '1.5rem',
