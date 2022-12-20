@@ -172,7 +172,7 @@ div[data-control='media-manager-crop-tool'] {
     @apply hidden;
 }
 
-/* fixes froala control chackbox label alignment */
+/* fixes froala control checkbox label alignment */
 .fr-checkbox-line > label {
     @apply inline-block;
 }
@@ -181,5 +181,14 @@ div[data-control='media-manager-crop-tool'] {
 .input-group {
     .form-control + .input-group-addon {
         @apply px-5 py-1.5;
+    }
+}
+
+/* Froala richrewxt editor */
+.field-richeditor {
+    .fr-toolbar .fr-command.fr-btn {
+        &.fr-active {
+            @apply font-semibold text-primary;
+        }
     }
 }

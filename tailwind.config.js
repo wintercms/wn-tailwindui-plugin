@@ -23,6 +23,9 @@ module.exports = {
                 'secondary-lighter': 'var(--secondary-lighter)',
                 'secondary-lightest': 'var(--secondary-lightest)',
             },
+            boxShadow: {
+                'bottom': '0px 0px 3px rgba(0, 0, 0, 0.25)',
+            },
             fontFamily: {
                 sans: ['Inter var'],
             },
@@ -30,10 +33,10 @@ module.exports = {
                 'xxs': '.725rem',
             },
             gridTemplateColumns: {
-                'layout-inline': '200px 1fr',
-                'layout-only': '80px 1fr',
-                'layout-hidden': '175px 1fr',
-                'layout-tile': '120px 1fr',
+                'layout-inline': '180px 1fr',
+                'layout-only': '71px 1fr',
+                'layout-hidden': '148px 1fr',
+                'layout-tile': '124px 1fr',
             },
             width: {
                 '7.5': '1.875rem', // 30px
@@ -55,6 +58,10 @@ module.exports = {
             transitionDuration: {
                 '0': '0ms',
                 '2000': '2000ms',
+            },
+            zIndex: {
+                'topmenu': '99',
+                'sidemenu': '100',
             },
         },
     },

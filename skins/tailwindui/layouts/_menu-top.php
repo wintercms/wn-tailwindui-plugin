@@ -8,12 +8,11 @@
     as="nav"
     id="layout-sidenav-1"
     v-slot="{ open }"
-    class="
-        max-w-vw print:hidden
+    class="print:hidden
         <?php if ($menuLocation === 'top'): ?>
             bg-gray-800
         <?php else: ?>
-            bg-gray-800 md:bg-white md:shadow
+            bg-gray-800 md:bg-white md:shadow-bottom
         <?php endif; ?>
     "
 >
