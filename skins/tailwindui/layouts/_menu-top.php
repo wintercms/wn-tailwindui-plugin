@@ -12,7 +12,7 @@
         <?php if ($menuLocation === 'top'): ?>
             bg-gray-800
         <?php else: ?>
-            bg-gray-800 md:bg-white md:shadow
+            bg-gray-800 md:bg-white md:shadow-bottom
         <?php endif; ?>
     "
 >

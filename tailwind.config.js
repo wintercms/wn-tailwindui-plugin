@@ -23,6 +23,9 @@ module.exports = {
                 'secondary-lighter': 'var(--secondary-lighter)',
                 'secondary-lightest': 'var(--secondary-lightest)',
             },
+            boxShadow: {
+                'bottom': '0px 0px 3px rgba(0, 0, 0, 0.25)',
+            },
             fontFamily: {
                 sans: ['Inter var'],
             },
@@ -46,10 +49,6 @@ module.exports = {
                 '1/3': '33%',
                 '1/4': '25%',
                 'vw': '100vw',
-                'sidebar-inline': '180px',
-                'sidebar-only': '71px',
-                'sidebar-hidden': '148px',
-                'sidebar-tile': '124px',
             },
             minWidth: {
                 '6': '1.5rem',
@@ -59,6 +58,10 @@ module.exports = {
             transitionDuration: {
                 '0': '0ms',
                 '2000': '2000ms',
+            },
+            zIndex: {
+                'topmenu': '99',
+                'sidemenu': '100',
             },
         },
     },
