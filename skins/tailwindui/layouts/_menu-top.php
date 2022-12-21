@@ -13,7 +13,7 @@
         <?php if ($menuLocation === 'top'): ?>
             bg-gray-800
         <?php else: ?>
-            bg-gray-800 md:bg-white dark:bg-gray-800 md:shadow
+            bg-gray-800 md:bg-white dark:bg-gray-800 dark:md:bg-gray-800 md:shadow
         <?php endif; ?>
     "
 >
@@ -208,9 +208,9 @@
                                                             class="
                                                                 group flex relative items-center px-4 py-2 text-sm hover:no-underline transition duration-300 ease-in
                                                                 <?php if ($childIsActive): ?>
-                                                                    bg-primary text-white hover:text-white hover:bg-primary
+                                                                    bg-primary text-white hover:text-white hover:bg-primary dark:bg-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700
                                                                 <?php else: ?>
-                                                                    text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900
+                                                                    text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
                                                                 <?php endif; ?>
                                                             "
                                                         >
@@ -228,7 +228,7 @@
                                                                             <?php if ($childIsActive): ?>
                                                                                 text-white group-hover:text-white
                                                                             <?php else: ?>
-                                                                                text-gray-400 text-gray-300 group-hover:text-gray-500
+                                                                                text-gray-400 text-gray-300 group-hover:text-gray-500 dark:group-hover:text-white
                                                                             <?php endif; ?>
                                                                         "
                                                                     >
