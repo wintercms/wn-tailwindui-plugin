@@ -11,9 +11,9 @@
     class="
         max-w-vw print:hidden
         <?php if ($menuLocation === 'top'): ?>
-            bg-gray-800
+            bg-gray-900
         <?php else: ?>
-            bg-gray-800 md:bg-white dark:bg-gray-800 dark:md:bg-gray-800 md:shadow
+            bg-gray-900 md:bg-white dark:bg-gray-900 dark:md:bg-gray-900 md:shadow
         <?php endif; ?>
     "
 >
