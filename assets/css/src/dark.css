@@ -1,0 +1,12 @@
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #c9d1d9;
+        --bg-color-primary: #0d1117;
+        --bg-color-secondary: #161b22;
+        --bg-color-tertiary: #1b222c;
+    }
+    body {
+        color: var(--text-color);
+        background: var(--bg-color-primary);
+    }
+}
