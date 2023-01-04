@@ -78,7 +78,7 @@
 </div>
 <?php if ($hasChildren) : ?>
     <nav
-        class="
+        class="sidemenu-item-child
             <?php if ($itemMode === 'inline') : ?>
                 mt-1 collapsible<?= $isActive ? ' show' : '' ?>
             <?php else: ?>
@@ -91,7 +91,7 @@
         data-control="sidenav"
         data-active-class="active"
     >
-        <ul class="list-none">
+        <ul class="sidemenu-item-child-menu list-none">
             <?php
                 foreach ($item->sideMenu as $child):
                     $sideMenuIsActive = BackendMenu::isSideMenuItemActive($child);
