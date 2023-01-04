@@ -14,12 +14,12 @@
 <div class="hidden md:block sidemenu layout-sidemenu layout-sidemenu-<?= $iconLocation ?> h-full print:hidden">
     <div
         class="flex flex-col fixed top-0 left-0 z-sidemenu border-r border-gray-700 pt-2 pb-4 bg-gray-800 h-full"
-        id="layout-sidenav-1"
+        id="layout-sidenav-2"
     >
         <div class="flex flex-col">
             <nav
                 class="
-                    flex-1 px-2 bg-gray-800 max-w-6 max-h-screen 
+                    flex-1 px-2 bg-gray-800 max-w-6 max-h-screen
                     <?= $itemMode === 'tile' ? 'space-y-2' : 'space-y-1' ?>
                     <?php if ($iconLocation !== 'tile' && $iconLocation !== 'only'): ?>
                         overflow-y-auto overflow-x-hidden

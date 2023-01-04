@@ -150,7 +150,7 @@ div[data-control='media-manager-crop-tool'] {
             &-inline {
                 @apply md:grid-cols-layout-inline print:grid-cols-1;
 
-                .z-sidemenu {
+                #layout-sidenav-2 {
                     width: 180px;
                 }
             }
