@@ -136,6 +136,17 @@
                 <?php endforeach ?>
                 <div class="py-1">
                     <headless-menu-item>
+                        <button
+                            onclick="window.tailwindUIBackend.toggleDarkMode()"
+                            class="group w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+                        >
+                            <i class="icon-moon mr-2 text-sm text-center min-w-[1.25em] text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white"></i>
+                            <?= e(trans('winter.tailwindui::lang.toggle_dark_mode')) ?>
+                        </button>
+                    </headless-menu-item>
+                </div>
+                <div class="py-1">
+                    <headless-menu-item>
                         <a
                             href="<?= Backend::url('backend/auth/signout') ?>"
                             class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"

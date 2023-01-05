@@ -29,4 +29,6 @@ return [
             'only' => 'Only (no text)',
         ],
     ],
+
+    'toggle_dark_mode' => 'Toggle dark mode',
 ];
