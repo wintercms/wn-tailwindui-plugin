@@ -1,26 +1,26 @@
-@media (prefers-color-scheme: dark) {
-    :root {
-        --drk-bg-color-a: #0d1117;
-        --drk-bg-color-b: #161b22;
-        --drk-bg-color-c: #1b222c;
-        --drk-bg-color-btn: #21262d;
-        --drk-bg-color-inset: #010409;
-        --drk-color: #c9d1d9;
-        --drk-color-danger: #f85149;
-        --drk-border-color: #30363d;
-        --drk-box-shadow: 0 8px 24px #010409;
-    }
+:root {
+    --drk-bg-color-a: #0d1117;
+    --drk-bg-color-b: #161b22;
+    --drk-bg-color-c: #1b222c;
+    --drk-bg-color-btn: #21262d;
+    --drk-bg-color-inset: #010409;
+    --drk-color: #c9d1d9;
+    --drk-color-danger: #f85149;
+    --drk-border-color: #30363d;
+    --drk-box-shadow: 0 8px 24px #010409;
+}
 
+.dark {
     body {
         color: var(--drk-color);
         background: var(--drk-bg-color-a);
     }
+
     .layout.control-tabs.wn-logo-transparent:not(.has-tabs):after,
     .flex-layout-column.wn-logo-transparent:not(.has-tabs):after,
     .layout-cell.wn-logo-transparent:after {
         background: transparent;
     }
-
 
     nav#layout-mainmenu {
         background-color: var(--drk-bg-color-b);

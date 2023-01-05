@@ -2,6 +2,7 @@
 
 use Url;
 use Yaml;
+use Block;
 use Event;
 use Config;
 use Request;
@@ -65,6 +66,9 @@ class Plugin extends PluginBase
             Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo-white.svg');
             // Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo.svg');
         }
+
+        $pluginUrl = url(Config::get('cms.pluginsPath') . '/winter/tailwindui');
+        Block::append('head', '<script type="text/javascript" src="' . $pluginUrl . '/assets/js/dist/dark.js"></script>');
     }
 
     /**
