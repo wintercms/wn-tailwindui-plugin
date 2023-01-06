@@ -67,8 +67,7 @@ class Plugin extends PluginBase
             // Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo.svg');
         }
 
-        $pluginUrl = url(Config::get('cms.pluginsPath') . '/winter/tailwindui');
-        Block::append('head', '<script type="text/javascript" src="' . $pluginUrl . '/assets/js/dist/dark.js"></script>');
+        Block::append('head', '<script type="text/javascript" src="' . asset(Config::get('cms.pluginsPath') . '/winter/tailwindui/assets/js/dist/dark.js') . '"></script>');
     }
 
     /**
