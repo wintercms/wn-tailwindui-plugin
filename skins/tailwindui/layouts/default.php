@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= App::getLocale() ?>" class="no-js <?= $this->makeLayoutPartial('browser_detector') ?>">
+<html lang="<?= App::getLocale() ?>" class="no-js <?= $this->makeLayoutPartial('browser_detector') ?> <?= $this->isDarkModeEnabled() ? 'dark' : ''; ?>">
     <head>
         <?= $this->makeLayoutPartial('head') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'default']) ?>

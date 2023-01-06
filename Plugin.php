@@ -2,7 +2,6 @@
 
 use Url;
 use Yaml;
-use Block;
 use Event;
 use Config;
 use Request;
@@ -66,8 +65,6 @@ class Plugin extends PluginBase
             Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo-white.svg');
             // Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo.svg');
         }
-
-        Block::append('head', '<script type="text/javascript" src="' . asset(Config::get('cms.pluginsPath') . '/winter/tailwindui/assets/js/dist/dark.js') . '"></script>');
     }
 
     /**
@@ -76,6 +73,18 @@ class Plugin extends PluginBase
      */
     protected function extendBackendControllers(): void
     {
+        \Backend\Controllers\Preferences::extendFormFields(function ($form, $model, $context) {
+            if ($model instanceof \Backend\Models\Preference) {
+                $form->addTabFields([
+                    'dark_mode' => [
+                        'label' => 'winter.tailwindui::lang.preferences.dark_mode',
+                        'type' => 'switch',
+                        'tab' => 'winter.tailwindui::lang.plugin.name',
+                    ],
+                ]);
+            }
+        });
+
         // Add our view override paths
         BaseBackendController::extend(function ($controller) {
             $path = strtolower(get_class($controller));
@@ -88,6 +97,21 @@ class Plugin extends PluginBase
             $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
 
             $this->extendBrandSettingsData();
+
+            $controller->addDynamicMethod('isDarkModeEnabled', function () {
+                $prefs = \Backend\Models\Preference::instance();
+                return $prefs->get('dark_mode', false);
+            });
+
+            $controller->addDynamicMethod('onToggleDarkMode', function () {
+                $prefs = \Backend\Models\Preference::instance();
+                $darkMode = !$prefs->get('dark_mode', false);
+                $prefs->set('dark_mode', $darkMode);
+
+                return [
+                    'dark_mode' => $darkMode,
+                ];
+            });
         });
 
         // Extend the Settings controller to force the page to reload after updating branding

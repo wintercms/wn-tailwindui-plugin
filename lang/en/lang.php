@@ -30,5 +30,9 @@ return [
         ],
     ],
 
+    'preferences' => [
+        'dark_mode' => 'Dark Mode',
+    ],
+
     'toggle_dark_mode' => 'Toggle dark mode',
 ];

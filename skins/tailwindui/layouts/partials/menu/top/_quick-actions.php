@@ -137,7 +137,8 @@
                 <div class="py-1">
                     <headless-menu-item>
                         <button
-                            onclick="window.tailwindUIBackend.toggleDarkMode()"
+                            data-request="onToggleDarkMode"
+                            data-request-success="!!data.dark_mode ? document.documentElement.classList.add('dark') : document.documentElement.classList.remove('dark')"
                             class="group w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
                         >
                             <i class="icon-moon mr-2 text-sm text-center min-w-[1.25em] text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white"></i>
