@@ -39,23 +39,23 @@ if (Config::get('develop.decompileBackendAssets', false)) {
     $scripts = array_merge($scripts, [Backend::skinAsset('assets/js/winter-min.js')]);
 }
 $scripts = array_merge($scripts, [
-    Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
+    Url::asset('modules/system/assets/js/lang/lang.' . App::getLocale() . '.js'),
     Backend::skinAsset('assets/js/winter.flyout.js'),
     Backend::skinAsset('assets/js/winter.tabformexpandcontrols.js'),
 ]);
 ?>
 
-<?php foreach ($styles as $style): ?>
+<?php foreach ($styles as $style) : ?>
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
 <?php endforeach; ?>
 
-<?php foreach ($scripts as $script): ?>
+<?php foreach ($scripts as $script) : ?>
     <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>
     <link href="<?= $script . '?v=' . $coreBuild; ?>" rel="preload" as="script" importance="high">
 <?php endforeach; ?>
 
-<?php if (!Config::get('cms.enableBackendServiceWorkers', false)): ?>
+<?php if (!Config::get('cms.enableBackendServiceWorkers', false)) : ?>
     <script>
         "use strict";
         /* Only run on HTTPS connections
@@ -64,8 +64,8 @@ $scripts = array_merge($scripts, [
         if (location.protocol === 'https:') {
             // Unregister all service workers before signing in to prevent cache issues, see github issue: #3707
             navigator.serviceWorker.getRegistrations().then(
-                function (registrations) {
-                    registrations.forEach(function (registration) {
+                function(registrations) {
+                    registrations.forEach(function(registration) {
                         registration.unregister();
                     });
                 }
@@ -73,6 +73,22 @@ $scripts = array_merge($scripts, [
         }
     </script>
 <?php endif; ?>
+
+<script>
+    function updateColorScheme() {
+        const colorScheme = document.documentElement.getAttribute('data-color-scheme') || 'auto';
+        if (
+            colorScheme === 'dark' || (
+                colorScheme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-sheme: dark)').matches
+            )
+        ) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }
+    updateColorScheme();
+</script>
 
 <?= $this->makeAssets() ?>
 <?= Block::placeholder('head') ?>

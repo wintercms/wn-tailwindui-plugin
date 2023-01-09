@@ -32,6 +32,11 @@ return [
 
     'preferences' => [
         'dark_mode' => 'Dark Mode',
+        'dark_mode_options' => [
+            'auto' => 'automatic from your system settings',
+            'light' => 'light',
+            'dark' => 'dark',
+        ],
     ],
 
     'toggle_dark_mode' => 'Toggle dark mode',

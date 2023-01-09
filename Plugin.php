@@ -78,8 +78,13 @@ class Plugin extends PluginBase
                 $form->addTabFields([
                     'dark_mode' => [
                         'label' => 'winter.tailwindui::lang.preferences.dark_mode',
-                        'type' => 'switch',
+                        'type' => 'radio',
                         'tab' => 'winter.tailwindui::lang.plugin.name',
+                        'options' => [
+                            'auto' => 'winter.tailwindui::lang.preferences.dark_mode_options.auto',
+                            'light' => 'winter.tailwindui::lang.preferences.dark_mode_options.light',
+                            'dark' => 'winter.tailwindui::lang.preferences.dark_mode_options.dark',
+                        ],
                     ],
                 ]);
             }
@@ -98,14 +103,14 @@ class Plugin extends PluginBase
 
             $this->extendBrandSettingsData();
 
-            $controller->addDynamicMethod('isDarkModeEnabled', function () {
+            $controller->addDynamicMethod('getDarkMode', function () {
                 $prefs = \Backend\Models\Preference::instance();
-                return $prefs->get('dark_mode', false);
+                return $prefs->get('dark_mode', 'auto');
             });
 
             $controller->addDynamicMethod('onToggleDarkMode', function () {
                 $prefs = \Backend\Models\Preference::instance();
-                $darkMode = !$prefs->get('dark_mode', false);
+                $darkMode = in_array($prefs->get('dark_mode', 'auto'), ['auto', 'light']) ? 'dark' : 'light';
                 $prefs->set('dark_mode', $darkMode);
 
                 return [
