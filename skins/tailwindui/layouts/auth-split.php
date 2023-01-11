@@ -37,7 +37,7 @@
 
         <!-- Flash Messages -->
         <style>
-            div#layout-flash-messages+div {
+            div#layout-flash-messages + div {
                 display: none;
             }
         </style>
