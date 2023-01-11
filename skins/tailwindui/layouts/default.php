@@ -4,7 +4,7 @@
         <?= $this->makeLayoutPartial('head') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'default']) ?>
     </head>
-    <body class=" relative <?= $this->bodyClass ?>">
+    <body class="relative <?= $this->bodyClass ?>">
         <?php
             $menuLocation = \Backend\Models\BrandSetting::get('menu_location');
             $iconLocation = \Backend\Models\BrandSetting::get('icon_location');
