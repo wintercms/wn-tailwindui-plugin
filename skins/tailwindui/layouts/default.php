@@ -43,7 +43,12 @@
 
                         <!-- Side panel -->
                         <?php if ($sidePanelContent = Block::placeholder('sidepanel')) : ?>
-                            <div id="layout-side-panel" class="layout-cell w-350 hide-on-small" data-control="layout-sidepanel" data-menu-code="<?= $currentMainMenuItem->owner . '.' . $currentMainMenuItem->code; ?>">
+                            <div
+                                id="layout-side-panel"
+                                class="layout-cell w-350 hide-on-small"
+                                data-control="layout-sidepanel"
+                                data-menu-code="<?= $currentMainMenuItem->owner . '.' . $currentMainMenuItem->code; ?>"
+                            >
                                 <?= $sidePanelContent ?>
                             </div>
                         <?php endif ?>
