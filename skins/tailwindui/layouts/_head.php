@@ -74,22 +74,6 @@ $scripts = array_merge($scripts, [
     </script>
 <?php endif; ?>
 
-<script>
-    function updateColorScheme() {
-        const colorScheme = document.documentElement.getAttribute('data-color-scheme') || 'auto';
-        if (
-            colorScheme === 'dark' || (
-                colorScheme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-sheme: dark)').matches
-            )
-        ) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }
-    updateColorScheme();
-</script>
-
 <?= $this->makeAssets() ?>
 <?= Block::placeholder('head') ?>
 <?= $this->makeLayoutPartial('branding') ?>

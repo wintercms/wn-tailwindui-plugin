@@ -30,12 +30,20 @@ return [
         ],
     ],
 
+    'permissions' => [
+        'manage_own_appearance' => [
+            'dark_mode' => 'Change own dark mode preference',
+            'menu_location' => 'Change own menu location',
+            'item_location' => 'Change own menu item icon location',
+        ],
+    ],
+
     'preferences' => [
-        'dark_mode' => 'Dark Mode',
-        'dark_mode_options' => [
-            'auto' => 'automatic from your system settings',
-            'light' => 'light',
-            'dark' => 'dark',
+        'appearance' => 'Appearance',
+        'dark_mode' => [
+            'auto' => 'Follow system preferences',
+            'light' => 'Light theme',
+            'dark' => 'Dark theme',
         ],
     ],
 

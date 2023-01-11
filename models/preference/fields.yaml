@@ -1,0 +1,34 @@
+tabs:
+    fields:
+        dark_mode:
+            label: 'winter.tailwindui::lang.preferences.appearance'
+            type: 'dropdown'
+            tab: 'winter.tailwindui::lang.preferences.appearance'
+            placeholder: Select
+            default: auto
+            permissions: winter.tailwindui.manage_own_appearance.dark_mode
+            options:
+                auto: ['winter.tailwindui::lang.preferences.dark_mode.auto', 'icon-computer']
+                light: ['winter.tailwindui::lang.preferences.dark_mode.light', 'icon-sun']
+                dark: ['winter.tailwindui::lang.preferences.dark_mode.dark', 'icon-moon']
+        menu_location:
+            label: winter.tailwindui::lang.branding.menu_location.label
+            tab: 'winter.tailwindui::lang.preferences.appearance'
+            type: balloon-selector
+            span: left
+            permissions: winter.tailwindui.manage_own_appearance.menu_location
+            options:
+                top: winter.tailwindui::lang.branding.menu_location.top
+                side: winter.tailwindui::lang.branding.menu_location.side
+        icon_location:
+            label: winter.tailwindui::lang.branding.menu_icons.label
+            tab: 'winter.tailwindui::lang.preferences.appearance'
+            type: balloon-selector
+            span: left
+            permissions: winter.tailwindui.manage_own_appearance.item_location
+            options:
+                tile: winter.tailwindui::lang.branding.menu_icons.tile
+                inline: winter.tailwindui::lang.branding.menu_icons.inline
+                hidden: winter.tailwindui::lang.branding.menu_icons.hidden
+                only: winter.tailwindui::lang.branding.menu_icons.only
+

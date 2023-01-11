@@ -134,18 +134,50 @@
                         <?php endforeach ?>
                     </div>
                 <?php endforeach ?>
-                <div class="py-1">
-                    <headless-menu-item>
-                        <button
-                            data-request="onToggleDarkMode"
-                            data-request-success="document.documentElement.setAttribute('data-color-scheme', data.dark_mode); updateColorScheme();"
-                            class="group w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
-                        >
-                            <i class="icon-moon mr-2 text-sm text-center min-w-[1.25em] text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white"></i>
-                            <?= e(trans('winter.tailwindui::lang.toggle_dark_mode')) ?>
-                        </button>
-                    </headless-menu-item>
-                </div>
+                <?php if (BackendAuth::user() && BackendAuth::user()->hasAccess('winter.tailwindui.manage_own_appearance.dark_mode')) : ?>
+                    <div class="py-1">
+                        <?= Form::open(['class' => 'px-4 py-1']) ?>
+                            <div class="grid grid-cols-3 gap-2">
+                                <headless-menu-item>
+                                    <button
+                                        type="button"
+                                        data-request="onTailwindUISetTheme"
+                                        data-request-data="dark_mode: 'auto'"
+                                        data-request-success="updateColorScheme(data.dark_mode);"
+                                        class="btn-darkmode"
+                                        title="<?= e(trans('winter.tailwindui::lang.preferences.dark_mode.auto')) ?>"
+                                    >
+                                        <i class="icon-computer"></i>
+                                    </button>
+                                </headless-menu-item>
+                                <headless-menu-item>
+                                    <button
+                                        type="button"
+                                        data-request="onTailwindUISetTheme"
+                                        data-request-data="dark_mode: 'light'"
+                                        data-request-success="updateColorScheme(data.dark_mode);"
+                                        class="btn-darkmode"
+                                        title="<?= e(trans('winter.tailwindui::lang.preferences.dark_mode.light')) ?>"
+                                    >
+                                        <i class="icon-sun"></i>
+                                    </button>
+                                </headless-menu-item>
+                                <headless-menu-item>
+                                    <button
+                                        type="button"
+                                        data-request="onTailwindUISetTheme"
+                                        data-request-data="dark_mode: 'dark'"
+                                        data-request-success="updateColorScheme(data.dark_mode);"
+                                        class="btn-darkmode"
+                                        title="<?= e(trans('winter.tailwindui::lang.preferences.dark_mode.dark')) ?>"
+                                    >
+                                        <i class="icon-moon"></i>
+                                    </button>
+                                </headless-menu-item>
+                            </div>
+                        <?= Form::close() ?>
+                    </div>
+                <?php endif; ?>
                 <div class="py-1">
                     <headless-menu-item>
                         <a

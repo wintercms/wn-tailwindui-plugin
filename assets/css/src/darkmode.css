@@ -11,6 +11,25 @@
     --drk-box-shadow: 0 8px 24px #010409;
 }
 
+@layer components {
+    .btn-darkmode {
+        @apply rounded-sm py-1 w-full text-center text-sm text-gray-700 hover:text-white hover:bg-gray-200 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700;
+
+        > i {
+            @apply text-sm text-center min-w-[1.25em]
+        }
+    }
+
+    html[data-color-scheme="auto"] .btn-darkmode[data-request-data="dark_mode: 'auto'"],
+    html[data-color-scheme="dark"] .btn-darkmode[data-request-data="dark_mode: 'dark'"],
+    html[data-color-scheme="light"] .btn-darkmode[data-request-data="dark_mode: 'light'"]
+    {
+        @apply
+            bg-gray-300 text-gray-700
+            dark:text-gray-300 dark:bg-gray-700;
+    }
+}
+
 .dark {
     body {
         color: var(--drk-color);
