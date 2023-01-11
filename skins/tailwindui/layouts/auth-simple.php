@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= App::getLocale() ?>" class="no-js h-full bg-gray-50" data-color-scheme="<?= $this->getDarkMode(); ?>">
+<html lang="<?= App::getLocale() ?>" class="no-js h-full bg-gray-50" data-color-scheme="<?= e(\Backend\Models\Preference::instance()->get('dark_mode', 'auto')); ?>">
     <head>
         <?= $this->makeLayoutPartial('head_auth') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'auth']) ?>

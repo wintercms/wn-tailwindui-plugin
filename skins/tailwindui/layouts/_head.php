@@ -64,8 +64,8 @@ $scripts = array_merge($scripts, [
         if (location.protocol === 'https:') {
             // Unregister all service workers before signing in to prevent cache issues, see github issue: #3707
             navigator.serviceWorker.getRegistrations().then(
-                function(registrations) {
-                    registrations.forEach(function(registration) {
+                function (registrations) {
+                    registrations.forEach(function (registration) {
                         registration.unregister();
                     });
                 }

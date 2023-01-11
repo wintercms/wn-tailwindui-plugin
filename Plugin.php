@@ -24,10 +24,8 @@ class Plugin extends PluginBase
 
     /**
      * Returns information about this plugin.
-     *
-     * @return array
      */
-    public function pluginDetails()
+    public function pluginDetails(): array
     {
         return [
             'name'        => 'winter.tailwindui::lang.plugin.name',
