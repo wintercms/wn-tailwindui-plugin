@@ -46,6 +46,4 @@ return [
             'dark' => 'Dark theme',
         ],
     ],
-
-    'toggle_dark_mode' => 'Toggle dark mode',
 ];

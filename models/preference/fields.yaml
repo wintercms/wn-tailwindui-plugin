@@ -4,7 +4,6 @@ tabs:
             label: 'winter.tailwindui::lang.preferences.appearance'
             type: 'dropdown'
             tab: 'winter.tailwindui::lang.preferences.appearance'
-            placeholder: Select
             default: auto
             permissions: winter.tailwindui.manage_own_appearance.dark_mode
             options:
@@ -31,4 +30,3 @@ tabs:
                 inline: winter.tailwindui::lang.branding.menu_icons.inline
                 hidden: winter.tailwindui::lang.branding.menu_icons.hidden
                 only: winter.tailwindui::lang.branding.menu_icons.only
-
