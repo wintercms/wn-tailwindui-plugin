@@ -18,7 +18,7 @@
         </headless-menu-button>
 
         <transition enter-active-class="transition ease-out duration-100" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-            <headless-menu-items class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring/5 focus:outline-none">
+            <headless-menu-items class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-500 ring/5 focus:outline-none">
             <div class="py-1">
                 <headless-menu-item v-slot="{ active }">
                 <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Something</a>
@@ -100,7 +100,7 @@
             leave-to-class="opacity-0 scale-95"
         >
             <headless-menu-items
-                class="origin-top-right absolute right-0 mt-2 py-1 w-64 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring/5 divide-y divide-gray-200 dark:divide-gray-500 focus:outline-none z-50"
+                class="origin-top-right absolute right-0 mt-2 py-1 w-64 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-500 ring/5 divide-y divide-gray-200 dark:divide-gray-500 focus:outline-none z-50"
             >
                 <div class="px-4 py-3">
                     <div class="shrink-0 group block">

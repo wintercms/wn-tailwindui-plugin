@@ -11,6 +11,7 @@
                 focus:bg-gray-300
                 focus:ring-gray-200
                 active:bg-gray-200
+                dark:text-black
                 dark:bg-gray-400
                 dark:hover:bg-gray-500
                 dark:focus:ring-gray-500;
@@ -29,7 +30,7 @@
         }
 
         &.btn-danger {
-            @apply text-white bg-red-500 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700;
+            @apply text-white bg-red-500 hover:bg-red-700 dark:text-white dark:bg-red-600 dark:hover:bg-red-700;
         }
 
         &.btn-warning {
@@ -49,6 +50,10 @@
                 active:bg-gray-300
                 dark:bg-gray-400
                 dark:hover:bg-gray-500;
+        }
+
+        &.btn-link {
+            @apply dark:text-primary-light hover:text-primary-lighter;
         }
 
         &.btn-xs {
