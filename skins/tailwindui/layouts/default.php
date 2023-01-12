@@ -27,7 +27,7 @@
             <?php endif; ?>
 
             <!-- Content Body -->
-            <div class="layout-content relative z-50">
+            <div class="layout-content relative">
 
                 <!-- Top Menu - side mode -->
                 <?php if ($menuLocation === 'side') : ?>
