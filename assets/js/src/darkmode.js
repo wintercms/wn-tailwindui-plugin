@@ -11,7 +11,7 @@ window.updateColorScheme = function (scheme) {
 
     if (
         colorScheme === 'dark' || (
-            colorScheme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-sheme: dark)').matches
+            colorScheme === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         )
     ) {
         docEl.classList.add('dark');
