@@ -60,8 +60,8 @@ module.exports = {
                 '2000': '2000ms',
             },
             zIndex: {
-                'topmenu': '99',
-                'sidemenu': '100',
+                'topmenu': '999',
+                'sidemenu': '1000',
             },
         },
     },
