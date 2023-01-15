@@ -13,8 +13,8 @@
 ?>
 <div class="hidden md:block sidemenu layout-sidemenu layout-sidemenu-<?= $iconLocation ?> h-full print:hidden">
     <div
-        class="flex flex-col top-0 left-0 z-sidemenu border-r border-gray-700 pt-2 pb-4 bg-gray-800 h-full"
-        id="layout-sidenav-1"
+        class="flex flex-col fixed top-0 left-0 z-sidemenu border-r border-gray-700 pt-2 pb-4 bg-gray-800 h-full"
+        id="layout-sidenav-2"
     >
         <div class="flex flex-col">
             <nav
@@ -28,7 +28,7 @@
                 aria-label="Sidebar"
             >
                 <!-- logo -->
-                <div class="flex items-center mb-4 h-16 flex-shrink-0">
+                <div class="flex items-center mb-4 h-16 shrink-0">
                     <img
                         class="h-12 w-auto <?= $itemMode === 'tile' ? 'm-auto' : '' ?>"
                         src="<?= e($logoImage) ?>"

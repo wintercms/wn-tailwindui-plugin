@@ -39,23 +39,23 @@ if (Config::get('develop.decompileBackendAssets', false)) {
     $scripts = array_merge($scripts, [Backend::skinAsset('assets/js/winter-min.js')]);
 }
 $scripts = array_merge($scripts, [
-    Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
+    Url::asset('modules/system/assets/js/lang/lang.' . App::getLocale() . '.js'),
     Backend::skinAsset('assets/js/winter.flyout.js'),
     Backend::skinAsset('assets/js/winter.tabformexpandcontrols.js'),
 ]);
 ?>
 
-<?php foreach ($styles as $style): ?>
+<?php foreach ($styles as $style) : ?>
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
 <?php endforeach; ?>
 
-<?php foreach ($scripts as $script): ?>
+<?php foreach ($scripts as $script) : ?>
     <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>
     <link href="<?= $script . '?v=' . $coreBuild; ?>" rel="preload" as="script" importance="high">
 <?php endforeach; ?>
 
-<?php if (!Config::get('cms.enableBackendServiceWorkers', false)): ?>
+<?php if (!Config::get('cms.enableBackendServiceWorkers', false)) : ?>
     <script>
         "use strict";
         /* Only run on HTTPS connections

@@ -29,4 +29,21 @@ return [
             'only' => 'Only (no text)',
         ],
     ],
+
+    'permissions' => [
+        'manage_own_appearance' => [
+            'dark_mode' => 'Change own dark mode preference',
+            'menu_location' => 'Change own menu location',
+            'item_location' => 'Change own menu item icon location',
+        ],
+    ],
+
+    'preferences' => [
+        'appearance' => 'Appearance',
+        'dark_mode' => [
+            'auto' => 'Follow system preferences',
+            'light' => 'Light theme',
+            'dark' => 'Dark theme',
+        ],
+    ],
 ];

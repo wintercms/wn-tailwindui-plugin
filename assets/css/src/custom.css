@@ -99,7 +99,7 @@ div[id^='headlessui-menu-items-'] {
 }
 
 /* collapse styles */
-.collapse {
+.collapsible {
     display: block;
     max-height: 0px;
     overflow: hidden;
@@ -149,6 +149,10 @@ div[data-control='media-manager-crop-tool'] {
 
             &-inline {
                 @apply md:grid-cols-layout-inline print:grid-cols-1;
+
+                #layout-sidenav-2 {
+                    width: 180px;
+                }
             }
 
             &-only {

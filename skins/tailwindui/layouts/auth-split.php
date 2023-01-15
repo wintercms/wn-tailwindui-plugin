@@ -7,18 +7,19 @@
         $backgroundImage = $brandSettings->background_image->path;
     }
 ?>
-<html lang="<?= App::getLocale() ?>" class="no-js">
+<html lang="<?= App::getLocale() ?>" class="no-js" data-color-scheme="<?= e(\Backend\Models\Preference::instance()->get('dark_mode', 'auto')); ?>">
     <head>
         <?= $this->makeLayoutPartial('head_auth') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'auth']) ?>
     </head>
+
     <body class="outer <?= $this->bodyClass ?> font-sans m-0">
-        <div class="min-h-screen bg-white flex">
+        <div class="min-h-screen bg-white dark:bg-gray-800 flex">
             <div class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                 <div class="mx-auto w-full max-w-sm lg:w-96">
                     <div>
                         <img class="max-h-20 m-auto" src="<?= e(Backend\Models\BrandSetting::getLogo()); ?>" alt="<?= e(Backend\Models\BrandSetting::get('app_name')); ?>">
-                        <h2 class="mt-6 text-2xl text-center font-extrabold text-gray-900"><?= e(Backend\Models\BrandSetting::get('app_tagline')); ?></h2>
+                        <h2 class="mt-6 text-2xl text-center font-extrabold text-gray-900 dark:text-gray-300"><?= e(Backend\Models\BrandSetting::get('app_tagline')); ?></h2>
                     </div>
 
                     <div class="mt-8">

@@ -73,7 +73,7 @@
                 <!-- Child menu -->
                 <?php if ($hasChildren) : ?>
                     <nav
-                        class="mt-1 collapse<?= $isActive ? ' show' : '' ?>"
+                        class="mt-1 collapsible<?= $isActive ? ' show' : '' ?>"
                         id="<?= $item->code ?>"
                         data-menu-code="<?= $item->owner . '.' . $item->code; ?>"
                         data-control="sidenav"

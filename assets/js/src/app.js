@@ -1,4 +1,5 @@
 import { createApp, onMounted } from 'vue';
+import './darkmode';
 import './menu';
 import './winter.sidepaneltab';
 
@@ -9,16 +10,13 @@ import {
     Menu,
     MenuButton,
     MenuItem,
-    MenuItems,
-  } from '@headlessui/vue';
+    MenuItems
+} from '@headlessui/vue';
 
 import {
     BellIcon,
-    ChevronDownIcon,
-    PlusSmIcon,
-    MenuIcon,
-    SearchIcon,
-    XIcon,
+    ChevronDownIcon, MenuIcon, PlusSmIcon, SearchIcon,
+    XIcon
 } from '@heroicons/vue/outline';
 
 // TODO: for now we are mounting multiple vue apps as plugins can inject <script> tags inside our vue mounted elements
@@ -48,21 +46,21 @@ const rootApp = {
         onMounted(() => {
             $(function() {
                 const $menuBtnSelector = $('[id^="headlessui-menu-button-"]');
-        
+
                 // Popping Out of Hidden Overflow
                 // @see https://css-tricks.com/popping-hidden-overflow/
                 $menuBtnSelector.on('click', function() {
                     const $menuBtn = $(this);
                     const $menuItem = $menuBtn.closest('.headless-menu');
                     const $wrapper =  $menuItem.find('[id^="headlessui-menu-items-"]');
-                    
+
                     if ($menuItem.length) {
                         // grab the menu item's position relative to its positioned parent
                         const position = $menuItem.position();
                         const offset = parseInt($menuItem.css('marginLeft').replace('px', ''));
                         const top = position.top + $menuItem.offset().top + $menuItem.outerHeight(true);
                         const left = position.left + offset;
-            
+
                         // place the submenu in the correct position relevant to the menu item
                         if ($wrapper.length) {
                             $wrapper.css({top, left});

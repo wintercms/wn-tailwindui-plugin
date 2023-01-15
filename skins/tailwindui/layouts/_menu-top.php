@@ -10,9 +10,9 @@
     v-slot="{ open }"
     class="print:hidden
         <?php if ($menuLocation === 'top'): ?>
-            bg-gray-800
+            bg-gray-900
         <?php else: ?>
-            bg-gray-800 md:bg-white md:shadow-bottom
+            bg-gray-900 md:bg-white dark:bg-gray-900 dark:md:bg-gray-900 md:shadow-bottom
         <?php endif; ?>
     "
 >
@@ -182,14 +182,14 @@
                                         <transition
                                             v-show="open"
                                             enter-active-class="transition ease-out duration-100"
-                                            enter-from-class="transform opacity-0 scale-95"
-                                            enter-to-class="transform opacity-100 scale-100"
+                                            enter-from-class="opacity-0 scale-95"
+                                            enter-to-class="opacity-100 scale-100"
                                             leave-active-class="transition ease-in duration-75"
-                                            leave-from-class="transform opacity-100 scale-100"
-                                            leave-to-class="transform opacity-0 scale-95"
+                                            leave-from-class="opacity-100 scale-100"
+                                            leave-to-class="opacity-0 scale-95"
                                         >
                                             <headless-menu-items
-                                                class="origin-top-left absolute left-0 w-56 rounded-md shadow-lg bg-white focus:outline-none"
+                                                class="origin-top-left absolute left-0 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 focus:outline-none"
                                                 data-control="sidenav"
                                                 data-active-class="active"
                                                 static
@@ -207,9 +207,9 @@
                                                             class="
                                                                 group flex relative items-center px-4 py-2 text-sm hover:no-underline transition duration-300 ease-in
                                                                 <?php if ($childIsActive): ?>
-                                                                    bg-primary text-white hover:text-white hover:bg-primary
+                                                                    bg-primary text-white hover:text-white hover:bg-primary dark:bg-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700
                                                                 <?php else: ?>
-                                                                    text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900
+                                                                    text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
                                                                 <?php endif; ?>
                                                             "
                                                         >
@@ -227,7 +227,7 @@
                                                                             <?php if ($childIsActive): ?>
                                                                                 text-white group-hover:text-white
                                                                             <?php else: ?>
-                                                                                text-gray-400 text-gray-300 group-hover:text-gray-500
+                                                                                text-gray-400 text-gray-300 group-hover:text-gray-500 dark:group-hover:text-white
                                                                             <?php endif; ?>
                                                                         "
                                                                     >

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= App::getLocale() ?>" class="no-js h-full bg-gray-50">
+<html lang="<?= App::getLocale() ?>" class="no-js h-full bg-gray-50" data-color-scheme="<?= e(\Backend\Models\Preference::instance()->get('dark_mode', 'auto')); ?>">
     <head>
         <?= $this->makeLayoutPartial('head_auth') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'auth']) ?>
@@ -12,7 +12,7 @@
             </div>
 
             <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md sm:max-w-sm">
-              <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+              <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
                     <?= Block::placeholder('body') ?>
               </div>
             </div>

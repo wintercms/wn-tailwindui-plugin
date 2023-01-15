@@ -6,3 +6,6 @@ nbproject
 .idea
 .vscode
 _ide_helper.php
+
+# laravel mix temp files
+/mix.webpack.js

@@ -8,6 +8,7 @@ use Request;
 use BackendAuth;
 use System\Classes\PluginBase;
 use Backend\Models\BrandSetting;
+use Backend\Models\UserRole;
 use Backend\Classes\BackendController as CoreBackendController;
 use Backend\Classes\Controller as BaseBackendController;
 use Backend\Controllers\Auth as AuthController;
@@ -24,16 +25,38 @@ class Plugin extends PluginBase
 
     /**
      * Returns information about this plugin.
-     *
-     * @return array
      */
-    public function pluginDetails()
+    public function pluginDetails(): array
     {
         return [
             'name'        => 'winter.tailwindui::lang.plugin.name',
             'description' => 'winter.tailwindui::lang.plugin.description',
             'author'      => 'Winter CMS',
             'icon'        => 'icon-leaf',
+        ];
+    }
+
+    /**
+     * Returns the permissions provided by this plugin
+     */
+    public function registerPermissions(): array
+    {
+        return [
+            'winter.tailwindui.manage_own_appearance.dark_mode' => [
+                'label' => 'winter.tailwindui::lang.permissions.manage_appearance.dark_mode',
+                'tab' => 'winter.tailwindui::lang.plugin.name',
+                'roles' => [UserRole::CODE_PUBLISHER, UserRole::CODE_DEVELOPER],
+            ],
+            'winter.tailwindui.manage_own_appearance.menu_location' => [
+                'label' => 'winter.tailwindui::lang.permissions.manage_appearance.menu_location',
+                'tab' => 'winter.tailwindui::lang.plugin.name',
+                'roles' => [UserRole::CODE_PUBLISHER, UserRole::CODE_DEVELOPER],
+            ],
+            'winter.tailwindui.manage_own_appearance.item_location' => [
+                'label' => 'winter.tailwindui::lang.permissions.manage_appearance.item_location',
+                'tab' => 'winter.tailwindui::lang.plugin.name',
+                'roles' => [UserRole::CODE_PUBLISHER, UserRole::CODE_DEVELOPER],
+            ],
         ];
     }
 
@@ -85,6 +108,20 @@ class Plugin extends PluginBase
             $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
 
             $this->extendBrandSettingsData();
+
+            $controller->addDynamicMethod('onTailwindUISetTheme', function () {
+                $user = BackendAuth::user();
+                if (!$user || !$user->hasAccess('winter.tailwindui.manage_own_appearance.dark_mode')) {
+                    abort(403, "You do not have permission to do that.");
+                }
+
+                $darkMode = post('dark_mode');
+                $prefs = PreferenceModel::instance();
+                $prefs->set('dark_mode', $darkMode);
+                return [
+                    'dark_mode' => $darkMode,
+                ];
+            });
         });
 
         // Extend the Settings controller to force the page to reload after updating branding
@@ -113,6 +150,11 @@ class Plugin extends PluginBase
      */
     protected function extendBrandSettingsData(): void
     {
+        $settings = BrandSetting::instance();
+        $userSettings = (!is_null(BackendAuth::user()))
+            ? PreferenceModel::instance()
+            : null;
+
         // Initialize the backend branding data from the config if it's not set already
         $fieldDefaults = [];
         $fields = Yaml::parseFile(plugins_path('winter/tailwindui/models/brandsetting/fields.yaml'));
@@ -125,10 +167,6 @@ class Plugin extends PluginBase
         }
 
         if (!empty($fieldDefaults)) {
-            $settings = BrandSetting::instance();
-            $userSettings = (!is_null(BackendAuth::user()))
-                ? PreferenceModel::instance()
-                : null;
             foreach ($fieldDefaults as $name => $default) {
                 // Check the current user for an overridden preference
                 $userValue = (!is_null($userSettings)) ? $userSettings->get($name) : null;
@@ -141,6 +179,34 @@ class Plugin extends PluginBase
                 } elseif (empty($settings->getSettingsValue($name))) {
                     $settings->setSettingsValue($name, $this->app->config->get("brand.$name", $default));
                     $settings->attributes[$name] = $this->app->config->get("brand.$name", $default);
+                }
+            }
+        }
+
+        // Set the default values for the User Preferences
+        if ($userSettings) {
+            $applyDefaults = [
+                'dark_mode',
+            ];
+            $preferenceDefaults = [];
+            $preferenceFields = Yaml::parseFile(plugins_path('winter/tailwindui/models/preference/fields.yaml'));
+            if (!empty($preferenceFields['tabs'])) {
+                foreach ($preferenceFields['tabs']['fields'] as $name => $config) {
+                    if (isset($config['default']) && in_array($name, $applyDefaults)) {
+                        $preferenceDefaults[$name] = $config['default'];
+                    }
+                }
+            }
+
+            if (!empty($preferenceDefaults)) {
+                foreach ($preferenceDefaults as $name => $default) {
+                    // Check the current user for an overridden preference
+                    $userValue = $userSettings->get($name);
+
+                    if (empty($userSettings->get($name))) {
+                        $userSettings->setSettingsValue($name, $this->app->config->get("brand.$name", $default));
+                        $userSettings->attributes[$name] = $this->app->config->get("brand.$name", $default);
+                    }
                 }
             }
         }
@@ -174,15 +240,13 @@ class Plugin extends PluginBase
                 return;
             }
 
-            // Add the additional fields provided by this plugin
-            $fields = Yaml::parseFile(plugins_path('winter/tailwindui/models/brandsetting/fields.yaml'));
-            if (!empty($fields['tabs'])) {
-                // Remove the auth layout options from the backend user preferences form
-                if ($form->model instanceof PreferenceModel) {
-                    unset($fields['tabs']['fields']['auth_layout']);
-                    unset($fields['tabs']['fields']['background_image']);
-                }
-                $form->addTabFields($fields['tabs']['fields']);
+            $fields = [
+                BrandSetting::class => Yaml::parseFile(plugins_path('winter/tailwindui/models/brandsetting/fields.yaml')),
+                PreferenceModel::class => Yaml::parseFile(plugins_path('winter/tailwindui/models/preference/fields.yaml')),
+            ];
+
+            if (!empty($fields[get_class($form->model)]['tabs'])) {
+                $form->addTabFields($fields[get_class($form->model)]['tabs']['fields']);
             }
 
             // Remove fields that are no longer relevant
