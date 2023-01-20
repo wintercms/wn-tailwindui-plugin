@@ -84,6 +84,10 @@
                         mt-0
                         hover:border-white;
                 }
+
+                &.empty {
+                   @apply mt-0;
+                }
             }
 
             /* right aligned buttons */
@@ -126,6 +130,11 @@
                         @apply bg-white text-secondary;
                     }
                 }
+            }
+
+            /* override for winter.css */
+            &.secondary-content-tabs > div > ul.nav-tabs > li {
+                @apply ml-0;
             }
         }
     }

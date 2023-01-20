@@ -196,3 +196,8 @@ div[data-control='media-manager-crop-tool'] {
         }
     }
 }
+
+/* Fix for winter dropdowns not being clickable */
+.dropdown-overlay {
+    pointer-events: none !important;
+}
