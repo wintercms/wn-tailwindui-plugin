@@ -717,6 +717,15 @@
         border-top: 1px solid var(--drk-border-color);
     }
 
+    table.table.data tbody tr.active td {
+        color: var(--drk-color);
+    }
+
+    table.table.data tbody tr.active td,
+    table.table.data tbody tr.active th {
+        background-color: #0e253c;
+    }
+
     table.table.data tbody tr.rowlink:not(.nolink):active td {
         background: #395169 !important;
         color: var(--drk-color);
@@ -836,7 +845,7 @@
 
     table.table.data tbody tr.active:nth-child(even) td,
     table.table.data tbody tr.active:nth-child(even) th {
-        background-color: #28200a;
+        background-color: #0e253c;
     }
 
     .field-checkboxlist .field-checkboxlist-inner {
