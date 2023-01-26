@@ -4,7 +4,7 @@ tabs:
             label: 'winter.tailwindui::lang.preferences.appearance'
             type: 'dropdown'
             tab: 'winter.tailwindui::lang.preferences.appearance'
-            default: auto
+            default: light
             permissions: winter.tailwindui.manage_own_appearance.dark_mode
             options:
                 auto: ['winter.tailwindui::lang.preferences.dark_mode.auto', 'icon-computer']

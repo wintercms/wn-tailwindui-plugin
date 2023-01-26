@@ -7,7 +7,7 @@
         $backgroundImage = $brandSettings->background_image->path;
     }
 ?>
-<html lang="<?= App::getLocale() ?>" class="no-js" data-color-scheme="<?= e(\Backend\Models\Preference::instance()->get('dark_mode', 'auto')); ?>">
+<html lang="<?= App::getLocale() ?>" class="no-js" data-color-scheme="<?= e(\Backend\Models\Preference::instance()->get('dark_mode', 'light')); ?>">
     <head>
         <?= $this->makeLayoutPartial('head_auth') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'auth']) ?>
