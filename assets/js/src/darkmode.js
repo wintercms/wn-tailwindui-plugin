@@ -7,7 +7,7 @@ window.updateColorScheme = function (scheme) {
         docEl.setAttribute('data-color-scheme', scheme);
     }
 
-    const colorScheme = docEl.getAttribute('data-color-scheme') || 'auto';
+    const colorScheme = docEl.getAttribute('data-color-scheme') || 'light';
 
     if (
         colorScheme === 'dark' || (
