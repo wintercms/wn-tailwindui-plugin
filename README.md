@@ -4,6 +4,8 @@
 
 [Tailwind UI](https://tailwindui.com/) is a Tailwind CSS component library designed by the authors of [Tailwind CSS](https://tailwindcss.com/). This is a [Winter CMS](https://wintercms.com) plugin that provides a custom, TailwindUI-based skin for the backend.
 
+> **NOTE:** This plugin is in active development, and is only compatible with the `develop` branch of Winter CMS.
+
 ### Configuration
 
 Configuration for this plugin is handled through a [configuration file](https://wintercms.com/docs/plugin/settings#file-configuration). In order to modify the configuration values and get started you can either add the values to your `.env` environment file or copy the `plugins/winter/tailwindui/config/config.php` file to `config/winter/tailwindui/config.php` and make your changes there.
