@@ -446,7 +446,7 @@
     }
     .fancy-layout .control-tabs.has-tabs > div.tab-content,
     .fancy-layout.control-tabs.has-tabs > div.tab-content {
-        background: var(--drk-bg-color-a);
+        background: var(--drk-bg-color-a) !important;
     }
 
     #layout-side-panel div.control-toolbar input.form-control {
@@ -1411,7 +1411,9 @@
     .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:after,
     .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:after,
     .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:after {
-        background: var(--drk-bg-color-a);
+        background: var(--drk-bg-color-a) !important;
+        border-width: 2px !important;
+        border: none;
     }
 
     .control-tabs.primary-tabs > ul.nav-tabs > li.active a > span.title:before,
