@@ -6,7 +6,21 @@
 
 > **NOTE:** This plugin is in active development, and is only compatible with the `develop` branch of Winter CMS.
 
-### Configuration
+## Getting started
+
+Use composer to install the plugin:
+
+```bash
+composer require winter/wn-tailwindui-plugin
+```
+
+Then, run the migrations to ensure the plugin is enabled:
+
+```bash
+php artisan winter:up
+```
+
+## Configuration
 
 Configuration for this plugin is handled through a [configuration file](https://wintercms.com/docs/plugin/settings#file-configuration). In order to modify the configuration values and get started you can either add the values to your `.env` environment file or copy the `plugins/winter/tailwindui/config/config.php` file to `config/winter/tailwindui/config.php` and make your changes there.
 
