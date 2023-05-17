@@ -17,7 +17,7 @@ composer require winter/wn-tailwindui-plugin
 Then, run the migrations to ensure the plugin is enabled:
 
 ```bash
-php artisan winter:up
+php artisan migrate
 ```
 
 ## Configuration
