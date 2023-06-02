@@ -15,6 +15,7 @@ use Backend\Controllers\Auth as AuthController;
 use System\Controllers\Settings as SettingsController;
 use Backend\Controllers\Preferences as PreferencesController;
 use Backend\Models\Preference as PreferenceModel;
+use Winter\TailwindUI\Console\TailwindPlugin;
 
 /**
  * TailwindUI Plugin Information File
@@ -72,6 +73,8 @@ class Plugin extends PluginBase
             $this->extendBrandSettingsForm();
             $this->extendBackendAuthController();
         }
+
+        $this->registerConsoleCommand('tailwindui.plugin', TailwindPlugin::class);
     }
 
     /**
