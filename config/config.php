@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | When enabled, adds a visual element in the top left of the screen in
-    | he backend that displays the currently active breakpoint size.
+    | the backend that displays the currently active breakpoint size.
     |
     */
 
