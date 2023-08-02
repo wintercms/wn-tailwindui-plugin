@@ -1,20 +1,22 @@
 <?php namespace Winter\TailwindUI;
 
-use Url;
-use Yaml;
-use Event;
-use Config;
-use Request;
-use BackendAuth;
-use System\Classes\PluginBase;
-use Backend\Models\BrandSetting;
-use Backend\Models\UserRole;
 use Backend\Classes\BackendController as CoreBackendController;
 use Backend\Classes\Controller as BaseBackendController;
+use Backend\Classes\WidgetBase;
 use Backend\Controllers\Auth as AuthController;
-use System\Controllers\Settings as SettingsController;
 use Backend\Controllers\Preferences as PreferencesController;
+use Backend\Models\BrandSetting;
 use Backend\Models\Preference as PreferenceModel;
+use Backend\Models\UserRole;
+use BackendAuth;
+use Config;
+use Event;
+use Request;
+use System\Classes\PluginBase;
+use System\Controllers\Settings as SettingsController;
+use Url;
+use Winter\Storm\Support\Str;
+use Yaml;
 
 /**
  * TailwindUI Plugin Information File
@@ -69,9 +71,23 @@ class Plugin extends PluginBase
         if ($this->app->runningInBackend()) {
             $this->applyBackendSkin();
             $this->extendBackendControllers();
+            $this->extendBackendWidgets();
             $this->extendBrandSettingsForm();
             $this->extendBackendAuthController();
         }
+    }
+
+    /**
+     * Guess the override view path for the provided object
+     */
+    protected function guessOverrideViewPath(object $object): string
+    {
+        $path = strtolower(get_class($object));
+        $cleanPath = str_replace("\\", "/", $path);
+        if (!in_array(Str::before($cleanPath, '/'), ['backend', 'cms', 'system'])) {
+            $cleanPath = 'plugins/' . $cleanPath;
+        }
+        return '$/winter/tailwindui/skins/tailwindui/views/' . $cleanPath;
     }
 
     /**
@@ -98,9 +114,7 @@ class Plugin extends PluginBase
     {
         // Add our view override paths
         BaseBackendController::extend(function ($controller) {
-            $path = strtolower(get_class($controller));
-            $cleanPath = str_replace("\\", "/", $path);
-            $controller->addViewPath('$/winter/tailwindui/skins/tailwindui/views/' . $cleanPath);
+            $controller->addViewPath($this->guessOverrideViewPath($controller));
 
             // @TODO: Handle cache busting through some other method
             $cssLastModified = filemtime(plugins_path('winter/tailwindui/assets/css/dist/backend.css'));
@@ -142,6 +156,17 @@ class Plugin extends PluginBase
                     return redirect()->refresh();
                 }
             });
+        });
+    }
+
+    /**
+     * Extends backend widgets to use the custom views provided by this plugin
+     */
+    protected function extendBackendWidgets(): void
+    {
+        WidgetBase::extend(function ($widget) {
+            // @TODO: BlogMarkdown and all ML overrides break this
+            $widget->addViewPath($this->guessOverrideViewPath($widget) . '/partials');
         });
     }
 
