@@ -188,12 +188,22 @@ div[data-control='media-manager-crop-tool'] {
     }
 }
 
-/* Froala richrewxt editor */
+/* Froala richtext editor */
 .field-richeditor {
     .fr-toolbar .fr-command.fr-btn {
         &.fr-active {
             @apply font-semibold text-primary;
         }
+    }
+
+    .fr-view {
+        @apply prose max-w-none;
+    }
+}
+
+.field-markdowneditor {
+    .editor-preview {
+        @apply prose max-w-none;
     }
 }
 
