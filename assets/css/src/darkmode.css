@@ -264,10 +264,6 @@
 
 
     /* Dashboard */
-    .report-container > ul .item {
-        background: var(--drk-border-color);
-    }
-
     .report-widget {
         background: var(--drk-bg-color-c);
     }
