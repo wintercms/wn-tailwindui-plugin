@@ -493,7 +493,6 @@
     }
 
     .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs > div > ul.nav-tabs > li.active > a {
-        background-color: transparent;
         color: var(--drk-color);
     }
     .fancy-layout .control-tabs.has-tabs > div.tab-content,
@@ -1457,68 +1456,60 @@
 
 
     /* Tabs */
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title {
-        padding: 2px 25px 0px 25px;
-    }
+    .control-tabs.primary-tabs {
+        > div > ul.nav-tabs > li a > span.title {
+            padding: 2px 25px 0px 25px;
+        }
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:after,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:after,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:after {
-        background: var(--drk-bg-color-a) !important;
-        border-width: 2px !important;
-        border: none;
-    }
+        > ul.nav-tabs,
+        > div > ul.nav-tabs,
+        > div > div > ul.nav-tabs {
+            &:before {
+                border-bottom: 2px solid #555;
+            }
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li.active a > span.title:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title:before,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li.active a > span.title:before,
-    .control-tabs.primary-tabs > ul.nav-tabs > li.active a > span.title:after,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title:after,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li.active a > span.title:after {
-        border-color: #555;
-    }
+            li {
+                a > span.title {
+                    background-color: var(--drk-bg-color-a) !important;
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:after,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:after,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:after {
-        border-top: 2px solid #555;
-    }
+                    &:before {
+                        border-left: 2px solid #555;
+                    }
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li.active a > span.title span,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title span,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li.active a > span.title span {
-        color: #fff;
-        border-top-color: #555;
-    }
+                    &:after {
+                        border-right: 2px solid #555;
+                    }
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li.active a:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a:before,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li.active a:before {
-        background-color: var(--drk-bg-color-a);
-    }
+                    &:before,
+                    &:after {
+                        background: var(--drk-bg-color-a) !important;
+                        border-width: 2px !important;
+                        border: none;
+                    }
+                }
 
-    .control-tabs.primary-tabs > ul.nav-tabs:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs:before,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs:before {
-        border-bottom: 2px solid #555;
-    }
+                &.active {
+                    a {
+                        --drk-bg-color-a: #555;
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:before,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:before {
-        border-left: 2px solid #555;
-    }
+                        &:before {
+                            background-color: var(--drk-bg-color-a);
+                        }
 
-    .control-tabs.primary-tabs > ul.nav-tabs > li a > span.title:after,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title:after,
-    .control-tabs.primary-tabs > div > div > ul.nav-tabs > li a > span.title:after {
-        border-right: 2px solid #555;
+                        > span.title {
+                            &:before,
+                            &:after {
+                                border-color: #555;
+                            }
+
+                            span {
+                                color: #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     .control-tabs > ul.nav-tabs > li.active a,
