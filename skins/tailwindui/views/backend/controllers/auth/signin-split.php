@@ -55,9 +55,10 @@
                     type="checkbox"
                     id="remember"
                     name="remember"
+                    style="border-radius: .375rem;"
                 />
 
-                <label for="remember">
+                <label for="remember" style="margin: 0 0 0 0.5em;">
                     <?= e(trans('backend::lang.account.remember_me')) ?>
                 </label>
             </div>
