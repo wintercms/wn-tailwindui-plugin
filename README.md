@@ -20,7 +20,21 @@ Dark mode and user preferences are also supported.
 
 ![tailwind-preferences](https://github.com/wintercms/wn-tailwindui-plugin/assets/7253840/6c21966a-07d3-4427-a6b6-2902c8c38527)
 
-### Configuration
+## Getting started
+
+Use composer to install the plugin:
+
+```bash
+composer require winter/wn-tailwindui-plugin
+```
+
+Then, run the migrations to ensure the plugin is enabled:
+
+```bash
+php artisan migrate
+```
+
+## Configuration
 
 Configuration for this plugin is handled through a [configuration file](https://wintercms.com/docs/plugin/settings#file-configuration). In order to modify the configuration values and get started you can either add the values to your `.env` environment file or copy the `plugins/winter/tailwindui/config/config.php` file to `config/winter/tailwindui/config.php` and make your changes there.
 
