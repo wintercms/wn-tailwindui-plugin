@@ -52,7 +52,6 @@
                             class="text-white px-6 py-2 <?= $isActive ? 'open' : ''?>"
                             data-toggle="collapse"
                             data-target="#<?= $item->code ?>"
-                            role="button"
                             aria-expanded="false"
                             aria-controls="<?= $item->code ?>"
                         >
