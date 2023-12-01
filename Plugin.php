@@ -117,9 +117,9 @@ class Plugin extends PluginBase
             $controller->addViewPath($this->guessOverrideViewPath($controller));
 
             // @TODO: Handle cache busting through some other method
-            $cssLastModified = filemtime(plugins_path('winter/tailwindui/assets/css/dist/backend.css'));
-
-            $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
+            // @TODO: work out why this was needed
+//            $cssLastModified = filemtime(plugins_path('winter/tailwindui/assets/dist/css/backend.css'));
+//            $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/dist/css/backend.css'), (string) $cssLastModified);
 
             $this->extendBrandSettingsData();
 

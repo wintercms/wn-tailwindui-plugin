@@ -1,0 +1,12 @@
+.winter-portal {
+    @nested-import '../../../../../../modules/system/assets/ui/storm.css';
+    @nested-import '../../../../../../modules/backend/assets/css/winter.css';
+
+    /* Hacks */
+    .layout > .layout-cell.layout-container,
+    .layout > .layout-cell .layout-container,
+    .layout > .layout-cell.padded-container,
+    .layout > .layout-cell .padded-container {
+        padding: 0;
+    }
+}

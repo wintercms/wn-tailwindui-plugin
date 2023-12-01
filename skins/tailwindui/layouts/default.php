@@ -1,70 +1,90 @@
+<?php
+$activeItem = BackendMenu::getActiveMainMenuItem();
+$mySettings = System\Classes\SettingsManager::instance()->listItems('mysettings');
+$iconLocation = Backend\Models\BrandSetting::get('icon_location');
+$appName = e(Backend\Models\BrandSetting::get('app_name'));
+
+$logoImage = (in_array($iconLocation, ['only', 'tile']))
+    ? Backend\Models\BrandSetting::getFavicon()
+    : Backend\Models\BrandSetting::getLogo();
+
+$menu = array_map(function ($menuItem) {
+    $menuItem->label = e(trans($menuItem->label));
+    $menuItem->isActive = BackendMenu::isMainMenuItemActive($menuItem);
+    $menuItem->iconSvg = $menuItem->iconSvg ? Url::asset($menuItem->iconSvg) : null;
+    return $menuItem;
+}, BackendMenu::listMainMenuItems());
+
+$quickActions = array_map(function ($action) {
+    $action->label = e(trans($action->label));
+    $action->isActive = BackendMenu::isMainMenuItemActive($action);
+    $action->iconSvg = $action->iconSvg ? Url::asset($action->iconSvg) : null;
+    $action->attributes = Html::attributes($action->attributes);
+    return $action;
+}, BackendMenu::listQuickActionItems());
+
+$user = [
+    'title' => e(trans('backend::lang.account.signed_in_as', ['full_name' => $this->user->full_name])),
+    'icon' => $this->user->getAvatarThumb(90, ['mode' => 'crop', 'extension' => 'png']),
+    'settings' => array_map(function ($item) {
+        $item->label = e(trans($item->label));
+        $item->description = e(trans($item->description));
+        return $item;
+    }, ...array_values(System\Classes\SettingsManager::instance()->listItems('mysettings')))
+];
+
+?>
 <!DOCTYPE html>
-<html lang="<?= App::getLocale() ?>" class="no-js <?= $this->makeLayoutPartial('browser_detector') ?>" data-color-scheme="<?= e(\Backend\Models\Preference::instance()->get('dark_mode', 'light')); ?>">
+<html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
         <?= $this->makeLayoutPartial('head') ?>
         <?= $this->fireViewEvent('backend.layout.extendHead', ['layout' => 'default']) ?>
     </head>
-    <body class="relative <?= $this->bodyClass ?>">
-        <?php
-            $menuLocation = \Backend\Models\BrandSetting::get('menu_location');
-            $iconLocation = \Backend\Models\BrandSetting::get('icon_location');
-            $currentMainMenuItem = \BackendMenu::getActiveMainMenuItem();
-        ?>
+    <body>
+        <div id="backend-ui">
+            <backend logo="<?= e($logoImage) ?>"
+                app-name="<?= $appName ?>"
+                :menu='<?= json_encode($menu) ?>'
+                :quick-actions='<?= json_encode($quickActions) ?>'
+                :user='<?= json_encode($user) ?>'
+            >
+                <?php $flyoutContent = Block::placeholder('sidepanel-flyout') ?>
 
-        <?= $this->makeLayoutPartial('partials/notices/impersonation') ?>
-
-        <div class="default-layout default-layout-<?= $menuLocation ?> default-layout-<?= $menuLocation ?>-<?= $iconLocation ?>">
-            <?php if ($menuLocation === 'top') : ?>
-                <!-- Top Menu - top mode -->
-                <div id="vue-app-1" class="layout-topmenu sticky top-0 z-topmenu">
-                    <?= $this->makeLayoutPartial('menu-top') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if ($menuLocation === 'side') : ?>
-                <!-- Side Menu -->
-                <?= $this->makeLayoutPartial('menu-side') ?>
-            <?php endif; ?>
-
-            <!-- Content Body -->
-            <div class="layout-content relative">
-
-                <!-- Top Menu - side mode -->
-                <?php if ($menuLocation === 'side') : ?>
-                    <div id="vue-app-1" class="layout-topmenu sticky top-0 z-sidemenu">
-                        <?= $this->makeLayoutPartial('menu-top') ?>
-                    </div>
-                <?php endif; ?>
-
-                <div class="layout">
-                    <div class="layout-row relative">
-                        <!-- Context menu -->
-                        <?= $this->makeLayoutPartial('context-sidenav') ?>
+                <div class="layout-row bg-white rounded-lg shadow-lg p-4">
+                    <div class="layout flyout-container"
+                        <?php if ($flyoutContent): ?>
+                            data-control="flyout"
+                            data-flyout-width="400"
+                            data-flyout-toggle="#layout-sidenav"
+                        <?php endif ?>
+                    >
+                        <?php if ($flyoutContent): ?>
+                            <div class="layout-cell flyout"> <?= $flyoutContent ?></div>
+                        <?php endif ?>
 
                         <!-- Side panel -->
-                        <?php if ($sidePanelContent = Block::placeholder('sidepanel')) : ?>
-                            <div
-                                id="layout-side-panel"
-                                class="layout-cell w-350 hide-on-small"
-                                data-control="layout-sidepanel"
-                                data-menu-code="<?= $currentMainMenuItem->owner . '.' . $currentMainMenuItem->code; ?>"
-                            >
+                        <?php if ($sidePanelContent = Block::placeholder('sidepanel')): ?>
+                            <div class="layout-cell w-350 hide-on-small" id="layout-side-panel" data-control="layout-sidepanel">
                                 <?= $sidePanelContent ?>
                             </div>
                         <?php endif ?>
 
-                        <div class="layout-cell w-full layout-container" id="layout-body">
-                            <div class="layout">
-                                <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')) : ?>
+                        <!-- Content Body -->
+                        <div class="layout-cell layout-container" id="layout-body">
+                            <div class="layout-relative">
+                                <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')): ?>
                                     <!-- Breadcrumb -->
                                     <div class="control-breadcrumb">
                                         <?= $breadcrumbContent ?>
                                     </div>
                                 <?php endif ?>
 
-                                <!-- Content -->
-                                <div class="layout-row">
-                                    <div class="layout-cell">
+                                <div class="layout">
+                                    <!-- Content -->
+                                    <div class="layout-row">
                                         <?= Block::placeholder('body') ?>
                                     </div>
                                 </div>
@@ -72,20 +92,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </backend>
         </div>
-
-        <!-- Flash Messages -->
-        <?= $this->makeLayoutPartial('flash-messages') ?>
-
-        <?php if (config('winter.tailwindui::show_breakpoint_debugger', false)) : ?>
-            <?= $this->makeLayoutPartial('breakpoint-debugger') ?>
-        <?php endif; ?>
-
-        <?php
-            $jsLastModified = filemtime(plugins_path('winter/tailwindui/assets/js/dist/app.js'));
-        ?>
-        <script src="<?= Url::asset('/plugins/winter/tailwindui/assets/js/dist/app.js') ?>?v=<?= $jsLastModified ?>"></script>
-        <link rel="stylesheet" href="<?= Url::asset('/modules/system/assets/css/snowboard.extras.css') ?>">
+        <script src="<?= Url::asset('plugins/winter/tailwindui/assets/dist/js/app.js') ?>"></script>
     </body>
 </html>

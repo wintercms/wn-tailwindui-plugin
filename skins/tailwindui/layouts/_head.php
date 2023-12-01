@@ -16,9 +16,9 @@ $coreBuild = System\Models\Parameter::get('system::core.build', 1);
 
 // Styles
 $styles = [
-    Url::asset('modules/system/assets/ui/storm.css'),
+    Url::asset('plugins/winter/tailwindui/assets/dist/css/backend.css'),
+    Url::asset('plugins/winter/tailwindui/assets/dist/css/winter.css'),
     Url::asset('modules/system/assets/ui/icons.css'),
-    Backend::skinAsset('assets/css/winter.css'),
 ];
 
 // Scripts
@@ -45,23 +45,28 @@ if (Config::get('develop.decompileBackendAssets', false)) {
     $scripts = array_merge($scripts, [Backend::skinAsset('assets/js/winter-min.js')]);
 }
 $scripts = array_merge($scripts, [
-    Url::asset('modules/system/assets/js/lang/lang.' . App::getLocale() . '.js'),
+    Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
     Backend::skinAsset('assets/js/winter.flyout.js'),
     Backend::skinAsset('assets/js/winter.tabformexpandcontrols.js'),
 ]);
 ?>
 
-<?php foreach ($styles as $style) : ?>
+<?php foreach ($styles as $style): ?>
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
 <?php endforeach; ?>
 
-<?php foreach ($scripts as $script) : ?>
+<?php foreach ($scripts as $script): ?>
     <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>
     <link href="<?= $script . '?v=' . $coreBuild; ?>" rel="preload" as="script" importance="high">
 <?php endforeach; ?>
 
-<?php if (!Config::get('cms.enableBackendServiceWorkers', false)) : ?>
+<?php // @TODO: remove ?>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+<link href="<?= Url::asset('plugins/winter/tailwindui/assets/dist/css/backend.css') ?>" rel="stylesheet" importance="high">
+
+<?php if (!Config::get('cms.enableBackendServiceWorkers', false)): ?>
     <script>
         "use strict";
         /* Only run on HTTPS connections
@@ -82,5 +87,4 @@ $scripts = array_merge($scripts, [
 
 <?= $this->makeAssets() ?>
 <?= Block::placeholder('head') ?>
-<?= $this->makeLayoutPartial('branding') ?>
 <?= $this->makeLayoutPartial('custom_styles') ?>
