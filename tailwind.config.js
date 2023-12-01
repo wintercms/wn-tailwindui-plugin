@@ -3,7 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
     content: [
         './skins/tailwindui/**/*.php',
-        './assets/js/src/**/*.{js,vue}',
+        './assets/src/js/**/*.{js,vue}',
     ],
     theme: {
         extend: {
@@ -27,7 +27,7 @@ module.exports = {
                 'bottom': '0px 0px 3px rgba(0, 0, 0, 0.25)',
             },
             fontFamily: {
-                sans: ['Inter var'],
+                sans: ['Rubik'],
             },
             fontSize: {
                 'xxs': '.725rem',
