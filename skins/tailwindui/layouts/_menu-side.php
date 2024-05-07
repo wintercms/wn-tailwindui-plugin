@@ -19,7 +19,7 @@
         <div class="flex flex-col">
             <nav
                 class="
-                    flex-1 px-2 bg-gray-800 max-w-6 max-h-screen
+                    flex-1 px-2 bg-gray-800 max-h-screen
                     <?= $itemMode === 'tile' ? 'space-y-2' : 'space-y-1' ?>
                     <?php if ($iconLocation !== 'tile' && $iconLocation !== 'only'): ?>
                         overflow-y-auto overflow-x-hidden

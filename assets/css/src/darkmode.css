@@ -160,14 +160,14 @@
         box-shadow: 0 0 0 3px #0c2d6b;
     }
 
-    .clear-input-text {
-        color: var(--drk-color);
-        background-color: var(--drk-bg-color-btn);
-    }
-
-    .clear-input-text:hover,
-    .clear-input-text:focus {
-        color: var(--drk-color);
+    .toolbar-widget {
+        .clear-input-text {
+            color: var(--drk-color);
+            background-color: var(--drk-bg-color-inset);
+            &:hover, &:focus {
+                color: var(--drk-color);
+            }
+        }
     }
 
     .field-recordfinder .btn {
