@@ -124,6 +124,12 @@ div[data-control='media-manager-crop-tool'] {
     }
 }
 
+.toolbar-widget {
+  .clear-input-text {
+    background-color: white;
+  }
+} 
+
 /* layout styles */
 
 .default-layout {
