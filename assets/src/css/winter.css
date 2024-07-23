@@ -9,4 +9,28 @@
     .layout > .layout-cell .padded-container {
         padding: 0;
     }
+    .control-breadcrumb {
+        margin: -16px 0 15px;
+        border-top-right-radius: 7px;
+        border-top-left-radius: 7px;
+    }
+    .control-breadcrumb li:first-child {
+        border-top-left-radius: 7px;
+    }
+    .form-widget .layout-row:not(.min-size) {
+        padding: 20px;
+    }
+
+    .fancy-layout *:not(.nested-form) > .form-widget > .layout-row > .form-tabless-fields {
+        margin-top: -16px;
+        border-top-right-radius: 7px;
+        border-top-left-radius: 7px;
+    }
+
+    .form-buttons {
+        padding: 0 20px;
+    }
+    .layout-row .callout {
+        padding: 0 20px;
+    }
 }

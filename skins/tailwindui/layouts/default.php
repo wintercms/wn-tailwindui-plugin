@@ -8,10 +8,22 @@ $logoImage = (in_array($iconLocation, ['only', 'tile']))
     ? Backend\Models\BrandSetting::getFavicon()
     : Backend\Models\BrandSetting::getLogo();
 
-$menu = array_map(function ($menuItem) {
+$context = BackendMenu::getContext();
+$contextSidenav = BackendMenu::getContextSidenavPartial($context->owner, $context->mainMenuCode);
+
+$menu = array_map(function ($menuItem) use ($context, $contextSidenav) {
+
     $menuItem->label = e(trans($menuItem->label));
     $menuItem->isActive = BackendMenu::isMainMenuItemActive($menuItem);
     $menuItem->iconSvg = $menuItem->iconSvg ? Url::asset($menuItem->iconSvg) : null;
+
+    $menuItem->sideMenu = array_map(function ($item) {
+        $item->label = e(trans($item->label));
+        $item->active = BackendMenu::isSideMenuItemActive($item);
+        $item->iconSvg = $item->iconSvg ? Url::asset($item->iconSvg) : null;
+        return $item;
+    }, $menuItem->sideMenu);
+
     return $menuItem;
 }, BackendMenu::listMainMenuItems());
 
@@ -53,7 +65,7 @@ $user = [
             >
                 <?php $flyoutContent = Block::placeholder('sidepanel-flyout') ?>
 
-                <div class="layout-row bg-white rounded-lg shadow-lg p-4">
+                <div class="layout-row bg-white rounded-lg shadow-lg">
                     <div class="layout flyout-container"
                         <?php if ($flyoutContent): ?>
                             data-control="flyout"
@@ -77,7 +89,7 @@ $user = [
                             <div class="layout-relative">
                                 <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')): ?>
                                     <!-- Breadcrumb -->
-                                    <div class="control-breadcrumb">
+                                    <div class="control-breadcrumb relative">
                                         <?= $breadcrumbContent ?>
                                     </div>
                                 <?php endif ?>
@@ -94,6 +106,6 @@ $user = [
                 </div>
             </backend>
         </div>
-        <script src="<?= Url::asset('plugins/winter/tailwindui/assets/dist/js/app.js') ?>"></script>
+        <?= \System\Classes\Asset\Vite::tags(['assets/src/js/app.js'], 'winter.tailwindui') ?>
     </body>
 </html>

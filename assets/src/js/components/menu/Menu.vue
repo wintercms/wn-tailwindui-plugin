@@ -1,19 +1,11 @@
 <template>
-    <ul class="mt-4 flex flex-row md:flex-col overflow-x-auto">
-        <li>
-            <div class="flex items-center mb-3 h-16 shrink-0">
-                <img
-                    class="h-12 w-auto px-4 m-auto"
-                    :src="logo"
-                    :alt="appName"
-                >
-            </div>
-        </li>
+    <ul class="mt-4 w-[256px] flex flex-row md:flex-col overflow-x-auto">
         <li v-for="item in menuItems">
             <MenuItem :image="item.iconSvg"
                       :icon="item.icon"
                       :url="item.url"
                       :active="item.isActive"
+                      :sideMenu="item.sideMenu"
             >
                 {{ item.label }}
             </MenuItem>
@@ -31,6 +23,6 @@ export default {
             }
         }
     },
-    components: {MenuItem}
+    components: {MenuItem},
 }
 </script>

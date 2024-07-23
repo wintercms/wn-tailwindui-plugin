@@ -16,8 +16,6 @@ $coreBuild = System\Models\Parameter::get('system::core.build', 1);
 
 // Styles
 $styles = [
-    Url::asset('plugins/winter/tailwindui/assets/dist/css/backend.css'),
-    Url::asset('plugins/winter/tailwindui/assets/dist/css/winter.css'),
     Url::asset('modules/system/assets/ui/icons.css'),
 ];
 
@@ -64,7 +62,8 @@ $scripts = array_merge($scripts, [
 <?php // @TODO: remove ?>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
-<link href="<?= Url::asset('plugins/winter/tailwindui/assets/dist/css/backend.css') ?>" rel="stylesheet" importance="high">
+
+<?= \System\Classes\Asset\Vite::tags(['assets/src/css/tailwind.css', 'assets/src/css/winter.css'], 'winter.tailwindui') ?>
 
 <?php if (!Config::get('cms.enableBackendServiceWorkers', false)): ?>
     <script>

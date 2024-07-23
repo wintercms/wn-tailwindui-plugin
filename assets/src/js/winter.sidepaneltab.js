@@ -11,7 +11,8 @@
     }
 
     SidePanelTab.prototype.init = function() {
-        var self = this
+        var self = this;
+        console.log('dddd');
         this.tabOpenDelay = 200
         this.tabOpenTimeout = undefined
         this.panelOpenTimeout = undefined
@@ -31,6 +32,7 @@
         $('.fix-button-container', this.$el).append(this.$fixButton)
 
         this.$sideNavItems.click(function() {
+            console.log('xxxx');
             const $this = $(this);
 
             if (!$this.data('menu-item')) {
