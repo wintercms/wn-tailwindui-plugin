@@ -18,16 +18,16 @@
         </headless-menu-button>
 
         <transition enter-active-class="transition ease-out duration-100" enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-            <headless-menu-items class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-500 ring/5 focus:outline-none">
+            <headless-menu-items class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-neutral-800 ring-1 ring-black dark:ring-neutral-500 ring/5 focus:outline-none">
             <div class="py-1">
                 <headless-menu-item v-slot="{ active }">
-                <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Something</a>
+                <a href="#" :class="[active ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-700', 'block px-4 py-2 text-sm']">Something</a>
                 </headless-menu-item>
                 <headless-menu-item v-slot="{ active }">
-                <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Something else</a>
+                <a href="#" :class="[active ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-700', 'block px-4 py-2 text-sm']">Something else</a>
                 </headless-menu-item>
                 <headless-menu-item v-slot="{ active }">
-                <a href="#" :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']">Some other thing</a>
+                <a href="#" :class="[active ? 'bg-neutral-100 text-neutral-900' : 'text-neutral-700', 'block px-4 py-2 text-sm']">Some other thing</a>
                 </headless-menu-item>
             </div>
             </headless-menu-items>
@@ -78,7 +78,7 @@
     >
         <div>
             <headless-menu-button
-                class="bg-gray-800 flex text-sm rounded-full focus:outline-none"
+                class="bg-neutral-800 flex text-sm rounded-full focus:outline-none"
             >
                 <!-- @TODO: Needs translation -->
                 <span class="sr-only">Open user menu</span>
@@ -100,7 +100,7 @@
             leave-to-class="opacity-0 scale-95"
         >
             <headless-menu-items
-                class="origin-top-right absolute right-0 mt-2 py-1 w-64 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black dark:ring-gray-500 ring/5 divide-y divide-gray-200 dark:divide-gray-500 focus:outline-none z-50"
+                class="origin-top-right absolute right-0 mt-2 py-1 w-64 rounded-md shadow-lg bg-white dark:bg-neutral-800 ring-1 ring-black dark:ring-neutral-500 ring/5 divide-y divide-neutral-200 dark:divide-neutral-500 focus:outline-none z-50"
             >
                 <div class="px-4 py-3">
                     <div class="shrink-0 group block">
@@ -112,7 +112,7 @@
                                 <p class="text-sm">
                                     <?= e(trans('backend::lang.account.signed_in_as', ['full_name' => null])) ?>
                                 </p>
-                                <p class="text-sm font-medium text-gray-900 dark:text-gray-500 truncate">
+                                <p class="text-sm font-medium text-neutral-900 dark:text-neutral-500 truncate">
                                     <?= $this->user->full_name ?>
                                 </p>
                             </div>
@@ -125,9 +125,9 @@
                             <headless-menu-item>
                                 <a
                                     href="<?= $item->url ?>"
-                                    class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+                                    class="group flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 hover:no-underline dark:text-neutral-300 dark:hover:text-white dark:hover:bg-neutral-700"
                                 >
-                                    <i class="<?= $item->icon ?> mr-2 text-sm text-center min-w-[1.25em] text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white"></i>
+                                    <i class="<?= $item->icon ?> mr-2 text-sm text-center min-w-[1.25em] text-neutral-400 group-hover:text-neutral-500 dark:group-hover:text-white"></i>
                                     <?= e(trans($item->label)) ?>
                                 </a>
                             </headless-menu-item>
@@ -182,9 +182,9 @@
                     <headless-menu-item>
                         <a
                             href="<?= Backend::url('backend/auth/signout') ?>"
-                            class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
+                            class="group flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 hover:no-underline dark:text-neutral-300 dark:hover:text-white dark:hover:bg-neutral-700"
                         >
-                            <i class="icon-sign-out mr-2 text-sm text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white text-center min-w-[1.25em]"></i>
+                            <i class="icon-sign-out mr-2 text-sm text-neutral-400 group-hover:text-neutral-500 dark:group-hover:text-white text-center min-w-[1.25em]"></i>
                             <?php if (\BackendAuth::isImpersonator()) : ?>
                                 <?= e(trans('backend::lang.account.stop_impersonating')) ?>
                             <?php else: ?>

@@ -16,23 +16,24 @@
     select {
         @apply block
             w-full
-            border
             rounded-md
-            border-gray-300
-            text-gray-900
-            bg-gray-50
+            border-none
+            text-neutral-600
+            placeholder-neutral-300
+            bg-neutral-100
             focus:outline-none
-            focus:ring-primary
-            focus:border-primary
+            focus:bg-accent-50
+            focus:border
+            focus:border-accent-400
             focus:z-10
             disabled:opacity-50
             disabled:cursor-not-allowed
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
-            dark:text-white
-            dark:focus:ring-primary
-            dark:focus:border-primary;
+            dark:bg-primary-500
+            dark:placeholder-primary-600
+            dark:text-primary-50
+            dark:focus:bg-accent-700
+            dark:focus:border
+            dark:focus:border-accent-700
     }
 
     [type='text'],
@@ -94,20 +95,20 @@
 
     [type='checkbox'],
     [type='radio'] {
-        @apply text-primary
+        /* @apply text-primary
             focus:ring-primary
             focus:border-primary
             disabled:opacity-50
             disabled:cursor-not-allowed
-            dark:bg-gray-700
-            dark:border-gray-600
-            dark:placeholder-gray-400
+            dark:bg-neutral-700
+            dark:border-neutral-600
+            dark:placeholder-neutral-400
             dark:text-primary
             dark:focus:ring-primary
-            dark:focus:border-primary;
+            dark:focus:border-primary; */
     }
 
     label {
-        @apply text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300 cursor-pointer;
+        @apply text-sm font-medium text-neutral-900 block mb-2 dark:text-neutral-300 cursor-pointer;
     }
 }

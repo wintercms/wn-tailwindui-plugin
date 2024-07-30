@@ -11,6 +11,11 @@
 <title data-title-template="<?= empty($this->pageTitleTemplate) ? '%s' : e($this->pageTitleTemplate) ?> | <?= e(Backend\Models\BrandSetting::get('app_name')) ?>">
     <?= e(trans($this->pageTitle)) ?> | <?= e(Backend\Models\BrandSetting::get('app_name')) ?>
 </title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
 <?php
 $coreBuild = System\Models\Parameter::get('system::core.build', 1);
 
@@ -18,7 +23,6 @@ $coreBuild = System\Models\Parameter::get('system::core.build', 1);
 $styles = [
     Url::asset('modules/system/assets/ui/storm.css'),
     Url::asset('modules/system/assets/ui/icons.css'),
-    Backend::skinAsset('assets/css/winter.css'),
 ];
 
 // Scripts
@@ -55,6 +59,8 @@ $scripts = array_merge($scripts, [
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
 <?php endforeach; ?>
+
+<?= \System\Classes\Asset\Vite::tags(['assets/css/src/app.css'], 'winter.tailwindui'); ?>
 
 <?php foreach ($scripts as $script) : ?>
     <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>

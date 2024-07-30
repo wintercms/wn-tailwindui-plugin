@@ -3,6 +3,10 @@ html {
     font-size: 100%;
 }
 
+body {
+    @apply bg-neutral-100 font-base tracking-normal antialiased;
+}
+
 @media (min-width: 640px) {
     .sm\:block {
         display: block !important;
@@ -49,7 +53,7 @@ html {
 }
 
 a.bg-primary:hover {
-    @apply bg-primary-dark;
+    /* @apply bg-primary-dark; */
 }
 
 div[id^='headlessui-menu-items-'] {
@@ -63,7 +67,7 @@ div[id^='headlessui-menu-items-'] {
 
 /* widgets */
 .widget-welcome div.welcome-logo {
-    @apply bg-gray-300 w-[200px] p-4 float-left rounded-md;
+    @apply bg-neutral-300 w-[200px] p-4 float-left rounded-md;
 }
 
 .btn:active {
@@ -77,7 +81,7 @@ div[id^='headlessui-menu-items-'] {
 .open .dropdown-toggle {
     &.btn-default,
     &.btn-secondary {
-        @apply text-gray-700 bg-gray-300 border-none;
+        @apply text-neutral-700 bg-neutral-300 border-none;
     }
 }
 
@@ -128,7 +132,7 @@ div[data-control='media-manager-crop-tool'] {
     .clear-input-text {
         background-color: white;
     }
-} 
+}
 
 /* layout styles */
 
@@ -198,7 +202,7 @@ div[data-control='media-manager-crop-tool'] {
 .field-richeditor {
     .fr-toolbar .fr-command.fr-btn {
         &.fr-active {
-            @apply font-semibold text-primary;
+            @apply font-semibold;
         }
     }
 

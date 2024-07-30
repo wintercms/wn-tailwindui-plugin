@@ -3,7 +3,7 @@
 
     <!-- Login -->
     <div>
-        <label for="login" class="block text-sm font-medium text-gray-700">
+        <label for="login" class="block text-sm font-medium text-neutral-700">
             <?= e(trans('backend::lang.account.enter_login')) ?>
         </label>
         <div class="mt-1 relative">
@@ -17,7 +17,7 @@
                 maxlength="255" />
 
             <span class="group absolute right-0 inset-y-0 flex items-center pr-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
             </span>

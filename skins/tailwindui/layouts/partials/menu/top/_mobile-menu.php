@@ -1,7 +1,7 @@
 <!-- mobile menu -->
 <div v-show="open">
     <headless-disclosure-panel
-        class="md:hidden bg-gray-800"
+        class="md:hidden bg-neutral-800"
         static
     >
         <div class="after:px-2 pt-2 pb-3 space-y-1">
@@ -18,9 +18,9 @@
                 <div class="
                     flex items-center w-full
                     <?php if ($isActive) : ?>
-                        bg-gray-900 text-white
+                        bg-neutral-900 text-white
                     <?php else: ?>
-                        text-gray-300 hover:bg-gray-700 hover:text-white
+                        text-neutral-300 hover:bg-neutral-700 hover:text-white
                     <?php endif; ?>
                 ">
                     <headless-disclosure-button
@@ -83,7 +83,7 @@
                                 foreach ($item->sideMenu as $child):
                                     $sideMenuIsActive = BackendMenu::isSideMenuItemActive($child);
                                     $iconDefaultClass = "$child->icon mr-3 h-4 w-4";
-                                    $iconClass = $sideMenuIsActive ? 'text-white group-hover:text-white' : 'text-gray-200 group-hover:text-white group-hover:bg-transparent';
+                                    $iconClass = $sideMenuIsActive ? 'text-white group-hover:text-white' : 'text-neutral-200 group-hover:text-white group-hover:bg-transparent';
                             ?>
                                 <li
                                     class="<?= $sideMenuIsActive ? 'active' : '' ?>"
@@ -94,7 +94,7 @@
                                         class="
                                             group w-full flex items-center py-1.5
                                             text-sm text-white font-medium rounded-md hover:text-white
-                                            hover:no-underline hover:bg-gray-700 focus:no-underline
+                                            hover:no-underline hover:bg-neutral-700 focus:no-underline
                                             focus:text-white
                                             pl-6 pr-2
                                         "

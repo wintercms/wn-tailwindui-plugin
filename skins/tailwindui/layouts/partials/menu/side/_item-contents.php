@@ -5,7 +5,7 @@
     <?php if ($isActive) : ?>
         bg-primary text-white hover:bg-primary-dark
     <?php else: ?>
-        text-gray-200 hover:bg-gray-700 hover:text-white focus:text-white
+        text-neutral-200 hover:bg-neutral-700 hover:text-white focus:text-white
     <?php endif; ?>
 ">
     <a
@@ -17,7 +17,7 @@
             <?php if ($isActive) : ?>
                 text-white
             <?php else: ?>
-                text-gray-200
+                text-neutral-200
             <?php endif; ?>
         "
     >
@@ -82,7 +82,7 @@
                 mt-1 collapsible<?= $isActive ? ' show' : '' ?>
             <?php else: ?>
                 hidden group-hover:!block group-hover:!visible absolute left-[100%] top-0 p-2
-                bg-gray-800 z-[1000] rounded-tr-md rounded-br-md
+                bg-neutral-800 z-[1000] rounded-tr-md rounded-br-md
             <?php endif; ?>
         "
         id="<?= $item->code ?>"
@@ -95,7 +95,7 @@
                 foreach ($item->sideMenu as $child):
                     $sideMenuIsActive = BackendMenu::isSideMenuItemActive($child);
                     $iconDefaultClass = "$child->icon mr-3 h-4 w-4";
-                    $iconClass = $sideMenuIsActive ? 'text-white group-hover:text-white' : 'text-gray-200 group-hover:text-white group-hover:bg-transparent';
+                    $iconClass = $sideMenuIsActive ? 'text-white group-hover:text-white' : 'text-neutral-200 group-hover:text-white group-hover:bg-transparent';
             ?>
                 <li
                     class="<?= $sideMenuIsActive ? 'active' : '' ?> relative"
@@ -106,7 +106,7 @@
                         class="
                             group w-full flex items-center py-1.5
                             text-sm text-white font-medium rounded-md hover:text-white
-                            hover:no-underline hover:bg-gray-700 focus:no-underline
+                            hover:no-underline hover:bg-neutral-700 focus:no-underline
                             focus:text-white transition duration-300 ease-in
                             px-3
                             <?= $child->counter ? 'pr-6' : ''; ?>
