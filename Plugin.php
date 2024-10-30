@@ -113,13 +113,10 @@ class Plugin extends PluginBase
     protected function extendBackendControllers(): void
     {
         // Add our view override paths
-        BaseBackendController::extend(function ($controller) {
+        BaseBackendController::extend(function (\Backend\Classes\Controller $controller) {
             $controller->addViewPath($this->guessOverrideViewPath($controller));
 
-            // @TODO: Handle cache busting through some other method
-            $cssLastModified = filemtime(plugins_path('winter/tailwindui/assets/css/dist/backend.css'));
-
-            $controller->addCss(Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'), (string) $cssLastModified);
+            $controller->addVite('assets/src/css/app.css', 'Winter.TailwindUI');
 
             $this->extendBrandSettingsData();
 

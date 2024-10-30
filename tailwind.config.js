@@ -3,7 +3,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
     content: [
         './skins/tailwindui/**/*.php',
-        './assets/js/src/**/*.{js,vue}',
+        './assets/src/js/**/*.{js,vue}',
     ],
     theme: {
         extend: {

@@ -82,10 +82,7 @@
             <?= $this->makeLayoutPartial('breakpoint-debugger') ?>
         <?php endif; ?>
 
-        <?php
-            $jsLastModified = filemtime(plugins_path('winter/tailwindui/assets/js/dist/app.js'));
-        ?>
-        <script src="<?= Url::asset('/plugins/winter/tailwindui/assets/js/dist/app.js') ?>?v=<?= $jsLastModified ?>"></script>
+        <?= \System\Classes\Asset\Vite::tags(['assets/src/js/app.js'], 'winter.tailwindui') ?>
         <link rel="stylesheet" href="<?= Url::asset('/modules/system/assets/css/snowboard.extras.css') ?>">
     </body>
 </html>
