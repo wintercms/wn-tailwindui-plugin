@@ -10,7 +10,7 @@
             const colorScheme = "<?= $colorScheme ?>";
             const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-            if ( colorScheme == 'dark' || colorScheme == 'auto' && prefersDark) {
+            if (colorScheme == 'dark' || colorScheme == 'auto' && prefersDark) {
                 document.documentElement.classList.add('dark')
             }
         </script>
