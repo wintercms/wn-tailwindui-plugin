@@ -18,7 +18,7 @@
             <div class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                 <div class="mx-auto w-full max-w-sm lg:w-96">
                     <div>
-                        <img class="max-h-20 m-auto" src="<?= e(Backend\Models\BrandSetting::getLogo()); ?>" alt="<?= e(Backend\Models\BrandSetting::get('app_name')); ?>">
+                        <img class="max-h-20 m-auto" src="<?= e(Backend\Models\BrandSetting::getLogo() ?? Url::asset('modules/backend/assets/images/winter-logo.svg')); ?>" alt="<?= e(Backend\Models\BrandSetting::get('app_name')); ?>">
                         <h2 class="mt-6 text-2xl text-center font-extrabold text-gray-900 dark:text-gray-300"><?= e(Backend\Models\BrandSetting::get('app_tagline')); ?></h2>
                     </div>
 
