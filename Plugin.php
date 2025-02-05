@@ -101,7 +101,7 @@ class Plugin extends PluginBase
         // Set a default logo that will work with the default dark sidebar as a fallback
         // @TODO: add support for light / dark modes / variations of all primary branding (logo, favicon, colour scheme) and apply as necessary
         if (empty(Config::get('brand.logoPath'))) {
-            Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo-white.svg');
+            // Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo-white.svg');
             // Config::set('brand.logoPath', '~/modules/backend/assets/images/winter-logo.svg');
         }
     }
