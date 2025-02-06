@@ -25,14 +25,14 @@
         <?= $this->makeLayoutPartial('partials/notices/impersonation') ?>
 
         <div class="default-layout default-layout-<?= $menuLocation ?> default-layout-<?= $menuLocation ?>-<?= $iconLocation ?>">
-            <?php if ($menuLocation === 'top') : ?>
+            <?php if ($menuLocation === 'top'): ?>
                 <!-- Top Menu - top mode -->
                 <div id="vue-app-1" class="layout-topmenu sticky top-0 z-topmenu">
                     <?= $this->makeLayoutPartial('menu-top') ?>
                 </div>
             <?php endif; ?>
 
-            <?php if ($menuLocation === 'side') : ?>
+            <?php if ($menuLocation === 'side'): ?>
                 <!-- Side Menu -->
                 <?= $this->makeLayoutPartial('menu-side') ?>
             <?php endif; ?>
@@ -41,7 +41,7 @@
             <div class="layout-content relative">
 
                 <!-- Top Menu - side mode -->
-                <?php if ($menuLocation === 'side') : ?>
+                <?php if ($menuLocation === 'side'): ?>
                     <div id="vue-app-1" class="layout-topmenu sticky top-0 z-sidemenu">
                         <?= $this->makeLayoutPartial('menu-top') ?>
                     </div>
@@ -53,7 +53,7 @@
                         <?= $this->makeLayoutPartial('context-sidenav') ?>
 
                         <!-- Side panel -->
-                        <?php if ($sidePanelContent = Block::placeholder('sidepanel')) : ?>
+                        <?php if ($sidePanelContent = Block::placeholder('sidepanel')): ?>
                             <div
                                 id="layout-side-panel"
                                 class="layout-cell w-350 hide-on-small"
@@ -66,7 +66,7 @@
 
                         <div class="layout-cell w-full layout-container" id="layout-body">
                             <div class="layout">
-                                <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')) : ?>
+                                <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')): ?>
                                     <!-- Breadcrumb -->
                                     <div class="control-breadcrumb">
                                         <?= $breadcrumbContent ?>
@@ -89,7 +89,7 @@
         <!-- Flash Messages -->
         <?= $this->makeLayoutPartial('flash-messages') ?>
 
-        <?php if (config('winter.tailwindui::show_breakpoint_debugger', false)) : ?>
+        <?php if (config('winter.tailwindui::show_breakpoint_debugger', false)): ?>
             <?= $this->makeLayoutPartial('breakpoint-debugger') ?>
         <?php endif; ?>
 

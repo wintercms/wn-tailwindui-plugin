@@ -1,4 +1,6 @@
-<?php namespace Winter\TailwindUI\Skins;
+<?php
+
+namespace Winter\TailwindUI\Skins;
 
 use Backend\Skins\Standard as BackendSkin;
 
@@ -14,7 +16,7 @@ class TailwindUI extends BackendSkin
     {
         return [
             plugins_path('/winter/tailwindui/skins/tailwindui/layouts'),
-            $this->skinPath . '/layouts'
+            $this->skinPath . '/layouts',
         ];
     }
 }

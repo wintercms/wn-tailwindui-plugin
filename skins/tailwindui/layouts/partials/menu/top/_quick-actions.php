@@ -134,7 +134,7 @@
                         <?php endforeach ?>
                     </div>
                 <?php endforeach ?>
-                <?php if (BackendAuth::user() && BackendAuth::user()->hasAccess('winter.tailwindui.manage_own_appearance.dark_mode')) : ?>
+                <?php if (BackendAuth::user() && BackendAuth::user()->hasAccess('winter.tailwindui.manage_own_appearance.dark_mode')): ?>
                     <div class="py-1">
                         <?= Form::open(['class' => 'px-4 py-1']) ?>
                             <div class="grid grid-cols-3 gap-2">
@@ -185,7 +185,7 @@
                             class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 hover:no-underline dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700"
                         >
                             <i class="icon-sign-out mr-2 text-sm text-gray-400 group-hover:text-gray-500 dark:group-hover:text-white text-center min-w-[1.25em]"></i>
-                            <?php if (\BackendAuth::isImpersonator()) : ?>
+                            <?php if (\BackendAuth::isImpersonator()): ?>
                                 <?= e(trans('backend::lang.account.stop_impersonating')) ?>
                             <?php else: ?>
                                 <?= e(trans('backend::lang.account.sign_out')) ?>

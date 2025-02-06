@@ -17,7 +17,7 @@
                 <?php $hasChildren = (bool) count($item->sideMenu); ?>
                 <div class="
                     flex items-center w-full
-                    <?php if ($isActive) : ?>
+                    <?php if ($isActive): ?>
                         bg-gray-900 text-white
                     <?php else: ?>
                         text-gray-300 hover:bg-gray-700 hover:text-white
@@ -29,11 +29,11 @@
                         class="
                             flex grow items-center px-6 py-2 text-base font-medium
                         "
-                        <?php if ($isActive) : ?>
+                        <?php if ($isActive): ?>
                             aria-current="page"
                         <?php endif; ?>
                     >
-                        <?php if ($iconLocation !== 'hidden') : ?>
+                        <?php if ($iconLocation !== 'hidden'): ?>
                             <?php if ($item->iconSvg): ?>
                                 <img
                                     src="<?= Url::asset($item->iconSvg) ?>"
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- Child menu -->
-                <?php if ($hasChildren) : ?>
+                <?php if ($hasChildren): ?>
                     <nav
                         class="mt-1 collapsible<?= $isActive ? ' show' : '' ?>"
                         id="<?= $item->code ?>"

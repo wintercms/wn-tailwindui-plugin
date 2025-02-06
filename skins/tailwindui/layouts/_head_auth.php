@@ -21,23 +21,23 @@
         Url::asset('modules/system/assets/ui/storm-min.js'),
         Backend::skinAsset('assets/js/winter-min.js'),
         Url::asset('modules/backend/assets/js/auth/auth.js'),
-        Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
+        Url::asset('modules/system/assets/js/lang/lang.' . App::getLocale() . '.js'),
     ];
     // Temporarily disable loading of default backend styling files
     $styles = [];
-?>
+    ?>
 
-<?php foreach ($styles as $style) : ?>
+<?php foreach ($styles as $style): ?>
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
     <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
 <?php endforeach; ?>
 
-<?php foreach ($scripts as $script) : ?>
+<?php foreach ($scripts as $script): ?>
     <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>
     <link href="<?= $script . '?v=' . $coreBuild; ?>" rel="preload" as="script" importance="high">
 <?php endforeach; ?>
 
-<?php if (!Config::get('cms.enableBackendServiceWorkers', false)) : ?>
+<?php if (!Config::get('cms.enableBackendServiceWorkers', false)): ?>
     <script>
         "use strict";
         /* Only run on HTTPS connections

@@ -49,7 +49,7 @@
 
     <div class="flex items-center justify-between">
         <!-- Remember checkbox -->
-        <?php if (is_null(config('cms.backendForceRemember', true))) : ?>
+        <?php if (is_null(config('cms.backendForceRemember', true))): ?>
             <div class="flex items-center">
                 <input
                     type="checkbox"

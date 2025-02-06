@@ -1,22 +1,23 @@
-<?php namespace Winter\TailwindUI;
+<?php
+
+namespace Winter\TailwindUI;
 
 use Backend\Classes\BackendController as CoreBackendController;
 use Backend\Classes\Controller as BaseBackendController;
 use Backend\Classes\WidgetBase;
 use Backend\Controllers\Auth as AuthController;
 use Backend\Controllers\Preferences as PreferencesController;
+use Backend\Facades\BackendAuth;
 use Backend\Models\BrandSetting;
 use Backend\Models\Preference as PreferenceModel;
 use Backend\Models\UserRole;
-use BackendAuth;
-use Config;
-use Event;
-use Request;
+use Illuminate\Support\Facades\Request;
 use System\Classes\PluginBase;
 use System\Controllers\Settings as SettingsController;
-use Url;
+use Winter\Storm\Support\Facades\Config;
+use Winter\Storm\Support\Facades\Event;
+use Winter\Storm\Support\Facades\Yaml;
 use Winter\Storm\Support\Str;
-use Yaml;
 
 /**
  * TailwindUI Plugin Information File
@@ -239,13 +240,14 @@ class Plugin extends PluginBase
      */
     protected function extendBrandSettingsForm(): void
     {
-        BrandSetting::extend(function($model) {
+        BrandSetting::extend(function ($model) {
             $model->addAttachOneRelation('background_image', [\System\Models\File::class]);
         });
 
         Event::listen('backend.form.extendFields', function ($form) {
             // Only extend the desired form
-            if (!(
+            if (
+                !(
                 $form instanceof \Backend\Widgets\Form
                 && !$form->isNested
                 && (
@@ -258,7 +260,8 @@ class Plugin extends PluginBase
                         && $form->model instanceof PreferenceModel
                     )
                 )
-            )) {
+                )
+            ) {
                 return;
             }
 

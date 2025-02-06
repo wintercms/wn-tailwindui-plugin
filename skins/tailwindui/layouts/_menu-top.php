@@ -72,12 +72,12 @@
                                     <div
                                         class="
                                             flex relative items-stretch group rounded-md min-w-max ptransition duration-300 ease-in
-                                            <?php if ($iconLocation === 'tile') : ?>
+                                            <?php if ($iconLocation === 'tile'): ?>
                                                 pr-2
                                             <?php else: ?>
                                                 pr-3
                                             <?php endif; ?>
-                                            <?php if ($isActive) : ?>
+                                            <?php if ($isActive): ?>
                                                 bg-primary text-white
                                             <?php else: ?>
                                                 text-gray-300 hover:bg-gray-700
@@ -91,7 +91,7 @@
                                                 rounded-md text-sm font-medium
                                                 group-hover:text-white hover:no-underline
                                                 active:no-underline focus:no-underline focus:text-white
-                                                <?php if ($isActive) : ?>
+                                                <?php if ($isActive): ?>
                                                     bg-primary text-white hover:!bg-primary
                                                 <?php else: ?>
                                                     text-gray-300
@@ -102,11 +102,11 @@
                                                    items-center pl-3 py-2
                                                 <?php endif; ?>
                                             "
-                                            <?php if ($isActive) : ?>
+                                            <?php if ($isActive): ?>
                                                 aria-current="page"
                                             <?php endif; ?>
                                         >
-                                            <?php if ($iconLocation !== 'hidden') : ?>
+                                            <?php if ($iconLocation !== 'hidden'): ?>
                                                 <?php if ($item->iconSvg): ?>
                                                     <img
                                                         src="<?= Url::asset($item->iconSvg) ?>"
@@ -160,7 +160,7 @@
                                                 <chevron-down-icon
                                                     class="
                                                         h-4 w-4 cursor-pointer
-                                                        <?php if ($isActive) : ?>
+                                                        <?php if ($isActive): ?>
                                                             bg-primary text-white
                                                         <?php else: ?>
                                                             text-gray-300
@@ -213,7 +213,7 @@
                                                                 <?php endif; ?>
                                                             "
                                                         >
-                                                            <?php if ($iconLocation !== 'hidden') : ?>
+                                                            <?php if ($iconLocation !== 'hidden'): ?>
                                                                 <?php if ($child->iconSvg): ?>
                                                                     <img
                                                                         src="<?= Url::asset($child->iconSvg) ?>"

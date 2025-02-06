@@ -2,7 +2,7 @@
 <div class="
     flex relative items-center w-full group rounded-md focus:outline-none
     focus:ring-2 focus:ring-primary transition duration-300 ease-in
-    <?php if ($isActive) : ?>
+    <?php if ($isActive): ?>
         bg-primary text-white hover:bg-primary-dark
     <?php else: ?>
         text-gray-200 hover:bg-gray-700 hover:text-white focus:text-white
@@ -14,14 +14,14 @@
             flex flex-1 block items-center group text-sm font-medium group-hover:text-white focus:text-white active:text-white hover:no-underline focus:no-underline
             <?= in_array($iconLocation, ['tile', 'only']) ? 'p-3' : 'p-2'; ?>
             <?= $iconLocation === 'tile' ? 'flex-col justify-center' : ''; ?>
-            <?php if ($isActive) : ?>
+            <?php if ($isActive): ?>
                 text-white
             <?php else: ?>
                 text-gray-200
             <?php endif; ?>
         "
     >
-        <?php if ($iconLocation !== 'hidden') : ?>
+        <?php if ($iconLocation !== 'hidden'): ?>
             <?php if ($item->iconSvg): ?>
                 <img
                     src="<?= Url::asset($item->iconSvg) ?>"
@@ -54,7 +54,7 @@
             </span>
         <?php endif; ?>
     </a>
-    <?php if ($hasChildren && $itemMode === 'inline') : ?>
+    <?php if ($hasChildren && $itemMode === 'inline'): ?>
         <button
             class="<?= $isActive ? 'open' : ''?>"
             data-toggle="collapse"
@@ -75,10 +75,10 @@
         </button>
     <?php endif; ?>
 </div>
-<?php if ($hasChildren) : ?>
+<?php if ($hasChildren): ?>
     <nav
         class="sidemenu-item-child
-            <?php if ($itemMode === 'inline') : ?>
+            <?php if ($itemMode === 'inline'): ?>
                 mt-1 collapsible<?= $isActive ? ' show' : '' ?>
             <?php else: ?>
                 hidden group-hover:!block group-hover:!visible absolute left-[100%] top-0 p-2
