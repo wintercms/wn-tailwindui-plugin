@@ -20,6 +20,12 @@ $styles = [
     Url::asset('modules/system/assets/ui/icons.css'),
     Backend::skinAsset('assets/css/winter.css'),
 ];
+foreach ($styles as $style) {
+    $this->addCss($style, [
+        'build' => 'core',
+        'order' => 1,
+    ]);
+}
 
 // Scripts
 $scripts = [
@@ -49,17 +55,13 @@ $scripts = array_merge($scripts, [
     Backend::skinAsset('assets/js/winter.flyout.js'),
     Backend::skinAsset('assets/js/winter.tabformexpandcontrols.js'),
 ]);
+foreach ($scripts as $script) {
+    $this->addJs($script, [
+        'build' => 'core',
+        'order' => 1,
+    ]);
+}
 ?>
-
-<?php foreach ($styles as $style) : ?>
-    <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="stylesheet" importance="high">
-    <link href="<?= $style . '?v=' . $coreBuild; ?>" rel="preload" as="style" importance="high">
-<?php endforeach; ?>
-
-<?php foreach ($scripts as $script) : ?>
-    <script data-cfasync="false" src="<?= $script . '?v=' . $coreBuild; ?>" importance="high"></script>
-    <link href="<?= $script . '?v=' . $coreBuild; ?>" rel="preload" as="script" importance="high">
-<?php endforeach; ?>
 
 <?php if (!Config::get('cms.enableBackendServiceWorkers', false)) : ?>
     <script>
