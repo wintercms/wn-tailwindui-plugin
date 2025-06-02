@@ -111,3 +111,7 @@
         @apply text-sm font-medium text-gray-900 block mb-2 dark:text-gray-300 cursor-pointer;
     }
 }
+
+.custom-switch input {
+    opacity: 0 !important;
+}

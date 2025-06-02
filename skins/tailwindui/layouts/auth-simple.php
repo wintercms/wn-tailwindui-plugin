@@ -7,7 +7,7 @@
     <body class="<?= $this->bodyClass ?> font-sans m-0 h-full bg-cover bg-no-repeat bg-center" style="background-image: url('<?= e(config('brand.backgroundImage')); ?>');">
         <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div class="mx-auto sm:w-full sm:max-w-md sm:max-w-sm">
-                <img class="max-h-20 m-auto" src="<?= e(Backend\Models\BrandSetting::getLogo()); ?>" alt="<?= e(Backend\Models\BrandSetting::get('app_name')); ?>">
+                <img class="max-h-20 m-auto" src="<?= e(Backend\Models\BrandSetting::getLogo() ?? Url::asset('modules/backend/assets/images/winter-logo.svg')); ?>" alt="<?= e(Backend\Models\BrandSetting::get('app_name')); ?>">
                 <h2 class="mt-6 text-2xl text-center font-medium text-gray-900"><?= e(Backend\Models\BrandSetting::get('app_tagline')); ?></h2>
             </div>
 

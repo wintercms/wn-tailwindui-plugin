@@ -5,7 +5,7 @@
     <!-- Login -->
     <div>
         <label for="login">
-            <?= e(trans('backend::lang.account.login')) ?>
+            <?= e(trans('backend::lang.user.login')) ?>
         </label>
         <div class="mt-1 relative">
             <input

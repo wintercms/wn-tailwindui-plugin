@@ -1,0 +1,11 @@
+.control-table {
+    .string-input {
+        border-radius: 0;
+        font-size: 1em;
+
+        &[readonly] {
+            background: #e2e2e2;
+            cursor: not-allowed;
+        }
+    }
+}

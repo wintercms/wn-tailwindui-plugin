@@ -5,7 +5,7 @@
     <!-- Login -->
     <div class="rounded-md shadow-sm -space-y-px">
         <div>
-            <label for="login" class="sr-only"><?= e(trans('backend::lang.account.login')) ?></label>
+            <label for="login" class="sr-only"><?= e(trans('backend::lang.user.login')) ?></label>
             <div class="relative">
                 <input
                     type="text"

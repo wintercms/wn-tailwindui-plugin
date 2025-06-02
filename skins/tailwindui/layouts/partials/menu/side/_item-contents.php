@@ -59,7 +59,6 @@
             class="<?= $isActive ? 'open' : ''?>"
             data-toggle="collapse"
             data-target="#<?= $item->code ?>"
-            role="button"
             aria-expanded="false"
             aria-controls="<?= $item->code ?>"
         >
