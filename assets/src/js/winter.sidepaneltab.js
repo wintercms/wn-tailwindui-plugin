@@ -24,6 +24,23 @@
         this.visibleItemId = false
         this.$fixButton = $('<a href="#" class="fix-button"><i class="icon-thumb-tack"></i></a>')
 
+        // Check for a targeted side menu item on page load
+        if (location.hash.startsWith('#menu-item-')) {
+            const parts = location.hash.substring(1).split('-');
+            const menuCode = parts[2];
+            if (menuCode === this.$el.data('menu-code')) {
+                const itemId = location.hash.substring(('#menu-item-' + menuCode + '-child-').length);
+                const $targetItem = self.$sideNavItems.filter('[data-menu-item="' + itemId + '"]');
+                if ($targetItem.length) {
+                    this.$sideNavItems.toggleClass('active', false);
+                    self.displaySidePanel();
+                    self.displayTab($targetItem);
+                    $targetItem.addClass('active');
+                    history.replaceState(null, null, ' ');
+                }
+            }
+        }
+
         this.$fixButton.click(function() {
             self.fixPanel()
             return false

@@ -76,6 +76,7 @@
     <?php endif; ?>
 </div>
 <?php if ($hasChildren) : ?>
+    <?php $itemFullCode = $item->owner . '.' . $item->code; ?>
     <nav
         class="sidemenu-item-child
             <?php if ($itemMode === 'inline') : ?>
@@ -86,7 +87,7 @@
             <?php endif; ?>
         "
         id="<?= $item->code ?>"
-        data-menu-code="<?= $item->owner . '.' . $item->code; ?>"
+        data-menu-code="<?= $itemFullCode; ?>"
         data-control="sidenav"
         data-active-class="active"
     >
@@ -102,7 +103,7 @@
                     <?php if ($child->url === 'javascript:;'): ?>data-menu-item="<?= $child->code ?>"<?php endif; ?>
                 >
                     <a
-                        href="<?= $child->url === 'javascript:;' ? "$item->url" : $child->url ?>"
+                        href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
                         class="
                             group w-full flex items-center py-1.5
                             text-sm text-white font-medium rounded-md hover:text-white
