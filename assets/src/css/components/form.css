@@ -24,7 +24,7 @@
             focus:outline-none
             focus:ring-primary
             focus:border-primary
-            focus:z-10
+            focus:z-[9]
             disabled:opacity-50
             disabled:cursor-not-allowed
             dark:bg-gray-700
