@@ -60,7 +60,6 @@
 <?php endif; ?>
 
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-<link rel="stylesheet" href="<?= Url::asset('/plugins/winter/tailwindui/assets/css/dist/backend.css'); ?>">
 
 <?php
     // TEMPORARY FOR FLASH & LOADER STYLING
