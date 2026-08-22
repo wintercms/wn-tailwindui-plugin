@@ -1,4 +1,18 @@
 @layer components {
+    /*
+     * Primary tabs nested inside another tab's content (a nested form, or e.g. a
+     * primary tab set inside a secondary tab). Core builds the tab shape from skewed
+     * trapezoid connectors (.title:before/:after); TailwindUI rounds the tabs and drops
+     * the skew, which turns those connectors' outer radius into a rounded "hook" at the
+     * tab's bottom corners. Hide them so the rounded tab sits flush on the content.
+     */
+    .tab-content .control-tabs.primary-tabs .title {
+        &:before,
+        &:after {
+            display: none !important;
+        }
+    }
+
     .nested-form > .form-widget > .layout-row > .control-tabs.primary-tabs {
         .title {
             &:before,
