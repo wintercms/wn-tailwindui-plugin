@@ -60,9 +60,17 @@
                 }
             }
 
+            /*
+             * Winter core styles `.form-buttons:not(.normalized) .btn` in the fancy
+             * layout with `padding:0; margin-top:-6px; opacity:0.5` from an *unlayered*
+             * rule, which beats these `@layer components` rules regardless of specificity.
+             * The buttons then render faint, tiny and vertically misaligned with the
+             * "or Cancel" text and the delete button, and the hover border wraps the
+             * padding:0 text. `!important` lets our sizing/opacity/margin actually win.
+             */
             .btn {
                 &:not(:last-child) {
-                    @apply mr-2;
+                    @apply mr-2 !important;
                 }
 
                 &.btn-default {
@@ -73,10 +81,10 @@
                         px-5
                         py-1.5
                         mt-0
-                        hover:opacity-80;
+                        hover:opacity-80 !important;
 
                     &.empty {
-                        @apply bg-transparent;
+                        @apply bg-transparent !important;
                     }
 
                     &[class*="oc-icon-"] {
@@ -98,11 +106,11 @@
                         px-4
                         py-1.5
                         mt-0
-                        hover:border-white;
+                        hover:border-white !important;
                 }
 
                 &.empty {
-                   @apply mt-0;
+                   @apply mt-0 !important;
                 }
             }
 
