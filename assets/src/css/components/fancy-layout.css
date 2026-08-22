@@ -46,6 +46,44 @@
         .form-buttons {
             @apply flex justify-start items-center p-0 my-2;
 
+            /*
+             * "Saving..." loading indicator: core positions it for the old tiny-button
+             * layout (height:90% + fixed child offsets), so with the taller buttons the
+             * text sits near the top. Fill the button space and vertically centre the
+             * text; keep the spinner centred in the left padding gutter.
+             */
+            .loading-indicator {
+                @apply flex items-center !important;
+
+                /*
+                 * Fill the content area, not the padding box. Core's :not(.normalized)
+                 * rule gives .form-buttons an asymmetric padding-top:14px /
+                 * padding-bottom:5px and the buttons sit inside it, so mirror that here
+                 * — otherwise "Saving..." centres on the padding box and sits ~4.5px
+                 * above where the buttons were.
+                 */
+                top: 14px !important;
+                bottom: 5px !important;
+                height: auto !important;
+                margin-top: 0 !important;
+
+                > div {
+                    /* Static + no margin so the flex box vertically centres the text
+                       (core absolutely-positions it with a negative margin-top). */
+                    @apply static m-0 !important;
+                }
+
+                > span {
+                    /* Centre the spinner vertically. Don't use transform here — the
+                       `spin` keyframes animate transform:rotate, so a translate would
+                       clobber the rotation. Offset by half the span height instead, and
+                       centre the image within the span. */
+                    @apply top-1/2 !important;
+                    margin-top: -20px !important;
+                    background-position: center !important;
+                }
+            }
+
             span.btn-text {
                 @apply
                     flex
@@ -112,6 +150,24 @@
                 &.empty {
                    @apply mt-0 !important;
                 }
+
+                /* Delete: danger colour, kept inline with the actions (not pinned away)
+                   so it stays discoverable. Core renders it icon-only, so surface its
+                   title as a visible "Delete" label. Mirrors the plain-Winter treatment;
+                   the confirm dialog guards accidental clicks. */
+                &[data-control="delete-button"] {
+                    @apply ml-auto opacity-100 !important;
+                    color: #e6584b !important;
+
+                    &:after {
+                        content: attr(title);
+                        @apply ml-[7px];
+                    }
+
+                    &:hover {
+                        color: #ff7367 !important;
+                    }
+                }
             }
 
             /* right aligned buttons */
@@ -144,6 +200,15 @@
 
                     > a {
                         @apply flex items-center text-white px-4 py-2.5;
+
+                        /*
+                         * Suppress the browser's default focus ring, which draws a
+                         * blue "double border" around the white active tab on click.
+                         * Keep a clean keyboard-only indicator; outline-current adapts
+                         * to the tab's text colour (white on inactive tabs, dark
+                         * secondary on the active one).
+                         */
+                        @apply focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current;
 
                         > .title [class*="icon-"] {
                             @apply mr-1;
