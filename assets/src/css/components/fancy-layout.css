@@ -155,17 +155,25 @@
                    so it stays discoverable. Core renders it icon-only, so surface its
                    title as a visible "Delete" label. Mirrors the plain-Winter treatment;
                    the confirm dialog guards accidental clicks. */
-                &[data-control="delete-button"] {
-                    @apply ml-auto opacity-100 !important;
-                    color: #e6584b !important;
+                /* .btn-default in the selector so the red background beats TailwindUI's
+                   own `.btn-default.empty { bg-transparent }` rule (equal specificity,
+                   later source wins). */
+                &.btn-default[data-control="delete-button"] {
+                    @apply ml-auto opacity-100 rounded px-3 py-1 !important;
+                    /* Solid deep brick, clearly darker than the teal toolbar so the pill
+                       separates by value first (a brighter or semi-transparent red sits
+                       at the teal's lightness and either vibrates or muddies to grey). */
+                    background-color: #a5382c !important;
+                    color: #fff !important;
 
                     &:after {
                         content: attr(title);
-                        @apply ml-[7px];
+                        @apply ml-[6px];
                     }
 
                     &:hover {
-                        color: #ff7367 !important;
+                        background-color: #bc4436 !important;
+                        color: #fff !important;
                     }
                 }
             }
