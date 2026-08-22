@@ -30,6 +30,15 @@ Iterating via edit → `vite:compile` → `winter:mirror` → screenshot is slow
 
 - Components: `assets/src/css/components/*.css` (imported via `components/all.css`), plus `base.css`, `custom.css`, `darkmode.css`. Uses Tailwind `@apply` inside `@layer components` — note layered rules lose to *unlayered* core/plugin CSS regardless of specificity, so overrides of core backend styles usually need `!important` (see the existing component files).
 
+### Tailwind purges plain author `:focus`/`:focus-visible` rules inside `@layer`
+
+Tailwind content-scans everything inside `@layer components` and **strips rules it considers unused** — and plain author `:focus` / `:focus-visible` rules get dropped this way even when their selector's classes are clearly present (a `:before`/`:after` rule on the *same* selector survives, so it looks baffling). Symptom: your rule is in the source but **absent from the compiled `dist`**, and the build hash doesn't change when you add it. Two ways to keep such a rule:
+
+- Author it with `@apply` (Tailwind then treats it as a generated utility and keeps it) — this is how the secondary-tab focus ring in `fancy-layout.css` survives; **or**
+- Move it **outside** `@layer components` as plain unlayered CSS. Unlayered author CSS is never purged and its `!important` still wins. See the focus-ring rules at the bottom of `components/nested-form.css`.
+
+Fastest way to catch this: live-inject the rule in the browser (see the core `AGENTS.md` fast-loop) — if it works injected but vanishes after compile, the build purged it; stop chasing specificity.
+
 ## Restyling core controls: watch for plugin overlays
 
 When you restyle a core backend control, remember other plugins position elements **on top of** it. The one that bites: **Winter.Translate** absolutely-positions a `.ml-btn` language switcher over translatable inputs (it sizes to its own content, ~48px). If you shrink an input's height (e.g. the fancy-layout header inputs), the switcher overhangs it — size the input to fit the switcher and align their edges. See `components/fancy-layout.css`. Base Winter avoids this by using a naturally tall header input; TailwindUI's smaller text needs an explicit `min-h`.
