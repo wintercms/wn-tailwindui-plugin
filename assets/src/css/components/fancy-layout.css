@@ -4,6 +4,15 @@
 
         /* form fields */
         > .form-tabless-fields {
+
+            /*
+             * Core (winter.css) sets an unlayered padding:18px 23px 0 23px on this
+             * container; tighten the top to 6px so the header inputs sit closer to
+             * the breadcrumb and the layout stays compact. Only the top changes —
+             * the 23px sides and 0 bottom are left to core.
+             */
+            @apply pt-1.5 !important;
+
             label {
                 @apply normal-case text-white text-sm;
             }
@@ -47,6 +56,15 @@
             @apply flex justify-start items-center p-0 my-2;
 
             /*
+             * Core's :not(.normalized) rule (winter.css) adds an unlayered
+             * padding-top:14px / padding-bottom:5px that beats our layered p-0
+             * above, leaving the toolbar taller than the buttons need. Zero the
+             * vertical padding with !important so the actions sit flush and the
+             * interface stays compact.
+             */
+            @apply py-0 !important;
+
+            /*
              * "Saving..." loading indicator: core positions it for the old tiny-button
              * layout (height:90% + fixed child offsets), so with the taller buttons the
              * text sits near the top. Fill the button space and vertically centre the
@@ -56,14 +74,13 @@
                 @apply flex items-center !important;
 
                 /*
-                 * Fill the content area, not the padding box. Core's :not(.normalized)
-                 * rule gives .form-buttons an asymmetric padding-top:14px /
-                 * padding-bottom:5px and the buttons sit inside it, so mirror that here
-                 * — otherwise "Saving..." centres on the padding box and sits ~4.5px
-                 * above where the buttons were.
+                 * Fill the content area. With the vertical padding zeroed above,
+                 * the buttons fill the whole .form-buttons box, so pin the indicator
+                 * flush to it — otherwise "Saving..." centres on core's old padded
+                 * box and drifts above where the buttons now sit.
                  */
-                top: 14px !important;
-                bottom: 5px !important;
+                top: 0 !important;
+                bottom: 0 !important;
                 height: auto !important;
                 margin-top: 0 !important;
 
