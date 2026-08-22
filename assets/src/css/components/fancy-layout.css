@@ -8,6 +8,13 @@
                 @apply normal-case text-white text-sm;
             }
 
+            /*
+             * min-h keeps the header input tall enough for the Winter.Translate
+             * language switcher (.ml-btn), which sizes to its own content (~48px).
+             * Base Winter's header input is ~48px (font-size:35px), so the switcher
+             * fits; TailwindUI's smaller text-lg would otherwise shrink the box and
+             * leave the switcher overhanging the top and bottom.
+             */
             input[type=text] {
                 @apply
                     bg-white
@@ -17,8 +24,17 @@
                     px-2
                     py-1.5
                     mt-1
+                    min-h-[48px]
                     focus:bg-opacity-20
                     !important;
+            }
+
+            /*
+             * Translate positions the switcher at top:1px, which leaves it 1px below
+             * the header input; align it to the input's top edge.
+             */
+            .field-multilingual .ml-btn {
+                @apply top-0 !important;
             }
 
             &[disabled="disabled"] {
