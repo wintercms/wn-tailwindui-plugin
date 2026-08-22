@@ -14,6 +14,7 @@ php artisan vite:compile Winter.TailwindUI   # rebuilds assets/dist/
 - **If the plugin is symlinked into the project**, the Vite config loads from the plugin's real path, so Node can't resolve the project's `node_modules` (`@vitejs/plugin-vue`, `laravel-vite-plugin`). Symlink it in: `ln -s <project>/node_modules ./node_modules` (gitignored), then compile.
 - Commit the regenerated `assets/dist/` (new hashed files + `manifest.json`, removing superseded ones). Do **not** commit the generated `package-lock.json`.
 - On a mirror-based dev docroot, re-run `php artisan winter:mirror public --relative` after building so the new hash serves.
+- Vite caches builds in `node_modules/.vite`; a source edit can silently no-op (the compiled `dist` keeps the old value even though the source changed). If a change isn't taking effect, `rm -rf node_modules/.vite` and recompile.
 
 ## CSS structure
 
