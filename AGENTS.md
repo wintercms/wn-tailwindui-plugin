@@ -42,3 +42,16 @@ Fastest way to catch this: live-inject the rule in the browser (see the core `AG
 ## Restyling core controls: watch for plugin overlays
 
 When you restyle a core backend control, remember other plugins position elements **on top of** it. The one that bites: **Winter.Translate** absolutely-positions a `.ml-btn` language switcher over translatable inputs (it sizes to its own content, ~48px). If you shrink an input's height (e.g. the fancy-layout header inputs), the switcher overhangs it — size the input to fit the switcher and align their edges. See `components/fancy-layout.css`. Base Winter avoids this by using a naturally tall header input; TailwindUI's smaller text needs an explicit `min-h`.
+
+### The fancy-layout action-bar styles leak into *any* nested `.form-buttons`
+
+`components/fancy-layout.css` restyles the form's sticky action bar by targeting `.form-buttons` broadly:
+
+```
+.layout.fancy-layout :not(.nested-form) > .form-widget > .layout-row .form-buttons .btn.btn-primary { … !important }
+```
+
+That compiles to a `0,8,0` selector with `!important` (the ghost-button treatment: `background-color: transparent !important`, white hover border). Because `.form-buttons` is matched as a **descendant** (not a direct child), it also hits any *nested* `.form-buttons` — a modal or popup footer rendered inside the form widget. The core **iconpicker** modal footer was `.form-buttons`, so its Insert button inherited `transparent !important` and went white-on-white.
+
+- A control that renders its own button bar inside the form shouldn't reuse `.form-buttons` for a *modal/popup* footer — give it its own class and style that (this is how the iconpicker modal was fixed, on the core side). Trying to win from the consumer's scoped CSS is fragile: you'd need to beat `0,8,0 !important`, i.e. 9+ classes.
+- If you ever need the action-bar rules to *not* reach nested footers, tighten the selector here (e.g. scope `.form-buttons` to a direct-child chain) rather than expecting every consumer to defend against it.
