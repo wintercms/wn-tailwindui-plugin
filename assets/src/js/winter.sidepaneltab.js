@@ -24,19 +24,29 @@
         this.visibleItemId = false
         this.$fixButton = $('<a href="#" class="fix-button"><i class="icon-thumb-tack"></i></a>')
 
-        // Check for a targeted side menu item on page load
+        // Check for a targeted side menu item on page load. The hash format is
+        // "#menu-item-<owner.code>-child-<child-code>"; parse it by locating the
+        // "-child-" marker rather than splitting on "-", so menu codes that
+        // themselves contain dashes (e.g. "LukeTowers.EasyForms.main-forms") are
+        // matched correctly. A pre-paint script in _menu-side.php already applies
+        // the active class to avoid a flash; this completes the wiring (opens the
+        // panel, switches the tab) and clears the hash.
         if (location.hash.startsWith('#menu-item-')) {
-            const parts = location.hash.substring(1).split('-');
-            const menuCode = parts[2];
-            if (menuCode === this.$el.data('menu-code')) {
-                const itemId = location.hash.substring(('#menu-item-' + menuCode + '-child-').length);
-                const $targetItem = self.$sideNavItems.filter('[data-menu-item="' + itemId + '"]');
-                if ($targetItem.length) {
-                    this.$sideNavItems.toggleClass('active', false);
-                    self.displaySidePanel();
-                    self.displayTab($targetItem);
-                    $targetItem.addClass('active');
-                    history.replaceState(null, null, ' ');
+            const prefix = '#menu-item-';
+            const marker = '-child-';
+            const markerAt = location.hash.indexOf(marker, prefix.length);
+            if (markerAt !== -1) {
+                const menuCode = location.hash.substring(prefix.length, markerAt);
+                const itemId = location.hash.substring(markerAt + marker.length);
+                if (menuCode === this.$el.data('menu-code')) {
+                    const $targetItem = self.$sideNavItems.filter('[data-menu-item="' + itemId + '"]');
+                    if ($targetItem.length) {
+                        this.$sideNavItems.toggleClass('active', false);
+                        self.displaySidePanel();
+                        self.displayTab($targetItem);
+                        $targetItem.addClass('active');
+                        history.replaceState(null, null, ' ');
+                    }
                 }
             }
         }

@@ -96,3 +96,44 @@
         </div>
     </div>
 </div>
+<script>
+    /*
+     * Pre-paint side-menu deep-link selection.
+     *
+     * JS-driven sub-menu children (see partials/menu/side/_item-contents.php)
+     * link to "<parent-url>#menu-item-<owner.code>-child-<child-code>" so the
+     * intended child can be re-selected after a full page load. That re-selection
+     * runs from winter.sidepaneltab.js, which is bundled into the deferred app.js
+     * module and executes ~200ms after the page is interactive — long enough that
+     * the server's default child stays highlighted and then visibly flips to the
+     * real target (the "flash" of the wrong menu item).
+     *
+     * Applying the active state here, synchronously, before the first paint kills
+     * that flash. winter.sidepaneltab.js still runs afterwards to open the side
+     * panel, switch the tab and clear the hash; re-applying the same active state
+     * is idempotent. This only ships with the side menu (default.php omits this
+     * partial in "top" menu mode), so it never touches the top-menu layout.
+     */
+    (function () {
+        var prefix = '#menu-item-';
+        var marker = '-child-';
+        var hash = window.location.hash;
+        if (hash.lastIndexOf(prefix, 0) !== 0) {
+            return;
+        }
+        var markerAt = hash.indexOf(marker, prefix.length);
+        if (markerAt === -1) {
+            return;
+        }
+        var menuCode = hash.substring(prefix.length, markerAt);
+        var childCode = hash.substring(markerAt + marker.length);
+        var nav = document.querySelector('[data-control="sidenav"][data-menu-code="' + menuCode + '"]');
+        if (!nav) {
+            return;
+        }
+        var items = nav.querySelectorAll('li[data-menu-item]');
+        for (var i = 0; i < items.length; i++) {
+            items[i].classList.toggle('active', items[i].getAttribute('data-menu-item') === childCode);
+        }
+    })();
+</script>
