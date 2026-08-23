@@ -63,6 +63,19 @@
         @apply block;
     }
 
+    /*
+     * Dropdown item hover — the inline light-grey hover was too faint on the
+     * white panel. Use the brand colour (as the active row does) so a hovered
+     * item reads clearly; the active row's own rule above still wins on it.
+     */
+    .tw-dropdown-menu a:hover {
+        @apply bg-primary text-white no-underline;
+    }
+
+    .dark .tw-dropdown-menu a:hover {
+        @apply bg-gray-700 text-white;
+    }
+
     /* Mobile menu toggle: swap the hamburger for a close icon while open. */
     [data-control="mobile-menu-toggle"].is-open .mobile-menu-icon-open {
         @apply hidden;
