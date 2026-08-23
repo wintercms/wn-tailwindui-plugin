@@ -55,6 +55,8 @@
 
                             if ($item->iconSvg) {
                                 array_push($iconClass, 'w-5', 'h-5'); // 16px x 16px
+                            } else {
+                                array_push($iconClass, 'icon-inline');
                             }
                         }
 

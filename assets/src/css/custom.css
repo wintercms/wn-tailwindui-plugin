@@ -38,27 +38,30 @@ html {
     }
 }
 
+/*
+ * Font icons in the menus. The glyph is drawn by the icon-* font class's
+ * ::before, so size and align it per icon location. Target the marker class's
+ * ::before directly rather than qualifying with [class^="icon-"]: the top menu
+ * builds its class list across multiple lines, so the class attribute starts
+ * with whitespace (not "icon-") and the qualified selector never matched.
+ */
 .icon-tile,
-.icon-only,
-.icon-inline {
+.icon-only {
     @apply w-full;
-    &[class^='icon-']:before {
+
+    &:before {
         @apply block mx-auto text-center;
         font-size: 1.5rem;
     }
 }
 
-a.bg-primary:hover {
-    @apply bg-primary-dark;
+/* Inline (beside the label): keep the glyph in flow, just size it up. */
+.icon-inline:before {
+    font-size: 1.5rem;
 }
 
-div[id^='headlessui-menu-items-'] {
-    /* all menus have z-index of 50 */
-    z-index: 999 !important;
-
-    a:hover {
-        @apply no-underline; /* all menu item links have no text-decoration: underline; */
-    }
+a.bg-primary:hover {
+    @apply bg-primary-dark;
 }
 
 /* widgets */
