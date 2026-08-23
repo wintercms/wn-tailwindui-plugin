@@ -116,24 +116,25 @@
      */
     (function () {
         var prefix = '#menu-item-';
-        var marker = '-child-';
         var hash = window.location.hash;
         if (hash.lastIndexOf(prefix, 0) !== 0) {
             return;
         }
-        var markerAt = hash.indexOf(marker, prefix.length);
-        if (markerAt === -1) {
-            return;
-        }
-        var menuCode = hash.substring(prefix.length, markerAt);
-        var childCode = hash.substring(markerAt + marker.length);
-        var nav = document.querySelector('[data-control="sidenav"][data-menu-code="' + menuCode + '"]');
-        if (!nav) {
-            return;
-        }
-        var items = nav.querySelectorAll('li[data-menu-item]');
-        for (var i = 0; i < items.length; i++) {
-            items[i].classList.toggle('active', items[i].getAttribute('data-menu-item') === childCode);
+        // Match the hash against each side-nav's own known menu code rather than
+        // splitting on "-child-", so a parent code that itself contains dashes or
+        // a literal "-child-" still resolves to the correct navigation element.
+        var navs = document.querySelectorAll('[data-control="sidenav"][data-menu-code]');
+        for (var n = 0; n < navs.length; n++) {
+            var expected = prefix + navs[n].getAttribute('data-menu-code') + '-child-';
+            if (hash.lastIndexOf(expected, 0) !== 0) {
+                continue;
+            }
+            var childCode = hash.substring(expected.length);
+            var items = navs[n].querySelectorAll('li[data-menu-item]');
+            for (var i = 0; i < items.length; i++) {
+                items[i].classList.toggle('active', items[i].getAttribute('data-menu-item') === childCode);
+            }
+            break;
         }
     })();
 </script>

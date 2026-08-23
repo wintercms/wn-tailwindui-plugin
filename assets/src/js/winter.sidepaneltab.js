@@ -25,28 +25,23 @@
         this.$fixButton = $('<a href="#" class="fix-button"><i class="icon-thumb-tack"></i></a>')
 
         // Check for a targeted side menu item on page load. The hash format is
-        // "#menu-item-<owner.code>-child-<child-code>"; parse it by locating the
-        // "-child-" marker rather than splitting on "-", so menu codes that
-        // themselves contain dashes (e.g. "LukeTowers.EasyForms.main-forms") are
-        // matched correctly. A pre-paint script in _menu-side.php already applies
+        // "#menu-item-<owner.code>-child-<child-code>". Match it against this
+        // panel's own known menu code (rather than splitting on "-child-"), so a
+        // parent code that itself contains dashes or a literal "-child-" still
+        // resolves correctly. A pre-paint script in _menu-side.php already applies
         // the active class to avoid a flash; this completes the wiring (opens the
         // panel, switches the tab) and clears the hash.
         if (location.hash.startsWith('#menu-item-')) {
-            const prefix = '#menu-item-';
-            const marker = '-child-';
-            const markerAt = location.hash.indexOf(marker, prefix.length);
-            if (markerAt !== -1) {
-                const menuCode = location.hash.substring(prefix.length, markerAt);
-                const itemId = location.hash.substring(markerAt + marker.length);
-                if (menuCode === this.$el.data('menu-code')) {
-                    const $targetItem = self.$sideNavItems.filter('[data-menu-item="' + itemId + '"]');
-                    if ($targetItem.length) {
-                        this.$sideNavItems.toggleClass('active', false);
-                        self.displaySidePanel();
-                        self.displayTab($targetItem);
-                        $targetItem.addClass('active');
-                        history.replaceState(null, null, ' ');
-                    }
+            const expectedPrefix = '#menu-item-' + this.$el.data('menu-code') + '-child-';
+            if (location.hash.startsWith(expectedPrefix)) {
+                const itemId = location.hash.substring(expectedPrefix.length);
+                const $targetItem = self.$sideNavItems.filter('[data-menu-item="' + itemId + '"]');
+                if ($targetItem.length) {
+                    this.$sideNavItems.toggleClass('active', false);
+                    self.displaySidePanel();
+                    self.displayTab($targetItem);
+                    $targetItem.addClass('active');
+                    history.replaceState(null, null, ' ');
                 }
             }
         }
