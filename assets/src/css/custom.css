@@ -91,18 +91,6 @@ a.bg-primary:hover {
 }
 
 /* winter.css overrides */
-.layout-sidenav-container {
-    width: 120px;
-
-    &-inline {
-        @apply w-[250px] max-w-[250px];
-    }
-
-    &-tile {
-        @apply w-[120px] max-w-[120px];
-    }
-}
-
 .layout > .layout-row.h-auto {
     height: auto !important;
 }
@@ -150,16 +138,18 @@ div[data-control='media-manager-crop-tool'] {
         &-top {
             @apply grid-cols-1;
 
+            /* top bar is h-14 (3.5rem) */
             .layout-content > .layout {
-                height: calc(100vh - 4rem);
+                height: calc(100vh - 3.5rem);
                 @apply max-w-full;
             }
         }
 
         &-side {
 
+            /* the top bar in side mode is h-12 (3rem) */
             .layout-topmenu + .layout {
-                height: calc(100vh - 4rem);
+                height: calc(100vh - 3rem);
             }
 
             /*

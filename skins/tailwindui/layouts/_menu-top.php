@@ -18,9 +18,11 @@
         <div class="
             relative flex items-center
             <?php if ($menuLocation === 'top' && $iconLocation === 'tile'): ?>
-                p-2
+                px-2 py-1.5
+            <?php elseif ($menuLocation === 'side'): ?>
+                justify-between h-12
             <?php else: ?>
-                justify-between h-16
+                justify-between h-14
             <?php endif; ?>
         ">
 
@@ -74,7 +76,7 @@
                                 <div class="tw-dropdown flex items-stretch">
                                     <div
                                         class="
-                                            flex items-stretch group rounded-md min-w-max transition duration-300 ease-in
+                                            flex items-stretch group rounded-md min-w-max transition duration-150 ease-in
                                             <?php if ($iconLocation === 'tile') : ?>
                                                 pr-2
                                             <?php else: ?>
@@ -171,7 +173,7 @@
                                                             text-gray-300
                                                         <?php endif ?>
                                                         <?php if ($iconLocation === 'tile'): ?>
-                                                            mb-2 ml-1
+                                                            mb-1 ml-1
                                                         <?php else: ?>
                                                             ml-2
                                                         <?php endif; ?>
@@ -200,7 +202,7 @@
                                                         data-menu-item="<?= $child->code ?>"
                                                     <?php endif; ?>
                                                     class="
-                                                        group flex relative items-center px-4 py-2 text-sm hover:no-underline transition duration-300 ease-in
+                                                        group flex relative items-center px-3 py-1.5 text-sm hover:no-underline transition duration-150 ease-in
                                                         text-gray-700 hover:bg-gray-100 hover:text-gray-900
                                                         dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
                                                         <?= $childIsActive ? 'active' : '' ?>

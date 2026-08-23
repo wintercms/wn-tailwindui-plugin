@@ -1,7 +1,7 @@
 <?php $hasChildren = (bool) count($item->sideMenu); ?>
 <div class="
     flex relative items-center w-full group rounded-md focus:outline-none
-    focus:ring-2 focus:ring-primary transition duration-300 ease-in
+    focus:ring-2 focus:ring-primary transition duration-150 ease-in
     <?php if ($isActive) : ?>
         bg-primary text-white hover:bg-primary-dark
     <?php else: ?>
@@ -12,7 +12,7 @@
         href="<?= $item->url ?>"
         class="
             flex flex-1 block items-center group text-sm font-medium group-hover:text-white focus:text-white active:text-white hover:no-underline focus:no-underline
-            <?= in_array($iconLocation, ['tile', 'only']) ? 'p-3' : 'p-2'; ?>
+            <?= in_array($iconLocation, ['tile', 'only']) ? 'px-2 py-2' : 'p-2'; ?>
             <?= $iconLocation === 'tile' ? 'flex-col justify-center' : ''; ?>
             <?php if ($isActive) : ?>
                 text-white
@@ -38,7 +38,7 @@
             <?php endif; ?>
         <?php endif; ?>
         <?php if ($iconLocation !== 'only'): ?>
-            <span class="<?= $iconLocation === 'tile' ? 'block text-center mt-2' : ($hasChildren ? 'flex-1' : 'inline') ?>">
+            <span class="<?= $iconLocation === 'tile' ? 'block text-center mt-1' : ($hasChildren ? 'flex-1' : 'inline') ?>">
                 <?= e(trans($item->label)) ?>
             </span>
         <?php endif; ?>
@@ -108,7 +108,7 @@
                             group w-full flex items-center py-1.5
                             text-sm text-white font-medium rounded-md hover:text-white
                             hover:no-underline hover:bg-gray-700 focus:no-underline
-                            focus:text-white transition duration-300 ease-in
+                            focus:text-white transition duration-150 ease-in
                             px-3
                             <?= $child->counter ? 'pr-6' : ''; ?>
                             <?php if ($itemMode === 'inline') : ?>
