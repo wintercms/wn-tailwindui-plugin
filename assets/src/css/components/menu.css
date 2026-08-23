@@ -40,25 +40,20 @@
     }
 
     /*
-     * Plain-CSS dropdown menus (replaces Headless UI). A `.tw-dropdown` wraps a
-     * trigger and a `.tw-dropdown-menu` panel. The panel is positioned flush
-     * under the trigger (top:100%, no gap to break the hover) and revealed on
-     * hover or when focus is within — no JS, no clipping ancestor required.
+     * Plain dropdown menus (replaces Headless UI). A `.tw-dropdown` wraps a
+     * trigger and a `.tw-dropdown-menu` panel, revealed on hover or when focus is
+     * within. The panel is `position: fixed` and placed flush under its trigger
+     * by menu.js (via getBoundingClientRect) so the menu bar can scroll
+     * horizontally on overflow without clipping the panel — and so the placement
+     * is robust against page layout (e.g. the fancy form header). Being flush
+     * (no gap) keeps the hover contiguous between trigger and panel.
      */
     .tw-dropdown {
         @apply relative;
     }
 
     .tw-dropdown-menu {
-        @apply hidden absolute z-50 min-w-[14rem] rounded-md shadow-lg bg-white dark:bg-gray-800;
-        top: 100%;
-        left: 0;
-    }
-
-    /* Right-aligned variant (user menu, quick-create). */
-    .tw-dropdown-menu-right {
-        left: auto;
-        right: 0;
+        @apply hidden fixed z-50 min-w-[14rem] rounded-md shadow-lg bg-white dark:bg-gray-800;
     }
 
     .tw-dropdown:hover > .tw-dropdown-menu,

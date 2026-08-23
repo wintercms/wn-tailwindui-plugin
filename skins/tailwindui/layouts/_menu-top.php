@@ -20,7 +20,7 @@
             <?php if ($menuLocation === 'top' && $iconLocation === 'tile'): ?>
                 p-2
             <?php else: ?>
-                justify-between min-h-[4rem]
+                justify-between h-16
             <?php endif; ?>
         ">
 
@@ -49,7 +49,7 @@
 
             <!-- Main menu -->
             <div
-                class="flex-1 flex min-w-0"
+                class="flex-1 flex overflow-x-auto"
             >
                 <div
                     class="
@@ -58,7 +58,7 @@
                             md:mx-6
                         <?php endif; ?>
                     ">
-                    <div class="flex flex-wrap items-stretch gap-2 pl-2">
+                    <div class="flex items-stretch gap-2 pl-2">
                         <!-- Header search - side menu -->
                         <!-- TODO: unhide when implmented -->
                         <?php if ($menuLocation === 'side'): ?>
