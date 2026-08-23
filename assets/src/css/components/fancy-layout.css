@@ -4,10 +4,26 @@
 
         /* form fields */
         > .form-tabless-fields {
+
+            /*
+             * Core (winter.css) sets an unlayered padding:18px 23px 0 23px on this
+             * container; tighten the top to 6px so the header inputs sit closer to
+             * the breadcrumb and the layout stays compact. Only the top changes —
+             * the 23px sides and 0 bottom are left to core.
+             */
+            @apply pt-1.5 !important;
+
             label {
                 @apply normal-case text-white text-sm;
             }
 
+            /*
+             * min-h keeps the header input tall enough for the Winter.Translate
+             * language switcher (.ml-btn), which sizes to its own content (~48px).
+             * Base Winter's header input is ~48px (font-size:35px), so the switcher
+             * fits; TailwindUI's smaller text-lg would otherwise shrink the box and
+             * leave the switcher overhanging the top and bottom.
+             */
             input[type=text] {
                 @apply
                     bg-white
@@ -17,8 +33,17 @@
                     px-2
                     py-1.5
                     mt-1
+                    min-h-[48px]
                     focus:bg-opacity-20
                     !important;
+            }
+
+            /*
+             * Translate positions the switcher at top:1px, which leaves it 1px below
+             * the header input; align it to the input's top edge.
+             */
+            .field-multilingual .ml-btn {
+                @apply top-0 !important;
             }
 
             &[disabled="disabled"] {
@@ -29,6 +54,52 @@
         /* form actions */
         .form-buttons {
             @apply flex justify-start items-center p-0 my-2;
+
+            /*
+             * Core's :not(.normalized) rule (winter.css) adds an unlayered
+             * padding-top:14px / padding-bottom:5px that beats our layered p-0
+             * above, leaving the toolbar taller than the buttons need. Zero the
+             * vertical padding with !important so the actions sit flush and the
+             * interface stays compact.
+             */
+            @apply py-0 !important;
+
+            /*
+             * "Saving..." loading indicator: core positions it for the old tiny-button
+             * layout (height:90% + fixed child offsets), so with the taller buttons the
+             * text sits near the top. Fill the button space and vertically centre the
+             * text; keep the spinner centred in the left padding gutter.
+             */
+            .loading-indicator {
+                @apply flex items-center !important;
+
+                /*
+                 * Fill the content area. With the vertical padding zeroed above,
+                 * the buttons fill the whole .form-buttons box, so pin the indicator
+                 * flush to it — otherwise "Saving..." centres on core's old padded
+                 * box and drifts above where the buttons now sit.
+                 */
+                top: 0 !important;
+                bottom: 0 !important;
+                height: auto !important;
+                margin-top: 0 !important;
+
+                > div {
+                    /* Static + no margin so the flex box vertically centres the text
+                       (core absolutely-positions it with a negative margin-top). */
+                    @apply static m-0 !important;
+                }
+
+                > span {
+                    /* Centre the spinner vertically. Don't use transform here — the
+                       `spin` keyframes animate transform:rotate, so a translate would
+                       clobber the rotation. Offset by half the span height instead, and
+                       centre the image within the span. */
+                    @apply top-1/2 !important;
+                    margin-top: -20px !important;
+                    background-position: center !important;
+                }
+            }
 
             span.btn-text {
                 @apply
@@ -44,9 +115,17 @@
                 }
             }
 
+            /*
+             * Winter core styles `.form-buttons:not(.normalized) .btn` in the fancy
+             * layout with `padding:0; margin-top:-6px; opacity:0.5` from an *unlayered*
+             * rule, which beats these `@layer components` rules regardless of specificity.
+             * The buttons then render faint, tiny and vertically misaligned with the
+             * "or Cancel" text and the delete button, and the hover border wraps the
+             * padding:0 text. `!important` lets our sizing/opacity/margin actually win.
+             */
             .btn {
                 &:not(:last-child) {
-                    @apply mr-2;
+                    @apply mr-2 !important;
                 }
 
                 &.btn-default {
@@ -57,10 +136,10 @@
                         px-5
                         py-1.5
                         mt-0
-                        hover:opacity-80;
+                        hover:opacity-80 !important;
 
                     &.empty {
-                        @apply bg-transparent;
+                        @apply bg-transparent !important;
                     }
 
                     &[class*="oc-icon-"] {
@@ -82,11 +161,37 @@
                         px-4
                         py-1.5
                         mt-0
-                        hover:border-white;
+                        hover:border-white !important;
                 }
 
                 &.empty {
-                   @apply mt-0;
+                   @apply mt-0 !important;
+                }
+
+                /* Delete: danger colour, kept inline with the actions (not pinned away)
+                   so it stays discoverable. Core renders it icon-only, so surface its
+                   title as a visible "Delete" label. Mirrors the plain-Winter treatment;
+                   the confirm dialog guards accidental clicks. */
+                /* .btn-default in the selector so the red background beats TailwindUI's
+                   own `.btn-default.empty { bg-transparent }` rule (equal specificity,
+                   later source wins). */
+                &.btn-default[data-control="delete-button"] {
+                    @apply ml-auto opacity-100 rounded px-3 py-1 !important;
+                    /* Solid deep brick, clearly darker than the teal toolbar so the pill
+                       separates by value first (a brighter or semi-transparent red sits
+                       at the teal's lightness and either vibrates or muddies to grey). */
+                    background-color: #a5382c !important;
+                    color: #fff !important;
+
+                    &:after {
+                        content: attr(title);
+                        @apply ml-[6px];
+                    }
+
+                    &:hover {
+                        background-color: #bc4436 !important;
+                        color: #fff !important;
+                    }
                 }
             }
 
@@ -120,6 +225,15 @@
 
                     > a {
                         @apply flex items-center text-white px-4 py-2.5;
+
+                        /*
+                         * Suppress the browser's default focus ring, which draws a
+                         * blue "double border" around the white active tab on click.
+                         * Keep a clean keyboard-only indicator; outline-current adapts
+                         * to the tab's text colour (white on inactive tabs, dark
+                         * secondary on the active one).
+                         */
+                        @apply focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-current;
 
                         > .title [class*="icon-"] {
                             @apply mr-1;

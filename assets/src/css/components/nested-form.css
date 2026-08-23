@@ -1,4 +1,30 @@
 @layer components {
+    /*
+     * Primary tabs nested inside another tab's content (a nested form, or e.g. a
+     * primary tab set inside a secondary tab). Core builds the tab shape from skewed
+     * trapezoid connectors (.title:before/:after); TailwindUI rounds the tabs and drops
+     * the skew, which turns those connectors' outer radius into a rounded "hook" at the
+     * tab's bottom corners. Hide them so the rounded tab sits flush on the content.
+     */
+    .tab-content .control-tabs.primary-tabs .title {
+        &:before,
+        &:after {
+            display: none !important;
+        }
+    }
+
+    /*
+     * The active tab's bottom border-cover pseudo (a:before) blends the tab's
+     * bottom edge into the content panel. Core insets it to clear the skewed
+     * connectors; with the connectors gone (above) that inset leaves the tab's
+     * bottom corners exposed. Stretch it full width so it covers edge to edge.
+     */
+    .tab-content .control-tabs.primary-tabs .nav-tabs > li.active > a:before {
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+    }
+
     .nested-form > .form-widget > .layout-row > .control-tabs.primary-tabs {
         .title {
             &:before,
@@ -27,4 +53,25 @@
             }
         }
     }
+
+}
+
+/*
+ * The actual "hook": the browser's default focus ring. Its `auto` style rounds all
+ * four corners, so on the active nested tab it draws a rounded outline that curls in
+ * below the tab's square bottom corners. Replace it with a clean keyboard-only inset
+ * ring (same treatment the secondary tabs get in fancy-layout.css).
+ *
+ * These rules live OUTSIDE `@layer components` on purpose: Tailwind purges plain
+ * author `:focus`/`:focus-visible` rules that sit inside a `@layer` (they read as
+ * unused component styles), so an equivalent rule in the layer above silently never
+ * compiles. Unlayered author CSS is never purged and its `!important` still wins.
+ */
+.tab-content .control-tabs.primary-tabs .nav-tabs > li > a:focus {
+    outline: none !important;
+}
+
+.tab-content .control-tabs.primary-tabs .nav-tabs > li > a:focus-visible {
+    outline: 2px solid currentColor !important;
+    outline-offset: -2px !important;
 }
