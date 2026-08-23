@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'click',
         (ev) => {
             const elm = ev.target;
-        
+
             if (collapseTriggers.includes(elm)) {
                 const selector = elm.getAttribute('data-target');
                 collapse(elm, selector, 'toggle');
@@ -30,4 +30,18 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         false,
     );
+
+    // Mobile menu toggle (replaces the Headless UI Disclosure). The button shows
+    // the panel on small screens; a `hidden` class controls visibility and
+    // `aria-expanded` / an `is-open` class drive the hamburger/close icon swap.
+    const mobileToggle = document.querySelector('[data-control="mobile-menu-toggle"]');
+    const mobilePanel = document.querySelector('[data-control="mobile-menu-panel"]');
+
+    if (mobileToggle && mobilePanel) {
+        mobileToggle.addEventListener('click', function () {
+            const isOpen = mobilePanel.classList.toggle('hidden') === false;
+            mobileToggle.classList.toggle('is-open', isOpen);
+            mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
 });

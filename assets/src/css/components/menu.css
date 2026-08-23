@@ -38,4 +38,39 @@
     .layout-topmenu [data-control="sidenav"] a.active {
         @apply bg-primary text-white hover:bg-primary hover:text-white;
     }
+
+    /*
+     * Plain-CSS dropdown menus (replaces Headless UI). A `.tw-dropdown` wraps a
+     * trigger and a `.tw-dropdown-menu` panel. The panel is positioned flush
+     * under the trigger (top:100%, no gap to break the hover) and revealed on
+     * hover or when focus is within — no JS, no clipping ancestor required.
+     */
+    .tw-dropdown {
+        @apply relative;
+    }
+
+    .tw-dropdown-menu {
+        @apply hidden absolute z-50 min-w-[14rem] rounded-md shadow-lg bg-white dark:bg-gray-800;
+        top: 100%;
+        left: 0;
+    }
+
+    /* Right-aligned variant (user menu, quick-create). */
+    .tw-dropdown-menu-right {
+        left: auto;
+        right: 0;
+    }
+
+    .tw-dropdown:hover > .tw-dropdown-menu,
+    .tw-dropdown:focus-within > .tw-dropdown-menu {
+        @apply block;
+    }
+
+    /* Mobile menu toggle: swap the hamburger for a close icon while open. */
+    [data-control="mobile-menu-toggle"].is-open .mobile-menu-icon-open {
+        @apply hidden;
+    }
+    [data-control="mobile-menu-toggle"].is-open .mobile-menu-icon-close {
+        @apply block;
+    }
 }
