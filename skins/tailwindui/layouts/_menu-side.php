@@ -110,9 +110,11 @@
      *
      * Applying the active state here, synchronously, before the first paint kills
      * that flash. winter.sidepaneltab.js still runs afterwards to open the side
-     * panel, switch the tab and clear the hash; re-applying the same active state
-     * is idempotent. This only ships with the side menu (default.php omits this
-     * partial in "top" menu mode), so it never touches the top-menu layout.
+     * panel and switch the tab; re-applying the same active state is idempotent.
+     * The hash is deliberately left in the URL (so reloads/bookmarks re-select
+     * the item), which is why this runs on every load. This only ships with the
+     * side menu (default.php omits this partial in "top" menu mode), so it never
+     * touches the top-menu layout.
      */
     (function () {
         var prefix = '#menu-item-';

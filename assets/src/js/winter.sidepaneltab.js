@@ -135,9 +135,10 @@
         // against this panel's own known menu code (rather than splitting on
         // "-child-") so a parent code containing dashes or a literal "-child-"
         // still resolves. The targeted item is looked up among this panel's own
-        // sub-nav items, so the correct [data-content-id] panel is shown and the
-        // hash is cleared afterwards. A pre-paint script in _menu-side.php applies
-        // the active class early on first load to avoid a flash of the wrong item.
+        // sub-nav items, so the correct [data-content-id] panel is shown. The hash
+        // is intentionally left in the URL so reloading or bookmarking the page
+        // re-selects the same item; a pre-paint script in _menu-side.php reads it
+        // on every load to apply the active class early and avoid a flash.
         if (!location.hash.startsWith('#menu-item-')) {
             return
         }
@@ -148,16 +149,21 @@
         }
 
         var itemId = location.hash.substring(expectedPrefix.length)
-        var $targetItem = this.$sideNavItems.filter('[data-menu-item="' + itemId + '"]')
+        // Active state spans every representation of this menu (the side flyout,
+        // the mobile list and the top dropdown), so toggle it across all of them.
+        // $sideNavItems is limited to the clickable <li> rows, which excludes the
+        // top dropdown's <a> items — look those up here so their highlight follows
+        // the hash too (the server can't set it, as it can't see the hash).
+        var $allItems = this.$sideNav.find('[data-menu-item]')
+        var $targetItem = $allItems.filter('[data-menu-item="' + itemId + '"]')
         if (!$targetItem.length) {
             return
         }
 
-        this.$sideNavItems.toggleClass('active', false)
+        $allItems.removeClass('active')
         this.displaySidePanel()
         this.displayTab($targetItem)
         $targetItem.addClass('active')
-        history.replaceState(null, null, ' ')
     }
 
     SidePanelTab.prototype.displayTab = function(menuItem) {

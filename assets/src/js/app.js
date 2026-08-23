@@ -68,12 +68,28 @@ const rootApp = {
                     }
                 });
 
-                // menu hover
-                $('.headless-menu').on('mouseover mouseout', function() {
-                    const $this = $(this);
-                    const $button = $this.find('[id^="headlessui-menu-button-"]');
-                    const $menu = $(`#${$button.attr('aria-controls')}`);
-                    $button.trigger('click');
+                // menu hover: open the dropdown on enter, close it on leave.
+                // Use mouseenter/mouseleave (which do NOT bubble) rather than
+                // mouseover/mouseout (which fire for every descendant crossed) and
+                // gate on the current open state, so moving the mouse between a
+                // menu's children no longer rapidly toggles it open/closed (the
+                // "hover fighting" flash). mouseenter/leave treat descendants —
+                // including the absolutely-positioned submenu — as inside the menu.
+                $('.headless-menu').each(function() {
+                    const $menu = $(this);
+                    const $button = $menu.find('[id^="headlessui-menu-button-"]');
+
+                    $menu.on('mouseenter', function() {
+                        if ($button.attr('aria-expanded') !== 'true') {
+                            $button.trigger('click');
+                        }
+                    });
+
+                    $menu.on('mouseleave', function() {
+                        if ($button.attr('aria-expanded') === 'true') {
+                            $button.trigger('click');
+                        }
+                    });
                 });
             });
         });

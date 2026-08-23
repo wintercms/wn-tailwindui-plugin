@@ -208,11 +208,9 @@
                                                             <?php endif; ?>
                                                             class="
                                                                 group flex relative items-center px-4 py-2 text-sm hover:no-underline transition duration-300 ease-in
-                                                                <?php if ($childIsActive): ?>
-                                                                    bg-primary text-white hover:text-white hover:bg-primary dark:bg-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700
-                                                                <?php else: ?>
-                                                                    text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
-                                                                <?php endif; ?>
+                                                                text-gray-700 hover:bg-gray-100 hover:text-gray-900
+                                                                dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
+                                                                <?= $childIsActive ? 'active' : '' ?>
                                                             "
                                                         >
                                                             <?php if ($iconLocation !== 'hidden') : ?>
