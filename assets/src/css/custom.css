@@ -156,6 +156,12 @@ div[data-control='media-manager-crop-tool'] {
                 height: calc(100vh - 4rem);
             }
 
+            /*
+             * The side menu inner (#layout-sidenav-2) is position:fixed, so it is
+             * out of the grid flow — pin its width to the matching grid column
+             * (see tailwind.config.js gridTemplateColumns) so it doesn't size to
+             * its content and overhang the content area / top bar.
+             */
             &-inline {
                 @apply md:grid-cols-layout-inline print:grid-cols-1;
 
@@ -166,14 +172,26 @@ div[data-control='media-manager-crop-tool'] {
 
             &-only {
                 @apply md:grid-cols-layout-only;
+
+                #layout-sidenav-2 {
+                    width: 71px;
+                }
             }
 
             &-hidden {
                 @apply md:grid-cols-layout-hidden;
+
+                #layout-sidenav-2 {
+                    width: 148px;
+                }
             }
 
             &-tile {
                 @apply md:grid-cols-layout-tile;
+
+                #layout-sidenav-2 {
+                    width: 124px;
+                }
             }
         }
     }
