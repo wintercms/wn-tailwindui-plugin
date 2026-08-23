@@ -173,7 +173,7 @@
                                                             text-gray-300
                                                         <?php endif ?>
                                                         <?php if ($iconLocation === 'tile'): ?>
-                                                            mb-1 ml-1
+                                                            mb-2 ml-1
                                                         <?php else: ?>
                                                             ml-2
                                                         <?php endif; ?>

@@ -61,10 +61,11 @@ module.exports = {
             },
             zIndex: {
                 /* Above the backend's content scrollbars (z-index 100) so the
-                   sticky top bar — and the fixed dropdowns trapped in its
-                   stacking context — aren't overlapped by them. */
+                   sticky top bar / fixed side menu — and the dropdowns and
+                   fly-out submenus trapped in their stacking contexts — aren't
+                   overlapped by content chrome. */
                 'topmenu': '101',
-                'sidemenu': '100',
+                'sidemenu': '101',
             },
         },
     },
