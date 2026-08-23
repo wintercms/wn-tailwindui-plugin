@@ -60,7 +60,10 @@ module.exports = {
                 '2000': '2000ms',
             },
             zIndex: {
-                'topmenu': '99',
+                /* Above the backend's content scrollbars (z-index 100) so the
+                   sticky top bar — and the fixed dropdowns trapped in its
+                   stacking context — aren't overlapped by them. */
+                'topmenu': '101',
                 'sidemenu': '100',
             },
         },
