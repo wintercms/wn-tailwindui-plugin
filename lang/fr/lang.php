@@ -25,4 +25,14 @@ return [
             'only' => 'Seuls (pas de texte)',
         ],
     ],
+
+    'preferences' => [
+        'appearance' => 'Apparence',
+        'dark_mode' => [
+            'label' => 'Mode sombre',
+            'auto' => 'Suivre les préférences du système',
+            'light' => 'Thème clair',
+            'dark' => 'Thème sombre',
+        ],
+    ],
 ];
