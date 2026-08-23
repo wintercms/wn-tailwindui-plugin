@@ -15,6 +15,7 @@
             <?php foreach (BackendMenu::listMainMenuItems() as $item): ?>
                 <?php $isActive = BackendMenu::isMainMenuItemActive($item); ?>
                 <?php $hasChildren = (bool) count($item->sideMenu); ?>
+                <?php $itemFullCode = $item->owner . '.' . $item->code; ?>
                 <div class="
                     flex items-center w-full
                     <?php if ($isActive) : ?>
@@ -90,7 +91,7 @@
                                     <?php if ($child->url === 'javascript:;'): ?>data-menu-item="<?= $child->code ?>"<?php endif; ?>
                                 >
                                     <a
-                                        href="<?= $child->url === 'javascript:;' ? "$item->url" : $child->url ?>"
+                                        href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
                                         class="
                                             group w-full flex items-center py-1.5
                                             text-sm text-white font-medium rounded-md hover:text-white

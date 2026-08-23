@@ -63,6 +63,7 @@
                         <?php foreach (BackendMenu::listMainMenuItems() as $item): ?>
                             <?php $isActive = BackendMenu::isMainMenuItemActive($item); ?>
                             <?php $hasChildren = (bool) count($item->sideMenu); ?>
+                            <?php $itemFullCode = $item->owner . '.' . $item->code; ?>
                             <?php if ($menuLocation === 'top'): ?>
                                 <headless-menu
                                     as="div"
@@ -191,6 +192,7 @@
                                             <headless-menu-items
                                                 class="origin-top-left absolute left-0 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 focus:outline-none"
                                                 data-control="sidenav"
+                                                data-menu-code="<?= $itemFullCode; ?>"
                                                 data-active-class="active"
                                                 static
                                             >
@@ -200,7 +202,7 @@
                                                         v-slot="{ active }"
                                                     >
                                                         <a
-                                                            href="<?= $child->url ?>"
+                                                            href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
                                                             <?php if ($child->url === 'javascript:;'): ?>
                                                                 data-menu-item="<?= $child->code ?>"
                                                             <?php endif; ?>

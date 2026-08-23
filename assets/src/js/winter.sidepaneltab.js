@@ -24,27 +24,16 @@
         this.visibleItemId = false
         this.$fixButton = $('<a href="#" class="fix-button"><i class="icon-thumb-tack"></i></a>')
 
-        // Check for a targeted side menu item on page load. The hash format is
-        // "#menu-item-<owner.code>-child-<child-code>". Match it against this
-        // panel's own known menu code (rather than splitting on "-child-"), so a
-        // parent code that itself contains dashes or a literal "-child-" still
-        // resolves correctly. A pre-paint script in _menu-side.php already applies
-        // the active class to avoid a flash; this completes the wiring (opens the
-        // panel, switches the tab) and clears the hash.
-        if (location.hash.startsWith('#menu-item-')) {
-            const expectedPrefix = '#menu-item-' + this.$el.data('menu-code') + '-child-';
-            if (location.hash.startsWith(expectedPrefix)) {
-                const itemId = location.hash.substring(expectedPrefix.length);
-                const $targetItem = self.$sideNavItems.filter('[data-menu-item="' + itemId + '"]');
-                if ($targetItem.length) {
-                    this.$sideNavItems.toggleClass('active', false);
-                    self.displaySidePanel();
-                    self.displayTab($targetItem);
-                    $targetItem.addClass('active');
-                    history.replaceState(null, null, ' ');
-                }
-            }
-        }
+        // Select the sub-menu item targeted by the URL hash — both on initial page
+        // load (a deep link followed from another page) and on later hash changes.
+        // The latter matters for the "top" menu location: its dropdown items are
+        // real links, so choosing one while already on the destination page only
+        // updates the hash without reloading, and nothing would otherwise switch
+        // the panel (the "flaky" top-menu behaviour). See selectTargetedItem().
+        this.selectTargetedItem()
+        $(window).on('hashchange', function() {
+            self.selectTargetedItem()
+        })
 
         this.$fixButton.click(function() {
             self.fixPanel()
@@ -139,6 +128,36 @@
         }
 
         this.updateActiveTab()
+    }
+
+    SidePanelTab.prototype.selectTargetedItem = function() {
+        // The hash format is "#menu-item-<menu-code>-child-<child-code>". Match it
+        // against this panel's own known menu code (rather than splitting on
+        // "-child-") so a parent code containing dashes or a literal "-child-"
+        // still resolves. The targeted item is looked up among this panel's own
+        // sub-nav items, so the correct [data-content-id] panel is shown and the
+        // hash is cleared afterwards. A pre-paint script in _menu-side.php applies
+        // the active class early on first load to avoid a flash of the wrong item.
+        if (!location.hash.startsWith('#menu-item-')) {
+            return
+        }
+
+        var expectedPrefix = '#menu-item-' + this.$el.data('menu-code') + '-child-'
+        if (!location.hash.startsWith(expectedPrefix)) {
+            return
+        }
+
+        var itemId = location.hash.substring(expectedPrefix.length)
+        var $targetItem = this.$sideNavItems.filter('[data-menu-item="' + itemId + '"]')
+        if (!$targetItem.length) {
+            return
+        }
+
+        this.$sideNavItems.toggleClass('active', false)
+        this.displaySidePanel()
+        this.displayTab($targetItem)
+        $targetItem.addClass('active')
+        history.replaceState(null, null, ' ')
     }
 
     SidePanelTab.prototype.displayTab = function(menuItem) {
