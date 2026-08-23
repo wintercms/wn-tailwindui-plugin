@@ -24,13 +24,12 @@
         this.visibleItemId = false
         this.$fixButton = $('<a href="#" class="fix-button"><i class="icon-thumb-tack"></i></a>')
 
-        // Select the sub-menu item targeted by the URL hash — both on initial page
-        // load (a deep link followed from another page) and on later hash changes.
-        // The latter matters for the "top" menu location: its dropdown items are
-        // real links, so choosing one while already on the destination page only
-        // updates the hash without reloading, and nothing would otherwise switch
-        // the panel (the "flaky" top-menu behaviour). See selectTargetedItem().
-        this.selectTargetedItem()
+        // Re-select the hash-targeted sub-menu item on later hash changes. This
+        // matters for the "top" menu location: its dropdown items are real links,
+        // so choosing one while already on the destination page only updates the
+        // hash without reloading, and nothing would otherwise switch the panel
+        // (the "flaky" top-menu behaviour). The initial call runs at the end of
+        // init() (after handlers are wired). See selectTargetedItem().
         $(window).on('hashchange', function() {
             self.selectTargetedItem()
         })
@@ -128,6 +127,11 @@
         }
 
         this.updateActiveTab()
+
+        // Run the initial deep-link selection last — after all handlers above are
+        // wired — so any failure here can't abort init() and leave the panel
+        // without its interaction handlers.
+        this.selectTargetedItem()
     }
 
     SidePanelTab.prototype.selectTargetedItem = function() {
@@ -155,7 +159,12 @@
         // top dropdown's <a> items — look those up here so their highlight follows
         // the hash too (the server can't set it, as it can't see the hash).
         var $allItems = this.$sideNav.find('[data-menu-item]')
-        var $targetItem = $allItems.filter('[data-menu-item="' + itemId + '"]')
+        // Match with a predicate, not a selector string built from the hash:
+        // itemId comes from location.hash, and a value containing ", ] or : would
+        // make jQuery/Sizzle throw "unrecognized expression".
+        var $targetItem = $allItems.filter(function() {
+            return String($(this).data('menu-item')) === itemId
+        })
         if (!$targetItem.length) {
             return
         }

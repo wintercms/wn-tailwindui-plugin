@@ -85,14 +85,14 @@
                 <div class="shrink-0 group block">
                     <div class="flex items-center">
                         <div>
-                            <img class="inline-block h-8 w-8 rounded-full" src="<?= $this->user->getAvatarThumb(90, ['mode' => 'crop', 'extension' => 'png']) ?>" alt="<?= $this->user->full_name ?>" />
+                            <img class="inline-block h-8 w-8 rounded-full" src="<?= $this->user->getAvatarThumb(90, ['mode' => 'crop', 'extension' => 'png']) ?>" alt="<?= e($this->user->full_name) ?>" />
                         </div>
                         <div class="ml-3">
                             <p class="text-sm">
                                 <?= e(trans('backend::lang.account.signed_in_as', ['full_name' => null])) ?>
                             </p>
                             <p class="text-sm font-medium text-gray-900 dark:text-gray-500 truncate">
-                                <?= $this->user->full_name ?>
+                                <?= e($this->user->full_name) ?>
                             </p>
                         </div>
                     </div>

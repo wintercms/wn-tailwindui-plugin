@@ -59,7 +59,7 @@
             class="<?= $isActive ? 'open' : ''?>"
             data-toggle="collapse"
             data-target="#<?= $item->code ?>"
-            aria-expanded="false"
+            aria-expanded="<?= $isActive ? 'true' : 'false' ?>"
             aria-controls="<?= $item->code ?>"
         >
             <svg

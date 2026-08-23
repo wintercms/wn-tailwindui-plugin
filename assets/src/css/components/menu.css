@@ -59,7 +59,8 @@
     }
 
     .tw-dropdown:hover > .tw-dropdown-menu,
-    .tw-dropdown:focus-within > .tw-dropdown-menu {
+    .tw-dropdown:focus-within > .tw-dropdown-menu,
+    .tw-dropdown.is-open > .tw-dropdown-menu {
         @apply block;
     }
 

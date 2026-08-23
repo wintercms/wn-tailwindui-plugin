@@ -51,6 +51,7 @@ html {
 
     &:before {
         @apply block mx-auto text-center;
+
         font-size: 1.5rem;
     }
 }

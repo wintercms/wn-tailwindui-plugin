@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (collapseTriggers.includes(elm)) {
                 const selector = elm.getAttribute('data-target');
                 collapse(elm, selector, 'toggle');
+                elm.setAttribute('aria-expanded', elm.classList.contains('open') ? 'true' : 'false');
             }
         },
         false,
@@ -41,13 +42,18 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         const rect = dropdown.getBoundingClientRect();
+        // Panel may be display:none when this runs (placed just before CSS reveals
+        // it), so fall back to its min-width for the off-screen clamp.
+        const panelWidth = panel.offsetWidth || 224;
         panel.style.top = rect.bottom + 'px';
         if (panel.classList.contains('tw-dropdown-menu-right')) {
             panel.style.left = 'auto';
             panel.style.right = Math.max(0, window.innerWidth - rect.right) + 'px';
         } else {
             panel.style.right = 'auto';
-            panel.style.left = rect.left + 'px';
+            // Clamp so a trigger near the right edge doesn't push the panel
+            // off-screen (its content would otherwise be unreachable).
+            panel.style.left = Math.min(rect.left, Math.max(0, window.innerWidth - panelWidth)) + 'px';
         }
     };
 
@@ -55,6 +61,41 @@ document.addEventListener('DOMContentLoaded', function () {
         // Place on the pointer/focus entering, i.e. just before CSS reveals it.
         dropdown.addEventListener('mouseenter', () => placeDropdown(dropdown));
         dropdown.addEventListener('focusin', () => placeDropdown(dropdown));
+
+        // Touch/click support: iOS doesn't focus a <button> on tap, so
+        // :focus-within never fires and a button-triggered dropdown (the user
+        // menu) can't be opened by touch. Toggle an explicit class on click.
+        const button = dropdown.querySelector(':scope > button');
+        if (button) {
+            button.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                if (dropdown.classList.toggle('is-open')) {
+                    placeDropdown(dropdown);
+                }
+            });
+        }
+    });
+
+    // Keep fixed panels aligned with their trigger as the bar scrolls / window resizes.
+    const repositionDropdowns = () => document.querySelectorAll('.tw-dropdown').forEach(placeDropdown);
+    window.addEventListener('resize', repositionDropdowns, { passive: true });
+    const menuScroller = document.querySelector('.layout-topmenu .overflow-x-auto');
+    if (menuScroller) {
+        menuScroller.addEventListener('scroll', repositionDropdowns, { passive: true });
+    }
+
+    // Close click-opened dropdowns on an outside click or Escape.
+    document.addEventListener('click', function (ev) {
+        document.querySelectorAll('.tw-dropdown.is-open').forEach((dropdown) => {
+            if (!dropdown.contains(ev.target)) {
+                dropdown.classList.remove('is-open');
+            }
+        });
+    });
+    document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape') {
+            document.querySelectorAll('.tw-dropdown.is-open').forEach((dropdown) => dropdown.classList.remove('is-open'));
+        }
     });
 
     // Mobile menu toggle (replaces the Headless UI Disclosure). The button shows

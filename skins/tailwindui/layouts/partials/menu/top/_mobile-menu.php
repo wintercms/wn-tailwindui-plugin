@@ -52,7 +52,7 @@
                         class="text-white px-6 py-2 <?= $isActive ? 'open' : ''?>"
                         data-toggle="collapse"
                         data-target="#<?= $item->code ?>"
-                        aria-expanded="false"
+                        aria-expanded="<?= $isActive ? 'true' : 'false' ?>"
                         aria-controls="<?= $item->code ?>"
                     >
                         <svg
