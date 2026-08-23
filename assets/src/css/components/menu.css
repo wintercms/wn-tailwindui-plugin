@@ -52,8 +52,10 @@
         @apply relative;
     }
 
+    /* z-index sits above positioned backend chrome (e.g. tab triangles) that
+       would otherwise poke through the panel — matches the old menu z-index. */
     .tw-dropdown-menu {
-        @apply hidden fixed z-50 min-w-[14rem] rounded-md shadow-lg bg-white dark:bg-gray-800;
+        @apply hidden fixed z-[999] min-w-[14rem] rounded-md shadow-lg bg-white dark:bg-gray-800;
     }
 
     .tw-dropdown:hover > .tw-dropdown-menu,

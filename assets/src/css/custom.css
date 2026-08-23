@@ -55,9 +55,15 @@ html {
     }
 }
 
-/* Inline (beside the label): keep the glyph in flow, just size it up. */
+/* Inline (beside the label): keep the glyph in flow, just size it up. The side
+   menu's inline SVGs are smaller (w-5 = 1.25rem) than the top menu's, so match
+   the font glyph to each so they line up. */
 .icon-inline:before {
     font-size: 1.5rem;
+}
+
+.sidemenu .icon-inline:before {
+    font-size: 1.25rem;
 }
 
 a.bg-primary:hover {
