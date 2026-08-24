@@ -95,6 +95,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (ev) {
         if (ev.key === 'Escape') {
             document.querySelectorAll('.tw-dropdown.is-open').forEach((dropdown) => dropdown.classList.remove('is-open'));
+            // :focus-within keeps a panel open while a trigger/link inside still
+            // has focus, so removing is-open alone wouldn't dismiss a
+            // focus-opened dropdown — blur the focused element too. Tabbing back
+            // to the trigger re-opens it as normal.
+            if (document.activeElement && document.activeElement.closest('.tw-dropdown')) {
+                document.activeElement.blur();
+            }
         }
     });
 
