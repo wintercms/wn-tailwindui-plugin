@@ -48,7 +48,22 @@
                 <?php endif; ?>
 
                 <div class="layout">
-                    <div class="layout-row relative">
+                    <?php $flyoutContent = Block::placeholder('sidepanel-flyout') ?>
+                    <div
+                        class="layout-row relative flyout-container"
+                        <?php if ($flyoutContent) : ?>
+                            data-control="flyout"
+                            data-flyout-width="400"
+                            data-flyout-toggle="#layout-side-panel"
+                        <?php endif ?>
+                    >
+                        <!-- Side panel flyout (e.g. Builder's plugin list). Rendered as
+                             the first cell so the flyout control (winter.flyout.js) can
+                             slide it out over the content on demand. -->
+                        <?php if ($flyoutContent) : ?>
+                            <div class="layout-cell flyout"><?= $flyoutContent ?></div>
+                        <?php endif ?>
+
                         <!-- Context menu -->
                         <?= $this->makeLayoutPartial('context-sidenav') ?>
 
@@ -65,18 +80,25 @@
                         <?php endif ?>
 
                         <div class="layout-cell w-full layout-container" id="layout-body">
-                            <div class="layout">
-                                <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')) : ?>
-                                    <!-- Breadcrumb -->
-                                    <div class="control-breadcrumb">
-                                        <?= $breadcrumbContent ?>
-                                    </div>
-                                <?php endif ?>
+                            <!-- Establishes the positioning context for absolutely
+                                 positioned body content (e.g. Builder's .fill-container
+                                 master tabs), matching the core backend layout. Without
+                                 it such content escapes to the full-width ancestor and
+                                 paints over the side panel. -->
+                            <div class="layout-relative">
+                                <div class="layout">
+                                    <?php if ($breadcrumbContent = Block::placeholder('breadcrumb')) : ?>
+                                        <!-- Breadcrumb -->
+                                        <div class="control-breadcrumb">
+                                            <?= $breadcrumbContent ?>
+                                        </div>
+                                    <?php endif ?>
 
-                                <!-- Content -->
-                                <div class="layout-row">
-                                    <div class="layout-cell">
-                                        <?= Block::placeholder('body') ?>
+                                    <!-- Content -->
+                                    <div class="layout-row">
+                                        <div class="layout-cell">
+                                            <?= Block::placeholder('body') ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

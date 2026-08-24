@@ -84,13 +84,24 @@
                                 $sideMenuIsActive = BackendMenu::isSideMenuItemActive($child);
                                 $iconDefaultClass = "$child->icon mr-3 h-4 w-4";
                                 $iconClass = $sideMenuIsActive ? 'text-white group-hover:text-white' : 'text-gray-200 group-hover:text-white group-hover:bg-transparent';
+
+                                // Honour the registered attributes (data-menu-item,
+                                // data-builder-command, data-no-side-panel) like the core
+                                // sidenav, and build the deep-link hash from the real
+                                // data-menu-item value. See side/_item-contents.php.
+                                $childMenuItem = $child->attributes['data-menu-item'] ?? $child->code;
+                                $childIsJsNav = in_array($child->url, ['javascript:;', '#'], true);
+                                $childHasPane = $childIsJsNav && empty($child->attributes['data-no-side-panel']);
+                                $childHref = $childHasPane
+                                    ? "{$item->url}#menu-item-{$itemFullCode}-child-{$childMenuItem}"
+                                    : $child->url;
                         ?>
                             <li
                                 class="<?= $sideMenuIsActive ? 'active' : '' ?>"
-                                <?php if ($child->url === 'javascript:;'): ?>data-menu-item="<?= $child->code ?>"<?php endif; ?>
+                                <?= Html::attributes($child->attributes) ?>
                             >
                                 <a
-                                    href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
+                                    href="<?= $childHref ?>"
                                     class="
                                         group w-full flex items-center py-1.5
                                         text-sm text-white font-medium rounded-md hover:text-white

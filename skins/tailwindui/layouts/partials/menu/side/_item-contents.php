@@ -97,13 +97,28 @@
                     $sideMenuIsActive = BackendMenu::isSideMenuItemActive($child);
                     $iconDefaultClass = "$child->icon mr-3 h-4 w-4";
                     $iconClass = $sideMenuIsActive ? 'text-white group-hover:text-white' : 'text-gray-200 group-hover:text-white group-hover:bg-transparent';
+
+                    // JS-driven sub-items (Builder, CMS, Pages, …) use a placeholder
+                    // URL and drive their behaviour through the attributes registered
+                    // on the menu item (data-menu-item, data-builder-command,
+                    // data-no-side-panel). Emit those verbatim like the core sidenav
+                    // rather than assuming the child code is the menu-item id — Builder's
+                    // "versions" item, for example, registers data-menu-item="version"
+                    // to match its side-panel pane (data-content-id="version"). The
+                    // deep-link hash must use that same value so the correct pane opens.
+                    $childMenuItem = $child->attributes['data-menu-item'] ?? $child->code;
+                    $childIsJsNav = in_array($child->url, ['javascript:;', '#'], true);
+                    $childHasPane = $childIsJsNav && empty($child->attributes['data-no-side-panel']);
+                    $childHref = $childHasPane
+                        ? "{$item->url}#menu-item-{$itemFullCode}-child-{$childMenuItem}"
+                        : $child->url;
             ?>
                 <li
                     class="<?= $sideMenuIsActive ? 'active' : '' ?> relative"
-                    <?php if ($child->url === 'javascript:;'): ?>data-menu-item="<?= $child->code ?>"<?php endif; ?>
+                    <?= Html::attributes($child->attributes) ?>
                 >
                     <a
-                        href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
+                        href="<?= $childHref ?>"
                         class="
                             group w-full flex items-center py-1.5
                             text-sm text-white font-medium rounded-md hover:text-white
