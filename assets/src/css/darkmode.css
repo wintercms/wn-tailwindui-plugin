@@ -671,11 +671,11 @@
 
     div[data-control="media-manager"] .sidebar-image-placeholder {
         box-sizing: content-box;
-        background-image: -webkit-linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef),
-            -webkit-linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef);
+        background-image: -webkit-linear-gradient(45deg, #0d1117 25%, transparent 25%, transparent 75%, #0d1117 75%, #0d1117),
+            -webkit-linear-gradient(45deg, #0d1117 25%, transparent 25%, transparent 75%, #0d1117 75%, #0d1117);
         background-position: 0 0, 10px 10px;
         background-size: 21px 21px;
-        background-color: #d2d2d2;
+        background-color: var(--drk-bg-color-c);
     }
 
     div[data-control="media-manager"] .sidebar-image-placeholder i.icon-level-up {
@@ -684,7 +684,7 @@
 
     div[data-control="media-manager"] .sidebar-image-placeholder p {
         color: #d16969;
-        background: #fff;
+        background: var(--drk-bg-color-b);
     }
 
     #MediaManager-manager-filters .nav > li > a:hover,
@@ -1119,8 +1119,8 @@
     }
 
     .form-preview {
-        background: #343434;
-        border: 1px solid #626262;
+        background: var(--drk-bg-color-b);
+        border: 1px solid var(--drk-border-color);
     }
 
     .nested-form.panel-styles {
