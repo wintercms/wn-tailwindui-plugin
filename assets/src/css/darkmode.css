@@ -1758,6 +1758,30 @@
         color: var(--drk-color);
     }
 
+    /* Table-widget cell dropdown (e.g. Builder's migration column-type
+       selector): core table.css paints the list white with #555 text on the
+       non-focused items. */
+    .table-control-dropdown-list {
+        background: var(--drk-bg-color-b);
+        border-color: var(--drk-border-color);
+    }
+
+    .table-control-dropdown-list li {
+        color: var(--drk-color);
+    }
+
+    .table-control-dropdown-list li:focus,
+    .table-control-dropdown-list li:hover {
+        background: var(--drk-bg-color-selection);
+        color: #fff;
+    }
+
+    /* Active table cell (e.g. an open dropdown cell) renders a white content
+       container while being edited. */
+    .control-table table.data td.active .content-container {
+        background: var(--drk-bg-color-inset);
+    }
+
 
     /* eventlogs */
     .plugin-exception-beautifier .beautifier-message-container {
