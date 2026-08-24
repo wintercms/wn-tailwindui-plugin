@@ -285,6 +285,18 @@
     background: #fafafa !important;
 }
 
+/*
+ * Dark mode: the active master-area tab title is darkened to #21262d (see
+ * darkmode.css, G1), so its wings must follow instead of staying #fafafa —
+ * otherwise the active CMS/Builder tab reads as a dark pill flanked by two
+ * white skewed slivers. Kept here, unlayered, alongside the base wing rules
+ * so it isn't purged. (G19)
+ */
+html[data-color-scheme="dark"] .control-tabs.primary-tabs.master-area ul.nav-tabs > li.active > a > span.title::before,
+html[data-color-scheme="dark"] .control-tabs.primary-tabs.master-area ul.nav-tabs > li.active > a > span.title::after {
+    background: #21262d !important;
+}
+
 .control-tabs.primary-tabs.master-area ul.nav-tabs > li.active > a > span.title::before {
     border-radius: 8px 0 0 0 !important;
     transform: skewX(-20deg) !important;
