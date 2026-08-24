@@ -10,3 +10,5 @@
     - "Fixed the dark-mode preference selector rendering raw language keys, and added the missing French translations."
     - "Added touch support for the user menu, kept aria-expanded in sync on collapsible menus, and escaped the user's full name in the header (stored XSS)."
     - "Fixed fancy-layout form styling: action buttons, tabs, saving indicator, delete button, and the Winter.Translate language-switcher overhang; compacted the form header."
+1.1.1:
+    - "Fixed Winter.Builder compatibility: restored the side-panel positioning context so its tabs no longer paint over the plugin panel, wired up the plugin-list flyout, and honoured sub-menu items' registered attributes so Versions switches panes and Permissions/Backend Menu open correctly (#8)."

@@ -195,12 +195,23 @@
                                             data-active-class="active"
                                         >
                                             <?php foreach ($item->sideMenu as $child): ?>
-                                                <?php $childIsActive = BackendMenu::isSideMenuItemActive($child); ?>
+                                                <?php
+                                                    $childIsActive = BackendMenu::isSideMenuItemActive($child);
+
+                                                    // Honour the registered attributes (data-menu-item,
+                                                    // data-builder-command, data-no-side-panel) like the
+                                                    // core sidenav, and build the deep-link hash from the
+                                                    // real data-menu-item value. See side/_item-contents.php.
+                                                    $childMenuItem = $child->attributes['data-menu-item'] ?? $child->code;
+                                                    $childIsJsNav = in_array($child->url, ['javascript:;', '#'], true);
+                                                    $childHasPane = $childIsJsNav && empty($child->attributes['data-no-side-panel']);
+                                                    $childHref = $childHasPane
+                                                        ? "{$item->url}#menu-item-{$itemFullCode}-child-{$childMenuItem}"
+                                                        : $child->url;
+                                                ?>
                                                 <a
-                                                    href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
-                                                    <?php if ($child->url === 'javascript:;'): ?>
-                                                        data-menu-item="<?= $child->code ?>"
-                                                    <?php endif; ?>
+                                                    href="<?= $childHref ?>"
+                                                    <?= Html::attributes($child->attributes) ?>
                                                     class="
                                                         group flex relative items-center px-3 py-1.5 text-sm hover:no-underline transition duration-150 ease-in
                                                         text-gray-700 hover:bg-gray-100 hover:text-gray-900

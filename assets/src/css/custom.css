@@ -194,6 +194,23 @@ div[data-control='media-manager-crop-tool'] {
     }
 }
 
+/*
+ * Side panel flyout (e.g. Builder's plugin list) dimming overlay fix.
+ *
+ * The core flyout control (winter.flyout.js) appends a dimming overlay to
+ * <body> at a fixed `left: flyoutWidth`, assuming the flyout starts at the
+ * viewport's left edge — true for the core top-menu layout. In the side menu
+ * layout the flyout is shifted right by the side menu, so that overlay lands on
+ * top of the flyout's own right edge and dims part of it. Lift the flyout
+ * content above the overlay (z-index 5000) so it stays fully visible; the
+ * dimming still covers everything to its right. Builder's own popups sit at
+ * 5050, safely above both.
+ */
+.flyout-container > .flyout {
+    position: relative;
+    z-index: 5001;
+}
+
 /* Hide buttons when loading indicator is showing. @see CA-1820. */
 .loading-indicator ~ .btn,
 .loading-indicator ~ .btn-text {
