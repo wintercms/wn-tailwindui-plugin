@@ -8,6 +8,12 @@
 >
 > ✅ **G14 (list totals white bands) — FIXED & verified.** `tr.table-totals` (in thead + tfoot) rendered `#f2f2f2`; added `table.data tr.table-totals{,td,th}` dark override → both bands now `#161b22`. Verified `winter/test/people`.
 >
+> ✅ **G16 (fancy-layout header) — FIXED & verified.** Per user decision, darkened/desaturated the bright brand-teal band (`bg-secondary` = `rgb(45,167,199)`) so it reads as an intentional accent header instead of glowing: `.fancy-layout .form-tabless-fields` + fancy primary nav-tabs → `#1a4653`, `.control-breadcrumb` → `#153a45`, current breadcrumb segment (`li:last-child`) → `#1e515f`. Scoped under `.fancy-layout` so non-fancy pages are untouched. White labels / translucent inputs / frosted ML badges sit fine on it. Verified `blog/posts/create`.
+>
+> ✅ **G5 (relation-manager embed border) — FIXED & verified.** Relation embeds (`.relation-behavior`) framed their list with a light `#eee` box; darkened `.relation-behavior .control-list{,.list-scrollable}` border to `var(--drk-border-color)`. Verified `winter/test/galleries/update/1` (Posts relation) → `rgb(48,54,61)`.
+>
+> ✅ **G13 (markdown-preview table borders) — FIXED & verified.** Preview tables kept light gray-200 cell borders even under `prose-invert`; added explicit dark borders for `.field-markdowneditor .editor-preview table{,td,th}` + the richeditor `.fr-view table`. Verified on the "Markdown showcase" post (`blog/posts/update/2`) — table borders `rgb(48,54,61)`.
+>
 > ✅ **G15 (filter bar) — dark-mode issue FIXED & verified.** The active/hover filter-scope colour was a jarring lime `#cddc39` (+ `#ffeb3b` popover-hover) — retoned to the theme's gold `#ffd700` so an active filter ("Hide published") matches the active-tab language. Verified `winter/test/people`. **NB:** the `× Ac...` truncated scope dropdown is core's *responsive* filter layout (the button-group collapses to a dropdown; truncates in light mode too) — NOT a dark-mode bug, left as-is. `.control-filter` bg `#1a2938` reads fine.
 >
 > ✅ **G10 (settings hint / section headers) — VERIFIED CLEAN, no change needed.** Re-checked the cited page `settings/update/winter/translate/providers` (Google tab): the green "Google Cloud Translation" hint panel, API key/endpoint fields, section text and the provider tabs all render dark & legible (0 light-bg elements found in the content area). Either resolved by earlier work or the plugin's own styling holds up. No change made.

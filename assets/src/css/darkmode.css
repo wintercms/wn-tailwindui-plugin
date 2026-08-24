@@ -500,6 +500,26 @@
         background: var(--drk-bg-color-a) !important;
     }
 
+    /* Fancy-layout header (G16): the bright brand-teal band (bg-secondary)
+       glows against the dark scheme. Darken + desaturate it to a muted teal
+       so it reads as an intentional accent header — the white labels,
+       translucent inputs and frosted ML badges already sit fine on it. */
+    .fancy-layout .form-tabless-fields,
+    .fancy-layout .control-tabs.primary-tabs > div > ul.nav-tabs {
+        background-color: #1a4653 !important;
+    }
+
+    .fancy-layout .control-breadcrumb {
+        background-color: #153a45 !important;
+    }
+
+    /* Current (last) breadcrumb segment keeps a brighter teal chevron; mute it
+       to a touch lighter than the bar so it still reads as "current". */
+    .fancy-layout .control-breadcrumb li:last-child,
+    .fancy-layout .control-breadcrumb li.active {
+        background-color: #1e515f !important;
+    }
+
     #layout-side-panel div.control-toolbar input.form-control {
         box-shadow: none;
     }
@@ -515,6 +535,17 @@
         .editor-preview {
             @apply prose-invert;
         }
+    }
+
+    /* G13: markdown/rich preview tables keep light gray-200 cell borders even
+       under prose-invert — darken them explicitly. */
+    .field-markdowneditor .editor-preview table,
+    .field-markdowneditor .editor-preview table td,
+    .field-markdowneditor .editor-preview table th,
+    .field-richeditor .fr-view table,
+    .field-richeditor .fr-view table td,
+    .field-richeditor .fr-view table th {
+        border-color: var(--drk-border-color);
     }
 
     .control-assetlist ul li a.link {
@@ -873,6 +904,12 @@
 
     table.table.data .list-checkbox {
         border-right: 1px solid #0180ff;
+    }
+
+    /* G5: relation-manager embeds frame their list with a light #eee box. */
+    .relation-behavior .control-list,
+    .relation-behavior .control-list.list-scrollable {
+        border-color: var(--drk-border-color);
     }
 
     /* List totals header/footer rows: core paints them light #f2f2f2 bands. */
