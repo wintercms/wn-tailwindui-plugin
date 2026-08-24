@@ -595,6 +595,12 @@
         background: var(--drk-bg-color-c);
     }
 
+    /* G20: theme-editor Components sidebar (.control-filelist.component-list)
+       divides its group rows with a light #e6ebed top border. */
+    .control-filelist.component-list ul li.group {
+        border-top-color: var(--drk-border-color);
+    }
+
     div.control-componentlist div.components div.layout-cell > div.popover-highlight {
         background: var(--drk-bg-color-c) !important;
         border: 1px solid var(--drk-border-color);
