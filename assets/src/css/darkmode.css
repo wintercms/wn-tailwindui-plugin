@@ -826,20 +826,20 @@
     .control-filter > .filter-scope.active,
     .control-filter > .filter-scope:hover.custom-checkbox label,
     .control-filter > .filter-scope.active.custom-checkbox label {
-        color: #cddc39;
+        color: #ffd700;
     }
 
     .control-filter > .filter-scope:hover .filter-label,
     .control-filter > .filter-scope.active .filter-label {
-        color: #cddc39;
+        color: #ffd700;
     }
 
     .control-filter > .filter-has-popover:hover {
-        color: #ffeb3b;
+        color: #ffd700;
     }
 
     .control-filter > .filter-has-popover:hover .filter-label {
-        color: #cddc39;
+        color: #ffd700;
     }
 
     .control-filter-popover .filter-items {
