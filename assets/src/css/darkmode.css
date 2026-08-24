@@ -1700,6 +1700,56 @@
         color: red;
     }
 
+    /* Event-log preview: the #winter-log-viewer component ships a hardcoded
+       light theme via an inline <style> in core's _field_details.php partial.
+       Darken the panel, trace frames, code snippets and syntax highlighting.
+       (.dark #winter-log-viewer... outranks core's id-only inline rules.) */
+    #winter-log-viewer {
+        background: var(--drk-bg-color-a);
+        color: var(--drk-color);
+    }
+
+    #winter-log-viewer table.table tr td,
+    #winter-log-viewer table.table tr th {
+        color: var(--drk-color);
+        border-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .btn.btn-secondary[disabled] {
+        color: var(--drk-color);
+    }
+
+    #winter-log-viewer .trace {
+        border-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .trace-frame {
+        background: var(--drk-bg-color-b);
+    }
+
+    #winter-log-viewer .trace-frame:not(:last-child) {
+        border-bottom-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .snippet-preview-container,
+    #winter-log-viewer .snippet-preview div.preview-line {
+        background: var(--drk-bg-color-inset);
+    }
+
+    #winter-log-viewer .snippet-preview div.preview-line.highlight {
+        background: var(--drk-bg-color-selection);
+    }
+
+    /* Code-snippet syntax highlighting recoloured for a dark background. */
+    #winter-log-viewer .snippet-preview span.bracket { color: #c9d1d9; }
+    #winter-log-viewer .snippet-preview span.variable { color: #ff7b52; }
+    #winter-log-viewer .snippet-preview span.control { color: #c586c0; }
+    #winter-log-viewer .snippet-preview span.string { color: #98c379; }
+    #winter-log-viewer .snippet-preview span.number { color: #569cd6; }
+    #winter-log-viewer .snippet-preview span.html { color: #dcdcaa; }
+    #winter-log-viewer .snippet-preview span.bool { color: #f97583; }
+    #winter-log-viewer .snippet-preview span.comment { color: #7d8f5a; }
+
     /* Import/Export */
     .import-behavior .import-file-columns,
     .import-behavior .import-db-columns {

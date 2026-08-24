@@ -8,6 +8,8 @@
 >
 > ✅ **G14 (list totals white bands) — FIXED & verified.** `tr.table-totals` (in thead + tfoot) rendered `#f2f2f2`; added `table.data tr.table-totals{,td,th}` dark override → both bands now `#161b22`. Verified `winter/test/people`.
 >
+> ✅ **G2 (event-log preview panel) — FIXED & verified.** The `#winter-log-viewer` component ships a hardcoded light theme via an inline `<style>` in core's `modules/system/controllers/eventlogs/_field_details.php`. Added a dark override block in darkmode.css (`.dark #winter-log-viewer…` outranks core's id-only inline rules): panel `var(--drk-bg-color-a)`, detail table text/borders, trace frames `--drk-bg-color-b`, code snippets `--drk-bg-color-inset`, highlight line `--drk-bg-color-selection`, and re-coloured all 8 syntax-highlight classes for a dark bg. Verified `/eventlogs/preview/212` end-to-end (detail table, stack frames, code snippet). **Still to check: SSO logs preview `/winter/sso/logs/preview/4` — likely a separate record-preview partial (may be its own G2 instance / plugin-owned).**
+>
 > ✅ **G1 (tab active lozenge + content border) — FIXED & verified.** The active primary-tab set `--drk-bg-color-a:#555` (washed grey "broken lozenge"); swapped to `#21262d` (palette raised surface), and darkened the light `.tab-content` `border-top` (was gray-200) to `var(--drk-border-color)`. Verified `backend/users/update/1`: active title+wings `rgb(33,38,45)`, content border `rgb(48,54,61)`. NB: this is the *global* `.control-tabs.primary-tabs` rule, so it covers all primary tabs install-wide (supersedes the old `.master-area`-only scope). Secondary-tab wings still to re-verify.
 >
 > This supersedes the over-optimistic verdicts in `_summary.md`. The first pass caught obvious
