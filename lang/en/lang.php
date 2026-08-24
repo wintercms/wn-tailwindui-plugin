@@ -41,6 +41,7 @@ return [
     'preferences' => [
         'appearance' => 'Appearance',
         'dark_mode' => [
+            'label' => 'Dark mode',
             'auto' => 'Follow system preferences',
             'light' => 'Light theme',
             'dark' => 'Dark theme',

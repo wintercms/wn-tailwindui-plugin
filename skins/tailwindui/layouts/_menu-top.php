@@ -4,10 +4,8 @@
     $mySettings = System\Classes\SettingsManager::instance()->listItems('mysettings');
 ?>
 
-<headless-disclosure
-    as="nav"
+<nav
     id="layout-sidenav-1"
-    v-slot="{ open }"
     class="print:hidden
         <?php if ($menuLocation === 'top'): ?>
             bg-gray-900
@@ -20,21 +18,31 @@
         <div class="
             relative flex items-center
             <?php if ($menuLocation === 'top' && $iconLocation === 'tile'): ?>
-                p-2
+                px-2 py-1.5
+            <?php elseif ($menuLocation === 'side'): ?>
+                justify-between h-12
             <?php else: ?>
-                justify-between h-16
+                justify-between h-14
             <?php endif; ?>
         ">
 
             <!-- Mobile menu button-->
-            <headless-disclosure-button
+            <button
+                type="button"
+                data-control="mobile-menu-toggle"
+                aria-expanded="false"
+                aria-controls="layout-mobile-menu"
                 class="btn btn-secondary btn-sm px-0 mr-4 md:hidden"
             >
                 <!-- @TODO: Needs translation -->
                 <span class="sr-only">Open main menu</span>
-                <menu-icon v-if="!open" class="block h-6 w-6" aria-hidden="true"></menu-icon>
-                <x-icon v-else class="block h-6 w-6" aria-hidden="true"></x-icon>
-            </headless-disclosure-button>
+                <svg class="mobile-menu-icon-open block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <svg class="mobile-menu-icon-close hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
 
             <?= $this->fireViewEvent('backend.partials.menuTop.extend', [
                 'menuLocation' => $menuLocation,
@@ -52,7 +60,7 @@
                             md:mx-6
                         <?php endif; ?>
                     ">
-                    <div class="flex items-stretch space-x-2 pl-2">
+                    <div class="flex items-stretch gap-2 pl-2">
                         <!-- Header search - side menu -->
                         <!-- TODO: unhide when implmented -->
                         <?php if ($menuLocation === 'side'): ?>
@@ -63,15 +71,12 @@
                         <?php foreach (BackendMenu::listMainMenuItems() as $item): ?>
                             <?php $isActive = BackendMenu::isMainMenuItemActive($item); ?>
                             <?php $hasChildren = (bool) count($item->sideMenu); ?>
+                            <?php $itemFullCode = $item->owner . '.' . $item->code; ?>
                             <?php if ($menuLocation === 'top'): ?>
-                                <headless-menu
-                                    as="div"
-                                    class="headless-menu flex items-stretch"
-                                    v-slot="{ show, open }"
-                                >
+                                <div class="tw-dropdown flex items-stretch">
                                     <div
                                         class="
-                                            flex relative items-stretch group rounded-md min-w-max ptransition duration-300 ease-in
+                                            flex items-stretch group rounded-md min-w-max transition duration-150 ease-in
                                             <?php if ($iconLocation === 'tile') : ?>
                                                 pr-2
                                             <?php else: ?>
@@ -151,108 +156,96 @@
                                             </span>
                                         <?php endif; ?>
                                         <?php if ($hasChildren): ?>
-                                            <headless-menu-button
-                                                as="div"
-                                                <?php if ($iconLocation === 'tile'): ?>
-                                                    class="flex flex-col justify-end"
-                                                <?php endif; ?>
+                                            <span
+                                                class="flex items-center pointer-events-none
+                                                    <?php if ($iconLocation === 'tile'): ?>
+                                                        flex-col justify-end
+                                                    <?php endif; ?>
+                                                "
+                                                aria-hidden="true"
                                             >
-                                                <chevron-down-icon
+                                                <svg
                                                     class="
-                                                        h-4 w-4 cursor-pointer
+                                                        h-4 w-4
                                                         <?php if ($isActive) : ?>
-                                                            bg-primary text-white
+                                                            text-white
                                                         <?php else: ?>
                                                             text-gray-300
                                                         <?php endif ?>
                                                         <?php if ($iconLocation === 'tile'): ?>
                                                             mb-2 ml-1
                                                         <?php else: ?>
-                                                            my-4 ml-2
+                                                            ml-2
                                                         <?php endif; ?>
                                                     "
-                                                    aria-hidden="true"
-                                                />
-                                            </headless-menu-button>
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                >
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </span>
                                         <?php endif; ?>
                                     </div>
 
                                     <!-- child menu -->
                                     <?php if ($hasChildren): ?>
-                                        <transition
-                                            v-show="open"
-                                            enter-active-class="transition ease-out duration-100"
-                                            enter-from-class="opacity-0 scale-95"
-                                            enter-to-class="opacity-100 scale-100"
-                                            leave-active-class="transition ease-in duration-75"
-                                            leave-from-class="opacity-100 scale-100"
-                                            leave-to-class="opacity-0 scale-95"
+                                        <div
+                                            class="tw-dropdown-menu py-1"
+                                            data-control="sidenav"
+                                            data-menu-code="<?= $itemFullCode; ?>"
+                                            data-active-class="active"
                                         >
-                                            <headless-menu-items
-                                                class="origin-top-left absolute left-0 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 focus:outline-none"
-                                                data-control="sidenav"
-                                                data-active-class="active"
-                                                static
-                                            >
-                                                <?php foreach ($item->sideMenu as $child): ?>
-                                                    <?php $childIsActive = BackendMenu::isSideMenuItemActive($child); ?>
-                                                    <headless-menu-item
-                                                        v-slot="{ active }"
-                                                    >
-                                                        <a
-                                                            href="<?= $child->url ?>"
-                                                            <?php if ($child->url === 'javascript:;'): ?>
-                                                                data-menu-item="<?= $child->code ?>"
-                                                            <?php endif; ?>
-                                                            class="
-                                                                group flex relative items-center px-4 py-2 text-sm hover:no-underline transition duration-300 ease-in
-                                                                <?php if ($childIsActive): ?>
-                                                                    bg-primary text-white hover:text-white hover:bg-primary dark:bg-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700
-                                                                <?php else: ?>
-                                                                    text-gray-700 hover:text-white hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
-                                                                <?php endif; ?>
-                                                            "
+                                            <?php foreach ($item->sideMenu as $child): ?>
+                                                <?php $childIsActive = BackendMenu::isSideMenuItemActive($child); ?>
+                                                <a
+                                                    href="<?= $child->url === 'javascript:;' ? "$item->url#menu-item-{$itemFullCode}-child-{$child->code}" : $child->url ?>"
+                                                    <?php if ($child->url === 'javascript:;'): ?>
+                                                        data-menu-item="<?= $child->code ?>"
+                                                    <?php endif; ?>
+                                                    class="
+                                                        group flex relative items-center px-3 py-1.5 text-sm hover:no-underline transition duration-150 ease-in
+                                                        text-gray-700 hover:bg-gray-100 hover:text-gray-900
+                                                        dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-700
+                                                        <?= $childIsActive ? 'active' : '' ?>
+                                                    "
+                                                >
+                                                    <?php if ($iconLocation !== 'hidden') : ?>
+                                                        <?php if ($child->iconSvg): ?>
+                                                            <img
+                                                                src="<?= Url::asset($child->iconSvg) ?>"
+                                                                class="svg-icon w-4 h-4"
+                                                                loading="lazy"
+                                                            >
+                                                        <?php else: ?>
+                                                            <i
+                                                                class="
+                                                                    <?= $child->icon ?> mr-3 h-4 w-4
+                                                                    <?php if ($childIsActive): ?>
+                                                                        text-white group-hover:text-white
+                                                                    <?php else: ?>
+                                                                        text-gray-400 text-gray-300 group-hover:text-gray-500 dark:group-hover:text-white
+                                                                    <?php endif; ?>
+                                                                "
+                                                            >
+                                                            </i>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                    <span><?= e(trans($child->label)) ?></span>
+                                                    <?php if ($child->counter): ?>
+                                                        <span
+                                                            class="counter"
+                                                            data-menu-id="<?= e($child->code) ?>"
+                                                            <?php if ($child->counterLabel): ?>
+                                                                title="<?= e(trans($child->counterLabel)) ?>"
+                                                            <?php endif ?>
                                                         >
-                                                            <?php if ($iconLocation !== 'hidden') : ?>
-                                                                <?php if ($child->iconSvg): ?>
-                                                                    <img
-                                                                        src="<?= Url::asset($child->iconSvg) ?>"
-                                                                        class="svg-icon w-4 h-4"
-                                                                        loading="lazy"
-                                                                    >
-                                                                <?php else: ?>
-                                                                    <i
-                                                                        class="
-                                                                            <?= $child->icon ?> mr-3 h-4 w-4
-                                                                            <?php if ($childIsActive): ?>
-                                                                                text-white group-hover:text-white
-                                                                            <?php else: ?>
-                                                                                text-gray-400 text-gray-300 group-hover:text-gray-500 dark:group-hover:text-white
-                                                                            <?php endif; ?>
-                                                                        "
-                                                                    >
-                                                                    </i>
-                                                                <?php endif; ?>
-                                                            <?php endif; ?>
-                                                            <span><?= e(trans($child->label)) ?></span>
-                                                            <?php if ($child->counter): ?>
-                                                                <span
-                                                                    class="counter"
-                                                                    data-menu-id="<?= e($child->code) ?>"
-                                                                    <?php if ($child->counterLabel): ?>
-                                                                        title="<?= e(trans($child->counterLabel)) ?>"
-                                                                    <?php endif ?>
-                                                                >
-                                                                    <?= e($child->counter) ?>
-                                                                </span>
-                                                            <?php endif; ?>
-                                                        </a>
-                                                    </headless-menu-item>
-                                                <?php endforeach; ?>
-                                            </headless-menu-items>
-                                        </transition>
+                                                            <?= e($child->counter) ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                </a>
+                                            <?php endforeach; ?>
+                                        </div>
                                     <?php endif ?>
-                                </headless-menu>
+                                </div>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
@@ -273,4 +266,4 @@
     <?= $this->makeLayoutPartial('partials/menu/top/mobile-menu', [
         'iconLocation' => $iconLocation,
     ]); ?>
-</headless-disclosure>
+</nav>

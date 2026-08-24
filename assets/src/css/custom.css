@@ -38,27 +38,37 @@ html {
     }
 }
 
+/*
+ * Font icons in the menus. The glyph is drawn by the icon-* font class's
+ * ::before, so size and align it per icon location. Target the marker class's
+ * ::before directly rather than qualifying with [class^="icon-"]: the top menu
+ * builds its class list across multiple lines, so the class attribute starts
+ * with whitespace (not "icon-") and the qualified selector never matched.
+ */
 .icon-tile,
-.icon-only,
-.icon-inline {
+.icon-only {
     @apply w-full;
-    &[class^='icon-']:before {
+
+    &:before {
         @apply block mx-auto text-center;
+
         font-size: 1.5rem;
     }
 }
 
-a.bg-primary:hover {
-    @apply bg-primary-dark;
+/* Inline (beside the label): keep the glyph in flow, just size it up. The side
+   menu's inline SVGs are smaller (w-5 = 1.25rem) than the top menu's, so match
+   the font glyph to each so they line up. */
+.icon-inline:before {
+    font-size: 1.5rem;
 }
 
-div[id^='headlessui-menu-items-'] {
-    /* all menus have z-index of 50 */
-    z-index: 999 !important;
+.sidemenu .icon-inline:before {
+    font-size: 1.25rem;
+}
 
-    a:hover {
-        @apply no-underline; /* all menu item links have no text-decoration: underline; */
-    }
+a.bg-primary:hover {
+    @apply bg-primary-dark;
 }
 
 /* widgets */
@@ -82,18 +92,6 @@ div[id^='headlessui-menu-items-'] {
 }
 
 /* winter.css overrides */
-.layout-sidenav-container {
-    width: 120px;
-
-    &-inline {
-        @apply w-[250px] max-w-[250px];
-    }
-
-    &-tile {
-        @apply w-[120px] max-w-[120px];
-    }
-}
-
 .layout > .layout-row.h-auto {
     height: auto !important;
 }
@@ -141,18 +139,26 @@ div[data-control='media-manager-crop-tool'] {
         &-top {
             @apply grid-cols-1;
 
+            /* top bar is h-14 (3.5rem) */
             .layout-content > .layout {
-                height: calc(100vh - 4rem);
+                height: calc(100vh - 3.5rem);
                 @apply max-w-full;
             }
         }
 
         &-side {
 
+            /* the top bar in side mode is h-12 (3rem) */
             .layout-topmenu + .layout {
-                height: calc(100vh - 4rem);
+                height: calc(100vh - 3rem);
             }
 
+            /*
+             * The side menu inner (#layout-sidenav-2) is position:fixed, so it is
+             * out of the grid flow — pin its width to the matching grid column
+             * (see tailwind.config.js gridTemplateColumns) so it doesn't size to
+             * its content and overhang the content area / top bar.
+             */
             &-inline {
                 @apply md:grid-cols-layout-inline print:grid-cols-1;
 
@@ -163,14 +169,26 @@ div[data-control='media-manager-crop-tool'] {
 
             &-only {
                 @apply md:grid-cols-layout-only;
+
+                #layout-sidenav-2 {
+                    width: 71px;
+                }
             }
 
             &-hidden {
                 @apply md:grid-cols-layout-hidden;
+
+                #layout-sidenav-2 {
+                    width: 148px;
+                }
             }
 
             &-tile {
                 @apply md:grid-cols-layout-tile;
+
+                #layout-sidenav-2 {
+                    width: 124px;
+                }
             }
         }
     }

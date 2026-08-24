@@ -1,1 +1,12 @@
 1.0.1: First version of TailwindUI
+1.1.0:
+    - "Rebuilt the backend navigation chrome with plain HTML/CSS and minimal vanilla JS, removing the Vue and Headless UI dependency (much smaller asset bundle)."
+    - "Fixed direct navigation to JS-based sub-menu items so a deep link opens the correct child instead of the default one (#6)."
+    - "Added working sub-menu navigation for the \"top\" menu location (Theme Editor, Pages, etc.), including in-page switching and active-item highlighting."
+    - "The selected sub-menu item is now kept in the URL hash so reloads and bookmarks re-select it."
+    - "Fixed dropdown and fly-out positioning (including over the fancy form header), restored horizontal scrolling of the top bar on overflow, and removed the hover flicker/fighting."
+    - "Made the navigation more compact across all menu and icon locations, and sped up the hover transitions."
+    - "Fixed font-icon sizing across the icon locations, the side-menu width per icon location, dropdown hover visibility, and z-index layering so menus sit above content scrollbars."
+    - "Fixed the dark-mode preference selector rendering raw language keys, and added the missing French translations."
+    - "Added touch support for the user menu, kept aria-expanded in sync on collapsible menus, and escaped the user's full name in the header (stored XSS)."
+    - "Fixed fancy-layout form styling: action buttons, tabs, saving indicator, delete button, and the Winter.Translate language-switcher overhang; compacted the form header."

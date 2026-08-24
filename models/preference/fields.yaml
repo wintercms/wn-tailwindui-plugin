@@ -1,15 +1,15 @@
 tabs:
     fields:
         dark_mode:
-            label: 'winter.tailwindui::lang.preferences.appearance'
-            type: 'dropdown'
+            label: 'winter.tailwindui::lang.preferences.dark_mode.label'
+            type: dropdown
             tab: 'winter.tailwindui::lang.preferences.appearance'
             default: light
             permissions: winter.tailwindui.manage_own_appearance.dark_mode
             options:
-                auto: ['winter.tailwindui::lang.preferences.dark_mode.auto', 'icon-computer']
-                light: ['winter.tailwindui::lang.preferences.dark_mode.light', 'icon-sun']
-                dark: ['winter.tailwindui::lang.preferences.dark_mode.dark', 'icon-moon']
+                auto: 'winter.tailwindui::lang.preferences.dark_mode.auto'
+                light: 'winter.tailwindui::lang.preferences.dark_mode.light'
+                dark: 'winter.tailwindui::lang.preferences.dark_mode.dark'
         menu_location:
             label: winter.tailwindui::lang.branding.menu_location.label
             tab: 'winter.tailwindui::lang.preferences.appearance'

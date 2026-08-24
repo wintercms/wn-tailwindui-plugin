@@ -24,6 +24,16 @@
         this.visibleItemId = false
         this.$fixButton = $('<a href="#" class="fix-button"><i class="icon-thumb-tack"></i></a>')
 
+        // Re-select the hash-targeted sub-menu item on later hash changes. This
+        // matters for the "top" menu location: its dropdown items are real links,
+        // so choosing one while already on the destination page only updates the
+        // hash without reloading, and nothing would otherwise switch the panel
+        // (the "flaky" top-menu behaviour). The initial call runs at the end of
+        // init() (after handlers are wired). See selectTargetedItem().
+        $(window).on('hashchange', function() {
+            self.selectTargetedItem()
+        })
+
         this.$fixButton.click(function() {
             self.fixPanel()
             return false
@@ -117,6 +127,52 @@
         }
 
         this.updateActiveTab()
+
+        // Run the initial deep-link selection last — after all handlers above are
+        // wired — so any failure here can't abort init() and leave the panel
+        // without its interaction handlers.
+        this.selectTargetedItem()
+    }
+
+    SidePanelTab.prototype.selectTargetedItem = function() {
+        // The hash format is "#menu-item-<menu-code>-child-<child-code>". Match it
+        // against this panel's own known menu code (rather than splitting on
+        // "-child-") so a parent code containing dashes or a literal "-child-"
+        // still resolves. The targeted item is looked up among this panel's own
+        // sub-nav items, so the correct [data-content-id] panel is shown. The hash
+        // is intentionally left in the URL so reloading or bookmarking the page
+        // re-selects the same item; a pre-paint script in _menu-side.php reads it
+        // on every load to apply the active class early and avoid a flash.
+        if (!location.hash.startsWith('#menu-item-')) {
+            return
+        }
+
+        var expectedPrefix = '#menu-item-' + this.$el.data('menu-code') + '-child-'
+        if (!location.hash.startsWith(expectedPrefix)) {
+            return
+        }
+
+        var itemId = location.hash.substring(expectedPrefix.length)
+        // Active state spans every representation of this menu (the side flyout,
+        // the mobile list and the top dropdown), so toggle it across all of them.
+        // $sideNavItems is limited to the clickable <li> rows, which excludes the
+        // top dropdown's <a> items — look those up here so their highlight follows
+        // the hash too (the server can't set it, as it can't see the hash).
+        var $allItems = this.$sideNav.find('[data-menu-item]')
+        // Match with a predicate, not a selector string built from the hash:
+        // itemId comes from location.hash, and a value containing ", ] or : would
+        // make jQuery/Sizzle throw "unrecognized expression".
+        var $targetItem = $allItems.filter(function() {
+            return String($(this).data('menu-item')) === itemId
+        })
+        if (!$targetItem.length) {
+            return
+        }
+
+        $allItems.removeClass('active')
+        this.displaySidePanel()
+        this.displayTab($targetItem)
+        $targetItem.addClass('active')
     }
 
     SidePanelTab.prototype.displayTab = function(menuItem) {

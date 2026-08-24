@@ -60,8 +60,16 @@ module.exports = {
                 '2000': '2000ms',
             },
             zIndex: {
-                'topmenu': '99',
-                'sidemenu': '100',
+                /* The persistent menu chrome (sticky top bar / fixed side menu)
+                   must sit ABOVE core content chrome — so the dropdowns / fly-out
+                   submenus trapped in these stacking contexts aren't overlapped by
+                   it (scrollbars 100, sidenav-tree arrows 101, side panel 200) —
+                   but BELOW the popup/modal layer so a modal still covers and dims
+                   the menu (.modal-backdrop 500, .modal 600). 400 sits in that gap.
+                   Overlays that should always win are far above (loading 2000,
+                   flash 10300, sweet-alert / global-notice 10500). */
+                'topmenu': '400',
+                'sidemenu': '400',
             },
         },
     },

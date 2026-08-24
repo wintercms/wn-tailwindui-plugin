@@ -27,7 +27,7 @@
         <div class="default-layout default-layout-<?= $menuLocation ?> default-layout-<?= $menuLocation ?>-<?= $iconLocation ?>">
             <?php if ($menuLocation === 'top') : ?>
                 <!-- Top Menu - top mode -->
-                <div id="vue-app-1" class="layout-topmenu sticky top-0 z-topmenu">
+                <div class="layout-topmenu sticky top-0 z-topmenu">
                     <?= $this->makeLayoutPartial('menu-top') ?>
                 </div>
             <?php endif; ?>
@@ -42,7 +42,7 @@
 
                 <!-- Top Menu - side mode -->
                 <?php if ($menuLocation === 'side') : ?>
-                    <div id="vue-app-1" class="layout-topmenu sticky top-0 z-sidemenu">
+                    <div class="layout-topmenu sticky top-0 z-sidemenu">
                         <?= $this->makeLayoutPartial('menu-top') ?>
                     </div>
                 <?php endif; ?>

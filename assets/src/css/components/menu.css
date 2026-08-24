@@ -28,4 +28,60 @@
             }
         }
     }
+
+    /*
+     * Top-menu dropdown: highlight the active JS-driven child. Server-side active
+     * detection can't see the deep-link hash, so winter.sidepaneltab.js toggles
+     * this `.active` class onto the correct item; the active colour lives here
+     * instead of as inline conditional utilities that fought the hover styles.
+     */
+    .layout-topmenu [data-control="sidenav"] a.active {
+        @apply bg-primary text-white hover:bg-primary hover:text-white;
+    }
+
+    /*
+     * Plain dropdown menus (replaces Headless UI). A `.tw-dropdown` wraps a
+     * trigger and a `.tw-dropdown-menu` panel, revealed on hover or when focus is
+     * within. The panel is `position: fixed` and placed flush under its trigger
+     * by menu.js (via getBoundingClientRect) so the menu bar can scroll
+     * horizontally on overflow without clipping the panel — and so the placement
+     * is robust against page layout (e.g. the fancy form header). Being flush
+     * (no gap) keeps the hover contiguous between trigger and panel.
+     */
+    .tw-dropdown {
+        @apply relative;
+    }
+
+    /* z-index sits above positioned backend chrome (e.g. tab triangles) that
+       would otherwise poke through the panel — matches the old menu z-index. */
+    .tw-dropdown-menu {
+        @apply hidden fixed z-[999] min-w-[14rem] rounded-md shadow-lg bg-white dark:bg-gray-800;
+    }
+
+    .tw-dropdown:hover > .tw-dropdown-menu,
+    .tw-dropdown:focus-within > .tw-dropdown-menu,
+    .tw-dropdown.is-open > .tw-dropdown-menu {
+        @apply block;
+    }
+
+    /*
+     * Dropdown item hover — the inline light-grey hover was too faint on the
+     * white panel. Use the brand colour (as the active row does) so a hovered
+     * item reads clearly; the active row's own rule above still wins on it.
+     */
+    .tw-dropdown-menu a:hover {
+        @apply bg-primary text-white no-underline;
+    }
+
+    .dark .tw-dropdown-menu a:hover {
+        @apply bg-gray-700 text-white;
+    }
+
+    /* Mobile menu toggle: swap the hamburger for a close icon while open. */
+    [data-control="mobile-menu-toggle"].is-open .mobile-menu-icon-open {
+        @apply hidden;
+    }
+    [data-control="mobile-menu-toggle"].is-open .mobile-menu-icon-close {
+        @apply block;
+    }
 }

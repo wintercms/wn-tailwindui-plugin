@@ -20,7 +20,7 @@
             <nav
                 class="
                     flex-1 px-2 bg-gray-800 max-h-screen
-                    <?= $itemMode === 'tile' ? 'space-y-2' : 'space-y-1' ?>
+                    <?= $itemMode === 'tile' ? 'space-y-1.5' : 'space-y-1' ?>
                     <?php if ($iconLocation !== 'tile' && $iconLocation !== 'only'): ?>
                         overflow-y-auto overflow-x-hidden
                     <?php endif; ?>
@@ -28,9 +28,9 @@
                 aria-label="Sidebar"
             >
                 <!-- logo -->
-                <div class="flex items-center mb-4 h-16 shrink-0">
+                <div class="flex items-center mb-2 h-12 shrink-0">
                     <img
-                        class="h-12 w-auto <?= $itemMode === 'tile' ? 'm-auto' : '' ?>"
+                        class="h-10 w-auto <?= $itemMode === 'tile' ? 'm-auto' : '' ?>"
                         src="<?= e($logoImage) ?: Url::asset('modules/backend/assets/images/winter-logo-white.svg') ?>"
                         alt="<?= $appName ?>"
                     >
@@ -55,6 +55,8 @@
 
                             if ($item->iconSvg) {
                                 array_push($iconClass, 'w-5', 'h-5'); // 16px x 16px
+                            } else {
+                                array_push($iconClass, 'icon-inline');
                             }
                         }
 
@@ -96,3 +98,47 @@
         </div>
     </div>
 </div>
+<script>
+    /*
+     * Pre-paint side-menu deep-link selection.
+     *
+     * JS-driven sub-menu children (see partials/menu/side/_item-contents.php)
+     * link to "<parent-url>#menu-item-<owner.code>-child-<child-code>" so the
+     * intended child can be re-selected after a full page load. That re-selection
+     * runs from winter.sidepaneltab.js, which is bundled into the deferred app.js
+     * module and executes ~200ms after the page is interactive — long enough that
+     * the server's default child stays highlighted and then visibly flips to the
+     * real target (the "flash" of the wrong menu item).
+     *
+     * Applying the active state here, synchronously, before the first paint kills
+     * that flash. winter.sidepaneltab.js still runs afterwards to open the side
+     * panel and switch the tab; re-applying the same active state is idempotent.
+     * The hash is deliberately left in the URL (so reloads/bookmarks re-select
+     * the item), which is why this runs on every load. This only ships with the
+     * side menu (default.php omits this partial in "top" menu mode), so it never
+     * touches the top-menu layout.
+     */
+    (function () {
+        var prefix = '#menu-item-';
+        var hash = window.location.hash;
+        if (hash.lastIndexOf(prefix, 0) !== 0) {
+            return;
+        }
+        // Match the hash against each side-nav's own known menu code rather than
+        // splitting on "-child-", so a parent code that itself contains dashes or
+        // a literal "-child-" still resolves to the correct navigation element.
+        var navs = document.querySelectorAll('[data-control="sidenav"][data-menu-code]');
+        for (var n = 0; n < navs.length; n++) {
+            var expected = prefix + navs[n].getAttribute('data-menu-code') + '-child-';
+            if (hash.lastIndexOf(expected, 0) !== 0) {
+                continue;
+            }
+            var childCode = hash.substring(expected.length);
+            var items = navs[n].querySelectorAll('li[data-menu-item]');
+            for (var i = 0; i < items.length; i++) {
+                items[i].classList.toggle('active', items[i].getAttribute('data-menu-item') === childCode);
+            }
+            break;
+        }
+    })();
+</script>
