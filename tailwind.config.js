@@ -61,14 +61,15 @@ module.exports = {
             },
             zIndex: {
                 /* The persistent menu chrome (sticky top bar / fixed side menu)
-                   must sit above ALL backend content chrome so the dropdowns and
-                   fly-out submenus trapped in these stacking contexts aren't
-                   overlapped by it. Core content chrome ranges up to z-index 600
-                   (scrollbars 100, sidenav-tree arrows 101, side panel 200, fancy
-                   tabs 600); overlays sit far higher (loading 2000, modals 10500).
-                   700 clears content while staying below the overlays. */
-                'topmenu': '700',
-                'sidemenu': '700',
+                   must sit ABOVE core content chrome — so the dropdowns / fly-out
+                   submenus trapped in these stacking contexts aren't overlapped by
+                   it (scrollbars 100, sidenav-tree arrows 101, side panel 200) —
+                   but BELOW the popup/modal layer so a modal still covers and dims
+                   the menu (.modal-backdrop 500, .modal 600). 400 sits in that gap.
+                   Overlays that should always win are far above (loading 2000,
+                   flash 10300, sweet-alert / global-notice 10500). */
+                'topmenu': '400',
+                'sidemenu': '400',
             },
         },
     },
