@@ -1150,6 +1150,54 @@
         background: var(--drk-bg-color-selection);
     }
 
+    /* Editor toolbars: core ships them light #f2f2f2. Darken the bar, its
+       border and its buttons for both the markdown editor and Froala. */
+    .control-toolbar.editor-toolbar,
+    .fr-toolbar,
+    .fr-toolbar.fr-top {
+        background: var(--drk-bg-color-c);
+        border-color: var(--drk-border-color);
+    }
+
+    .control-toolbar.editor-toolbar .btn {
+        color: var(--drk-color);
+    }
+
+    .control-toolbar.editor-toolbar .btn:hover,
+    .control-toolbar.editor-toolbar .btn:focus {
+        color: #fff;
+        background: var(--drk-bg-color-btn);
+    }
+
+    .fr-toolbar .fr-command.fr-btn,
+    .fr-toolbar .fr-command.fr-btn i,
+    .fr-toolbar .fr-command.fr-btn svg path {
+        color: var(--drk-color);
+        fill: var(--drk-color);
+    }
+
+    .fr-toolbar .fr-command.fr-btn:hover,
+    .fr-toolbar .fr-command.fr-btn:focus,
+    .fr-toolbar .fr-command.fr-btn.fr-active {
+        background: var(--drk-bg-color-btn);
+    }
+
+    .fr-toolbar .fr-command.fr-btn.fr-active,
+    .fr-toolbar .fr-command.fr-btn.fr-active i,
+    .fr-toolbar .fr-command.fr-btn.fr-active svg path {
+        color: #fff;
+        fill: #fff;
+    }
+
+    .fr-toolbar .fr-more-toolbar,
+    .fr-toolbar.fr-toolbar .fr-newline {
+        background: var(--drk-bg-color-c);
+    }
+
+    .fr-toolbar .fr-separator {
+        background: var(--drk-border-color);
+    }
+
     /* control-popover */
     div.control-popover > div {
         background: var(--drk-bg-color-c);

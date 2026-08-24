@@ -8,6 +8,8 @@
 >
 > ✅ **G14 (list totals white bands) — FIXED & verified.** `tr.table-totals` (in thead + tfoot) rendered `#f2f2f2`; added `table.data tr.table-totals{,td,th}` dark override → both bands now `#161b22`. Verified `winter/test/people`.
 >
+> ✅ **G7 (editor toolbars white) — FIXED & verified.** Both editor bodies were already dark but their toolbars stayed light `#f2f2f2`. Darkened `.control-toolbar.editor-toolbar` (markdown) and `.fr-toolbar` (Froala) to `--drk-bg-color-c` with dark borders, and recoloured toolbar buttons/icons (text + svg fill) light with dark hover/active states + dark separators. Verified markdown toolbar on `blog/posts/create` (`#1b222c`) and Froala toolbar on a Winter.Pages static page (`#1b222c`, light icons).
+>
 > ✅ **G11 (media checkerboard + "nothing selected") — FIXED & verified.** The existing darkmode.css rule for `.sidebar-image-placeholder` literally re-applied the *light* checkerboard (`#efefef`/`#d2d2d2`) and a white `#fff` "Nothing is selected" band — it was never actually darkened. Swapped the gradient squares to `#0d1117`, base to `--drk-bg-color-c`, and the `p` band to `--drk-bg-color-b`. Verified `cms/media`.
 >
 > ✅ **form-preview panel (SSO logs preview et al) — FIXED & verified.** `.form-preview` used off-palette flat greys (`#343434` bg / `#626262` border); moved onto the palette (`--drk-bg-color-b` / `--drk-border-color`) so readonly record-preview forms match the theme. Verified `winter/sso/logs/preview/5` (fields already `#010409`, only the outer panel was off).
