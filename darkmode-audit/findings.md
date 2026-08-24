@@ -28,6 +28,8 @@
 >
 > ✅ **G1 (tab active lozenge + content border) — FIXED & verified.** The active primary-tab set `--drk-bg-color-a:#555` (washed grey "broken lozenge"); swapped to `#21262d` (palette raised surface), and darkened the light `.tab-content` `border-top` (was gray-200) to `var(--drk-border-color)`. Verified `backend/users/update/1`: active title+wings `rgb(33,38,45)`, content border `rgb(48,54,61)`. NB: this is the *global* `.control-tabs.primary-tabs` rule, so it covers all primary tabs install-wide (supersedes the old `.master-area`-only scope). Secondary-tab wings still to re-verify.
 >
+> ✅ **G26 (EasyForms visual form-builder) — FIXED & verified. [plugin-owned: LukeTowers.EasyForms, branch `wip/darkmode-formbuilder`]** The builder is authored light (bg-white palette + a "clean public form" preview canvas). Added a dark section to `formwidgets/formbuilder/assets/src/css/custom.css` scoped to `html[data-color-scheme="dark"]` (shared `--drk-*` vars + literal fallbacks) covering palette container/chips, the Add-field/Properties toggle, and the whole canvas (nested cards, tab headers, field controls, inputs, editor/switch placeholders, drop zones, labels). Rebuild: `php artisan mix:compile -f -p LukeTowers.EasyForms` + `winter:mirror`. **GOTCHA (cost a debug cycle): the plugin's build runs `postcss-prefixwrap('.luketowers-easyforms')`, which rewrote `html[data-color-scheme=dark] .x` → `.luketowers-easyforms[data-color-scheme=dark] .x` (the scheme attr is on `<html>`, an ANCESTOR of the scope, so it never matched). Fix: add `ignoredSelectors: [/\[data-color-scheme/]` in `winter.mix.js`. ANY prefixwrapped plugin (check Winter.Builder G23-25) needs this.** Also note `?vX.Y.Z` asset cache: after mirror, hard-reload wasn't enough — force a fresh `<link>` (cache-bust) to re-fetch the cross-origin `assets.winter.test` copy.
+>
 > This supersedes the over-optimistic verdicts in `_summary.md`. The first pass caught obvious
 > flash-bangs on happy-path list/form screens but **missed structural issues** on tabs, preview
 > panels, tables, switches and embeds. This list folds in the user's reported issues + confirmed captures.
@@ -61,7 +63,7 @@
 |----|-----|-------|-----------|
 | **G14** | **High** | **List totals header + footer render on white/light bands** (`.list-totals`/summary rows) | ✔ `winter/test/people` (both bands white) |
 | **G15** | **High** | **Filter bar is a mess** — truncated dropdowns (`× Ac...`), inconsistent checkbox/number/date-filter styling, odd colours (yellow "Hide published") | ✔ `winter/test/people` |
-| **G16** | Major | **Fancy-layout form header** needs a proper dark treatment (currently flat brand-teal regardless of scheme) | reported |
+| **G16** | Major | **Fancy-layout form header** needs a proper dark treatment (currently flat brand-teal regardless of scheme) | reported — **DECISION (user): darken/desaturate the teal in dark mode** so it integrates instead of glowing. TODO in core darkmode.css `.fancy-layout` header. |
 | **G17** | Moderate | **Delete button in CMS template editors** (pages/partials/layouts) styled wrong | reported |
 | **G18** | Moderate | **Winter.Pages** list-of-pages + its **delete button** | reported |
 | **G19** | High | **Tab wings on Winter.Pages menu editor** (another G1 instance — confirms install-wide) | reported |
