@@ -1483,6 +1483,12 @@
         background: #10161e;
     }
 
+    /* The default (no-preview) thumbnail is a light-grey PNG — invert just
+       that placeholder so it reads dark; real theme screenshots untouched. */
+    .theme-selector-layout .theme-thumbnail img[src*="default-theme-preview"] {
+        filter: invert(0.9);
+    }
+
     .theme-selector-layout .layout-row.active .theme-thumbnail {
         background: #081934;
     }
@@ -1497,13 +1503,15 @@
 
     .theme-selector-layout .create-new-theme,
     .theme-selector-layout .find-more-themes {
-        background: #263baf;
+        background: var(--drk-bg-color-btn);
+        border: 1px solid var(--drk-border-color);
         color: var(--drk-color);
     }
 
     .theme-selector-layout .create-new-theme:hover,
     .theme-selector-layout .find-more-themes:hover {
-        background: #283fc2;
+        background: var(--drk-bg-color-c);
+        color: #fff;
     }
 
     .theme-selector-layout .theme-description h3 {
