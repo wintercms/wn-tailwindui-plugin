@@ -875,6 +875,15 @@
         border-right: 1px solid #0180ff;
     }
 
+    /* List totals header/footer rows: core paints them light #f2f2f2 bands. */
+    table.table.data tr.table-totals,
+    table.table.data tr.table-totals td,
+    table.table.data tr.table-totals th {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+        border-color: var(--drk-border-color);
+    }
+
     .table > thead > tr > td.active,
     .table > tbody > tr > td.active,
     .table > tfoot > tr > td.active,
@@ -1497,7 +1506,9 @@
 
                 &.active {
                     a {
-                        --drk-bg-color-a: #555;
+                        /* Raised active-tab surface: use a palette dark instead
+                           of the washed #555 grey that read as a broken lozenge. */
+                        --drk-bg-color-a: #21262d;
 
                         &:before {
                             background-color: var(--drk-bg-color-a);
@@ -1506,7 +1517,7 @@
                         > span.title {
                             &:before,
                             &:after {
-                                border-color: #555;
+                                border-color: #21262d;
                             }
 
                             span {
@@ -1517,6 +1528,13 @@
                 }
             }
         }
+    }
+
+    /* Tab-content panel inherits a light gray-200 top border from core. */
+    .control-tabs > .tab-content,
+    .control-tabs > div > .tab-content,
+    .control-tabs > div > div > .tab-content {
+        border-top-color: var(--drk-border-color);
     }
 
     .control-tabs > ul.nav-tabs > li.active a,
@@ -1637,6 +1655,14 @@
     .control-table td[data-column-type=checkbox] div[data-checkbox-element] {
         background-color: #3c3a3a;
         border-color: var(--drk-border-color);
+    }
+
+    /* Readonly cells (e.g. Translate's source-string column) get a light
+       #f7f7f7 fill from core's table.css — invisible light-on-light text in
+       dark mode. Match core's full selector to win specificity (0,4,2). */
+    .control-table table.data td .content-container.readonly {
+        background: var(--drk-bg-color-inset);
+        color: var(--drk-color);
     }
 
 
