@@ -9,6 +9,24 @@
     --drk-color-danger: #f85149;
     --drk-border-color: #30363d;
     --drk-box-shadow: 0 8px 24px #010409;
+
+    /* Fancy-layout accent (muted teal) — the ONE place to retune the header,
+       breadcrumb, and every tab bar/title/wing so they never drift back to the
+       bright runtime --secondary teal. wing colour always == its title colour. */
+    --drk-accent-bar: #153a45;       /* bar behind tabs + breadcrumb + master/secondary-content containers */
+    --drk-accent-raised: #1a4653;    /* active tab title + wings + header band */
+    --drk-accent-active: #1e515f;    /* current breadcrumb segment / strongest accent */
+    --drk-accent-recessed: #123138;  /* inactive tab title + wings (pushed into the bar) */
+
+    /* Extra dark surfaces (fold in the one-off literals) */
+    --drk-bg-color-raised: #34495e;  /* slate raised surface */
+    --drk-bg-color-hover: #202833;   /* row/item hover */
+    --drk-bg-color-recessed: #0e253c;/* deep navy panels */
+
+    /* Border + text tiers */
+    --drk-border-color-strong: #555; /* mid-grey hairline */
+    --drk-color-muted: #8b949e;      /* secondary text */
+    --drk-color-faint: #777;         /* tertiary text */
 }
 
 @layer components {
@@ -500,24 +518,66 @@
         background: var(--drk-bg-color-a) !important;
     }
 
-    /* Fancy-layout header (G16): the bright brand-teal band (bg-secondary)
-       glows against the dark scheme. Darken + desaturate it to a muted teal
-       so it reads as an intentional accent header — the white labels,
-       translucent inputs and frosted ML badges already sit fine on it. */
+    /* ================================================================
+       Fancy-layout accent (G16 + tab wings) — centralised on the
+       --drk-accent-* vars (declared in :root). The bright runtime
+       --secondary teal leaks onto any tab bar/title/WING we don't
+       override, so for every tab type: bar → --drk-accent-bar, active
+       title AND its wings → --drk-accent-raised, inactive title AND its
+       wings → --drk-accent-recessed. Retune all of it from :root.
+       ================================================================ */
+
+    /* Header band + primary-tab nav bar */
     .fancy-layout .form-tabless-fields,
     .fancy-layout .control-tabs.primary-tabs > div > ul.nav-tabs {
-        background-color: #1a4653 !important;
+        background-color: var(--drk-accent-raised) !important;
     }
 
+    /* Breadcrumb bar + current segment */
     .fancy-layout .control-breadcrumb {
-        background-color: #153a45 !important;
+        background-color: var(--drk-accent-bar) !important;
     }
-
-    /* Current (last) breadcrumb segment keeps a brighter teal chevron; mute it
-       to a touch lighter than the bar so it still reads as "current". */
     .fancy-layout .control-breadcrumb li:last-child,
     .fancy-layout .control-breadcrumb li.active {
-        background-color: #1e515f !important;
+        background-color: var(--drk-accent-active) !important;
+    }
+
+    /* Master-tabs (Builder/CMS document "browser" tabs) — bar */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Master-tabs active title + wings */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:before,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:before,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:after,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:after {
+        background-color: var(--drk-accent-raised) !important;
+    }
+
+    /* Master-tabs inactive title + wings (wings leaked bright teal before) */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:before,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:before,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:after,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:after {
+        background-color: var(--drk-accent-recessed) !important;
+    }
+
+    /* Secondary-content-tabs bar */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs.primary-collapsed > div > ul.nav-tabs {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Secondary-content-tabs active title + wings (wings leaked before) */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:before,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:after {
+        background-color: var(--drk-accent-raised) !important;
     }
 
     #layout-side-panel div.control-toolbar input.form-control {
