@@ -49,6 +49,19 @@
 }
 
 .dark {
+    /* Dark accent = auto-derived from the LIVE brand colour. The branding
+       settings emit --brand-secondary (see BrandSetting/custom.less); here we
+       color-mix() it toward the dark base to get dark-safe variants, so the
+       whole fancy/tab/breadcrumb chrome retints from the brand palette with no
+       per-selector overrides. A custom dark palette overrides via
+       --brand-secondary-dark. Percentages match the approved muted teal.
+       (#2da7c7 fallback = the default brand secondary, for when the settings
+       block hasn't emitted the var yet.) */
+    --drk-accent-bar: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 26%, var(--drk-bg-color-a));
+    --drk-accent-raised: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 35%, var(--drk-bg-color-a));
+    --drk-accent-active: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 43%, var(--drk-bg-color-a));
+    --drk-accent-recessed: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 20%, var(--drk-bg-color-a));
+
     body {
         color: var(--drk-color);
         background: var(--drk-bg-color-a);
