@@ -9,6 +9,24 @@
     --drk-color-danger: #f85149;
     --drk-border-color: #30363d;
     --drk-box-shadow: 0 8px 24px #010409;
+
+    /* Fancy-layout accent (muted teal) — the ONE place to retune the header,
+       breadcrumb, and every tab bar/title/wing so they never drift back to the
+       bright runtime --secondary teal. wing colour always == its title colour. */
+    --drk-accent-bar: #153a45;       /* bar behind tabs + breadcrumb + master/secondary-content containers */
+    --drk-accent-raised: #1a4653;    /* active tab title + wings + header band */
+    --drk-accent-active: #1e515f;    /* current breadcrumb segment / strongest accent */
+    --drk-accent-recessed: #123138;  /* inactive tab title + wings (pushed into the bar) */
+
+    /* Extra dark surfaces (fold in the one-off literals) */
+    --drk-bg-color-raised: #34495e;  /* slate raised surface */
+    --drk-bg-color-hover: #202833;   /* row/item hover */
+    --drk-bg-color-recessed: #0e253c;/* deep navy panels */
+
+    /* Border + text tiers */
+    --drk-border-color-strong: #555; /* mid-grey hairline */
+    --drk-color-muted: #8b949e;      /* secondary text */
+    --drk-color-faint: #777;         /* tertiary text */
 }
 
 @layer components {
@@ -31,6 +49,19 @@
 }
 
 .dark {
+    /* Dark accent = auto-derived from the LIVE brand colour. The branding
+       settings emit --brand-secondary (see BrandSetting/custom.less); here we
+       color-mix() it toward the dark base to get dark-safe variants, so the
+       whole fancy/tab/breadcrumb chrome retints from the brand palette with no
+       per-selector overrides. A custom dark palette overrides via
+       --brand-secondary-dark. Percentages match the approved muted teal.
+       (#2da7c7 fallback = the default brand secondary, for when the settings
+       block hasn't emitted the var yet.) */
+    --drk-accent-bar: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 26%, var(--drk-bg-color-a));
+    --drk-accent-raised: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 35%, var(--drk-bg-color-a));
+    --drk-accent-active: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 43%, var(--drk-bg-color-a));
+    --drk-accent-recessed: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 20%, var(--drk-bg-color-a));
+
     body {
         color: var(--drk-color);
         background: var(--drk-bg-color-a);
@@ -500,6 +531,68 @@
         background: var(--drk-bg-color-a) !important;
     }
 
+    /* ================================================================
+       Fancy-layout accent (G16 + tab wings) — centralised on the
+       --drk-accent-* vars (declared in :root). The bright runtime
+       --secondary teal leaks onto any tab bar/title/WING we don't
+       override, so for every tab type: bar → --drk-accent-bar, active
+       title AND its wings → --drk-accent-raised, inactive title AND its
+       wings → --drk-accent-recessed. Retune all of it from :root.
+       ================================================================ */
+
+    /* Header band + primary-tab nav bar */
+    .fancy-layout .form-tabless-fields,
+    .fancy-layout .control-tabs.primary-tabs > div > ul.nav-tabs {
+        background-color: var(--drk-accent-raised) !important;
+    }
+
+    /* Breadcrumb bar + current segment */
+    .fancy-layout .control-breadcrumb {
+        background-color: var(--drk-accent-bar) !important;
+    }
+    .fancy-layout .control-breadcrumb li:last-child,
+    .fancy-layout .control-breadcrumb li.active {
+        background-color: var(--drk-accent-active) !important;
+    }
+
+    /* Master-tabs (Builder/CMS document "browser" tabs) — bar */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Master-tabs active title + wings */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:before,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:before,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:after,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:after {
+        background-color: var(--drk-accent-raised) !important;
+    }
+
+    /* Master-tabs inactive title + wings (wings leaked bright teal before) */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:before,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:before,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:after,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:after {
+        background-color: var(--drk-accent-recessed) !important;
+    }
+
+    /* Secondary-content-tabs bar */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs.primary-collapsed > div > ul.nav-tabs {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Secondary-content-tabs active title + wings (wings leaked before) */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:before,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:after {
+        background-color: var(--drk-accent-raised) !important;
+    }
+
     #layout-side-panel div.control-toolbar input.form-control {
         box-shadow: none;
     }
@@ -515,6 +608,17 @@
         .editor-preview {
             @apply prose-invert;
         }
+    }
+
+    /* G13: markdown/rich preview tables keep light gray-200 cell borders even
+       under prose-invert — darken them explicitly. */
+    .field-markdowneditor .editor-preview table,
+    .field-markdowneditor .editor-preview table td,
+    .field-markdowneditor .editor-preview table th,
+    .field-richeditor .fr-view table,
+    .field-richeditor .fr-view table td,
+    .field-richeditor .fr-view table th {
+        border-color: var(--drk-border-color);
     }
 
     .control-assetlist ul li a.link {
@@ -562,6 +666,12 @@
 
     div.control-componentlist div.components div.layout-cell:hover {
         background: var(--drk-bg-color-c);
+    }
+
+    /* G20: theme-editor Components sidebar (.control-filelist.component-list)
+       divides its group rows with a light #e6ebed top border. */
+    .control-filelist.component-list ul li.group {
+        border-top-color: var(--drk-border-color);
     }
 
     div.control-componentlist div.components div.layout-cell > div.popover-highlight {
@@ -671,11 +781,11 @@
 
     div[data-control="media-manager"] .sidebar-image-placeholder {
         box-sizing: content-box;
-        background-image: -webkit-linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef),
-            -webkit-linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef);
+        background-image: -webkit-linear-gradient(45deg, #0d1117 25%, transparent 25%, transparent 75%, #0d1117 75%, #0d1117),
+            -webkit-linear-gradient(45deg, #0d1117 25%, transparent 25%, transparent 75%, #0d1117 75%, #0d1117);
         background-position: 0 0, 10px 10px;
         background-size: 21px 21px;
-        background-color: #d2d2d2;
+        background-color: var(--drk-bg-color-c);
     }
 
     div[data-control="media-manager"] .sidebar-image-placeholder i.icon-level-up {
@@ -684,7 +794,7 @@
 
     div[data-control="media-manager"] .sidebar-image-placeholder p {
         color: #d16969;
-        background: #fff;
+        background: var(--drk-bg-color-b);
     }
 
     #MediaManager-manager-filters .nav > li > a:hover,
@@ -826,20 +936,20 @@
     .control-filter > .filter-scope.active,
     .control-filter > .filter-scope:hover.custom-checkbox label,
     .control-filter > .filter-scope.active.custom-checkbox label {
-        color: #cddc39;
+        color: #ffd700;
     }
 
     .control-filter > .filter-scope:hover .filter-label,
     .control-filter > .filter-scope.active .filter-label {
-        color: #cddc39;
+        color: #ffd700;
     }
 
     .control-filter > .filter-has-popover:hover {
-        color: #ffeb3b;
+        color: #ffd700;
     }
 
     .control-filter > .filter-has-popover:hover .filter-label {
-        color: #cddc39;
+        color: #ffd700;
     }
 
     .control-filter-popover .filter-items {
@@ -873,6 +983,21 @@
 
     table.table.data .list-checkbox {
         border-right: 1px solid #0180ff;
+    }
+
+    /* G5: relation-manager embeds frame their list with a light #eee box. */
+    .relation-behavior .control-list,
+    .relation-behavior .control-list.list-scrollable {
+        border-color: var(--drk-border-color);
+    }
+
+    /* List totals header/footer rows: core paints them light #f2f2f2 bands. */
+    table.table.data tr.table-totals,
+    table.table.data tr.table-totals td,
+    table.table.data tr.table-totals th {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+        border-color: var(--drk-border-color);
     }
 
     .table > thead > tr > td.active,
@@ -1030,6 +1155,13 @@
         color: var(--drk-color);
     }
 
+    /* Fieldset form widget: core gives it a light #f5f5f5 panel — darken it. */
+    .fieldset {
+        background-color: var(--drk-bg-color-inset);
+        border-color: var(--drk-border-color);
+        color: var(--drk-color);
+    }
+
     .field-codeeditor {
         border: 2px solid #27709c;
     }
@@ -1103,8 +1235,8 @@
     }
 
     .form-preview {
-        background: #343434;
-        border: 1px solid #626262;
+        background: var(--drk-bg-color-b);
+        border: 1px solid var(--drk-border-color);
     }
 
     .nested-form.panel-styles {
@@ -1132,6 +1264,54 @@
     }
     .ace-github .ace_marker-layer .ace_selection {
         background: var(--drk-bg-color-selection);
+    }
+
+    /* Editor toolbars: core ships them light #f2f2f2. Darken the bar, its
+       border and its buttons for both the markdown editor and Froala. */
+    .control-toolbar.editor-toolbar,
+    .fr-toolbar,
+    .fr-toolbar.fr-top {
+        background: var(--drk-bg-color-c);
+        border-color: var(--drk-border-color);
+    }
+
+    .control-toolbar.editor-toolbar .btn {
+        color: var(--drk-color);
+    }
+
+    .control-toolbar.editor-toolbar .btn:hover,
+    .control-toolbar.editor-toolbar .btn:focus {
+        color: #fff;
+        background: var(--drk-bg-color-btn);
+    }
+
+    .fr-toolbar .fr-command.fr-btn,
+    .fr-toolbar .fr-command.fr-btn i,
+    .fr-toolbar .fr-command.fr-btn svg path {
+        color: var(--drk-color);
+        fill: var(--drk-color);
+    }
+
+    .fr-toolbar .fr-command.fr-btn:hover,
+    .fr-toolbar .fr-command.fr-btn:focus,
+    .fr-toolbar .fr-command.fr-btn.fr-active {
+        background: var(--drk-bg-color-btn);
+    }
+
+    .fr-toolbar .fr-command.fr-btn.fr-active,
+    .fr-toolbar .fr-command.fr-btn.fr-active i,
+    .fr-toolbar .fr-command.fr-btn.fr-active svg path {
+        color: #fff;
+        fill: #fff;
+    }
+
+    .fr-toolbar .fr-more-toolbar,
+    .fr-toolbar.fr-toolbar .fr-newline {
+        background: var(--drk-bg-color-c);
+    }
+
+    .fr-toolbar .fr-separator {
+        background: var(--drk-border-color);
     }
 
     /* control-popover */
@@ -1419,6 +1599,12 @@
         background: #10161e;
     }
 
+    /* The default (no-preview) thumbnail is a light-grey PNG — invert just
+       that placeholder so it reads dark; real theme screenshots untouched. */
+    .theme-selector-layout .theme-thumbnail img[src*="default-theme-preview"] {
+        filter: invert(0.9);
+    }
+
     .theme-selector-layout .layout-row.active .theme-thumbnail {
         background: #081934;
     }
@@ -1433,13 +1619,15 @@
 
     .theme-selector-layout .create-new-theme,
     .theme-selector-layout .find-more-themes {
-        background: #263baf;
+        background: var(--drk-bg-color-btn);
+        border: 1px solid var(--drk-border-color);
         color: var(--drk-color);
     }
 
     .theme-selector-layout .create-new-theme:hover,
     .theme-selector-layout .find-more-themes:hover {
-        background: #283fc2;
+        background: var(--drk-bg-color-c);
+        color: #fff;
     }
 
     .theme-selector-layout .theme-description h3 {
@@ -1490,7 +1678,9 @@
 
                 &.active {
                     a {
-                        --drk-bg-color-a: #555;
+                        /* Raised active-tab surface: use a palette dark instead
+                           of the washed #555 grey that read as a broken lozenge. */
+                        --drk-bg-color-a: #21262d;
 
                         &:before {
                             background-color: var(--drk-bg-color-a);
@@ -1499,7 +1689,7 @@
                         > span.title {
                             &:before,
                             &:after {
-                                border-color: #555;
+                                border-color: #21262d;
                             }
 
                             span {
@@ -1510,6 +1700,13 @@
                 }
             }
         }
+    }
+
+    /* Tab-content panel inherits a light gray-200 top border from core. */
+    .control-tabs > .tab-content,
+    .control-tabs > div > .tab-content,
+    .control-tabs > div > div > .tab-content {
+        border-top-color: var(--drk-border-color);
     }
 
     .control-tabs > ul.nav-tabs > li.active a,
@@ -1632,6 +1829,38 @@
         border-color: var(--drk-border-color);
     }
 
+    /* Readonly cells (e.g. Translate's source-string column) get a light
+       #f7f7f7 fill from core's table.css — invisible light-on-light text in
+       dark mode. Match core's full selector to win specificity (0,4,2). */
+    .control-table table.data td .content-container.readonly {
+        background: var(--drk-bg-color-inset);
+        color: var(--drk-color);
+    }
+
+    /* Table-widget cell dropdown (e.g. Builder's migration column-type
+       selector): core table.css paints the list white with #555 text on the
+       non-focused items. */
+    .table-control-dropdown-list {
+        background: var(--drk-bg-color-b);
+        border-color: var(--drk-border-color);
+    }
+
+    .table-control-dropdown-list li {
+        color: var(--drk-color);
+    }
+
+    .table-control-dropdown-list li:focus,
+    .table-control-dropdown-list li:hover {
+        background: var(--drk-bg-color-selection);
+        color: #fff;
+    }
+
+    /* Active table cell (e.g. an open dropdown cell) renders a white content
+       container while being edited. */
+    .control-table table.data td.active .content-container {
+        background: var(--drk-bg-color-inset);
+    }
+
 
     /* eventlogs */
     .plugin-exception-beautifier .beautifier-message-container {
@@ -1666,6 +1895,56 @@
     .plugin-exception-beautifier .beautifier-line-number {
         color: red;
     }
+
+    /* Event-log preview: the #winter-log-viewer component ships a hardcoded
+       light theme via an inline <style> in core's _field_details.php partial.
+       Darken the panel, trace frames, code snippets and syntax highlighting.
+       (.dark #winter-log-viewer... outranks core's id-only inline rules.) */
+    #winter-log-viewer {
+        background: var(--drk-bg-color-a);
+        color: var(--drk-color);
+    }
+
+    #winter-log-viewer table.table tr td,
+    #winter-log-viewer table.table tr th {
+        color: var(--drk-color);
+        border-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .btn.btn-secondary[disabled] {
+        color: var(--drk-color);
+    }
+
+    #winter-log-viewer .trace {
+        border-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .trace-frame {
+        background: var(--drk-bg-color-b);
+    }
+
+    #winter-log-viewer .trace-frame:not(:last-child) {
+        border-bottom-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .snippet-preview-container,
+    #winter-log-viewer .snippet-preview div.preview-line {
+        background: var(--drk-bg-color-inset);
+    }
+
+    #winter-log-viewer .snippet-preview div.preview-line.highlight {
+        background: var(--drk-bg-color-selection);
+    }
+
+    /* Code-snippet syntax highlighting recoloured for a dark background. */
+    #winter-log-viewer .snippet-preview span.bracket { color: #c9d1d9; }
+    #winter-log-viewer .snippet-preview span.variable { color: #ff7b52; }
+    #winter-log-viewer .snippet-preview span.control { color: #c586c0; }
+    #winter-log-viewer .snippet-preview span.string { color: #98c379; }
+    #winter-log-viewer .snippet-preview span.number { color: #569cd6; }
+    #winter-log-viewer .snippet-preview span.html { color: #dcdcaa; }
+    #winter-log-viewer .snippet-preview span.bool { color: #f97583; }
+    #winter-log-viewer .snippet-preview span.comment { color: #7d8f5a; }
 
     /* Import/Export */
     .import-behavior .import-file-columns,
