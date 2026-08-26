@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winter backend — UI palette v2 (Design System + WCAG-AA, Fable-reviewed)</title>
+<style>
+  :root{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:#0b1220; color:#cbd5e1; padding:24px 28px 72px; }
+  h1{ font-size:21px; margin:0 0 4px; color:#fff; }
+  h2{ font-size:15px; margin:34px 0 10px; color:#fff; }
+  .sub{ color:#94a3b8; font-size:13px; margin:0 0 20px; max-width:1020px; line-height:1.55; }
+  code{ background:#1e293b; padding:1px 5px; border-radius:4px; font-size:12px; }
+  .scale{ margin-bottom:10px; }
+  .scale .nm{ font-size:12px; color:#e2e8f0; margin-bottom:5px; }
+  .scale .nm b{ color:#fff; } .scale .nm span{ color:#64748b; } .scale .nm em{ color:#fbbf24; font-style:normal; }
+  .steps{ display:flex; gap:0; border-radius:8px; overflow:hidden; }
+  .steps > div{ flex:1; height:44px; display:flex; align-items:flex-end; justify-content:center; padding-bottom:3px; font:10px/1 ui-monospace,Menlo,monospace; }
+  table.map{ border-collapse:collapse; font-size:12.5px; margin-bottom:8px; width:100%; max-width:1020px; }
+  table.map th,table.map td{ text-align:left; padding:6px 10px; border-bottom:1px solid #1e293b; white-space:nowrap; }
+  table.map th{ color:#94a3b8; font-weight:600; }
+  table.map td span.chip{ display:inline-block; width:13px; height:13px; border-radius:3px; vertical-align:-2px; margin-right:5px; }
+  .aa{ font:11px/1 ui-monospace,Menlo,monospace; padding:2px 6px; border-radius:4px; }
+  .pass{ background:#14351f; color:#4ade80; } .fail{ background:#3a1416; color:#f87171; } .large{ background:#33290e; color:#fbbf24; }
+  .modes{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:6px; }
+  .panel{ border-radius:10px; padding:18px; border:1px solid #24324a; background:var(--bg); color:var(--text); }
+  .panel h3{ margin:0 0 14px; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+  .block{ margin-bottom:18px; } .block>.label{ font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin-bottom:7px; }
+  .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .alert{ flex:1 1 46%; min-width:210px; padding:9px 12px; border-radius:6px; font-size:12.5px;
+    background:color-mix(in srgb, var(--c) var(--tint), var(--bg)); border:1px solid color-mix(in srgb, var(--c) 30%, var(--bg));
+    border-left:4px solid var(--c); color:var(--text); }
+  .alert b{ color:var(--c); }
+  .btn{ border:0; border-radius:6px; padding:8px 14px; font-size:12.5px; font-weight:600; color:var(--bfg); background:var(--bbg); }
+  .badge{ border-radius:999px; padding:3px 10px; font-size:11px; font-weight:600; color:var(--bfg); background:var(--bbg); }
+  .tag{ border-radius:4px; padding:3px 9px; font-size:11px; font-weight:600; background:color-mix(in srgb, var(--c) 16%, var(--bg)); color:var(--c); border:1px solid color-mix(in srgb, var(--c) 36%, var(--bg)); }
+  .txt{ font-size:12.5px; font-weight:600; color:var(--c); }
+  .prog{ height:8px; border-radius:999px; background:color-mix(in srgb, var(--text) 12%, transparent); overflow:hidden; flex:1 1 46%; min-width:180px; }
+  .prog>i{ display:block; height:100%; width:62%; background:var(--c); border-radius:999px; }
+  .field{ flex:1 1 46%; min-width:210px; } .field label{ display:block; font-size:11.5px; margin-bottom:4px; }
+  .field input{ width:100%; padding:7px 9px; border-radius:6px; font-size:12.5px; background:color-mix(in srgb,var(--text) 6%,var(--bg)); color:var(--text); border:1px solid var(--c); box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent); }
+  .field .err{ font-size:11px; color:var(--c); margin-top:4px; }
+  .list{ border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+  .list>div{ padding:8px 12px; font-size:12.5px; border-bottom:1px solid color-mix(in srgb,var(--text) 8%,transparent); border-left:3px solid transparent; }
+  .list>div:last-child{ border-bottom:0; }
+  .list>div.active{ border-left-color:var(--sel); background:color-mix(in srgb,var(--sel) 12%,var(--bg)); }
+  .tbl{ display:inline-flex; border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+  .tbl>span{ padding:8px 14px; font-size:12.5px; border-right:1px solid color-mix(in srgb,var(--text) 12%,transparent); }
+  .tbl>span:last-child{ border-right:0; }
+  .tbl>span.cell-active{ outline:2px solid var(--sel); outline-offset:-2px; background:color-mix(in srgb,var(--sel) 10%,var(--bg)); }
+  .navbar{ display:flex; gap:2px; border-bottom:1px solid var(--border); margin-top:10px; }
+  .navbar>span{ padding:8px 14px; font-size:12px; border-top:3px solid transparent; color:var(--muted); }
+  .navbar>span.active{ border-top-color:var(--sel); color:var(--text); background:color-mix(in srgb,var(--sel) 10%,var(--bg)); }
+  .hdr{ padding:14px 16px; border-radius:8px; color:#fff; font-weight:600; font-size:13px; }
+</style>
+</head>
+<body>
+  <h1>Winter backend — UI palette v2 <span style="font-size:13px;color:#64748b">(Design System + WCAG-AA · Fable-reviewed)</span></h1>
+  <p class="sub">Four <b>distinct</b> status hues — green / cyan / <b style="color:#fbbf24">gold</b> / rust. Warning is a documented
+  <b>functional Amber</b> (Tailwind Amber, the same system the brand's Slate is drawn from) so it never collides with danger; danger stays 100% brand Flame.
+  Solid buttons now use the correct steps: light = 700 fill + white; dark = 400 fill + slate-900 text; warning always dark-on-gold. Every text
+  <b>and</b> button label clears AA 4.5 (ratios computed live below). Dark base = brand Slate-900 <code>#0f172a</code>.</p>
+
+  <h2>Brand scales <span style="font-size:12px;font-weight:400;color:#64748b">(+ functional Amber for warning)</span></h2>
+  <div id="scales"></div>
+
+  <h2>Semantic roles — text &amp; solid-button contrast (AA-checked)</h2>
+  <div id="map"></div>
+
+  <h2>Applied to real UI elements</h2>
+  <div class="modes" id="mock"></div>
+
+<script>
+const SCALE = {
+  indigo:{ name:'Primary · Indigo Dye', use:'layout', hex:{50:'#e8edef',100:'#d1dbe0',200:'#a3b6c0',300:'#7492a1',400:'#466d81',500:'#184962',600:'#133a4e',700:'#0e2c3b',800:'#0a1d27',900:'#050f14'} },
+  pacific:{ name:'Accent · Pacific Blue', use:'interactive / info / selection', hex:{50:'#eaf6f9',100:'#d5edf4',200:'#abdce9',300:'#81cadd',400:'#57b9d2',500:'#2da7c7',600:'#24869f',700:'#1b6477',800:'#124350',900:'#092128'} },
+  slate:{ name:'Neutral · Slate', use:'text / unbranded / bg / border', hex:{50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',400:'#94a3b8',500:'#64748b',600:'#475569',700:'#334155',800:'#1e293b',900:'#0f172a'} },
+  mantis:{ name:'Positive · Mantis', use:'success', hex:{50:'#f0f9ee',100:'#e2f3dc',200:'#c4e8b9',300:'#a7dc97',400:'#89d174',500:'#6cc551',600:'#569e41',700:'#417631',800:'#2b4f20',900:'#162710'} },
+  flame:{ name:'Negative · Flame', use:'danger', hex:{50:'#fbefea',100:'#f7dfd4',200:'#efbea9',300:'#e69e7f',400:'#de7d54',500:'#d65d29',600:'#ab4a21',700:'#803819',800:'#562510',900:'#2b1308'} },
+  amber:{ name:'Functional · Amber', use:'WARNING only (never decorative)', extension:true, hex:{50:'#fffbeb',100:'#fef3c7',200:'#fde68a',300:'#fcd34d',400:'#fbbf24',500:'#f59e0b',600:'#d97706',700:'#b45309',800:'#92400e',900:'#78350f'} },
+};
+function lum(hex){ const c=hex.replace('#',''); const r=parseInt(c.substr(0,2),16)/255,g=parseInt(c.substr(2,2),16)/255,b=parseInt(c.substr(4,2),16)/255;
+  const f=x=>x<=0.03928?x/12.92:Math.pow((x+0.055)/1.055,2.4); return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); }
+function ratio(a,b){ const l1=lum(a),l2=lum(b); return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05); }
+function aaBadge(fg,bg,uiOnly){ const r=ratio(fg,bg),t=r.toFixed(2); if(r>=4.5)return `<span class="aa pass">${t} AA</span>`; if(r>=3)return `<span class="aa large">${t}${uiOnly?' UI':' AA-lg'}</span>`; return `<span class="aa fail">${t} fail</span>`; }
+const H=(s,step)=>SCALE[s].hex[step];
+const LBG='#ffffff', DBG=SCALE.slate.hex[900];
+
+document.getElementById('scales').innerHTML = Object.values(SCALE).map(s=>`
+  <div class="scale"><div class="nm"><b>${s.name}</b> <span>— ${s.use}</span>${s.extension?' <em>&nbsp;• functional extension, not brand</em>':''}</div>
+  <div class="steps">${Object.entries(s.hex).map(([k,v])=>`<div style="background:${v};color:${lum(v)>0.4?'#0f172a':'#fff'}">${k}</div>`).join('')}</div></div>`).join('');
+
+// role: scale, [lightText, lightSolidBg, lightSolidFg], [darkText, darkSolidBg, darkSolidFg]
+const SLATE9=H('slate',900), WHITE='#ffffff';
+const SEM = [
+  ['Success','mantis',  [H('mantis',700),  H('mantis',700),  WHITE],  [H('mantis',300),  H('mantis',400),  SLATE9]],
+  ['Info',   'pacific', [H('pacific',700), H('pacific',700), WHITE],  [H('pacific',300), H('pacific',400), SLATE9]],
+  ['Warning','amber',   [H('amber',700),   H('amber',500),   SLATE9], [H('amber',400),   H('amber',400),   SLATE9]],
+  ['Danger', 'flame',   [H('flame',600),   H('flame',600),   WHITE],  [H('flame',300),   H('flame',400),   SLATE9]],
+];
+
+document.getElementById('map').innerHTML = `<table class="map">
+  <tr><th>Role</th><th>Light text</th><th>AA</th><th>Light button (label)</th><th>AA</th><th>Dark text</th><th>AA</th><th>Dark button (label)</th><th>AA</th></tr>
+  ${SEM.map(([n,s,L,D])=>`<tr>
+    <td><span class="chip" style="background:${L[1]}"></span>${n}</td>
+    <td>${s}-${Object.keys(SCALE[s].hex).find(k=>SCALE[s].hex[k]===L[0])} ${L[0]}</td><td>${aaBadge(L[0],LBG)}</td>
+    <td>${L[2]===WHITE?'white':'slate-900'} on ${L[1]}</td><td>${aaBadge(L[2],L[1])}</td>
+    <td>${s}-${Object.keys(SCALE[s].hex).find(k=>SCALE[s].hex[k]===D[0])} ${D[0]}</td><td>${aaBadge(D[0],DBG)}</td>
+    <td>${D[2]===WHITE?'white':'slate-900'} on ${D[1]}</td><td>${aaBadge(D[2],D[1])}</td>
+  </tr>`).join('')}
+  <tr><td>Selection/active</td><td>pacific-600 (border/tint)</td><td>${aaBadge(H('pacific',600),LBG,true)}</td><td>—</td><td></td><td>pacific-400</td><td>${aaBadge(H('pacific',400),DBG,true)}</td><td>—</td><td></td></tr>
+  <tr><td>Body text</td><td>slate-900</td><td>${aaBadge(H('slate',900),LBG)}</td><td>—</td><td></td><td>slate-300</td><td>${aaBadge(H('slate',300),DBG)}</td><td>—</td><td></td></tr>
+  <tr><td>Muted text</td><td>slate-500</td><td>${aaBadge(H('slate',500),LBG)}</td><td>—</td><td></td><td>slate-400</td><td>${aaBadge(H('slate',400),DBG)}</td><td>—</td><td></td></tr>
+  <tr><td>Header (Primary)</td><td>white on indigo-600</td><td>${aaBadge(WHITE,H('indigo',600))}</td><td>—</td><td></td><td>slate-100 on indigo-800</td><td>${aaBadge(H('slate',100),H('indigo',800))}</td><td>—</td><td></td></tr>
+</table>`;
+
+function panel(mode){
+  const i = mode==='light'?0:1; // index into [light,dark] triples via L=idx2/3
+  const bg = mode==='light'?LBG:DBG;
+  const text = mode==='light'?H('slate',900):H('slate',300);
+  const muted = mode==='light'?H('slate',500):H('slate',400);
+  const border = mode==='light'?H('slate',200):H('slate',700);
+  const sel = mode==='light'?H('pacific',600):H('pacific',400);
+  const tint = mode==='light'?'12%':'16%';
+  const roles = SEM.map(([n,s,L,D])=>{ const t=mode==='light'?L:D; return {n:n.toLowerCase(), c:t[0], bbg:t[1], bfg:t[2]}; });
+  const cell = r=>`--c:${r.c};--bbg:${r.bbg};--bfg:${r.bfg};--tint:${tint}`;
+  return `<div class="panel" style="--bg:${bg};--text:${text};--muted:${muted};--border:${border};--sel:${sel}">
+    <h3>${mode}</h3>
+    <div class="block"><div class="label">Layout header (Primary · Indigo Dye)</div>
+      <div class="hdr" style="background:${mode==='light'?H('indigo',600):H('indigo',800)};color:${mode==='light'?'#fff':H('slate',100)}">Fancy form header — title text on Indigo Dye</div></div>
+    <div class="block"><div class="label">Flash / alert messages</div><div class="row">
+      ${roles.map(r=>`<div class="alert" style="${cell(r)}"><b>${r.n[0].toUpperCase()+r.n.slice(1)}</b> — the operation ${r.n==='danger'?'failed':(r.n==='warning'?'needs attention':'completed')}.</div>`).join('')}
+    </div></div>
+    <div class="block"><div class="label">Buttons · badges · tags · inline status</div><div class="row">
+      ${roles.map(r=>`<button class="btn" style="${cell(r)}">${r.n}</button>`).join('')}
+      ${roles.map(r=>`<span class="badge" style="${cell(r)}">${r.n}</span>`).join('')}
+      ${roles.map(r=>`<span class="tag" style="${cell(r)}">${r.n}</span>`).join('')}
+      ${roles.map(r=>`<span class="txt" style="${cell(r)}">${r.n}</span>`).join('')}
+    </div></div>
+    <div class="block"><div class="label">Progress · validated field (error)</div><div class="row">
+      <div class="prog" style="${cell(roles[0])}"><i></i></div>
+      <div class="prog" style="${cell(roles[1])}"><i></i></div>
+      <div class="field" style="${cell(roles[3])}"><label>Email address</label><input value="not-an-email"><div class="err">Please enter a valid email address.</div></div>
+    </div></div>
+    <div class="block"><div class="label">Active / selection — structural only (Pacific Blue: border · outline · tint, no text recolor)</div>
+      <div class="row" style="align-items:flex-start">
+        <div class="list"><div>Inactive row</div><div class="active">Active row</div><div>Inactive row</div></div>
+        <div class="tbl"><span>Cell</span><span class="cell-active">Active cell</span><span>Cell</span></div>
+      </div>
+      <div class="navbar"><span class="active">Active tab</span><span>Section</span><span>Section</span></div>
+    </div>
+  </div>`;
+}
+document.getElementById('mock').innerHTML = panel('light')+panel('dark');
+</script>
+</body>
+</html>

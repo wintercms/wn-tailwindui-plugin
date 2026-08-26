@@ -1,0 +1,2100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winter backend — UI kit v5 (layouts &amp; fields pass · Fable)</title>
+
+<!--
+  BRAND FONTS (official): base = Public Sans, headings = Mulish (both Google Fonts).
+  --font-base (Public Sans) drives body / controls / tables (ships OpenType tnum, so
+  the tabular-nums on numeric columns align); --font-head (Mulish) drives headings,
+  section titles and the fancy form-header title for a distinct brand voice.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+<style>
+  /* ============ BRAND FONTS ============ */
+  :root{
+    --brand-font:'Public Sans', ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-head:'Mulish', var(--brand-font);
+  }
+
+  *{ box-sizing:border-box; }
+  body{ font-family:var(--brand-font); margin:0; background:#0b1220; color:#94a3b8; padding:22px 26px 70px; -webkit-font-smoothing:antialiased; }
+  h1{ font-family:var(--font-head); font-weight:800; color:#fff; font-size:20px; margin:0 0 4px; display:flex; align-items:center; gap:9px; }
+  h1 svg{ width:19px; height:19px; color:#57b9d2; }
+  .sub{ font-size:13px; max-width:1040px; line-height:1.55; margin:0 0 6px; }
+  .modewrap>h2{ font-family:var(--font-head); font-weight:800; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:#64748b; margin:26px 0 10px; }
+  svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+
+  /* ================================================================
+     MODE TOKENS — palette v2 + Marigold (muted functional gold, v4)
+     ================================================================ */
+  .ui{ border-radius:14px; padding:22px; background:var(--bg); color:var(--text); font-size:13px;
+    /* BRAND ROOT VARS — the three Backend → Settings → Branding colours. Every
+       brand-driven token below derives from these via color-mix(), per mode, so
+       the live pickers recolour the whole mock in BOTH modes. Defaults reproduce
+       the shipped look: primary = Indigo Dye 500, secondary = Pacific 500,
+       accent = Pacific 400. */
+    --brand-primary:#184962; --brand-secondary:#2da7c7; --brand-accent:#57b9d2;
+  }
+  .ui.light{
+    /* neutrals: Slate nudged toward the brand teal (~hue 208-211, desaturated) —
+       a cold grey that's quietly ours. --faint darkened to ~4:1 on white; real
+       small text uses --muted (~4.6:1) so labels clear AA for their size. */
+    --bg:#ffffff; --surface:#f7fafb; --sunken:#edf2f6; --raised:#ffffff;
+    --text:#0e1a28; --muted:#60788c; --faint:#6f8296;
+    --border:#e3e9ef; --border2:#d2dbe3; --hairline:#edf1f5;
+    /* fancy header: gradient indigo + defined edge, no drop shadow — derived
+       from --brand-primary (defaults ≈ the shipped #17465f/#113646/#113a4e,
+       within ±2/255 per channel) */
+    --hdr-a:color-mix(in srgb, #000 4%, var(--brand-primary));
+    --hdr-b:color-mix(in srgb, #000 28%, var(--brand-primary));
+    --hdr-bd:color-mix(in srgb, #000 21%, var(--brand-primary));
+    --hdr-hi:rgba(255,255,255,.10);
+    --hdr-fg:#ffffff; --hdr-dim:#9db6c2; --cap:var(--brand-accent);
+    /* light interactive colours are the DARKENED brand-secondary (Pacific 600 =
+       secondary·80%, Pacific 700 = secondary·60% — exact at the defaults) */
+    --accent:color-mix(in srgb, var(--brand-secondary) 80%, #000);
+    --accent-txt:color-mix(in srgb, var(--brand-secondary) 60%, #000);
+    --sel:var(--accent);
+    --primary:color-mix(in srgb, var(--brand-secondary) 60%, #000);
+    --primary-fg:#ffffff; --on-ink:#ffffff;
+    --primary-hov:color-mix(in srgb, #000 21%, var(--primary));
+    --default:#ffffff; --default-fg:#334155; --default-bd:#d3dae4; --default-hov:#f1f5f9;
+    --success:#417631; --warning:#7c5e1f; --danger:#ab4a21; --info:#1b6477;
+    --warning-solid:#cf9d33; --warning-solid-fg:#0f172a;
+    --shadow-sm:0 1px 2px rgba(15,23,42,.06); --shadow-md:0 4px 14px rgba(15,23,42,.10);
+    --tint:10%; --tint-hi:13%;
+  }
+  .ui.dark{
+    /* widened dark surface ladder (~4-5% lightness per step, teal-shifted like
+       the light neutrals) so recessed rails and L2/L3 nesting clearly read;
+       --text raised for primary content, --hairline lifted so rows articulate */
+    /* branded chrome: the dark surfaces + borders carry a little brand-primary so
+       the whole dark UI leans toward the brand hue (follows the picker). Gated by
+       --chrome-tint (toggle in the brand palette bar); 0% = the plain slate ladder.
+       Text tokens stay untinted to protect contrast. */
+    --chrome-tint:14%;
+    --bg:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #0d1926);
+    --surface:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #1c2b3b);
+    --sunken:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #13202f);
+    --raised:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #26374b);
+    --text:#e6eef5; --muted:#8fa6ba; --faint:#8095a8;
+    --border:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #2c3f52);
+    --border2:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #3d5468);
+    --hairline:color-mix(in srgb, var(--brand-primary) var(--chrome-tint), #24374a);
+    /* dark fancy header: LIFTED indigo surface — gradient + frost highlight +
+       lighter indigo border, no shadow. DEEPENED (was #1e4d68→#143a52, which sat
+       at the same lightness as --raised so the active tab's concave feet were
+       invisible): now brand-primary·80% → ·50% (≈#133a4e → #0c2531), so --raised
+       #26374b is clearly LIGHTER than the header bottom and the snowcap feet +
+       tab-pours-into-body flow read in dark. Derived from --brand-primary. */
+    --hdr-a:color-mix(in srgb, var(--brand-primary) 80%, #000);
+    --hdr-b:color-mix(in srgb, var(--brand-primary) 50%, #000);
+    --hdr-bd:color-mix(in srgb, #fff 13%, var(--brand-primary));
+    --hdr-hi:rgba(163,214,229,.16);
+    --hdr-fg:#eef8fb; --hdr-dim:#93bccb;
+    --cap:color-mix(in srgb, #fff 25%, var(--brand-accent));
+    /* dark interactive colours are the brand-accent (Pacific 400) family:
+       lightened for text/caps, softened toward --bg for the selection wash */
+    --accent:var(--brand-accent);
+    --accent-txt:color-mix(in srgb, #fff 25%, var(--brand-accent));
+    --sel:color-mix(in srgb, var(--brand-accent) 76%, var(--bg));
+    --primary:var(--brand-accent);
+    --primary-fg:color-mix(in srgb, var(--brand-secondary) 21%, #000); --on-ink:#08222b;
+    --primary-hov:color-mix(in srgb, #fff 14%, var(--primary));
+    --default:#1c2b3b; --default-fg:#e6eef5; --default-bd:#35485c; --default-hov:#26374b;
+    --success:#a7dc97; --warning:#e2c485; --danger:#e69e7f; --info:#81cadd;
+    --warning-solid:#d9b15c; --warning-solid-fg:#0f172a;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35); --shadow-md:0 6px 20px rgba(0,0,0,.45);
+    --tint:15%; --tint-hi:19%;
+  }
+
+  .ui button{ font-family:inherit; }
+  .ui :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .ui .fancy-hdr :focus-visible{ outline-color:var(--cap); }
+
+  .ui .card{ border:1px solid var(--border); border-radius:12px; background:var(--raised); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:24px; }
+  /* section label with the snowcap tick — the kit's recurring identity mark */
+  .ui .sec{ font-family:var(--font-head); font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin:0 0 9px; font-weight:800; display:flex; align-items:center; gap:8px; }
+  .ui .sec::before{ content:''; width:14px; height:3px; border-radius:99px; background:var(--accent); }
+
+  /* ============ BUTTONS — one solid primary per view, everything else quiet ============ */
+  .ui .btn{ font:600 13px/1 inherit; border-radius:8px; padding:9px 15px; display:inline-flex; align-items:center; gap:7px; border:1px solid transparent; background:transparent; color:var(--text); cursor:pointer; transition:background .12s,border-color .12s,color .12s; }
+  .ui .btn.primary{ background:linear-gradient(180deg, color-mix(in srgb,#fff 10%,var(--primary)), var(--primary) 60%); color:var(--primary-fg); box-shadow:var(--shadow-sm); }
+  .ui .btn.primary:hover{ background:var(--primary-hov); }
+  .ui .btn.default{ background:var(--default); color:var(--default-fg); border-color:var(--default-bd); }
+  .ui .btn.default:hover{ background:var(--default-hov); }
+  .ui .btn.ghost{ color:var(--muted); }
+  .ui .btn.ghost:hover{ background:color-mix(in srgb,var(--text) 7%,transparent); color:var(--text); }
+  .ui .btn.g-success{ color:var(--success); border-color:color-mix(in srgb,var(--success) 40%,transparent); }
+  .ui .btn.g-success:hover{ background:color-mix(in srgb,var(--success) 11%,var(--bg)); }
+  .ui .btn.g-warning{ color:var(--warning); border-color:color-mix(in srgb,var(--warning) 45%,transparent); }
+  .ui .btn.g-warning:hover{ background:color-mix(in srgb,var(--warning) 13%,var(--bg)); }
+  .ui .btn.g-danger{ color:var(--danger); border-color:color-mix(in srgb,var(--danger) 40%,transparent); }
+  .ui .btn.g-danger:hover{ background:color-mix(in srgb,var(--danger) 11%,var(--bg)); }
+  /* solid danger — reserved for destructive-confirm modals where the destructive
+     action IS the view's single solid action */
+  .ui .btn.danger{ background:var(--danger); color:#fff; box-shadow:var(--shadow-sm); }
+  .ui .btn.danger:hover{ background:color-mix(in srgb,#000 12%,var(--danger)); }
+  .ui .btn.danger:active{ background:color-mix(in srgb,#000 18%,var(--danger)); }
+  .ui.dark .btn.danger{ color:#2b1308; }
+  .ui.dark .btn.danger:hover, .ui.dark .btn.danger:active{ background:color-mix(in srgb,#fff 10%,var(--danger)); }
+  .ui .btn.link{ color:var(--accent-txt); padding:9px 8px; }
+  .ui .btn.link:hover{ text-decoration:underline; }
+  .ui .btn.icon{ padding:9px; color:var(--muted); }
+  .ui .btn.icon:hover{ background:color-mix(in srgb,var(--text) 7%,transparent); color:var(--text); }
+  .ui .btn[disabled]{ opacity:.4; cursor:default; pointer-events:none; }
+
+  /* pressed states — every clickable dips 1px; filled buttons also darken */
+  .ui .btn:active, .ui .fbtn:active, .ui .chip:active, .ui .seg button:active,
+  .ui .ftab:active, .ui .dtab:active, .ui .etab:active, .ui .stabs button:active,
+  .ui .tt:active, .ui .vtab:active, .ui .balloon span:active,
+  .ui .pgr button:active:not([disabled]){ transform:translateY(1px); }
+  .ui .btn.primary:active{ background:color-mix(in srgb,#000 10%,var(--primary)); }
+  .ui .btn.default:active{ background:color-mix(in srgb,var(--text) 8%,var(--default)); }
+  .ui .fbtn.primary:active{ background:color-mix(in srgb,var(--hdr-b) 12%,var(--hdr-fg)); }
+
+  /* ONE desktop control height (~34px): 13.5px text-entry aligns .ipt with the
+     31-33px buttons, .rf-val and .sel-ipt. The ≥16px iOS-Safari anti-zoom size
+     only applies on coarse pointers — see the @media (pointer:coarse) block. */
+  .ui .ipt{ width:100%; font-family:inherit; padding:7px 11px; border-radius:8px; font-size:13.5px; line-height:1.3; color:var(--text); background:var(--bg); border:1px solid var(--border2); transition:border-color .12s, box-shadow .12s; }
+  .ui .ipt::placeholder{ color:var(--faint); }
+  .ui .ipt:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent); }
+
+  /* ============ PALETTE STRIP ============ */
+  .ui .pal{ display:grid; grid-template-columns:1fr 292px; gap:18px; padding:16px; align-items:start; }
+  .ui .pscale{ display:grid; grid-template-columns:172px 1fr; gap:12px; align-items:center; margin-bottom:7px; }
+  .ui .pscale:last-child{ margin-bottom:0; }
+  .ui .pscale .pnm{ font-size:12px; font-weight:700; color:var(--text); line-height:1.25; }
+  .ui .pscale .pnm i{ display:block; font-style:normal; font-weight:500; font-size:11px; color:var(--muted); }
+  .ui .psteps{ display:flex; border-radius:7px; overflow:hidden; }
+  .ui .psteps span{ flex:1; height:27px; display:flex; align-items:flex-end; justify-content:center; padding-bottom:2px; font-size:10px; font-variant-numeric:tabular-nums; letter-spacing:.02em; }
+  .ui .pcheck{ border:1px solid var(--border); background:var(--surface); border-radius:10px; padding:12px; }
+  .ui .pcheck .pt{ font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .ui .pcheck .trio{ display:flex; gap:6px; }
+  .ui .pcheck .trio div{ flex:1; height:52px; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; color:#fff; font-size:10.5px; font-weight:700; }
+  .ui .pcheck .trio div small{ font-weight:500; opacity:.85; font-size:9.5px; }
+  .ui .pcheck .note{ font-size:11px; line-height:1.5; color:var(--muted); margin-top:9px; }
+  .ui .pcheck .note b{ color:var(--text); }
+
+  /* ============ BRAND PALETTE — live pickers (BrandSetting mock) ============ */
+  .ui .brandbar{ display:flex; align-items:center; gap:24px; flex-wrap:wrap; padding:16px; }
+  .ui .bp{ display:flex; align-items:center; gap:11px; }
+  .ui .bp-in{ width:46px; height:40px; padding:0; border:1px solid var(--border2); border-radius:9px; background:var(--bg); cursor:pointer; box-shadow:var(--shadow-sm); }
+  .ui .bp-in::-webkit-color-swatch-wrapper{ padding:3px; }
+  .ui .bp-in::-webkit-color-swatch{ border:0; border-radius:6px; }
+  .ui .bp-in::-moz-color-swatch{ border:0; border-radius:6px; }
+  .ui .bp-nm{ display:flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--text); }
+  .ui .bp-nm i{ font-style:normal; font-weight:500; font-size:11px; color:var(--muted); }
+  .ui .bp-hex{ font:600 10.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.02em; color:var(--accent-txt); background:var(--sunken); border:1px solid var(--border); border-radius:5px; padding:2px 6px; }
+  .ui .bp-aff{ display:block; font-size:10.5px; color:var(--muted); margin-top:3px; line-height:1.4; max-width:250px; }
+  .ui .bp-presets{ display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap; margin-left:auto; }
+  .ui .bp-presets-lbl{ font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin-right:2px; }
+  .ui .brandbar .bp-reset{ margin-left:4px; }
+  .ui .bp-note{ margin:0 16px 16px; padding:10px 12px; font-size:12px; line-height:1.55; color:var(--muted); background:var(--surface); border:1px solid var(--border); border-radius:8px; }
+  .ui .bp-note b{ color:var(--text); }
+  .ui .bp-note code{ background:var(--sunken); padding:1px 5px; border-radius:4px; font-size:11px; color:var(--accent-txt); }
+
+  /* ============ LIST WIDGET ============ */
+  .ui .lw-bar{ display:flex; align-items:center; gap:9px; padding:13px 14px; }
+  .ui .lw-bar .spacer{ flex:1; }
+  .ui .search{ position:relative; min-width:250px; }
+  .ui .search .ipt{ padding-left:34px; }
+  .ui .search svg{ position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--faint); }
+  /* leading-icon input group — Winter renders email/url/tel with an icon addon
+     (wn-icon-envelope / wn-icon-link / wn-icon-phone) */
+  .ui .iput{ position:relative; }
+  .ui .iput > svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--faint); pointer-events:none; }
+  .ui .iput .ipt{ padding-left:38px; }
+  .ui .filters{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:0 14px 13px; }
+  .ui .seg{ display:inline-flex; background:var(--sunken); border:1px solid var(--border); border-radius:8px; padding:2px; }
+  .ui .seg button{ border:0; background:transparent; color:var(--muted); font:600 12.5px/1 inherit; padding:6px 12px; border-radius:6px; cursor:pointer; }
+  .ui .seg button:hover:not(.on){ color:var(--text); }
+  .ui .seg button.on{ background:var(--raised); color:var(--accent-txt); box-shadow:var(--shadow-sm); }
+  .ui .chip{ display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:99px; background:var(--surface); border:1px solid var(--border2); color:var(--text); font-size:12.5px; font-weight:500; cursor:pointer; font-family:inherit; transition:border-color .12s, background .12s; }
+  .ui .chip .k{ color:var(--muted); font-weight:600; }
+  .ui .chip svg{ width:13px; height:13px; color:var(--faint); }
+  .ui .chip:hover{ border-color:color-mix(in srgb,var(--accent) 45%,var(--border2)); }
+  .ui .chip.set{ border-color:color-mix(in srgb,var(--accent) 45%,var(--border)); background:color-mix(in srgb,var(--accent) 10%,var(--bg)); color:var(--accent-txt); }
+  .ui .chip.set .k{ color:color-mix(in srgb,var(--accent-txt) 72%,var(--muted)); }
+  .ui .chip.set svg{ color:color-mix(in srgb,var(--accent-txt) 65%,var(--faint)); }
+  .ui .chip.set:hover svg{ color:var(--accent-txt); }
+  .ui .chip.add{ background:transparent; border-style:dashed; color:var(--muted); }
+  .ui .chip.add:hover{ color:var(--accent-txt); border-color:color-mix(in srgb,var(--accent) 55%,var(--border2)); }
+
+  /* header totals — Winter renders a real `tr.table-totals` row inside BOTH
+     <thead> and <tfoot>: one <td> per column, and summable number columns show
+     `page sum (grand total)` — so every figure sits exactly under its column */
+  .ui table.lw tr.table-totals td{ background:var(--surface); border-bottom:1px solid var(--border); padding:7px 14px 8px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .ui table.lw tr.table-totals .tt-lab{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .ui table.lw tr.table-totals .tt-sum{ font-weight:750; color:var(--text); font-size:13px; }
+  .ui table.lw tr.table-totals .tt-total{ color:var(--muted); font-size:11.5px; }
+
+  .ui table.lw{ width:100%; border-collapse:collapse; }
+  .ui table.lw thead th{ text-align:left; padding:8px 14px; font:700 11px/1.2 inherit; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); white-space:nowrap; }
+  .ui table.lw thead th.num{ text-align:right; }
+  /* sort indicators — sortable columns idle with a faint bidirectional ⇅ glyph
+     (up+down chevrons); the active column resolves to a single up/down chevron
+     in the accent. Non-sortable columns get no icon and no pointer. */
+  .ui table.lw thead th.sortable{ cursor:pointer; }
+  .ui table.lw thead th.sortable:hover{ color:var(--text); }
+  .ui table.lw thead th.srt, .ui table.lw thead th.srt:hover{ color:var(--accent-txt); }
+  .ui table.lw thead th .si{ width:11px; height:11px; margin-left:4px; vertical-align:-1px; color:var(--faint); opacity:.75; }
+  .ui table.lw thead th.sortable:hover .si{ opacity:1; }
+  .ui table.lw thead th.sort-asc .si, .ui table.lw thead th.sort-desc .si{ color:var(--accent); opacity:1; }
+  /* list-setup column — far-right th hosts the column-setup button (list.less ~517,
+     width 48px, icon-list-ul glyph) which opens the onLoadSetup popup */
+  .ui table.lw th.lsetup{ width:48px; position:relative; text-align:center; padding:4px 8px; }
+  .ui .lsu-btn{ border:0; background:transparent; color:var(--faint); width:28px; height:28px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+  .ui .lsu-btn:hover{ color:var(--text); background:color-mix(in srgb,var(--text) 8%,transparent); }
+  .ui .lsu-btn svg{ width:15px; height:15px; }
+  .ui .pop-x{ border:0; background:transparent; color:var(--faint); width:22px; height:22px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; flex:none; }
+  .ui .pop-x:hover{ color:var(--text); background:color-mix(in srgb,var(--text) 9%,transparent); }
+  .ui .pop-x svg{ width:13px; height:13px; }
+  .ui .lsu-pop{ display:none; position:absolute; top:calc(100% + 6px); right:6px; z-index:40; width:248px; background:var(--raised); border:1px solid var(--border2); border-radius:10px; box-shadow:var(--shadow-md); text-align:left; text-transform:none; letter-spacing:0; font-weight:400; white-space:normal; cursor:default; }
+  .ui th.lsetup.open .lsu-pop{ display:block; }
+  .ui .lsu-hd{ display:flex; align-items:center; justify-content:space-between; padding:10px 8px 10px 13px; border-bottom:1px solid var(--border); font:700 12.5px/1.2 var(--font-head); color:var(--text); }
+  .ui .lsu-help{ padding:9px 13px 0; font-size:11.5px; color:var(--muted); line-height:1.45; }
+  .ui .lsu-list{ padding:8px; display:flex; flex-direction:column; gap:1px; }
+  .ui .lsu-row{ display:flex; align-items:center; gap:9px; padding:6px 7px; border-radius:7px; font-size:12.5px; color:var(--text); cursor:grab; }
+  .ui .lsu-row:hover{ background:var(--default-hov); }
+  .ui .lsu-row .grip{ color:var(--faint); display:inline-flex; }
+  .ui .lsu-row .grip svg{ width:13px; height:13px; }
+  .ui .lsu-ft{ display:flex; gap:7px; align-items:center; padding:9px 12px; border-top:1px solid var(--border); }
+  /* reorderable list — a built-in capability of the core List widget: a leading
+     .list-sort-handle-column (_list_head_row.php) + an icon-bars .list-sort-handle
+     per row (_list_body_row.php), revealed on hover with a grab cursor */
+  .ui table.lw th.sorth, .ui table.lw td.sorth{ width:44px; padding-right:2px; }
+  .ui .sort-handle{ display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:7px; color:var(--faint); cursor:grab; }
+  .ui .sort-handle:active{ cursor:grabbing; }
+  .ui table.lw tbody tr:hover .sort-handle{ color:var(--muted); background:color-mix(in srgb,var(--text) 8%,transparent); }
+  .ui .rl-note{ padding:9px 14px; font-size:11.5px; line-height:1.5; color:var(--muted); background:var(--surface); border-top:1px solid var(--border); }
+  .ui .rl-note b{ color:var(--text); }
+  .ui table.lw tbody td{ padding:11px 14px; border-bottom:1px solid var(--hairline); color:var(--muted); }
+  .ui table.lw tbody td.nm{ color:var(--text); font-weight:650; }
+  .ui table.lw td.num, .ui table.lw th.num{ text-align:right; font-variant-numeric:tabular-nums; }
+  .ui table.lw tbody td.num{ color:var(--text); }
+  /* zebra striping — Winter stripes even rows (list.less tr:nth-child(even) => @color-list-accent) */
+  .ui table.lw tbody tr:nth-child(even) td{ background:color-mix(in srgb,var(--muted) 6%,var(--bg)); }
+  /* hover is an unmistakable --sel wash (well above the zebra); selection is ONE
+     mechanism in both modes: a stronger --sel wash + an inset left accent bar */
+  .ui table.lw tbody tr:hover td{ background:color-mix(in srgb,var(--sel) 11%,var(--bg)); }
+  .ui table.lw tbody tr.sel td{ background:color-mix(in srgb,var(--sel) 16%,var(--bg)); }
+  .ui table.lw tbody tr.sel td:first-child{ box-shadow:inset 3px 0 0 var(--sel); }
+  .ui.dark table.lw tbody tr:nth-child(even) td{ background:color-mix(in srgb,var(--muted) 5%,var(--bg)); }
+  .ui.dark table.lw tbody tr:hover td{ background:color-mix(in srgb,var(--sel) 12%,var(--bg)); }
+  .ui.dark table.lw tbody tr.sel td{ background:color-mix(in srgb,var(--sel) 22%,var(--bg)); }
+  .ui .box{ width:16px; height:16px; border-radius:5px; border:1.5px solid var(--border2); display:inline-flex; align-items:center; justify-content:center; color:#fff; background:var(--bg); }
+  .ui .box.on{ background:var(--accent); border-color:var(--accent); }
+  .ui .box svg{ width:12px; height:12px; stroke-width:2.6; }
+  .ui .pill{ border-radius:999px; padding:3px 10px; font-size:11.5px; font-weight:650; display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
+  .ui .pill::before{ content:''; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.9; }
+  .ui .pill.success{ color:var(--success); background:color-mix(in srgb,var(--success) var(--tint),var(--bg)); }
+  .ui .pill.warning{ color:var(--warning); background:color-mix(in srgb,var(--warning) var(--tint-hi),var(--bg)); }
+  .ui .pill.danger{ color:var(--danger); background:color-mix(in srgb,var(--danger) var(--tint),var(--bg)); }
+  .ui .pill.info{ color:var(--info); background:color-mix(in srgb,var(--info) var(--tint),var(--bg)); }
+
+  /* column-aligned totals: a real tfoot row, so each total sits under its column */
+  .ui table.lw tfoot td{ background:var(--surface); border-top:2px solid var(--border2); padding:12px 14px 13px; vertical-align:top; }
+  .ui table.lw tfoot .l1{ line-height:19px; font-weight:750; color:var(--text); font-size:13px; }
+  .ui table.lw tfoot .l2{ line-height:17px; color:var(--muted); font-size:11.5px; }
+  .ui table.lw tfoot td.tlab{ text-align:right; }
+  .ui table.lw tfoot td.tlab .l1{ font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .ui table.lw tfoot td.tlab .l2{ font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+
+  .ui .lw-foot{ display:flex; align-items:center; gap:16px; padding:10px 14px; background:var(--surface); border-top:1px solid var(--border); font-size:12.5px; color:var(--muted); }
+  .ui .lw-foot b{ color:var(--text); font-weight:650; }
+  .ui .lw-foot .spacer{ flex:1; }
+  .ui .pgr{ display:inline-flex; gap:3px; }
+  .ui .pgr button{ min-width:30px; height:30px; border-radius:8px; border:1px solid var(--border2); background:var(--raised); color:var(--text); font:500 12.5px/1 inherit; font-variant-numeric:tabular-nums; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+  .ui .pgr button:hover:not([disabled]):not(.on){ background:var(--default-hov); }
+  .ui .pgr button.on{ background:var(--sel); border-color:var(--sel); color:var(--on-ink); font-weight:700; }
+  .ui .pgr button[disabled]{ opacity:.4; cursor:default; }
+  .ui .pgr button svg{ width:13px; height:13px; }
+
+  /* ============ FORM ============ */
+  .ui .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px 20px; padding:18px; }
+  .ui .fld label{ display:flex; align-items:center; gap:7px; font-size:12px; font-weight:650; margin-bottom:6px; color:var(--text); }
+  /* field-type marker chip used in the gallery — text pulled 35% toward --text
+     so the 10px mono clears AA with room to spare on --sunken in both modes
+     (light ≈6.6:1, dark ≈8.7:1) while staying quieter than real labels */
+  .ui .ty{ margin-left:auto; font:600 10px/1 ui-monospace,Menlo,monospace; letter-spacing:.02em; color:color-mix(in srgb, var(--text) 35%, var(--muted)); background:var(--sunken); border:1px solid var(--border); border-radius:5px; padding:2px 6px; text-transform:none; white-space:nowrap; }
+  /* translatable (ml*) fields — Winter.Translate: .field-multilingual wraps the
+     widget; an in-field top-right .ml-btn shows the ACTIVE locale code and opens
+     the locale menu (status dot + name + copy-from button per locale) */
+  .ui .mlf{ position:relative; }
+  .ui .mlf .ipt{ padding-right:54px; }
+  .ui .ml-btn{ position:absolute; z-index:12; top:1px; right:1px; bottom:1px; min-width:44px; border:0; border-radius:0 7px 7px 0; padding:0 12px; background:color-mix(in srgb,var(--text) 6%,transparent); color:var(--muted); font:700 11px/1 inherit; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:color .2s, background .2s; }
+  .ui .ml-btn:hover{ color:var(--text); background:color-mix(in srgb,var(--text) 12%,transparent); }
+  .ui .mlf.ml-has-untranslated .ml-btn::after{ content:''; position:absolute; top:3px; right:3px; width:7px; height:7px; border-radius:50%; background:var(--warning-solid); box-shadow:0 0 0 1px var(--bg); pointer-events:none; }
+  /* variants: textarea keeps a 36px corner button; boxed editors (mdw) pin it to
+     the toolbar; mediafinder/nestedform/repeater host it ABOVE the widget
+     (multilingual.css: top:-36px) at the right end of the label row */
+  .ui .mlf.ml-ta .ml-btn{ bottom:auto; height:34px; border-radius:0 7px 0 7px; }
+  .ui .mlf.ml-box .ml-btn{ bottom:auto; height:34px; border-radius:0 8px 0 7px; }
+  .ui .mlf.ml-above .ml-btn{ top:-31px; bottom:auto; height:26px; border-radius:7px; }
+  .ui .mlf.ml-above .ipt{ padding-right:11px; } /* nested sub-form inputs keep normal padding */
+  .ui .fld:has(.ml-above)>label .ty{ margin-right:54px; } /* keep the type chip clear of the hoisted locale button */
+  .ui .ml-menu{ display:none; position:absolute; z-index:41; top:40px; right:1px; min-width:200px; background:var(--raised); border:1px solid var(--border2); border-radius:10px; box-shadow:var(--shadow-md); padding:4px; }
+  .ui .mlf.open .ml-menu{ display:block; }
+  .ui .mlf.ml-above .ml-menu{ top:-2px; right:0; }
+  .ui .ml-menu .mli{ position:relative; }
+  .ui .ml-menu a{ display:flex; align-items:center; gap:8px; padding:7px 44px 7px 10px; border-radius:6px; font-size:12.5px; color:var(--text); cursor:pointer; white-space:nowrap; }
+  .ui .ml-menu a:hover{ background:var(--default-hov); }
+  .ui .ml-menu a.is-current-locale{ background:color-mix(in srgb,var(--accent) 10%,var(--bg)); font-weight:700; color:var(--accent-txt); }
+  .ui .ml-locale-status{ width:8px; height:8px; border-radius:50%; border:1px solid var(--border2); box-sizing:border-box; flex:none; }
+  .ui .ml-locale-status.is-filled{ background:var(--success); border-color:var(--success); }
+  .ui .ml-locale-status.is-empty{ background:transparent; border:1px dashed var(--faint); }
+  .ui .ml-locale-status.is-default{ background:var(--faint); border-color:var(--faint); }
+  .ui .ml-copy{ position:absolute; top:2px; bottom:2px; right:2px; width:34px; border:0; border-radius:6px; background:transparent; color:var(--faint); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+  .ui .ml-copy:hover{ color:var(--text); background:color-mix(in srgb,var(--text) 8%,transparent); }
+  .ui .ml-copy svg{ width:13px; height:13px; }
+  .ui .fld .hint{ font-size:12px; color:var(--muted); margin-top:5px; }
+  .ui .fld.err .ipt{ border-color:var(--danger); box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 20%,transparent); }
+  .ui .fld.err .msg{ font-size:12px; color:var(--danger); margin-top:5px; }
+  .ui .sel-ipt{ display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
+  .ui .sel-ipt svg{ color:var(--faint); }
+  .ui .radio{ display:flex; align-items:center; gap:9px; margin-bottom:8px; font-weight:400; font-size:13px; color:var(--text); }
+  .ui .dot{ width:16px; height:16px; border-radius:50%; border:1.5px solid var(--border2); display:inline-flex; align-items:center; justify-content:center; background:var(--bg); }
+  .ui .dot.on{ border-color:var(--accent); }
+  .ui .dot.on::after{ content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); }
+  /* switch — Winter renders the on/off state text on the control (from the
+     field's on:/off: config, default ON/OFF) */
+  .ui .switch{ display:inline-flex; align-items:center; justify-content:flex-end; min-width:60px; height:24px; border-radius:999px; background:var(--border2); position:relative; padding:0 9px 0 26px; font-size:10.5px; font-weight:700; letter-spacing:.03em; color:var(--muted); flex:none; transition:background .15s, color .15s, padding .15s; cursor:pointer; }
+  .ui .switch::before{ content:'OFF'; }
+  .ui .switch[data-off]::before{ content:attr(data-off); }
+  .ui .switch::after{ content:''; position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.35); transition:left .15s; }
+  .ui .switch.on{ background:var(--accent); color:#fff; justify-content:flex-start; padding:0 26px 0 9px; }
+  .ui .switch.on::before{ content:'ON'; }
+  .ui .switch.on[data-on]::before{ content:attr(data-on); }
+  .ui .switch.on::after{ left:calc(100% - 22px); }
+  .ui .balloon{ display:inline-flex; gap:7px; flex-wrap:wrap; }
+  .ui .balloon span{ padding:6px 13px; border-radius:999px; border:1px solid var(--border2); font-size:12.5px; color:var(--muted); cursor:pointer; transition:border-color .12s,color .12s; }
+  .ui .balloon span:hover:not(.on){ color:var(--text); border-color:var(--faint); }
+  .ui .balloon span.on{ background:color-mix(in srgb,var(--accent) 14%,var(--bg)); border-color:color-mix(in srgb,var(--accent) 45%,var(--border)); color:var(--accent-txt); font-weight:650; }
+  .ui .tags{ display:flex; gap:7px; flex-wrap:wrap; align-items:center; padding:6px 7px; border:1px solid var(--border2); border-radius:8px; background:var(--bg); }
+  .ui .tags .tg{ background:color-mix(in srgb,var(--accent) 12%,var(--bg)); color:var(--accent-txt); border-radius:6px; padding:4px 9px; font-size:12px; font-weight:650; display:inline-flex; gap:6px; align-items:center; }
+  .ui .tags .tg svg{ width:12px; height:12px; opacity:.65; cursor:pointer; }
+  .ui .tags .tg svg:hover{ opacity:1; }
+  .ui .tags .ghosttxt{ color:var(--faint); font-size:13.5px; line-height:1.3; padding:1px 3px; } /* type-in area — 16px on coarse pointers */
+
+  /* ================================================================
+     TABS v4 — the "snowcap" language. No skew, no trapezoids, no
+     drop shadows. Active tab = shared surface with the body plus a
+     rounded Pacific cap resting on its top edge (the snowcap), and
+     smooth concave fillets where it meets the header. The same cap
+     marks active state on document, content and secondary tabs, so
+     the whole backend shares one recognisable Winter signature.
+     ================================================================ */
+
+  /* breadcrumb BAR — hosts the crumb trail AND the compact record-navigation
+     control. It attaches FLUSH to the form header below (square touching
+     corners, shared border) so breadcrumb + header read as one unit. */
+  .ui .bcbar{ display:flex; align-items:center; gap:14px; padding:8px 14px; background:var(--surface); border:1px solid var(--border); border-bottom:0; border-radius:12px 12px 0 0; }
+  .ui .bcbar + .fancy-hdr{ border-radius:0; }
+  /* seam match: when the bcbar sits on a fancy header its side borders meet the
+     header's --hdr-bd edge, so both use the header border colour */
+  .ui .bcbar:has(+ .fancy-hdr){ border-color:var(--hdr-bd); }
+  .ui .card .bcbar{ border:0; border-bottom:1px solid var(--border); border-radius:0; }
+
+  /* record navigation — mirrors backend/behaviors/formcontroller/partials/
+     _record_navigation.php: "3 / 42" position + bordered ▲ prev / ▼ next group */
+  .ui .form-record-nav{ display:flex; align-items:center; gap:9px; font-size:12px; margin-left:auto; }
+  .ui .form-record-nav-position{ color:var(--muted); font-weight:600; letter-spacing:.3px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .ui .form-record-nav-group{ display:inline-flex; background:var(--raised); border:1px solid var(--border2); border-radius:6px; overflow:hidden; }
+  .ui .form-record-nav-btn{ width:28px; height:24px; display:inline-flex; align-items:center; justify-content:center; color:var(--muted); cursor:pointer; transition:background .12s, color .12s; }
+  .ui .form-record-nav-btn + .form-record-nav-btn{ border-left:1px solid var(--border2); }
+  .ui .form-record-nav-btn:hover:not(.is-disabled){ background:var(--default-hov); color:var(--text); }
+  .ui .form-record-nav-btn.is-disabled{ opacity:.4; cursor:default; }
+  .ui .form-record-nav-btn svg{ width:13px; height:13px; }
+  .ui .btn.sm{ padding:6px 11px; font-size:12.5px; border-radius:7px; }
+  .ui .btn.sm svg{ width:14px; height:14px; }
+
+  /* breadcrumb */
+  .ui .bc{ font-size:13px; color:var(--muted); display:flex; align-items:center; gap:4px; }
+  .ui .bc a{ color:var(--muted); text-decoration:none; cursor:pointer; }
+  .ui .bc a:hover{ color:var(--text); }
+  .ui .bc svg{ width:13px; height:13px; color:var(--faint); }
+  .ui .bc .cur{ color:var(--accent-txt); font-weight:650; }
+
+  /* (a) fancy form header — lifted indigo surface, frost edge, snowcap tabs */
+  .ui .fancy-hdr{ background:linear-gradient(180deg, var(--hdr-a), var(--hdr-b)); border:1px solid var(--hdr-bd); border-bottom:0; border-radius:14px 14px 0 0; padding:18px 18px 0; position:relative; box-shadow:inset 0 1px 0 var(--hdr-hi); }
+  /* span: auto — two auto-span fields split the row into EQUAL 50% halves
+     (Winter's real field span behaviour), so Title | URL are 1fr / 1fr */
+  .ui .fh-fields{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .ui .fancy-hdr label{ display:block; font-size:11.5px; font-weight:600; color:var(--hdr-dim); margin-bottom:6px; }
+  .ui .fancy-hdr input{ width:100%; font-family:inherit; padding:7px 12px; border-radius:8px; font-size:14px; line-height:1.3; color:var(--hdr-fg); background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.14); transition:border-color .12s, background .12s; }
+  .ui .fancy-hdr input::placeholder{ color:rgba(255,255,255,.55); }
+  .ui .fancy-hdr input:focus{ outline:none; border-color:color-mix(in srgb,var(--cap) 75%,transparent); background:rgba(255,255,255,.14); box-shadow:0 0 0 3px color-mix(in srgb,var(--cap) 25%,transparent); }
+  /* Chrome-style tab strip: EVERY tab shares one silhouette — rounded
+     shoulders on top, flowing concave feet at the bottom. The feet are painted
+     from the per-tab --tabbg custom property, so the active tab's feet flow
+     into the body surface while inactive tabs' feet flow in the same frost
+     they are filled with. Gap = 2 × foot radius so adjacent feet just touch. */
+  @property --tabbg{ syntax:'<color>'; inherits:true; initial-value:transparent; }
+  /* tab strip: NO left padding — the tabs' left edge lines up flush with the
+     header fields and the action-button row above (one shared left edge; the
+     active tab's concave left foot may poke a few px into the header padding) */
+  .ui .ftabs{ display:flex; align-items:center; gap:4px; padding:0; }
+  .ui .ftab{ --tabbg:rgba(255,255,255,.07); position:relative; border:0; background:var(--tabbg); padding:9px 15px 10px; font:600 13px/1 inherit; color:var(--hdr-dim); border-radius:9px 9px 0 0; cursor:pointer; transition:--tabbg .12s, color .12s; display:inline-flex; align-items:center; gap:8px; }
+  .ui .ftab svg{ width:15px; height:15px; opacity:.85; }
+  .ui .ftab.on svg{ opacity:1; color:var(--accent-txt); }
+  .ui .ftab:hover:not(.on){ --tabbg:rgba(255,255,255,.13); color:var(--hdr-fg); }
+  .ui .ftab.on{ --tabbg:var(--raised); color:var(--text); font-weight:700; }
+  /* snowcap rhythm: every active-indicator bar — overline caps (.ftab/.dtab/.etab)
+     and underlines (.stabs/.tt) — shares ONE 12px inset */
+  .ui .ftab .cap{ display:none; position:absolute; top:0; left:12px; right:12px; height:3px; border-radius:999px; background:var(--cap); }
+  .ui .ftab.on .cap{ display:block; }
+  .ui .ftab .fl{ position:absolute; bottom:0; width:8px; height:8px; pointer-events:none; }
+  .ui .ftab .fl.l{ left:-8px; background:radial-gradient(circle at 0 0, transparent 7.5px, var(--tabbg) 8px); }
+  .ui .ftab .fl.r{ right:-8px; background:radial-gradient(circle at 100% 0, transparent 7.5px, var(--tabbg) 8px); }
+  /* Option B: the flowing feet appear on the active tab only — the one that pours
+     into the body. Inactive tabs sit tight as plain rounded chips (no feet), so
+     the strip is compact without the feet forcing wide gaps. */
+  .ui .ftab:not(.on) .fl{ display:none; }
+  .ui .ftabs .fsp, .ui .fh-actions .fsp{ flex:1; }
+  /* fancy header form buttons — the toolbar/buttons partial renders in its own
+     action row BETWEEN the header fields and the tab strip (left-aligned, so
+     fields, buttons and tabs share one left edge), keeping the tab row free
+     for dense forms with many tabs (text actions + a ghost-danger Delete) */
+  .ui .fh-actions{ display:flex; align-items:center; gap:10px; margin:0 0 14px; }
+  .ui .fbtns{ display:inline-flex; align-items:center; gap:2px; }
+  .ui .fbtn{ border:0; background:transparent; color:var(--hdr-fg); font:600 12.5px/1 inherit; padding:8px 11px; border-radius:7px; cursor:pointer; opacity:.7; transition:opacity .12s, background .12s; display:inline-flex; align-items:center; gap:6px; }
+  .ui .fbtn svg{ width:14px; height:14px; }
+  .ui .fbtn:hover{ opacity:1; background:rgba(255,255,255,.1); }
+  /* ONE solid primary per view: Save is the light-on-indigo solid pill; Save &
+     close / Cancel stay quiet ghosts; Delete is a ghost-danger outline, not a
+     filled brick — the destructive action no longer carries the most weight */
+  .ui .fbtn.primary{ opacity:1; font-weight:700; background:var(--hdr-fg); color:var(--hdr-b); box-shadow:var(--shadow-sm); }
+  .ui .fbtn.primary:hover{ background:#fff; color:var(--hdr-b); }
+  .ui .fbtn.del{ opacity:.85; display:inline-flex; align-items:center; gap:6px; margin-left:6px; padding:7px 11px; border-radius:7px; background:transparent; border:1px solid color-mix(in srgb,var(--danger) 50%,transparent); color:color-mix(in srgb,var(--danger) 55%,#fff); }
+  .ui .fbtn.del:hover{ opacity:1; background:color-mix(in srgb,var(--danger) 18%,transparent); color:#fff; }
+  .ui .fbtn.del svg{ width:14px; height:14px; }
+  .ui .fancy-body{ background:var(--raised); border:1px solid var(--border); border-top:0; padding:18px; border-radius:0 0 14px 14px; font-size:13px; color:var(--muted); line-height:1.55; }
+
+  /* (b) document / open-editor tabs — recessed rail + raised chip + snowcap */
+  .ui .dock{ display:flex; align-items:center; gap:4px; padding:6px; background:var(--sunken); border:1px solid var(--border); border-bottom:0; border-radius:12px 12px 0 0; }
+  .ui .dtab{ position:relative; display:inline-flex; align-items:center; gap:8px; padding:8px 11px; border:1px solid transparent; border-radius:8px; background:transparent; color:var(--muted); font:500 12.5px/1 inherit; cursor:pointer; transition:background .12s, color .12s; }
+  .ui .dtab svg{ width:13px; height:13px; opacity:.65; }
+  .ui .dtab:hover:not(.on){ background:color-mix(in srgb,var(--text) 6%,transparent); color:var(--text); }
+  .ui .dtab.on{ background:var(--raised); border-color:var(--border); color:var(--text); font-weight:650; }
+  .ui .dtab .cap{ display:none; position:absolute; top:-1px; left:12px; right:12px; height:3px; border-radius:999px; background:var(--accent); }
+  .ui .dtab.on .cap{ display:block; }
+  .ui .dtab .dx{ width:16px; height:16px; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; color:var(--faint); }
+  .ui .dtab .dx svg{ width:11px; height:11px; opacity:1; }
+  .ui .dtab .dx:hover{ background:color-mix(in srgb,var(--text) 10%,transparent); color:var(--text); }
+  .ui .dtab:not(.on):not(:hover) .dx{ opacity:0; }
+  .ui .dtab .mod{ width:7px; height:7px; border-radius:50%; background:var(--accent); margin:0 4px; }
+  .ui .dtab.dirty .dx{ display:none; }
+  .ui .dtab.dirty:hover .dx{ display:inline-flex; opacity:1; }
+  .ui .dtab.dirty:hover .mod{ display:none; }
+  .ui .dadd{ border:0; background:transparent; width:28px; height:28px; border-radius:7px; color:var(--faint); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+  .ui .dadd:hover{ background:color-mix(in srgb,var(--text) 7%,transparent); color:var(--text); }
+  .ui .dadd svg{ width:14px; height:14px; }
+  .ui .dock-body{ border:1px solid var(--border); border-radius:0 0 12px 12px; background:var(--raised); padding:14px; font-size:12.5px; color:var(--muted); }
+
+  /* secondary (underline) tabs — grounded snowcap */
+  .ui .stabs{ display:flex; gap:2px; border-bottom:1px solid var(--border); padding:0 4px; }
+  .ui .stabs button{ position:relative; border:0; background:transparent; padding:10px 15px; font:500 13px/1 inherit; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; gap:7px; }
+  .ui .stabs button svg{ width:14px; height:14px; opacity:.8; }
+  .ui .stabs button.on svg{ opacity:1; }
+  .ui .stabs button:hover:not(.on){ color:var(--text); }
+  .ui .stabs button.on{ color:var(--accent-txt); font-weight:700; }
+  .ui .stabs button.on::after{ content:''; position:absolute; bottom:-1px; left:12px; right:12px; height:3px; border-radius:999px; background:var(--accent); }
+
+  /* content (Markup / Code) tabs — compact editor chrome */
+  .ui .edbar{ display:flex; align-items:center; gap:4px; padding:5px; background:var(--sunken); border:1px solid var(--border); border-bottom:0; border-radius:10px 10px 0 0; }
+  .ui .etab{ position:relative; border:1px solid transparent; background:transparent; padding:7px 13px; border-radius:7px; font:600 12.5px/1 inherit; color:var(--muted); cursor:pointer; }
+  .ui .etab:hover:not(.on){ color:var(--text); }
+  .ui .etab.on{ background:var(--raised); border-color:var(--border); color:var(--accent-txt); }
+  .ui .etab .cap{ display:none; position:absolute; top:-1px; left:12px; right:12px; height:3px; border-radius:999px; background:var(--accent); }
+  .ui .etab.on .cap{ display:block; }
+  .ui .elang{ margin-left:auto; margin-right:6px; font:600 10.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.06em; color:var(--faint); text-transform:uppercase; }
+  .ui .edbody{ border:1px solid var(--border); border-radius:0 0 10px 10px; background:var(--raised); padding:13px 15px; }
+  .ui .edbody pre{ margin:0; font:12px/1.65 ui-monospace,Menlo,monospace; color:var(--muted); }
+  .ui .edbody pre b{ color:var(--accent-txt); font-weight:600; }
+
+  /* ============ ALERTS — tinted, iconed ============ */
+  .ui .alerts{ display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:16px; }
+  .ui .alert{ display:flex; gap:10px; align-items:flex-start; padding:11px 13px; border-radius:10px; font-size:13px; border:1px solid; line-height:1.45; }
+  .ui .alert svg{ width:17px; height:17px; margin-top:1px; }
+  .ui .alert b{ font-weight:700; }
+  .ui .alert.success{ background:color-mix(in srgb,var(--success) var(--tint),var(--bg)); border-color:color-mix(in srgb,var(--success) 30%,var(--bg)); color:var(--text); }
+  .ui .alert.success svg, .ui .alert.success b{ color:var(--success); }
+  .ui .alert.info{ background:color-mix(in srgb,var(--info) var(--tint),var(--bg)); border-color:color-mix(in srgb,var(--info) 30%,var(--bg)); color:var(--text); }
+  .ui .alert.info svg, .ui .alert.info b{ color:var(--info); }
+  .ui .alert.warning{ background:color-mix(in srgb,var(--warning) var(--tint-hi),var(--bg)); border-color:color-mix(in srgb,var(--warning) 32%,var(--bg)); color:var(--text); }
+  .ui .alert.warning svg, .ui .alert.warning b{ color:var(--warning); }
+  .ui .alert.danger{ background:color-mix(in srgb,var(--danger) var(--tint),var(--bg)); border-color:color-mix(in srgb,var(--danger) 30%,var(--bg)); color:var(--text); }
+  .ui .alert.danger svg, .ui .alert.danger b{ color:var(--danger); }
+
+  /* hint callout — layouts/_hint.php: .callout.callout-{type} with icon + header
+     (h3 + optional subtitle) + content + a dismiss × button top-right */
+  .ui .callout{ position:relative; display:flex; gap:10px; align-items:flex-start; padding:11px 40px 12px 13px; border-radius:10px; border:1px solid; font-size:12.5px; line-height:1.5; }
+  .ui .callout>svg{ width:17px; height:17px; margin-top:1px; flex:none; }
+  .ui .callout .co-h{ font-weight:700; color:var(--text); }
+  .ui .callout .co-s{ font-size:11.5px; color:var(--muted); margin-bottom:2px; }
+  .ui .callout .co-c{ color:var(--text); }
+  .ui .callout.info{ background:color-mix(in srgb,var(--info) var(--tint),var(--bg)); border-color:color-mix(in srgb,var(--info) 30%,var(--bg)); }
+  .ui .callout.info>svg, .ui .callout.info .co-h{ color:var(--info); }
+  .ui .callout.warning{ background:color-mix(in srgb,var(--warning) var(--tint-hi),var(--bg)); border-color:color-mix(in srgb,var(--warning) 32%,var(--bg)); }
+  .ui .callout.warning>svg, .ui .callout.warning .co-h{ color:var(--warning); }
+  .ui .callout.success{ background:color-mix(in srgb,var(--success) var(--tint),var(--bg)); border-color:color-mix(in srgb,var(--success) 30%,var(--bg)); }
+  .ui .callout.success>svg, .ui .callout.success .co-h{ color:var(--success); }
+  .ui .callout.danger{ background:color-mix(in srgb,var(--danger) var(--tint),var(--bg)); border-color:color-mix(in srgb,var(--danger) 30%,var(--bg)); }
+  .ui .callout.danger>svg, .ui .callout.danger .co-h{ color:var(--danger); }
+  .ui .co-close{ position:absolute; top:7px; right:7px; width:24px; height:24px; border:0; border-radius:6px; background:transparent; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:color .12s, background .12s; }
+  .ui .co-close:hover{ color:var(--text); background:color-mix(in srgb,var(--text) 12%,transparent); }
+  .ui .co-close svg{ width:13px; height:13px; }
+
+  /* repeater add-item — the real control is a full-width dashed bar
+     (li.field-repeater-add-item) carrying the prompt text */
+  .ui .rep-addbar{ display:flex; align-items:center; justify-content:center; gap:7px; width:100%; margin-top:8px; padding:10px; border:1.5px dashed var(--border2); border-radius:9px; background:transparent; color:var(--muted); font:600 12.5px/1 inherit; cursor:pointer; transition:border-color .12s,color .12s; }
+  .ui .rep-addbar:hover{ color:var(--accent-txt); border-color:color-mix(in srgb,var(--accent) 55%,var(--border2)); }
+  .ui .rep-addbar svg{ width:14px; height:14px; }
+  /* grouped repeater "Add item" palette — _repeater.php group template:
+     popover head + search (.repeater-group-search) + grid of group types
+     (.repeater-group-item: icon + title + description) + no-results state */
+  .ui .rgadd{ position:relative; }
+  .ui .rgp{ display:none; position:absolute; bottom:calc(100% + 6px); left:0; z-index:40; width:min(460px,100%); background:var(--raised); border:1px solid var(--border2); border-radius:12px; box-shadow:var(--shadow-md); overflow:hidden; }
+  .ui .rgadd.open .rgp{ display:block; }
+  .ui .rgp-hd{ display:flex; align-items:center; justify-content:space-between; padding:11px 9px 11px 13px; }
+  .ui .rgp-hd b{ font-family:var(--font-head); font-size:13px; font-weight:800; color:var(--text); }
+  .ui .rgp-search{ position:relative; padding:0 12px 10px; border-bottom:1px solid var(--border); }
+  .ui .rgp-search>svg{ position:absolute; left:22px; top:calc(50% - 5px); transform:translateY(-50%); width:14px; height:14px; color:var(--faint); pointer-events:none; }
+  .ui .rgp-search .ipt{ padding-left:34px; padding-right:34px; }
+  .ui .rgp-search .rgp-clear{ position:absolute; right:18px; top:calc(50% - 5px); transform:translateY(-50%); }
+  .ui .rgp-none{ display:none; padding:20px; text-align:center; color:var(--faint); font-size:12.5px; }
+  .ui .rgp.none .rgp-none{ display:block; }
+  .ui .rgp.none .rgp-grid{ display:none; }
+  .ui .rgp-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:12px; max-height:250px; overflow:auto; }
+  .ui .rgp-it{ display:flex; align-items:center; gap:11px; padding:10px 11px; border:1px solid var(--border2); border-radius:9px; background:var(--bg); cursor:pointer; text-align:left; font-family:inherit; transition:border-color .12s, box-shadow .12s; }
+  .ui .rgp-it:hover{ border-color:color-mix(in srgb,var(--accent) 55%,var(--border2)); box-shadow:var(--shadow-sm); }
+  .ui .rgp-it>svg{ width:20px; height:20px; color:var(--muted); flex:none; }
+  .ui .rgp-it .t{ display:block; font-weight:650; font-size:12.5px; color:var(--text); }
+  .ui .rgp-it .d{ display:block; font-size:11px; color:var(--muted); line-height:1.35; margin-top:1px; }
+  .ui .rgp-it.hide{ display:none; }
+
+  .ui .tabgrid{ display:flex; gap:26px; flex-wrap:wrap; align-items:flex-start; margin-bottom:24px; }
+  .ui .tabgrid .lbl{ font-size:10.5px; color:var(--muted); margin-bottom:7px; text-transform:uppercase; letter-spacing:.05em; font-weight:700; }
+  /* tab hierarchy demo — primary / secondary / nested */
+  .ui .thier .lbl{ font-size:10.5px; color:var(--muted); margin:0 0 7px; text-transform:uppercase; letter-spacing:.05em; font-weight:700; }
+  .ui .thier code, .ui .tabnote code{ background:color-mix(in srgb,var(--muted) 16%,var(--bg)); padding:1px 5px; border-radius:4px; font-size:11.5px; color:var(--accent-txt); }
+  .ui .stabs.divided{ gap:0; }
+  .ui .stabs.divided button{ font-weight:700; border-right:1px solid var(--border2); border-radius:0; }
+  .ui .stabs.divided button:last-child{ border-right:0; }
+  .ui .stabs.divided button.on::after{ display:none; }
+  .ui .subpanel{ border:1px solid var(--border2); border-radius:10px; padding:12px; background:var(--sunken); margin-top:12px; }
+  .ui .subpanel .stabs{ border:0; }
+  .ui .subpanel-pane{ font-size:12.5px; line-height:1.5; color:var(--muted); margin-top:8px; }
+  .ui .tabnote{ margin-top:14px; padding:10px 12px; font-size:12px; line-height:1.55; color:var(--muted); background:var(--surface); border:1px solid var(--border); border-radius:8px; }
+  /* ---- interactive nested tabs: content switches at every level; each nested
+     form is an obviously ENCAPSULATED panel so the depth is unmistakable ---- */
+  .ui .ttbar{ display:flex; gap:2px; border-bottom:1px solid var(--border); padding:0 6px; }
+  .ui .tt{ position:relative; border:0; background:transparent; padding:10px 15px; font:650 13px/1 inherit; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; gap:7px; }
+  .ui .tt svg{ width:14px; height:14px; opacity:.8; }
+  .ui .tt:hover:not(.on){ color:var(--text); }
+  .ui .tt.on{ color:var(--accent-txt); }
+  .ui .tt.on svg{ opacity:1; }
+  .ui .tt.on::after{ content:''; position:absolute; bottom:-1px; left:12px; right:12px; height:3px; border-radius:999px; background:var(--accent); }
+  .ui .ttpane{ display:none; padding:14px 6px; }
+  .ui .ttpane.on{ display:block; }
+  .ui .pane-h{ font-size:13px; font-weight:700; color:var(--text); margin:0 0 4px; }
+  .ui .pane-d{ font-size:12.5px; color:var(--muted); margin:0 0 12px; line-height:1.5; }
+  /* encapsulated nested form (level 2): border + accent left-bar + titled header + inset bg */
+  .ui .nfx{ border:1px solid var(--border2); border-left:3px solid var(--accent); border-radius:10px; background:var(--sunken); overflow:hidden; margin-top:4px; }
+  .ui .nfx .nfx-hd{ display:flex; align-items:center; gap:8px; padding:9px 14px; background:color-mix(in srgb,var(--accent) 9%,var(--surface)); border-bottom:1px solid var(--border); font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--accent-txt); }
+  .ui .nfx .nfx-hd svg{ width:14px; height:14px; }
+  .ui .nfx .nfx-hd .tag{ margin-left:auto; font:700 9.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.04em; text-transform:none; color:var(--muted); background:var(--bg); border:1px solid var(--border2); border-radius:5px; padding:3px 7px; }
+  .ui .nfx .ttbar{ padding:0 10px; }
+  .ui .nfx .ttpane{ padding:14px; }
+  /* level 3: deeper inset + a distinct indigo left-bar/header so the second nesting layer is obvious */
+  .ui .nfx .nfx{ border-left-color:var(--primary); background:color-mix(in srgb,var(--muted) 8%,var(--bg)); }
+  .ui .nfx .nfx .nfx-hd{ background:color-mix(in srgb,var(--primary) 12%,var(--surface)); color:var(--text); }
+
+  /* ================================================================
+     FORM LAYOUTS — standard (_standard.php), fancy (_fancy.php) and
+     sidebar (_sidebar.php · layouts/form-with-sidebar.php)
+     ================================================================ */
+  .ui .form-buttons{ display:flex; gap:9px; flex-wrap:wrap; align-items:center; padding:13px 18px; background:var(--surface); border-top:1px solid var(--border); }
+  .ui .grid2 .full{ grid-column:1/-1; }
+  /* sidebar split: flexible main cell + fixed ~300px right sidebar cell */
+  .ui .sbl{ display:flex; align-items:stretch; }
+  .ui .sbl-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+  .ui .sbl-main .grid2{ flex:1; }
+  .ui .form-sidebar{ width:300px; flex:none; background:var(--surface); border-left:1px solid var(--border); padding:16px 14px; display:flex; flex-direction:column; gap:12px; position:sticky; top:16px; align-self:flex-start; max-height:calc(100vh - 24px); overflow:auto; }
+  /* sticky sidebar needs a non-clipping ancestor (demo only — a real sidebar likely wouldn't be sticky by default) */
+  .ui .card.sbl-card{ overflow:visible; }
+  .ui .form-sidebar .sb-t{ font-family:var(--font-head); font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:0 2px; }
+  @media (max-width:900px){ .ui .sbl{ flex-direction:column; } .ui .form-sidebar{ width:auto; border-left:0; border-top:1px solid var(--border); } }
+  /* vertical icon tabs hosted by the sidebar (secondaryTabs) — same snowcap
+     language rotated 90°: active tab is a raised chip with a Pacific bar */
+  .ui .vtabs{ display:flex; flex-direction:column; gap:2px; }
+  .ui .vtab{ position:relative; display:flex; align-items:center; gap:10px; padding:8px 11px 8px 13px; border:0; background:transparent; border-radius:8px; color:var(--muted); font:600 12.5px/1.2 inherit; cursor:pointer; text-align:left; transition:background .12s,color .12s; }
+  .ui .vtab svg{ width:15px; height:15px; opacity:.8; flex:none; }
+  .ui .vtab:hover:not(.on){ background:color-mix(in srgb,var(--text) 6%,transparent); color:var(--text); }
+  .ui .vtab.on{ background:var(--raised); color:var(--accent-txt); font-weight:700; box-shadow:var(--shadow-sm); }
+  .ui .vtab.on svg{ opacity:1; }
+  .ui .vtab.on::before{ content:''; position:absolute; left:0; top:7px; bottom:7px; width:3px; border-radius:99px; background:var(--accent); }
+  .ui .vpane{ display:none; }
+  .ui .vpane.on{ display:block; }
+
+  /* ================================================================
+     FIELD GALLERY WIDGETS — every core field type, built on the tokens
+     ================================================================ */
+  /* section field: heading + commentAbove, breaks long forms into groups */
+  .ui .fsec{ padding:4px 0 10px; border-bottom:1px solid var(--border); }
+  .ui .fsec h4{ margin:0 0 3px; font-family:var(--font-head); font-size:14px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .ui .fsec p{ margin:0; font-size:12.5px; color:var(--muted); line-height:1.45; }
+  /* input with a leading icon (datepicker etc.) */
+  .ui .iwrap{ position:relative; }
+  .ui .iwrap>svg{ position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--faint); pointer-events:none; }
+  .ui .iwrap .ipt{ padding-left:34px; }
+  /* datepicker carries its calendar/clock icon on the RIGHT (input-with-icon
+     right-align); datetime mode is a 7/5 split of date + time inputs */
+  .ui .iwrap.r>svg{ left:auto; right:10px; }
+  .ui .iwrap.r .ipt{ padding-left:11px; padding-right:34px; }
+  .ui .dtpair{ display:grid; grid-template-columns:7fr 5fr; gap:8px; }
+  /* checkboxlist quick-select — the real partial renders Select all / none links */
+  .ui .qsel{ display:flex; gap:12px; font-size:11.5px; margin-bottom:7px; }
+  .ui .qsel a{ color:var(--accent-txt); cursor:pointer; display:inline-flex; align-items:center; gap:4px; font-weight:600; }
+  .ui .qsel a:hover{ text-decoration:underline; }
+  .ui .qsel svg{ width:12px; height:12px; }
+  /* radio options may carry a per-option help comment below the label */
+  .ui .radio.rc{ align-items:flex-start; }
+  .ui .radio.rc .dot{ margin-top:2px; }
+  .ui .radio small{ display:block; color:var(--muted); font-size:11px; font-weight:400; line-height:1.35; }
+  /* dropdown with an openable options menu */
+  .ui .dd{ position:relative; }
+  .ui .dd .ddm{ display:none; position:absolute; top:calc(100% + 4px); left:0; min-width:100%; z-index:30; background:var(--raised); border:1px solid var(--border2); border-radius:8px; box-shadow:var(--shadow-md); padding:4px; }
+  .ui .dd.open .ddm{ display:block; }
+  .ui .dd.open .sel-ipt{ border-color:var(--accent); }
+  .ui .ddm .it{ padding:7px 10px; border-radius:6px; font-size:14px; color:var(--text); cursor:pointer; white-space:nowrap; }
+  .ui .ddm .it:hover{ background:var(--default-hov); }
+  .ui .ddm .it.on{ background:color-mix(in srgb,var(--accent) 12%,var(--bg)); color:var(--accent-txt); font-weight:650; }
+  /* range slider */
+  .ui .range{ position:relative; height:6px; border-radius:99px; background:var(--border2); margin:14px 8px 4px 2px; }
+  .ui .range i{ position:absolute; left:0; top:0; bottom:0; border-radius:99px; background:var(--accent); }
+  .ui .range b{ position:absolute; top:50%; transform:translate(-50%,-50%); width:16px; height:16px; border-radius:50%; background:var(--raised); border:2.5px solid var(--accent); box-shadow:var(--shadow-sm); cursor:grab; }
+  /* range value bubble — the real partial renders an auto-positioned value span */
+  .ui .range.hasbub{ margin-top:34px; }
+  .ui .range .bub{ position:absolute; bottom:13px; transform:translateX(-50%); background:var(--raised); border:1px solid var(--border2); border-radius:6px; padding:2px 7px; font-size:11px; font-weight:700; color:var(--text); box-shadow:var(--shadow-sm); font-variant-numeric:tabular-nums; }
+  /* partial placeholder */
+  .ui .partial{ border:1.5px dashed var(--border2); border-radius:9px; padding:11px 12px; font-size:12.5px; color:var(--muted); background:var(--surface); line-height:1.5; }
+  .ui .partial code{ background:var(--sunken); padding:1px 5px; border-radius:4px; font-size:11px; color:var(--accent-txt); }
+  /* button-field loading spinner */
+  .ui .spinner{ width:12px; height:12px; border-radius:50%; border:2px solid color-mix(in srgb,currentColor 30%,transparent); border-top-color:currentColor; animation:uispin .7s linear infinite; flex:none; }
+  @keyframes uispin{ to{ transform:rotate(360deg); } }
+  /* codeeditor */
+  .ui .codeed{ display:flex; border:1px solid var(--border2); border-radius:8px; overflow:hidden; font:12px/1.6 ui-monospace,Menlo,monospace; background:var(--bg); }
+  .ui .codeed .gut{ padding:9px; background:var(--sunken); color:var(--muted); text-align:right; border-right:1px solid var(--border); user-select:none; min-width:32px; }
+  .ui .codeed pre{ margin:0; padding:9px 12px; color:var(--muted); flex:1; overflow:auto; }
+  .ui .codeed pre b{ color:var(--accent-txt); font-weight:600; }
+  /* colorpicker */
+  .ui .cpick{ display:flex; gap:8px; align-items:center; }
+  .ui .cpick .sw{ width:36px; height:36px; border-radius:8px; border:1px solid var(--border2); cursor:pointer; flex:none; box-shadow:var(--shadow-sm); }
+  /* fileupload dropzone + file/media items */
+  .ui .dropz{ display:flex; align-items:center; justify-content:center; gap:8px; border:1.5px dashed var(--border2); border-radius:9px; padding:13px; color:var(--muted); font-size:12.5px; background:var(--surface); cursor:pointer; transition:border-color .12s,color .12s; }
+  .ui .dropz:hover{ border-color:color-mix(in srgb,var(--accent) 55%,var(--border2)); color:var(--text); }
+  .ui .dropz svg{ color:var(--faint); }
+  .ui .fitem{ display:flex; align-items:center; gap:9px; margin-top:8px; padding:7px 9px; border:1px solid var(--border); border-radius:9px; background:var(--surface); font-size:12.5px; color:var(--text); line-height:1.35; }
+  .ui .fitem small{ color:var(--muted); font-size:11px; }
+  .ui .fitem .th{ width:34px; height:34px; border-radius:7px; background:var(--sunken); border:1px solid var(--border); display:inline-flex; align-items:center; justify-content:center; color:var(--faint); flex:none; }
+  .ui .fitem .rm{ margin-left:auto; color:var(--faint); cursor:pointer; display:inline-flex; padding:4px; border-radius:6px; }
+  .ui .fitem .rm:hover{ color:var(--danger); background:color-mix(in srgb,var(--danger) 10%,transparent); }
+  /* image-mode fileupload thumbnails + add tile */
+  .ui .thumbs{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .ui .thumbc{ width:96px; border:1px solid var(--border); border-radius:9px; overflow:hidden; background:var(--surface); font-size:10.5px; color:var(--muted); }
+  .ui .thumbc .im{ height:64px; display:flex; align-items:center; justify-content:center; background:var(--sunken); color:var(--faint); border-bottom:1px solid var(--border); }
+  .ui .thumbc .nm2{ padding:4px 7px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  /* upload-object affordances: hover-revealed remove (×) + a drag handle for
+     reordering attachMany uploads (_image_multi.php .upload-remove-button + .meta .drag-handle) */
+  .ui .thumbc{ position:relative; }
+  .ui .thumbc .uo-x, .ui .thumbc .uo-drag{ position:absolute; top:4px; width:22px; height:22px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; background:color-mix(in srgb,var(--bg) 82%,transparent); border:1px solid var(--border2); color:var(--muted); cursor:pointer; opacity:0; transition:opacity .12s; backdrop-filter:blur(2px); }
+  .ui .thumbc:hover .uo-x, .ui .thumbc:hover .uo-drag{ opacity:1; }
+  .ui .thumbc .uo-x{ right:4px; }
+  .ui .thumbc .uo-x:hover{ color:var(--danger); border-color:color-mix(in srgb,var(--danger) 45%,var(--border2)); }
+  .ui .thumbc .uo-drag{ left:4px; cursor:grab; }
+  .ui .thumbc .uo-x svg, .ui .thumbc .uo-drag svg{ width:12px; height:12px; }
+  .ui .thumbc.addt{ display:flex; align-items:center; justify-content:center; height:87px; border-style:dashed; border-color:var(--border2); color:var(--faint); cursor:pointer; }
+  .ui .thumbc.addt:hover{ color:var(--accent-txt); border-color:color-mix(in srgb,var(--accent) 55%,var(--border2)); }
+  /* iconpicker — Winter input-group: a clickable icon addon showing the current
+     icon + a text field holding the icon class; the addon opens a picker popup */
+  .ui .icp{ position:relative; max-width:340px; }
+  .ui .ig{ display:flex; }
+  .ui .ig-addon{ display:inline-flex; align-items:center; justify-content:center; width:44px; border:1px solid var(--border2); border-right:0; border-radius:8px 0 0 8px; background:var(--surface); color:var(--text); cursor:pointer; }
+  .ui .ig-addon:hover{ background:var(--default-hov); }
+  .ui .ig .ipt{ border-radius:0 8px 8px 0; }
+  .ui .icp-pop{ display:none; position:absolute; top:calc(100% + 4px); left:0; z-index:30; width:280px; background:var(--raised); border:1px solid var(--border2); border-radius:10px; box-shadow:var(--shadow-md); padding:8px; gap:6px; flex-wrap:wrap; }
+  .ui .icp.open .icp-pop{ display:flex; }
+  .ui .icg{ width:34px; height:34px; border-radius:8px; border:1px solid var(--border2); background:var(--bg); color:var(--muted); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+  .ui .icg:hover:not(.on){ color:var(--text); border-color:var(--faint); }
+  .ui .icg.on{ background:color-mix(in srgb,var(--accent) 12%,var(--bg)); border-color:color-mix(in srgb,var(--accent) 45%,var(--border2)); color:var(--accent-txt); }
+
+  /* recordfinder — an input-like bar (selected record: primary name + secondary
+     description, or a muted prompt) plus clear (×) and find (list) buttons; the
+     whole bar opens the finder popup */
+  .ui .rf{ display:flex; gap:8px; align-items:stretch; max-width:520px; }
+  .ui .rf-val{ flex:1; display:flex; align-items:center; padding:6px 12px; min-height:34px; border:1px solid var(--border2); border-radius:8px; background:var(--bg); cursor:pointer; }
+  .ui .rf-val:hover{ border-color:var(--faint); }
+  .ui .rf-p{ color:var(--text); font-weight:600; }
+  .ui .rf-s{ color:var(--muted); }
+  .ui .rf-btn{ display:inline-flex; align-items:center; justify-content:center; width:36px; border:1px solid var(--default-bd); border-radius:8px; background:var(--default); color:var(--default-fg); cursor:pointer; }
+  .ui .rf-btn:hover{ background:var(--default-hov); color:var(--text); }
+  /* markdown / rich editors: toolbar + panes */
+  .ui .mdw{ border:1px solid var(--border2); border-radius:9px; overflow:hidden; background:var(--bg); }
+  .ui .mtb{ display:flex; align-items:center; gap:2px; padding:5px; background:var(--sunken); border-bottom:1px solid var(--border); }
+  .ui .mtb button{ min-width:28px; height:26px; border:0; background:transparent; border-radius:6px; color:var(--muted); cursor:pointer; font:600 12.5px/1 inherit; display:inline-flex; align-items:center; justify-content:center; }
+  .ui .mtb button:hover{ background:color-mix(in srgb,var(--text) 8%,transparent); color:var(--text); }
+  .ui .mtb button svg{ width:14px; height:14px; }
+  .ui .mdsplit{ display:grid; grid-template-columns:1fr 1fr; }
+  .ui .mdsrc{ margin:0; padding:10px 12px; font:12px/1.6 ui-monospace,Menlo,monospace; color:var(--muted); border-right:1px solid var(--hairline); white-space:pre-wrap; }
+  .ui .mdprev{ padding:10px 12px; font-size:12.5px; color:var(--muted); background:var(--surface); }
+  .ui .mdprev h4{ margin:0 0 4px; font-family:var(--font-head); font-size:13.5px; color:var(--text); }
+  .ui .mdprev p{ margin:0; line-height:1.5; }
+  .ui .rich{ padding:11px 13px; font-size:13px; color:var(--text); line-height:1.6; }
+  .ui .rich p{ margin:0; }
+  .ui .rich a{ color:var(--accent-txt); text-decoration:underline; cursor:pointer; }
+  /* repeater */
+  .ui .rep{ display:flex; flex-direction:column; gap:8px; }
+  .ui .rep-item{ border:1px solid var(--border2); border-radius:9px; background:var(--surface); overflow:hidden; }
+  .ui .rep-hd{ display:flex; align-items:center; gap:8px; padding:8px 10px; cursor:pointer; font-weight:650; font-size:12.5px; color:var(--text); }
+  .ui .rep-hd svg{ width:14px; height:14px; }
+  .ui .rep-hd .grip{ color:var(--faint); cursor:grab; display:inline-flex; }
+  .ui .rep-hd .gk{ font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--faint); background:var(--sunken); border:1px solid var(--border); border-radius:5px; padding:2px 6px; }
+  .ui .rep-hd .chev{ margin-left:auto; color:var(--faint); display:inline-flex; transition:transform .15s; }
+  .ui .rep-item.open .rep-hd .chev{ transform:rotate(180deg); }
+  .ui .rep-hd .rm{ color:var(--faint); display:inline-flex; padding:3px; border-radius:5px; }
+  .ui .rep-hd .rm:hover{ color:var(--danger); background:color-mix(in srgb,var(--danger) 10%,transparent); }
+  .ui .rep-bd{ display:none; padding:11px; border-top:1px solid var(--border); background:var(--raised); }
+  .ui .rep-item.open .rep-bd{ display:block; }
+  .ui .rep-bd .fld{ margin-bottom:10px; }
+  .ui .rep-bd .fld:last-child{ margin-bottom:0; }
+  /* grid-mode repeater */
+  .ui .repgrid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .ui .repgrid .gcard{ border:1px solid var(--border2); border-radius:9px; background:var(--surface); overflow:hidden; font-size:11.5px; color:var(--muted); }
+  .ui .repgrid .gcard .im{ height:54px; display:flex; align-items:center; justify-content:center; background:var(--sunken); color:var(--faint); border-bottom:1px solid var(--border); }
+  .ui .repgrid .gcard .gb{ padding:7px 9px; }
+  .ui .repgrid .gcard .gb b{ display:block; color:var(--text); font-size:12px; margin-bottom:2px; }
+  /* nestedform */
+  .ui .nform{ border:1px solid var(--border2); border-left:3px solid color-mix(in srgb,var(--accent) 55%,var(--border2)); border-radius:9px; padding:12px; background:var(--surface); }
+  .ui .nform .fld{ margin-bottom:10px; }
+  .ui .nform .fld:last-child{ margin-bottom:0; }
+  .ui .nform .nrow{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .ui .nform .nrow .fld{ margin-bottom:0; }
+  /* relation list */
+  .ui .rlist{ border:1px solid var(--border2); border-radius:8px; padding:9px 11px 2px; background:var(--bg); }
+  /* datatable */
+  .ui table.dt{ width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--border2); border-radius:8px; overflow:hidden; font-size:12.5px; }
+  .ui table.dt th{ background:var(--surface); text-align:left; font:700 10.5px/1.2 inherit; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:7px 10px; border-bottom:1px solid var(--border); }
+  .ui table.dt td{ padding:7px 10px; border-bottom:1px solid var(--hairline); background:var(--bg); color:var(--text); font-variant-numeric:tabular-nums; }
+  .ui table.dt tr:last-child td{ border-bottom:0; }
+  .ui table.dt .num{ text-align:right; }
+  .ui table.dt td.focus{ box-shadow:inset 0 0 0 2px var(--accent); background:color-mix(in srgb,var(--accent) 8%,var(--bg)); }
+  /* sensitive (masked + reveal + optional copy — real widget is an input-group
+     with icon-copy and icon-eye buttons) */
+  .ui .sens{ position:relative; }
+  .ui .sens .ipt{ padding-right:38px; }
+  .ui .sens.cancopy .ipt{ padding-right:66px; }
+  .ui .sens .cpy{ right:33px; }
+  .ui .sens .rev{ position:absolute; right:5px; top:50%; transform:translateY(-50%); width:28px; height:26px; border:0; background:transparent; border-radius:6px; color:var(--faint); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+  .ui .sens .rev:hover{ color:var(--text); background:color-mix(in srgb,var(--text) 8%,transparent); }
+  /* permissioneditor — the real widget is a TABLE: section header rows per tab,
+     Allow / Inherit / Deny RADIO columns, info icons with tooltips */
+  .ui .pmx{ border:1px solid var(--border2); border-radius:9px; background:var(--bg); overflow:hidden; }
+  .ui .pmr{ display:grid; grid-template-columns:1fr 56px 56px 56px; align-items:center; gap:6px; padding:7px 11px; border-bottom:1px solid var(--hairline); font-size:12.5px; color:var(--text); }
+  .ui .pmr:last-child{ border-bottom:0; }
+  .ui .pmr .pc{ display:flex; justify-content:center; }
+  /* per-SECTION header row (matches the real tr.section: tab name on the left,
+     Allow/Inherit/Deny headers per section) — the column headers are clickable
+     bulk-toggles for that section's rows, real title text "…every permission in
+     this section" */
+  .ui .pmr.pmh{ background:var(--surface); border-bottom:1px solid var(--border); padding:8px 11px; font:700 10.5px/1.2 inherit; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+  .ui .pmr.pmh .pc{ font:inherit; cursor:pointer; border-radius:6px; padding:3px 0; margin:-3px 0; transition:color .12s, background .12s; }
+  .ui .pmr.pmh .pc:hover{ color:var(--accent-txt); background:color-mix(in srgb,var(--accent) 11%,transparent); }
+  .ui .pmr.pmh .ps{ font-family:var(--font-head); font-weight:800; color:var(--faint); }
+  /* per-permission help tooltip — circle-i, keyboard reachable (tabindex=0),
+     token-inverted bubble (text-on-bg flips per mode) on hover AND focus */
+  .ui .pmr .pi{ position:relative; color:var(--faint); display:inline-flex; margin-left:6px; vertical-align:-2px; padding:2px; border-radius:5px; cursor:help; }
+  .ui .pmr .pi:hover, .ui .pmr .pi:focus-visible{ color:var(--accent-txt); }
+  .ui .pmr .pi svg{ width:12px; height:12px; }
+  /* bubble sits to the RIGHT of the icon (the .pmx clips overflow at its
+     rounded corners, so an above-the-row bubble would be cut on the first row) */
+  .ui .pmr .pi::after{ content:attr(data-tip); position:absolute; left:calc(100% + 8px); top:50%; transform:translateY(-50%) translateX(-3px); background:var(--text); color:var(--bg); font:500 11px/1.35 var(--brand-font); padding:5px 9px; border-radius:6px; white-space:normal; width:max-content; max-width:200px; box-shadow:var(--shadow-md); opacity:0; visibility:hidden; transition:opacity .12s, transform .12s; pointer-events:none; z-index:45; }
+  .ui .pmr .pi::before{ content:''; position:absolute; left:calc(100% + 3px); top:50%; transform:translateY(-50%); border:5px solid transparent; border-right-color:var(--text); opacity:0; visibility:hidden; transition:opacity .12s; pointer-events:none; z-index:45; }
+  .ui .pmr .pi:hover::after, .ui .pmr .pi:focus-visible::after{ opacity:1; visibility:visible; transform:translateY(-50%) translateX(0); }
+  .ui .pmr .pi:hover::before, .ui .pmr .pi:focus-visible::before{ opacity:1; visibility:visible; }
+  /* fieldset */
+  .ui .fgrp{ border:1px solid var(--border2); border-radius:10px; padding:4px 13px 13px; margin:0; background:var(--raised); }
+  .ui .fgrp legend{ font-family:var(--font-head); font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); padding:0 6px; }
+  .ui .fgrp .grid2{ padding:6px 0 0; }
+
+  /* iOS-Safari anti-zoom: only coarse pointers need ≥16px text-entry sizes;
+     desktop keeps the single ~34px control height */
+  @media (pointer:coarse){
+    .ui .ipt{ font-size:16px; }
+    .ui .fancy-hdr input{ font-size:16px; }
+    .ui .tags .ghosttxt{ font-size:16px; }
+  }
+
+  /* ================================================================
+     DASHBOARD — report/scoreboard widgets (ReportContainer). The home
+     of Mulish at display size: the big KPI numbers are --font-head.
+     ================================================================ */
+  .ui .kpis{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; padding:16px; }
+  @media (max-width:900px){ .ui .kpis{ grid-template-columns:1fr 1fr; } }
+  .ui .kpi{ border:1px solid var(--border); border-radius:12px; background:var(--raised); box-shadow:var(--shadow-sm); padding:14px 16px 13px; }
+  .ui .kpi .kt{ display:flex; align-items:center; gap:7px; font:700 10.5px/1.2 inherit; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+  .ui .kpi .kt svg{ width:14px; height:14px; color:var(--accent); }
+  .ui .kpi .kv{ display:flex; align-items:baseline; gap:9px; }
+  .ui .kpi .kn{ font-family:var(--font-head); font-size:30px; font-weight:800; line-height:1.05; color:var(--text); font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+  .ui .kpi .kd{ display:inline-flex; align-items:center; gap:3px; font-size:11.5px; font-weight:750; font-variant-numeric:tabular-nums; }
+  .ui .kpi .kd svg{ width:11px; height:11px; stroke-width:2.2; }
+  .ui .kpi .kd.up{ color:var(--success); }
+  .ui .kpi .kd.down{ color:var(--danger); }
+  .ui .kpi .kh{ font-size:11.5px; color:var(--muted); margin-top:5px; line-height:1.4; }
+  /* goal meter card — progress toward a target */
+  .ui .kpi .meter{ height:6px; border-radius:99px; background:var(--sunken); border:1px solid var(--border); margin-top:9px; overflow:hidden; }
+  .ui .kpi .meter i{ display:block; height:100%; border-radius:99px; background:linear-gradient(90deg, var(--accent), color-mix(in srgb,var(--accent) 70%,var(--primary))); }
+  .ui .kpi .mrow{ display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); margin-top:5px; font-variant-numeric:tabular-nums; }
+
+  /* ================================================================
+     EMPTY STATE + LOADING SKELETON
+     ================================================================ */
+  .ui .empty{ display:flex; flex-direction:column; align-items:center; text-align:center; padding:42px 24px 40px; }
+  .ui .empty>svg{ width:48px; height:48px; color:var(--faint); stroke-width:1.3; margin-bottom:14px; }
+  .ui .empty h3{ font-family:var(--font-head); font-size:24px; font-weight:800; color:var(--text); margin:0 0 6px; }
+  .ui .empty p{ font-size:13px; color:var(--muted); margin:0 0 16px; max-width:360px; line-height:1.5; }
+  /* loading skeleton — shimmer bars on a subtle token gradient */
+  .ui .skel{ padding:16px 18px; display:flex; flex-direction:column; gap:11px; }
+  .ui .skel .sk{ height:12px; border-radius:6px; background:linear-gradient(90deg, var(--sunken) 25%, color-mix(in srgb,var(--muted) 14%,var(--sunken)) 42%, var(--sunken) 60%); background-size:220% 100%; animation:skshine 1.3s linear infinite; }
+  .ui .skel .sk.t{ height:16px; width:38%; }
+  .ui .skel .sk.w80{ width:80%; } .ui .skel .sk.w65{ width:65%; } .ui .skel .sk.w90{ width:90%; }
+  @keyframes skshine{ from{ background-position:180% 0; } to{ background-position:-40% 0; } }
+  /* respect reduced-motion: kill the looping shimmer/spin (and heavy transitions) */
+  @media (prefers-reduced-motion: reduce){
+    .ui .skel .sk{ animation:none; background:var(--sunken); }
+    .ui .spinner{ animation:none; }
+    .ui *, #topswap *{ transition-duration:.001ms !important; }
+  }
+
+  /* ================================================================
+     MODAL / POPUP — rendered inline on a bounded scrim so it shows in
+     the flow; header title is Mulish (popup.less .modal-header h4)
+     ================================================================ */
+  .ui .scrim{ display:flex; align-items:center; justify-content:center; padding:34px 20px; border-radius:12px; background:color-mix(in srgb,#0a1520 45%,transparent); }
+  .ui.dark .scrim{ background:color-mix(in srgb,#000 45%,transparent); }
+  .ui .modal{ width:min(440px,100%); background:var(--raised); border:1px solid var(--border2); border-radius:12px; box-shadow:var(--shadow-md); overflow:hidden; }
+  .ui .modal-hd{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:13px 12px 13px 17px; border-bottom:1px solid var(--border); }
+  .ui .modal-hd h4{ font-family:var(--font-head); font-size:18px; font-weight:800; color:var(--text); margin:0; }
+  .ui .modal-bd{ padding:16px 17px; font-size:13px; color:var(--text); line-height:1.5; }
+  .ui .modal-bd .warn{ display:flex; gap:9px; align-items:flex-start; padding:10px 12px; border-radius:9px; background:color-mix(in srgb,var(--warning) var(--tint-hi),var(--bg)); border:1px solid color-mix(in srgb,var(--warning) 32%,var(--bg)); color:var(--text); }
+  .ui .modal-bd .warn svg{ width:16px; height:16px; margin-top:1px; color:var(--warning); flex:none; }
+  .ui .modal-ft{ display:flex; align-items:center; justify-content:flex-end; gap:9px; padding:12px 17px; background:var(--surface); border-top:1px solid var(--border); }
+  /* demo wiring: closing the modal collapses the scrim to a reopen pill */
+  .ui .scrim .modal-reopen{ display:none; }
+  .ui .scrim.closed{ background:var(--sunken); border:1.5px dashed var(--border2); }
+  .ui .scrim.closed .modal{ display:none; }
+  .ui .scrim.closed .modal-reopen{ display:inline-flex; }
+
+  /* ============ QUICK LIGHT/DARK SWITCH ============ */
+  #topswap{ position:fixed; top:16px; right:20px; z-index:50; display:flex; align-items:center; gap:10px; }
+  #topswap .ts-themes{ display:flex; align-items:center; gap:8px; padding:7px 10px; border-radius:999px; border:1px solid #31425c; background:#1a2436; box-shadow:0 6px 18px rgba(0,0,0,.4); }
+  #topswap .ts-theme{ width:18px; height:18px; padding:0; border:0; background:transparent; cursor:pointer; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; }
+  #topswap .ts-theme span{ display:block; width:14px; height:14px; border-radius:50%; background:var(--d); box-shadow:inset 0 0 0 1px rgba(255,255,255,.25); transition:transform .12s; }
+  #topswap .ts-theme:hover span{ transform:scale(1.18); }
+  #topswap .ts-theme.on{ box-shadow:0 0 0 2px #1a2436, 0 0 0 4px #cbd5e1; }
+  #topswap #tint-toggle{ display:inline-flex; align-items:center; gap:7px; font:650 13px/1 var(--brand-font); padding:9px 13px; border-radius:999px; border:1px solid #31425c; background:#1a2436; color:#8090a4; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4); transition:color .15s, border-color .15s, opacity .15s; }
+  #topswap #tint-toggle .tdot{ width:12px; height:12px; border-radius:50%; border:1.5px solid #4a5b70; background:transparent; transition:background .15s, border-color .15s; }
+  #topswap #tint-toggle.on{ color:#dbe3ec; border-color:#3a4a63; }
+  #topswap #tint-toggle.on .tdot{ background:#57b9d2; border-color:#57b9d2; box-shadow:inset 0 0 0 2px #1a2436; }
+  #topswap.is-light #tint-toggle{ opacity:.45; }
+  #theme-toggle{ display:inline-flex; align-items:center; gap:8px; font-family:var(--brand-font); font-weight:650; font-size:13px; padding:9px 15px; border-radius:999px; border:1px solid #31425c; background:#1a2436; color:#cbd5e1; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4); transition:background .15s, border-color .15s, color .15s; }
+  #theme-toggle:hover{ background:#243149; color:#fff; border-color:#3a4a63; }
+  #theme-toggle svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+
+  /* ================================================================
+     RESPONSIVE — mobile pass. Two breakpoints: ≤900px (tablet) and
+     ≤640px (phone), extending the two 900px blocks above (.sbl stack,
+     .kpis 2-col). Wide tables live in .tscroll containers that pan
+     horizontally INSIDE their card — the page itself never scrolls
+     sideways. The (pointer:coarse) 16px-input rule above stays as-is.
+     ================================================================ */
+  .ui .modal{ max-width:calc(100vw - 24px); }
+
+  @media (max-width:900px){
+    body{ padding:20px 16px 60px; }
+    /* wide tables pan inside their card (min-width keeps columns readable) */
+    .ui .tscroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .ui .tscroll>table.lw{ min-width:680px; }
+    .ui .tscroll.tscroll-sm>table.lw{ min-width:430px; }
+    .ui .tscroll>table.dt{ min-width:400px; }
+    /* every tab strip swipes horizontally — no wrapping, no page overflow */
+    .ui .ftabs, .ui .dock, .ui .stabs, .ui .edbar, .ui .ttbar{
+      overflow-x:auto; flex-wrap:nowrap; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+    .ui .ftabs::-webkit-scrollbar, .ui .dock::-webkit-scrollbar, .ui .stabs::-webkit-scrollbar,
+    .ui .edbar::-webkit-scrollbar, .ui .ttbar::-webkit-scrollbar{ display:none; }
+    .ui .ftab, .ui .dtab, .ui .dadd, .ui .stabs button, .ui .etab, .ui .tt{ flex:none; white-space:nowrap; }
+    /* stacked sidebar (see the .sbl 900px block above): sticky is wrong on
+       small screens; the 8 vertical tabs become a horizontal swipeable strip
+       with the active bar rotated to an underline */
+    .ui .form-sidebar{ position:static; max-height:none; overflow:visible; align-self:stretch; min-width:0; }
+    .ui .vtabs{ flex-direction:row; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; gap:4px; }
+    .ui .vtabs::-webkit-scrollbar{ display:none; }
+    .ui .vtab{ flex:none; white-space:nowrap; }
+    .ui .vtab.on::before{ left:10px; right:10px; top:auto; bottom:0; width:auto; height:3px; }
+    /* toolbars & breadcrumb/record-nav rows wrap instead of clipping */
+    .ui .lw-bar{ flex-wrap:wrap; }
+    .ui .lw-foot{ flex-wrap:wrap; row-gap:8px; }
+    .ui .bcbar{ flex-wrap:wrap; row-gap:6px; }
+    .ui .fh-actions{ flex-wrap:wrap; }
+    .ui .fbtns{ flex-wrap:wrap; row-gap:2px; }
+    .ui .repgrid{ grid-template-columns:1fr 1fr; }
+  }
+
+  @media (max-width:640px){
+    body{ padding:64px 12px 48px; } /* top padding clears the compact fixed cluster */
+    .ui{ padding:14px 10px; }
+    .ui .card{ margin-bottom:18px; }
+    /* every 2-col grid stacks (!important beats the two inline grid styles);
+       min-width:0 lets grid items host inner scrollers (.pmx, .tscroll)
+       without their min-content floor forcing the page wide */
+    .ui .grid2{ grid-template-columns:1fr !important; padding:14px; gap:14px; }
+    .ui .grid2>*{ min-width:0; }
+    .ui .fh-fields{ grid-template-columns:1fr; }
+    .ui .alerts{ grid-template-columns:1fr; padding:12px; }
+    .ui .kpis{ grid-template-columns:1fr; padding:12px; }
+    .ui .kpi .kn{ font-size:24px; }
+    .ui .pal{ grid-template-columns:1fr; padding:12px; }   /* chroma card drops below the scales */
+    .ui .pscale{ grid-template-columns:1fr; gap:5px; margin-bottom:12px; }
+    .ui .rgp-grid{ grid-template-columns:1fr; }
+    .ui .nform .nrow{ grid-template-columns:1fr; }
+    .ui .mdsplit{ grid-template-columns:1fr; }
+    .ui .mdsrc{ border-right:0; border-bottom:1px solid var(--hairline); }
+    /* brand palette bar: the 3 pickers + preset note stack in one column */
+    .ui .brandbar{ flex-direction:column; align-items:stretch; gap:14px; padding:14px 12px; }
+    .ui .brandbar .bp-presets{ margin-left:0; }
+    /* tab/empty/skeleton demo grid stacks full-width (beats inline min-width/flex) */
+    .ui .tabgrid{ gap:16px; }
+    .ui .tabgrid>*{ min-width:0 !important; width:100%; flex:1 1 100% !important; }
+    /* list toolbar: search takes a full row of its own */
+    .ui .lw-bar .search{ flex:1 1 100%; min-width:0; }
+    /* fancy header tightens */
+    .ui .fancy-hdr{ padding:14px 12px 0; }
+    .ui .fancy-body{ padding:14px 12px; }
+    .ui .form-buttons{ padding:12px; }
+    /* permission matrix pans inside its own rounded container */
+    .ui .pmx{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .ui .pmr{ min-width:430px; }
+    /* modal */
+    .ui .scrim{ padding:24px 12px; }
+    .ui .modal-ft{ flex-wrap:wrap; }
+    /* compact fixed cluster: smaller dots, icon-only light/dark toggle */
+    #topswap{ top:8px; right:8px; gap:6px; }
+    #topswap .ts-themes{ gap:6px; padding:5px 8px; }
+    #topswap .ts-theme{ width:16px; height:16px; }
+    #topswap .ts-theme span{ width:12px; height:12px; }
+    #topswap #tint-toggle{ padding:7px 10px; font-size:11.5px; gap:5px; }
+    #theme-toggle{ padding:7px 9px; }
+    #theme-toggle span{ display:none; }
+  }
+
+  /* touch devices: hover-revealed controls must be visible & tappable */
+  @media (hover:none){
+    .ui .dtab:not(.on):not(:hover) .dx{ opacity:1; }
+    .ui .dtab.dirty .dx{ display:inline-flex; }
+    .ui .thumbc .uo-x, .ui .thumbc .uo-drag{ opacity:1; }
+    .ui table.lw tbody .sort-handle{ color:var(--muted); background:color-mix(in srgb,var(--text) 8%,transparent); }
+    .ui .lsu-row .grip, .ui .rep-hd .grip{ color:var(--muted); }
+    .ui .pmr .pi{ color:var(--muted); }
+  }
+</style>
+</head>
+<body>
+  <h1><svg viewBox="0 0 24 24"><path d="M12 2v20M3.6 7l16.8 10M20.4 7L3.6 17M12 2l-2.5 2.5M12 2l2.5 2.5M12 22l-2.5-2.5M12 22l2.5-2.5"/></svg>Winter backend — UI kit v5 <span style="font-size:13px;color:#64748b;font-weight:500">(layouts &amp; fields pass · Fable)</span></h1>
+  <p class="sub">Team feedback applied: warning is now <b style="color:#d9b15c">Marigold</b>, a muted gold whose 500-step chroma (S&nbsp;62) sits between Mantis (S&nbsp;50) and Flame (S&nbsp;68) instead of the old amber's S&nbsp;92 — compare them in the palette strip. Brand fonts: <b style="color:#e2e8f0">Public Sans</b> (base) + <b style="color:#e2e8f0">Mulish</b> (headings), via <code style="background:#1e293b;padding:1px 5px;border-radius:4px;font-size:12px">--brand-font</code> / <code style="background:#1e293b;padding:1px 5px;border-radius:4px;font-size:12px">--font-head</code>, with true tabular numerals on numeric columns. Tabs are redesigned around a <b style="color:#81cadd">snowcap</b>: the active tab shares the body surface and wears a rounded Pacific cap on its top edge — no skew, no trapezoids, no drop shadows. The dark form header is a lifted indigo surface (gradient + frost highlight + lighter edge) so it separates cleanly from slate-900. List totals are real <b style="color:#e2e8f0">table-totals</b> rows in both thead and tfoot — page sum with the grand total in parentheses, each directly under its column. This pass adds the three real form layouts (standard · fancy · sidebar), the compact record-navigation control, chrome-style flowing tabs, the full Winter.Test field-type gallery, and ≥16px text-entry controls on coarse-pointer (touch) devices so iOS Safari never zooms — on desktop every control shares one ~34px height.</p>
+  <div id="root"></div>
+
+<script>
+const I = {
+  search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+  plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+  trash:'<svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>',
+  download:'<svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>',
+  cog:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 00-1.7-1l-.4-2.6h-4l-.4 2.6a7 7 0 00-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 000 2l-2 1.6 2 3.4 2.4-1a7 7 0 001.7 1l.4 2.6h4l.4-2.6a7 7 0 001.7-1l2.4 1 2-3.4-2-1.6a7 7 0 00.1-1z"/></svg>',
+  chevD:'<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
+  chevR:'<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>',
+  chevL:'<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>',
+  chevL2:'<svg viewBox="0 0 24 24"><path d="M11 6l-6 6 6 6M18 6l-6 6 6 6"/></svg>',
+  chevR2:'<svg viewBox="0 0 24 24"><path d="M13 6l6 6-6 6M6 6l6 6-6 6"/></svg>',
+  pencil:'<svg viewBox="0 0 24 24"><path d="M4 20h4L18.5 9.5a2.12 2.12 0 00-3-3L5 17z"/><path d="M13.5 6.5l3 3"/></svg>',
+  tag:'<svg viewBox="0 0 24 24"><path d="M20.6 13.4 12 22l-9-9V4h9z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>',
+  sliders:'<svg viewBox="0 0 24 24"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2.2"/><circle cx="9" cy="16" r="2.2"/></svg>',
+  globe:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>',
+  mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 12l8.5-5.5"/></svg>',
+  link:'<svg viewBox="0 0 24 24"><path d="M10 13a4 4 0 0 0 5.7.3l3-3a4 4 0 0 0-5.7-5.7L11 6"/><path d="M14 11a4 4 0 0 0-5.7-.3l-3 3a4 4 0 0 0 5.7 5.7L13 18"/></svg>',
+  phone:'<svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L20 13l1 4v2a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>',
+  x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  filter:'<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg>',
+  check:'<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg>',
+  save:'<svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M8 3v5h7M8 21v-6h8v6"/></svg>',
+  sortB:'<svg class="si" viewBox="0 0 24 24"><path d="M7 9l5-5 5 5M7 15l5 5 5-5"/></svg>',
+  // GLYPH CONVENTION (intentional, don't "unify"): FILLED TRIANGLES (triU/triD) mean
+  // a DATA delta / trend (KPI up-or-down); STROKED CHEVRONS (sortB, chevU/D, record nav)
+  // mean NAVIGATION / sort direction. Two shapes = two meanings.
+  triU:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12 5l7 12H5z"/></svg>',
+  triD:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12 19L5 7h14z"/></svg>',
+  sortU:'<svg class="si" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
+  sortD:'<svg class="si" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
+  bars:'<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>',
+  clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  copy:'<svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 012-2h9"/></svg>',
+  quote:'<svg viewBox="0 0 24 24"><path d="M7 17c2-1 3-3 3-6V7H5v6h3c0 2-.5 3-2 4zM17 17c2-1 3-3 3-6V7h-5v6h3c0 2-.5 3-2 4z"/></svg>',
+  doc:'<svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/></svg>',
+  code:'<svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>',
+  home:'<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/></svg>',
+  okc:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>',
+  info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>',
+  warn:'<svg viewBox="0 0 24 24"><path d="M12 3L2 20h20z"/><path d="M12 10v4m0 3h.01"/></svg>',
+  errc:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6m0-6l-6 6"/></svg>',
+  chevU:'<svg viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>',
+  cal:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg>',
+  eye:'<svg viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg>',
+  image:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.8" cy="10" r="1.6"/><path d="M3 17l5-4 4 3 4-4 5 5"/></svg>',
+  list:'<svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>',
+  grip:'<svg viewBox="0 0 24 24"><path d="M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01"/></svg>',
+  user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0115 0"/></svg>',
+  upload:'<svg viewBox="0 0 24 24"><path d="M12 15V4m0 0L8 8m4-4l4 4M4 21h16"/></svg>',
+  gridIc:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>',
+  filePlus:'<svg viewBox="0 0 24 24"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4M12 11v6M9 14h6"/></svg>',
+  music:'<svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>',
+  play:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l6 3.5-6 3.5z"/></svg>',
+};
+
+/* small helpers for the field gallery */
+function ty(t){ return '<span class="ty">' + t + '</span>'; }
+/* Winter.Translate locale selector (_locale_selector.htm): in-field top-right
+   .ml-btn with the active locale code, opening a menu of locales — status dot
+   (default / filled / empty) + name + a per-locale copy/translate-from button */
+const LOCALES = [['EN','English','is-default'],['FR','Français','is-filled'],['ES','Español','is-filled'],['AR','العربية','is-empty'],['DE','Deutsch','is-empty']];
+function mlMenu(){
+  return '<div class="ml-menu">' + LOCALES.map(([c,n,st], i) =>
+    '<div class="mli"><a data-loc="' + c + '"' + (i === 0 ? ' class="is-current-locale"' : '') + '><span class="ml-locale-status ' + st + '"></span>' + n + '</a>'
+    + '<button class="ml-copy" title="Copy from ' + n + '">' + I.copy + '</button></div>').join('') + '</div>';
+}
+/* cls: '' input · ml-ta textarea · ml-box boxed editor (mdw) · ml-above widget-hosted */
+function mlWrap(inner, cls, untrans){
+  return '<div class="mlf ' + (cls || '') + (untrans ? ' ml-has-untranslated' : '') + '">'
+    + inner + '<button class="ml-btn">EN</button>' + mlMenu() + '</div>';
+}
+function repItem(title, open, body, group){
+  return '<div class="rep-item' + (open ? ' open' : '') + '"><div class="rep-hd"><span class="grip">' + I.bars + '</span>'
+    + (group ? '<span class="gk">' + group + '</span>' : '') + '<span class="rt">' + title + '</span>'
+    + '<span class="chev">' + I.chevD + '</span><span class="rm">' + I.x + '</span></div><div class="rep-bd">'
+    + (body || '<div class="fld"><label>Title</label><input class="ipt" value="' + title + '"></div>') + '</div></div>';
+}
+function recNav(pos, total, first){
+  return '<div class="form-record-nav"><span class="form-record-nav-position">' + pos + ' / ' + total + '</span>'
+    + '<span class="form-record-nav-group"><a class="form-record-nav-btn' + (first ? ' is-disabled' : '') + '" data-dir="prev" title="Previous record">' + I.chevU + '</a>'
+    + '<a class="form-record-nav-btn" data-dir="next" title="Next record">' + I.chevD + '</a></span></div>';
+}
+/* grouped repeater — the "Add new item" palette popup (_repeater.php template:
+   head + search + icon/name/description grid + no-results) */
+const GROUPS = [
+  ['Text block', 'A heading with rich body copy', 'doc'],
+  ['Quote block', 'Pull quote with attribution', 'quote'],
+  ['Image block', 'Full-width image with caption', 'image'],
+  ['Video block', 'Embedded video player', 'play'],
+  ['Complex', 'Nested repeater with trigger logic', 'bars'],
+  ['Simple', 'A single text value', 'check'],
+];
+function groupPalette(){
+  return '<div class="rgadd"><button class="rep-addbar rep-addg">' + I.plus + ' Add new item</button>'
+    + '<div class="rgp"><div class="rgp-hd"><b>Add new item</b><button class="pop-x rgp-x">' + I.x + '</button></div>'
+    + '<div class="rgp-search">' + I.search + '<input class="ipt" placeholder="Search items…"><button class="pop-x rgp-clear" style="display:none">' + I.x + '</button></div>'
+    + '<div class="rgp-none">No items found</div>'
+    + '<div class="rgp-grid">' + GROUPS.map(([n, d, ic]) =>
+        '<button class="rgp-it" data-g="' + n + '">' + I[ic] + '<span><span class="t">' + n + '</span><span class="d">' + d + '</span></span></button>').join('') + '</div>'
+    + '</div></div>';
+}
+
+/* palette data — brand v2 + Marigold (v4 muted gold) */
+const SCALES = [
+  ['Indigo Dye','primary · layout',       ['#e8edef','#d1dbe0','#a3b6c0','#7492a1','#466d81','#184962','#133a4e','#0e2c3b','#0a1d27','#050f14']],
+  ['Pacific Blue','accent · interactive / info / selection', ['#eaf6f9','#d5edf4','#abdce9','#81cadd','#57b9d2','#2da7c7','#24869f','#1b6477','#124350','#092128']],
+  ['Slate','neutral · text / bg / border · teal-shifted',['#f7fafb','#f0f5f8','#e1e8ee','#c9d6e0','#91a6b8','#60788c','#445a6b','#314457','#1c2b3b','#0e1a28']],
+  ['Mantis','positive · success',         ['#f0f9ee','#e2f3dc','#c4e8b9','#a7dc97','#89d174','#6cc551','#569e41','#417631','#2b4f20','#162710']],
+  ['Flame','negative · danger',           ['#fbefea','#f7dfd4','#efbea9','#e69e7f','#de7d54','#d65d29','#ab4a21','#803819','#562510','#2b1308']],
+  ['Marigold','functional · warning only',['#faf5ea','#f5ebd6','#ecd8ad','#e2c485','#d9b15c','#cf9d33','#a67e29','#7c5e1f','#533f14','#291f0a']],
+];
+const STEPNM = [50,100,200,300,400,500,600,700,800,900];
+function lum(hex){ const c=hex.slice(1); const [r,g,b]=[0,2,4].map(i=>parseInt(c.substr(i,2),16)/255);
+  const f=x=>x<=0.03928?x/12.92:Math.pow((x+0.055)/1.055,2.4); return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b); }
+
+function palette(){
+  const rows = SCALES.map(([nm,use,hex])=>`
+    <div class="pscale"><span class="pnm">${nm}<i>${use}</i></span>
+      <div class="psteps">${hex.map((h,i)=>`<span style="background:${h};color:${lum(h)>0.4?'rgba(15,23,42,.75)':'rgba(255,255,255,.75)'}">${STEPNM[i]}</span>`).join('')}</div>
+    </div>`).join('');
+  return `
+  <p class="sec">Palette — brand scales + Marigold warning</p>
+  <div class="card"><div class="pal">
+    <div>${rows}</div>
+    <div class="pcheck">
+      <div class="pt">500-step chroma check</div>
+      <div class="trio">
+        <div style="background:#6cc551;color:#12300a"><span>Mantis</span><small>S 50</small></div>
+        <div style="background:#cf9d33;color:#2b1f04"><span>Marigold</span><small>S 62</small></div>
+        <div style="background:#d65d29"><span>Flame</span><small>S 68</small></div>
+      </div>
+      <div class="note">Marigold-500 <b>#cf9d33</b> sits at the same earthy, slightly diffused chroma as its siblings — the old amber <b style="color:#a67e29">#f59e0b</b> was S&nbsp;92 and shouted over both. Text steps: light 700 <b>#7c5e1f</b> (6.0:1 on white), dark 300 <b>#e2c485</b> (10.6:1 on slate-900); solids always carry dark text (7.3:1+). Gold at hue 41° stays clearly apart from Flame's rust at 18°.</div>
+    </div>
+  </div></div>`;
+}
+
+/* live brand pickers — three real <input type=color> matching Winter's
+   BrandSetting fields. Each writes its --brand-* var onto #stage on input; every
+   brand-driven token is a color-mix() derivation, so the whole mock recolours
+   live in the ACTIVE mode and derives correctly in the other when toggled. */
+const BRAND_DEFAULTS = {
+  '--brand-primary': '#184962',
+  '--brand-secondary': '#2da7c7',
+  '--brand-accent': '#57b9d2',
+};
+/* quick theme presets — set all three brand vars at once to show how far the
+   palette architecture stretches. "Fall" = October CMS's flat-UI autumn orange. */
+const BRAND_PRESETS = {
+  winter: { dot:'#2da7c7', label:'Winter', '--brand-primary':'#184962', '--brand-secondary':'#2da7c7', '--brand-accent':'#57b9d2' },
+  mario:  { dot:'#e52521', label:'Mario',  '--brand-primary':'#b01d18', '--brand-secondary':'#e52521', '--brand-accent':'#ff6b54' },
+  zelda:  { dot:'#3e9142', label:'Zelda',  '--brand-primary':'#1f5b30', '--brand-secondary':'#3e9142', '--brand-accent':'#8dc63f' },
+  fall:   { dot:'#ff8f21', label:'Fall', '--brand-primary':'#ff8f21', '--brand-secondary':'#d94422', '--brand-accent':'#ff8f21' }, // October's built-in "Punch" autumn palette (primary #ff8f21 / selection #d94422)
+};
+function brand(){
+  const P = [
+    ['--brand-primary', 'Primary', 'Indigo Dye', 'fancy header surface &amp; border · Save-button ink'],
+    ['--brand-secondary', 'Secondary', 'Pacific Blue', 'light-mode buttons · links · selection · sort &amp; active accents'],
+    ['--brand-accent', 'Accent', 'Pacific 400', 'snowcap caps · focus rings · dark-mode buttons, links &amp; selection'],
+  ];
+  return `
+  <p class="sec">Brand palette — live (Backend → Settings → Branding)</p>
+  <div class="card">
+    <div class="brandbar">
+      ${P.map(([v, nm, scale, aff]) => `
+      <div class="bp" data-var="${v}">
+        <input type="color" class="bp-in" value="${BRAND_DEFAULTS[v]}" aria-label="${nm} brand colour">
+        <div class="bp-meta">
+          <span class="bp-nm">${nm} <code class="bp-hex">${BRAND_DEFAULTS[v]}</code> <i>${scale}</i></span>
+          <span class="bp-aff">affects: ${aff}</span>
+        </div>
+      </div>`).join('')}
+      <div class="bp-presets">
+        <span class="bp-presets-lbl">Quick themes live in the top-right ↗</span>
+        <button class="btn ghost sm bp-reset">Reset pickers</button>
+      </div>
+    </div>
+    <div class="bp-note"><b>Brand-driven vs fixed:</b> every brand token derives from these three pickers with <code>color-mix()</code>, per mode — pick a colour, then flip the theme toggle to see its light <i>and</i> dark derivations. <b>Recolours live:</b> solid primary buttons, links, the snowcap tabs &amp; caps, selection/hover washes, focus rings, switches &amp; checks, dashboard accents and the fancy header. <b>Intentionally fixed:</b> the Slate neutrals (text · backgrounds · borders) and the semantic Mantis / Marigold / Flame (success · warning · danger) plus the info tint — state colours stay recognisable whatever the brand.</div>
+  </div>`;
+}
+
+function kit(){ return `
+  ${brand()}
+
+  ${palette()}
+
+  <p class="sec">Dashboard — report widgets (ReportContainer scoreboard)</p>
+  <div class="card"><div class="kpis">
+    <div class="kpi">
+      <div class="kt">${I.user}Active users</div>
+      <div class="kv"><span class="kn">1,284</span><span class="kd up">${I.triU}+12.4%</span></div>
+      <div class="kh">vs. the previous 30 days</div>
+    </div>
+    <div class="kpi">
+      <div class="kt">${I.doc}Posts published</div>
+      <div class="kv"><span class="kn">86</span><span class="kd up">${I.triU}+8</span></div>
+      <div class="kh">14 drafts awaiting review</div>
+    </div>
+    <div class="kpi">
+      <div class="kt">${I.download}Theme installs</div>
+      <div class="kv"><span class="kn">3,905</span><span class="kd down">${I.triD}−4.1%</span></div>
+      <div class="kh">dipped after the v1.2.9 release</div>
+    </div>
+    <div class="kpi">
+      <div class="kt">${I.okc}Migration goal</div>
+      <div class="kv"><span class="kn">72%</span></div>
+      <div class="meter"><i style="width:72%"></i></div>
+      <div class="mrow"><span>288 of 400 sites</span><span>target · Q3</span></div>
+    </div>
+  </div></div>
+
+  <p class="sec">List widget (ListController)</p>
+  <div class="card">
+    <div class="lw-bar">
+      <button class="btn primary">${I.plus} New Person</button>
+      <button class="btn default">Manage Phones</button>
+      <button class="btn g-danger">${I.trash} Delete</button>
+      <button class="btn icon" title="Export">${I.download}</button>
+      <span class="spacer"></span>
+      <div class="search">${I.search}<input class="ipt" placeholder="Search people…"></div>
+    </div>
+    <div class="filters">
+      <div class="seg"><button class="on">All</button><button>Active</button><button>Archived</button></div>
+      <button class="chip set"><span class="k">Status</span> Active ${I.x}</button>
+      <button class="chip set"><span class="k">Expenses ≥</span> $500 ${I.x}</button>
+      <button class="chip"><span class="k">Created</span> any ${I.chevD}</button>
+      <button class="chip add">${I.plus} Filter</button>
+    </div>
+    <div class="tscroll">
+    <table class="lw">
+      <thead>
+      <tr class="table-totals">
+        <td></td><td></td>
+        <td><span class="tt-lab">Totals</span></td>
+        <td></td><td></td>
+        <td class="num"><span class="tt-sum">37</span> <span class="tt-total">(412)</span></td>
+        <td class="num"><span class="tt-sum">$22,549.00</span> <span class="tt-total">($148,102.50)</span></td>
+        <td></td><td></td>
+      </tr>
+      <tr>
+        <th style="width:38px"><span class="box"></span></th>
+        <th class="sortable sort-desc srt" style="width:56px">ID ${I.sortD}</th>
+        <th class="sortable">Name ${I.sortB}</th><th>Bio</th><th class="sortable">Status ${I.sortB}</th>
+        <th class="num sortable">Orders ${I.sortB}</th><th class="num sortable">Expenses ${I.sortB}</th><th class="sortable">Created ${I.sortB}</th>
+        <th class="lsetup"><button class="lsu-btn" title="List setup">${I.list}</button>
+          <div class="lsu-pop">
+            <div class="lsu-hd">List setup<button class="pop-x lsu-x">${I.x}</button></div>
+            <div class="lsu-help">Check the columns to display and drag to reorder.</div>
+            <div class="lsu-list">
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>ID</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>Name</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>Bio</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>Status</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>Orders</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>Expenses</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box on">${I.check}</span>Created</div>
+              <div class="lsu-row"><span class="grip">${I.grip}</span><span class="box"></span>Updated</div>
+            </div>
+            <div class="lsu-ft"><button class="btn link sm" style="padding-left:0">Reset</button><span style="flex:1"></span><button class="btn primary sm lsu-x">Apply</button><button class="btn default sm lsu-x">Cancel</button></div>
+          </div>
+        </th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="box"></span></td><td>6</td><td class="nm">Mary Smith</td><td>I am a user, I like fish</td><td><span class="pill success">Active</span></td><td class="num">12</td><td class="num">$2,000.00</td><td>Jul 27, 2025</td><td></td></tr>
+        <tr class="sel"><td><span class="box on">${I.check}</span></td><td>5</td><td class="nm">Jon Smith</td><td>I am a user, I like snakes</td><td><span class="pill warning">Pending</span></td><td class="num">0</td><td class="num">$0.00</td><td>Jul 27, 2025</td><td></td></tr>
+        <tr><td><span class="box"></span></td><td>4</td><td class="nm">Baby Herman</td><td>Cartoon baby with a temper</td><td><span class="pill danger">Suspended</span></td><td class="num">3</td><td class="num">$550.00</td><td>Jul 22, 2025</td><td></td></tr>
+        <tr><td><span class="box"></span></td><td>3</td><td class="nm">Eddie Valiant</td><td>Private investigator</td><td><span class="pill info">Invited</span></td><td class="num">21</td><td class="num">$19,999.00</td><td>Jul 19, 2025</td><td></td></tr>
+        <tr><td><span class="box"></span></td><td>2</td><td class="nm">John Smith</td><td>—</td><td><span class="pill success">Active</span></td><td class="num">1</td><td class="num">$0.00</td><td>Jul 11, 2025</td><td></td></tr>
+      </tbody>
+      <tfoot><tr>
+        <td></td>
+        <td colspan="4" class="tlab"><div class="l1">This page</div><div class="l2">All 42 records</div></td>
+        <td class="num"><div class="l1">37</div><div class="l2">412</div></td>
+        <td class="num"><div class="l1">$22,549.00</div><div class="l2">$148,102.50</div></td>
+        <td colspan="2"></td>
+      </tr></tfoot>
+    </table>
+    </div>
+    <div class="lw-foot">
+      <span>Showing <b>1–5</b> of <b>42</b> records</span>
+      <span class="spacer"></span>
+      <div class="pgr"><button disabled title="First page">${I.chevL2}</button><button disabled title="Previous page">${I.chevL}</button><button class="on">1</button><button>2</button><button>3</button><button>4</button><button title="Next page">${I.chevR}</button><button title="Last page">${I.chevR2}</button></div>
+    </div>
+  </div>
+
+  <p class="sec">List widget — reorderable</p>
+  <div class="card">
+    <div class="tscroll tscroll-sm">
+    <table class="lw">
+      <thead><tr><th class="sorth list-sort-handle-column"><span></span></th><th style="width:56px">ID</th><th>Name</th><th>Slug</th></tr></thead>
+      <tbody>
+        <tr><td class="sorth"><span class="sort-handle" title="Drag to reorder">${I.bars}</span></td><td>1</td><td class="nm">Getting started</td><td>getting-started</td></tr>
+        <tr><td class="sorth"><span class="sort-handle" title="Drag to reorder">${I.bars}</span></td><td>2</td><td class="nm">Installation</td><td>installation</td></tr>
+        <tr><td class="sorth"><span class="sort-handle" title="Drag to reorder">${I.bars}</span></td><td>3</td><td class="nm">Configuration</td><td>configuration</td></tr>
+        <tr><td class="sorth"><span class="sort-handle" title="Drag to reorder">${I.bars}</span></td><td>4</td><td class="nm">Deployment</td><td>deployment</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="rl-note">Drag-to-reorder is built into the core List widget: enabling it adds a leading <b>.list-sort-handle-column</b> in the head and a ☰ <b>.list-sort-handle</b> per row (grab cursor, revealed on hover) — the same list chrome, one column richer.</div>
+  </div>
+
+  <p class="sec">Form layout — standard (update/_standard.php)</p>
+  <div class="card">
+    <div class="bcbar">
+      <div class="bc"><a>People</a>${I.chevR}<span class="cur">Mary Smith</span></div>
+      ${recNav(3, 42)}
+    </div>
+    <div class="grid2">
+      <div class="fld"><label>First name</label><input class="ipt" value="Mary"></div>
+      <div class="fld"><label>Last name</label><input class="ipt" value="Smith"></div>
+      <div class="fld err"><label>Email address</label><input class="ipt" value="not-an-email"><div class="msg">Please enter a valid email address.</div></div>
+      <div class="fld"><label>Role</label><div class="dd"><div class="ipt sel-ipt">Publisher ${I.chevD}</div>
+        <div class="ddm"><div class="it on">Publisher</div><div class="it">Editor</div><div class="it">Developer</div></div></div></div>
+      <div class="fld full"><label>Bio</label><textarea class="ipt" rows="2">I am a user, I like fish.</textarea><div class="hint">Shown on the author page.</div></div>
+      <div class="fld"><label>Account type</label>
+        <div class="radio"><span class="dot on"></span> Publisher — publishing tools</div>
+        <div class="radio"><span class="dot"></span> Developer — developer tools</div></div>
+      <div class="fld"><label>Flags</label>
+        <div class="radio"><span class="box on">${I.check}</span> Send welcome email</div>
+        <div class="radio"><span class="switch on"></span> Super user</div>
+        <div class="radio"><span class="switch"></span> Is virtual</div></div>
+      <div class="fld"><label>Plan</label><div class="balloon"><span>Free</span><span class="on">Pro</span><span>Team</span><span>Enterprise</span></div></div>
+      <div class="fld"><label>Tags</label><div class="tags"><span class="tg">fish ${I.x}</span><span class="tg">writer ${I.x}</span><span class="tg">vip ${I.x}</span><span class="ghosttxt">Add a tag…</span></div></div>
+    </div>
+    <div class="form-buttons">
+      <button class="btn primary">Save</button>
+      <button class="btn default">Save &amp; close</button>
+      <span style="flex:1"></span>
+      <button class="btn g-success">Approve</button>
+      <button class="btn g-warning">Flag for review</button>
+      <button class="btn link">Preview</button>
+      <button class="btn g-danger">Delete</button>
+    </div>
+  </div>
+
+  <p class="sec">Form layout — fancy (update/_fancy.php · fancy-layout)</p>
+  <div style="margin-bottom:24px">
+    <div class="bcbar">
+      <div class="bc"><a>Blog</a>${I.chevR}<a>Posts</a>${I.chevR}<span class="cur">New post</span></div>
+      ${recNav(3, 42)}
+    </div>
+    <div class="fancy-hdr">
+      <!-- span: auto — both header fields are equal 50% halves (1fr / 1fr) -->
+      <div class="fh-fields">
+        <div><label>Title</label><input value="Mary Smith"></div>
+        <div><label>URL</label><input value="/people/mary"></div>
+      </div>
+      <div class="fh-actions">
+        <div class="fbtns">
+          <button class="fbtn primary">${I.check} Save</button>
+          <button class="fbtn">${I.save} Save &amp; close</button>
+          <button class="fbtn">${I.x} Cancel</button>
+          <button class="fbtn del">${I.trash} Delete</button>
+        </div>
+      </div>
+      <div class="ftabs">
+        <button class="ftab on"><i class="cap"></i><b class="fl l"></b><b class="fl r"></b>${I.pencil}Edit</button>
+        <button class="ftab"><i class="cap"></i><b class="fl l"></b><b class="fl r"></b>${I.tag}Categories</button>
+        <button class="ftab"><i class="cap"></i><b class="fl l"></b><b class="fl r"></b>${I.sliders}Manage</button>
+      </div>
+    </div>
+    <div class="fancy-body">The active tab wears the Pacific snowcap and pours into the body surface through its concave feet; the inactive tabs sit tight beside it as quiet rounded chips (no feet), so the strip stays compact and the flow only appears where it's doing real work — connecting the active tab to the body. The breadcrumb bar above attaches flush to the header: square touching corners, one shared unit.</div>
+  </div>
+
+  <p class="sec">Form layout — sidebar (update/_sidebar.php · form-with-sidebar) — doubles as the full field gallery (Winter.Test models/record/fields.yaml)</p>
+  <div class="card sbl-card">
+    <div class="sbl">
+      <div class="sbl-main">
+        <div class="bcbar">
+          <div class="bc"><a>Test</a>${I.chevR}<a>Records</a>${I.chevR}<span class="cur">Showcase record</span></div>
+          ${recNav(1, 8, true)}
+        </div>
+        <div class="grid2" style="padding-bottom:0">
+          <div class="fld"><label>Name ${ty('text · span left')}</label><input class="ipt" value="Showcase record"></div>
+          <div class="fld"><label>Slug ${ty('slug · span right')}</label><input class="ipt" value="showcase-record"></div>
+          <div class="fld full"><label>Toolbar ${ty('partial · span full')}</label><div class="partial" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">Custom toolbar partial:<button class="btn default sm">${I.download} Export</button><button class="btn ghost sm">Duplicate</button></div></div>
+        </div>
+        <div class="vpanes">
+          <div class="vpane on"><div class="grid2">
+            <div class="fld full"><div class="fsec"><h4>Translatable fields</h4><p>Every ml* widget carries an in-field locale button at its top-right — the same field, one value per language. An amber dot flags fields with untranslated locales.</p></div></div>
+            <div class="fld full"><label>Rich body ${ty('mlricheditor')}</label>
+              ${mlWrap(`<div class="mdw"><div class="mtb"><button><b>B</b></button><button><i>I</i></button><button>${I.link}</button><button>${I.list}</button><button>${I.image}</button></div>
+              <div class="rich"><p>Translated <b>rich text</b> — the locale button at the top-right switches the language being edited.</p></div></div>`, 'ml-box')}</div>
+            <div class="fld full"><label>Markdown notes ${ty('mlmarkdowneditor')}</label>
+              ${mlWrap(`<div class="mdw"><div class="mtb"><button><b>B</b></button><button><i>I</i></button><button>${I.link}</button><span class="elang" style="margin-right:52px">md</span></div>
+              <div class="mdsplit"><pre class="mdsrc">**Notes** stay per-locale.</pre><div class="mdprev"><p><b>Notes</b> stay per-locale.</p></div></div></div>`, 'ml-box', true)}</div>
+            <div class="fld"><label>Hero image ${ty('mlmediafinder · image')}</label>
+              ${mlWrap(`<div class="fitem" style="margin-top:0"><span class="th">${I.image}</span><span>hero-en.jpg<br><small>media/heroes · 1600×900</small></span><span class="rm">${I.x}</span></div>`, 'ml-above')}</div>
+            <div class="fld"><label>Home URL ${ty('mlurl')}</label>${mlWrap(`<div class="iput">${I.link}<input class="ipt" value="https://wintercms.com/en"></div>`)}</div>
+            <div class="fld full"><label>Fallback note ${ty('mltext')}</label>${mlWrap(`<input class="ipt" value="Falls back to the default locale when empty">`, '', true)}</div>
+            <div class="fld full"><label>Contacts ${ty('mlnestedform')}</label>
+              ${mlWrap(`<div class="nform"><div class="nrow">
+                <div class="fld"><label>Label</label><input class="ipt" value="Support"></div>
+                <div class="fld"><label>Role</label><input class="ipt" value="Helpdesk"></div>
+                <div class="fld"><label>Phone</label><input class="ipt" value="+1 204 555 0100"></div>
+              </div></div>`, 'ml-above')}</div>
+            <div class="fld full"><label>Grouped blocks ${ty('mlrepeater · grouped')}</label>
+              ${mlWrap(`<div class="rep">${repItem('Welcome copy', false, '', 'Text block')}${repItem('“Winter simply works.”', false, '', 'Quote block')}</div>
+              ${groupPalette()}`, 'ml-above')}</div>
+            <div class="fld"><label>Intro ${ty('mltext')}</label>${mlWrap(`<input class="ipt" value="A short translated intro">`)}</div>
+            <div class="fld"><label>Body text ${ty('mltextarea')}</label>${mlWrap(`<textarea class="ipt" rows="3">Longer translated body copy lives here.</textarea>`, 'ml-ta')}</div>
+            <div class="fld full"><label>Blocks demo ${ty('mlrepeater')}</label>
+              ${mlWrap(`<div class="rep">${repItem('Heading block', true, '<div class="fld"><label>Heading</label><input class="ipt" value="Winter is here"></div><div class="fld"><label>SKU</label><input class="ipt" value="WNT-001"></div><div class="fld"><label>Body</label><textarea class="ipt" rows="2">Block body copy.</textarea></div>')}</div>
+              <button class="rep-addbar rep-add">${I.plus} Add new item</button>`, 'ml-above')}</div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld full"><div class="fsec"><h4>Basic Input ${ty('section')}</h4><p>Plain scalar inputs — span: auto flows them two per row at 50% each.</p></div></div>
+            <div class="fld"><label>Email ${ty('email')}</label><div class="iput">${I.mail}<input class="ipt" type="email" value="mary@example.com"></div></div>
+            <div class="fld"><label>Website ${ty('url')}</label><div class="iput">${I.link}<input class="ipt" type="url" value="https://wintercms.com"></div></div>
+            <div class="fld"><label>Number ${ty('number · min 0 · max 100')}</label><input class="ipt" type="number" value="42" min="0" max="100"></div>
+            <div class="fld"><label>Password ${ty('password')}</label><input class="ipt" type="password" value="hunter2winter"></div>
+            <div class="fld"><label>Text ${ty('text')}</label><input class="ipt" value="Plain text value"></div>
+            <div class="fld"><label>Phone ${ty('tel')}</label><div class="iput">${I.phone}<input class="ipt" type="tel" value="+1 204 555 0142"></div></div>
+            <div class="fld"><label>Textarea ${ty('textarea')}</label><textarea class="ipt" rows="2">A small textarea.</textarea></div>
+            <div class="fld"><label>Range ${ty('range')}</label><div class="range hasbub"><i style="width:62%"></i><b style="left:62%"></b><span class="bub" style="left:62%">62</span></div>
+              <div class="hint" style="display:flex;justify-content:space-between"><span>0</span><span>100</span></div></div>
+            <div class="fld full"><div class="fsec"><h4>Optionable Fields</h4><p>Everything driven by an options list.</p></div></div>
+            <div class="fld"><label>Checkbox list ${ty('checkboxlist · quickselect')}</label>
+              <div class="qsel"><a class="qs-all">${I.check} Select all</a><a class="qs-none">${I.x} Select none</a></div>
+              <div class="radio"><span class="box on">${I.check}</span> System updates</div>
+              <div class="radio"><span class="box on">${I.check}</span> Security alerts</div>
+              <div class="radio"><span class="box"></span> Marketing</div></div>
+            <div class="fld"><label>Radio ${ty('radio')}</label>
+              <div class="radio rc"><span class="dot on"></span><span>Publisher<small>Access to the publishing tools</small></span></div>
+              <div class="radio rc"><span class="dot"></span><span>Developer<small>Access to the developer tools</small></span></div></div>
+            <div class="fld"><label>Dropdown ${ty('dropdown')}</label><div class="dd"><div class="ipt sel-ipt">Option two ${I.chevD}</div>
+              <div class="ddm"><div class="it">Option one</div><div class="it on">Option two</div><div class="it">Option three</div></div></div></div>
+            <div class="fld"><label>Balloon selector ${ty('balloon-selector')}</label><div class="balloon"><span>Free</span><span class="on">Pro</span><span>Team</span></div></div>
+            <div class="fld full"><div class="fsec"><h4>Boolean</h4><p>True / false controls.</p></div></div>
+            <div class="fld"><label>Checkbox ${ty('checkbox')}</label><div class="radio"><span class="box on">${I.check}</span> Send a welcome email</div></div>
+            <div class="fld"><label>Switch ${ty('switch')}</label><div class="radio"><span class="switch on" data-on="Yes" data-off="No"></span> Super user</div></div>
+            <div class="fld full"><div class="fsec"><h4>Presentational</h4><p>Fields that render chrome, not data.</p></div></div>
+            <div class="fld"><label>Partial ${ty('partial')}</label><div class="partial">Renders <code>_content_field.php</code> — arbitrary markup wired to the model.</div></div>
+            <div class="fld full"><label>Hint ${ty('hint')}</label>
+              <div class="callout info">${I.info}<span><span class="co-h">Always use hints</span><span class="co-c"> — layouts/_hint.php renders an icon, header, content and a top-right dismiss button.</span></span>
+              <button class="co-close" title="Dismiss">${I.x}</button></div></div>
+            <div class="fld"><label>Button — action ${ty('button')}</label><button class="btn default"><span class="spinner"></span> Working…</button></div>
+            <div class="fld"><label>Button — link ${ty('button')}</label><button class="btn link">Open the docs</button></div>
+            <div class="fld"><label>Button — popup ${ty('button')}</label><button class="btn g-danger">${I.trash} Delete via popup</button></div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld full"><div class="fsec"><h4>Enhanced Inputs</h4><p>Text inputs with extra behaviour.</p></div></div>
+            <div class="fld"><label>API secret ${ty('sensitive · allowCopy')}</label><div class="sens cancopy"><input class="ipt" value="••••••••••••••" data-val="wntr_9f2c88ab51d3" readonly><button class="rev cpy" title="Copy">${I.copy}</button><button class="rev" title="Reveal">${I.eye}</button></div></div>
+            <div class="fld"><label>Tags ${ty('taglist')}</label><div class="tags"><span class="tg">fish ${I.x}</span><span class="tg">writer ${I.x}</span><span class="ghosttxt">Add a tag…</span></div></div>
+            <div class="fld full"><div class="fsec"><h4>Grouping</h4><p>Fieldset wraps related fields inside a legend.</p></div></div>
+            <div class="fld full"><fieldset class="fgrp"><legend>Contact Details ${ty('fieldset')}</legend><div class="grid2">
+                <div class="fld"><label>First name</label><input class="ipt" value="Mary"></div>
+                <div class="fld"><label>Last name</label><input class="ipt" value="Smith"></div>
+                <div class="fld"><label>Age</label><input class="ipt" type="number" value="34"></div>
+                <div class="fld"><label>Birthday</label><div class="iwrap r">${I.cal}<input class="ipt" value="1992-03-14"></div></div>
+              </div></fieldset></div>
+            <div class="fld full"><div class="fsec"><h4>Picker widgets</h4><p>Choose-a-thing helpers.</p></div></div>
+            <div class="fld"><label>Brand colour ${ty('colorpicker')}</label><div class="cpick"><span class="sw" data-i="0" style="background:#57b9d2"></span><input class="ipt" value="#57B9D2"></div><div class="hint">Click the swatch to cycle.</div></div>
+            <div class="fld"><label>Published at ${ty('datepicker · date')}</label><div class="iwrap r">${I.cal}<input class="ipt" value="2026-08-24"></div></div>
+            <div class="fld full"><label>Menu icon ${ty('iconpicker')}</label>
+              <div class="icp">
+                <div class="ig"><button class="ig-addon icp-trigger">${I.home}</button><input class="ipt icp-input" value="icon-home" readonly></div>
+                <div class="icp-pop">
+                  <button class="icg on" data-i="icon-home">${I.home}</button><button class="icg" data-i="icon-tag">${I.tag}</button><button class="icg" data-i="icon-globe">${I.globe}</button><button class="icg" data-i="icon-file">${I.doc}</button><button class="icg" data-i="icon-cog">${I.cog}</button><button class="icg" data-i="icon-sliders">${I.sliders}</button><button class="icg" data-i="icon-image">${I.image}</button><button class="icg" data-i="icon-filter">${I.filter}</button>
+                </div>
+              </div></div>
+            <div class="fld full"><div class="fsec"><h4>Relationships</h4><p>Fields backed by related models.</p></div></div>
+            <div class="fld"><label>City ${ty('recordfinder')}</label>
+              <div class="rf">
+                <span class="rf-val"><span class="rf-p">Winnipeg</span><span class="rf-s">&nbsp;— Manitoba, CA · ID 204</span></span>
+                <button class="rf-btn rf-clear" title="Remove record">${I.x}</button>
+                <button class="rf-btn" title="Find record">${I.list}</button>
+              </div></div>
+            <div class="fld"><label>Author ${ty('relation')}</label><div class="dd"><div class="ipt sel-ipt">Mary Smith ${I.chevD}</div>
+              <div class="ddm"><div class="it on">Mary Smith</div><div class="it">Jon Smith</div><div class="it">Eddie Valiant</div></div></div></div>
+            <div class="fld"><label>Categories ${ty('taglist · relation')}</label><div class="tags"><span class="tg">News ${I.x}</span><span class="tg">Releases ${I.x}</span><span class="ghosttxt">Add…</span></div></div>
+            <div class="fld"><label>Countries ${ty('taglist · relation')}</label><div class="tags"><span class="tg">Canada ${I.x}</span><span class="tg">Norway ${I.x}</span><span class="ghosttxt">Add…</span></div></div>
+            <div class="fld full"><div class="fsec"><h4>Permissions</h4><p>Allow / inherit / deny matrix.</p></div></div>
+            <div class="fld full"><label>Access ${ty('permissioneditor')}</label><div class="pmx">
+              <div class="pmr pmh"><span class="ps">Blog</span><span class="pc" title="Allow every permission in this section">Allow</span><span class="pc" title="Inherit every permission in this section">Inherit</span><span class="pc" title="Deny every permission in this section">Deny</span></div>
+              <div class="pmr"><span>Access blog posts<span class="pi" tabindex="0" data-tip="View, create and edit blog posts">${I.info}</span></span><span class="pc"><span class="dot on"></span></span><span class="pc"><span class="dot"></span></span><span class="pc"><span class="dot"></span></span></div>
+              <div class="pmr"><span>Manage categories<span class="pi" tabindex="0" data-tip="Create, reorder and delete post categories">${I.info}</span></span><span class="pc"><span class="dot"></span></span><span class="pc"><span class="dot on"></span></span><span class="pc"><span class="dot"></span></span></div>
+              <div class="pmr pmh"><span class="ps">Publishing</span><span class="pc" title="Allow every permission in this section">Allow</span><span class="pc" title="Inherit every permission in this section">Inherit</span><span class="pc" title="Deny every permission in this section">Deny</span></div>
+              <div class="pmr"><span>Delete posts<span class="pi" tabindex="0" data-tip="Permanently remove published posts">${I.info}</span></span><span class="pc"><span class="dot"></span></span><span class="pc"><span class="dot"></span></span><span class="pc"><span class="dot on"></span></span></div>
+            </div></div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld full"><label>Rich content ${ty('richeditor')}</label>
+              <div class="mdw"><div class="mtb"><button style="min-width:auto;padding:0 9px;font-size:12px">Paragraph ${I.chevD}</button><button><b>B</b></button><button><i>I</i></button><button style="text-decoration:underline">U</button><button>${I.link}</button><button>${I.list}</button><button>${I.image}</button><button>${I.code}</button></div>
+              <div class="rich"><p>Froala-style <b>WYSIWYG</b> editing with <a>inline links</a>, lists and media — what editors see is what ships.</p></div></div></div>
+            <div class="fld full"><label>Markdown ${ty('markdown · mode split')}</label>
+              <div class="mdw"><div class="mtb"><button><b>B</b></button><button><i>I</i></button><button>${I.link}</button><button>${I.list}</button><button>${I.image}</button><span class="elang">md · split preview</span></div>
+              <div class="mdsplit"><pre class="mdsrc">## Winter is coming
+
+The **snowcap** kit lands in v1.3.</pre><div class="mdprev"><h4>Winter is coming</h4><p>The <b>snowcap</b> kit lands in v1.3.</p></div></div></div></div>
+            <div class="fld full"><label>Component markup ${ty('codeeditor')}</label>
+              <div class="codeed"><div class="gut">1<br>2<br>3<br>4</div><pre><b>function</b> onStart()
+{
+    <b>return</b> <b>$this</b>->render();
+}</pre></div></div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld full"><label>Rows ${ty('datatable')}</label>
+              <div class="tscroll"><table class="dt"><thead><tr><th style="width:38%">Name</th><th>Content</th></tr></thead><tbody>
+                <tr><td>welcome</td><td>Welcome to Winter</td></tr>
+                <tr><td class="focus">pricing</td><td>Three tiers, no surprises</td></tr>
+                <tr><td>footer</td><td>© Winter CMS</td></tr>
+              </tbody></table></div>
+              <div class="hint">Cells edit inline; Enter adds a row.</div></div>
+            <div class="fld full"><label>Entries ${ty('repeater')}</label>
+              <div class="rep">${repItem('Primary entry', true, '<div class="fld"><label>Name</label><input class="ipt" value="Primary entry"></div><div class="fld"><label>Secret</label><div class="sens"><input class="ipt" value="••••••••" data-val="entry-key-51d3" readonly><button class="rev" title="Reveal">' + I.eye + '</button></div></div><div class="fld"><label>Content</label><textarea class="ipt" rows="2">Nested content.</textarea></div>')}${repItem('Second entry')}</div>
+              <button class="rep-addbar rep-add">${I.plus} Add new item</button></div>
+            <div class="fld full"><label>Meta ${ty('nestedform')}</label>
+              <div class="nform"><div class="fld"><label>Name</label><input class="ipt" value="Meta block"></div>
+              <div class="fld"><label>Content</label><textarea class="ipt" rows="2">A sub-form embedded in the parent model.</textarea></div></div></div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld full"><label>Standard ${ty('repeater')}</label>
+              <div class="rep">${repItem('First item', true, '<div class="fld"><label>Name</label><input class="ipt" value="First item"></div><div class="fld"><label>Content</label><textarea class="ipt" rows="2">Each item is a nested form.</textarea></div>')}${repItem('Second item')}${repItem('Third item')}</div>
+              <button class="rep-addbar rep-add">${I.plus} Add new item</button></div>
+            <div class="fld full"><label>Grid mode ${ty('repeater · mode grid · 4 col')}</label>
+              <div class="repgrid">
+                <div class="gcard"><div class="im">${I.image}</div><div class="gb"><b>Alpine</b>Snow-line hero</div></div>
+                <div class="gcard"><div class="im">${I.image}</div><div class="gb"><b>Fjord</b>Cold blue banner</div></div>
+                <div class="gcard"><div class="im">${I.image}</div><div class="gb"><b>Tundra</b>Muted flat tones</div></div>
+                <div class="gcard"><div class="im">${I.image}</div><div class="gb"><b>Aurora</b>Accent gradient</div></div>
+              </div></div>
+            <div class="fld full"><label>Grouped ${ty('repeater · grouped')}</label>
+              <div class="rep">${repItem('Launch announcement', false, '', 'Text block')}${repItem('“Best CMS refresh in years.”', false, '', 'Quote block')}</div>
+              ${groupPalette()}</div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld"><label>Cover ${ty('fileupload · image 300×200')}</label>
+              <div class="thumbs" style="margin-top:0"><div class="thumbc" style="width:150px"><div class="im" style="height:100px">${I.image}</div><div class="nm2">cover.jpg · 300×200</div></div></div></div>
+            <div class="fld"><label>Brochure ${ty('fileupload · file')}</label>
+              <div class="fitem" style="margin-top:0"><span class="th">${I.doc}</span><span>brochure.pdf<br><small>1.2 MB</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld"><label>Gallery ${ty('fileupload · attachMany · private')}</label>
+              <div class="thumbs" style="margin-top:0"><div class="thumbc"><span class="uo-drag" title="Drag to reorder">${I.bars}</span><span class="uo-x rm" title="Remove">${I.x}</span><div class="im">${I.image}</div><div class="nm2">north-01.jpg</div></div><div class="thumbc"><span class="uo-drag" title="Drag to reorder">${I.bars}</span><span class="uo-x rm" title="Remove">${I.x}</span><div class="im">${I.image}</div><div class="nm2">north-02.jpg</div></div><div class="thumbc addt">${I.plus}</div></div>
+              <div class="hint">Each upload reveals a remove × and a ☰ drag handle on hover (attachMany is reorderable).</div></div>
+            <div class="fld"><label>Documents ${ty('fileupload · attachMany files')}</label>
+              <div class="dropz">${I.upload}Click or drag files to upload</div>
+              <div class="fitem"><span class="th">${I.doc}</span><span>terms.pdf<br><small>0.4 MB · private</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld full"><div class="fsec"><h4>Mediafinder modes</h4><p>The media chooser constrained to file · document · image · audio · video · all.</p></div></div>
+            <div class="fld"><label>File ${ty('mediafinder · file')}</label><div class="fitem" style="margin-top:0"><span class="th">${I.doc}</span><span>any-file.bin<br><small>media/files</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld"><label>Document ${ty('mediafinder · document')}</label><div class="fitem" style="margin-top:0"><span class="th">${I.doc}</span><span>report.docx<br><small>media/docs</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld"><label>Image ${ty('mediafinder · image')}</label><div class="fitem" style="margin-top:0"><span class="th">${I.image}</span><span>hero.jpg<br><small>1600×900</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld"><label>Audio ${ty('mediafinder · audio')}</label><div class="fitem" style="margin-top:0"><span class="th">${I.music}</span><span>theme.mp3<br><small>3:42</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld"><label>Video ${ty('mediafinder · video')}</label><div class="fitem" style="margin-top:0"><span class="th">${I.play}</span><span>intro.mp4<br><small>0:58 · 1080p</small></span><span class="rm">${I.x}</span></div></div>
+            <div class="fld"><label>All ${ty('mediafinder · all')}</label>
+              <div style="display:flex;gap:8px"><button class="btn default sm">${I.image} Find in Media</button><button class="btn ghost sm">Clear</button></div></div>
+          </div></div>
+          <div class="vpane"><div class="grid2">
+            <div class="fld"><label>Status ${ty('balloon-selector · default draft')}</label><div class="balloon"><span>Draft</span><span class="on">Published</span><span>Archived</span></div></div>
+            <div class="fld"><label>Published at ${ty('datepicker · datetime')}</label>
+              <div class="dtpair">
+                <div class="iwrap r">${I.cal}<input class="ipt" value="2026-08-24" aria-label="Published at (date)"></div>
+                <div class="iwrap r">${I.clock}<input class="ipt" value="09:30" aria-label="Published at (time)"></div>
+              </div>
+              <div class="hint">Real datetime mode renders separate date + time inputs (7/5 split, icons right). Revealed by <b>trigger</b>: only visible while Status = Published.</div></div>
+          </div></div>
+        </div>
+        <div class="form-buttons">
+          <button class="btn primary">Save</button>
+          <button class="btn default">Save &amp; close</button>
+          <span style="flex:1"></span>
+          <button class="btn g-danger">Delete</button>
+        </div>
+      </div>
+      <aside class="form-sidebar">
+        <div class="sb-t">Record</div>
+        <div class="vtabs">
+          <button class="vtab on">${I.globe}Translation</button>
+          <button class="vtab">${I.pencil}Basic Fields</button>
+          <button class="vtab">${I.gridIc}FormWidgets</button>
+          <button class="vtab">${I.code}Editors</button>
+          <button class="vtab">${I.list}Data Structures</button>
+          <button class="vtab">${I.plus}Repeater</button>
+          <button class="vtab">${I.filePlus}Files</button>
+          <button class="vtab">${I.cog}Settings</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <p class="sec">Tabs — snowcap system (documents · secondary · content)</p>
+  <div class="tabgrid">
+    <div style="min-width:380px">
+      <div class="lbl">Document tabs (open editors)</div>
+      <div class="dock">
+        <button class="dtab on"><i class="cap"></i>${I.doc}record/fields.yaml<span class="dx">${I.x}</span></button>
+        <button class="dtab dirty">${I.code}Plugin.php<span class="mod"></span><span class="dx">${I.x}</span></button>
+        <button class="dtab">${I.home}Welcome<span class="dx">${I.x}</span></button>
+        <button class="dadd" title="Open document">${I.plus}</button>
+      </div>
+      <div class="dock-body">Open documents sit in a recessed rail; the active one is a raised chip wearing the snowcap. Modified files show an unsaved dot that becomes a close control on hover.</div>
+    </div>
+    <div style="min-width:250px">
+      <div class="lbl">Secondary (underline)</div>
+      <div class="stabs" style="border:1px solid var(--border);border-radius:10px;"><button class="on">${I.cog}Settings</button><button>${I.tag}Meta</button><button>${I.globe}SEO</button></div>
+    </div>
+    <div style="min-width:280px">
+      <div class="lbl">Content (Markup / Code)</div>
+      <div class="edbar"><button class="etab on"><i class="cap"></i>Markup</button><button class="etab">Code</button><span class="elang">htm</span></div>
+      <div class="edbody"><pre><b>{% for</b> post <b>in</b> posts <b>%}</b>
+    &lt;h2&gt;<b>{{</b> post.title <b>}}</b>&lt;/h2&gt;
+<b>{% endfor %}</b></pre></div>
+    </div>
+  </div>
+
+  <p class="sec">Tab hierarchy — live content switching + encapsulated nesting (à la EasyForms form settings)</p>
+  <div class="card" style="padding:16px">
+    <div class="tabx">
+      <div class="ttbar">
+        <button class="tt on" data-pane="l1a">${I.pencil} Fields</button>
+        <button class="tt" data-pane="l1b">${I.list} Entries</button>
+        <button class="tt" data-pane="l1c">${I.cog} Settings</button>
+      </div>
+      <div class="ttpanes">
+        <div class="ttpane on" data-pane="l1a">
+          <div class="pane-h">Fields</div>
+          <div class="pane-d">Top level (<code>secondaryTabs</code>) — the form's field builder. Switch tabs above and this content changes.</div>
+          <div class="fld"><label>Field label</label><input class="ipt" value="Email address"></div>
+        </div>
+        <div class="ttpane" data-pane="l1b">
+          <div class="pane-h">Entries</div>
+          <div class="pane-d">Submitted entries for this form.</div>
+          <div class="pane-d" style="color:var(--muted)">128 entries · last received 2 min ago</div>
+        </div>
+        <div class="ttpane" data-pane="l1c">
+          <div class="pane-h">Settings</div>
+          <div class="pane-d">This tab holds a <code>nestedform</code> — a whole sub-form with <b>its own</b> tabs. The panel below is drawn as an encapsulated container so the nesting is obvious.</div>
+          <div class="nfx">
+            <div class="nfx-hd">${I.cog} Form settings <span class="tag">nestedform · L2</span></div>
+            <div class="ttbar">
+              <button class="tt on" data-pane="l2a">${I.cal} Schedule</button>
+              <button class="tt" data-pane="l2b">${I.info} Notifications</button>
+              <button class="tt" data-pane="l2c">${I.list} Entries</button>
+            </div>
+            <div class="ttpanes">
+              <div class="ttpane on" data-pane="l2a">
+                <div class="grid2" style="padding:0;grid-template-columns:1fr 1fr;gap:14px">
+                  <div class="fld"><label>Opens at</label><div class="iwrap">${I.cal}<input class="ipt" value="2026-09-01 09:00"></div></div>
+                  <div class="fld"><label>Closes at</label><div class="iwrap">${I.cal}<input class="ipt" value="2026-09-30 17:00"></div></div>
+                </div>
+              </div>
+              <div class="ttpane" data-pane="l2b">
+                <div class="fld"><div class="radio"><span class="switch on" data-on="Yes" data-off="No"></span> Hide empty fields in notifications</div></div>
+              </div>
+              <div class="ttpane" data-pane="l2c">
+                <div class="pane-d">This nested tab contains <b>another</b> <code>nestedform</code> — a third level, drawn deeper and with a distinct indigo edge.</div>
+                <div class="nfx">
+                  <div class="nfx-hd">${I.list} Entry storage <span class="tag">nestedform · L3</span></div>
+                  <div class="ttbar">
+                    <button class="tt on" data-pane="l3a">${I.doc} Storage</button>
+                    <button class="tt" data-pane="l3b">${I.globe} Privacy</button>
+                  </div>
+                  <div class="ttpanes">
+                    <div class="ttpane on" data-pane="l3a">
+                      <div class="fld"><div class="radio"><span class="switch on" data-on="Yes" data-off="No"></span> Log entries to the database</div></div>
+                    </div>
+                    <div class="ttpane" data-pane="l3b">
+                      <div class="fld"><div class="radio"><span class="switch" data-on="Yes" data-off="No"></span> Log submitter IP address</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabnote">Every strip switches real content. Open <b>Settings</b> to reveal the L2 <code>nestedform</code>, then its <b>Entries</b> tab to reveal the L3 <code>nestedform</code> — each nesting layer is a titled, left-barred, inset panel (L2 pacific edge, L3 deeper with an indigo edge) so the encapsulation is unmistakable. Winter has two tab <i>sections</i> (<code>tabs</code> + <code>secondaryTabs</code>); genuine tab nesting is one layer deep, via a <code>nestedform</code>/<code>repeater</code> sub-form, and is styled out of the box.</div>
+  </div>
+
+  <p class="sec">Empty state · loading skeleton</p>
+  <div class="tabgrid" style="align-items:stretch">
+    <div class="card" style="flex:2;min-width:340px;margin-bottom:0">
+      <div class="empty">
+        ${I.user}
+        <h3>No people yet</h3>
+        <p>Once you add your first person they'll appear here with their status, orders and expenses.</p>
+        <button class="btn primary">${I.plus} New Person</button>
+      </div>
+    </div>
+    <div class="card" style="flex:1;min-width:260px;margin-bottom:0">
+      <div class="skel" aria-hidden="true">
+        <span class="sk t"></span>
+        <span class="sk w90"></span>
+        <span class="sk w80"></span>
+        <span class="sk w65"></span>
+        <span class="sk w80"></span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec">Modal / popup</p>
+  <div class="scrim" style="margin-bottom:24px">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-hd"><h4>Delete this record?</h4><button class="pop-x modal-close" title="Close">${I.x}</button></div>
+      <div class="modal-bd">
+        <div class="warn">${I.warn}<span><b>Mary Smith</b> and her 12 orders will be permanently removed. This cannot be undone.</span></div>
+      </div>
+      <div class="modal-ft">
+        <button class="btn ghost modal-close">Cancel</button>
+        <button class="btn danger modal-close">${I.trash} Delete record</button>
+      </div>
+    </div>
+    <button class="btn default modal-reopen">Reopen modal</button>
+  </div>
+
+  <p class="sec">Flash / alert messages</p>
+  <div class="card"><div class="alerts">
+    <div class="alert success">${I.okc}<span><b>Success</b> — the record was saved.</span></div>
+    <div class="alert info">${I.info}<span><b>Info</b> — 3 records were imported.</span></div>
+    <div class="alert warning">${I.warn}<span><b>Warning</b> — some rows were skipped, review them.</span></div>
+    <div class="alert danger">${I.errc}<span><b>Error</b> — the record could not be deleted.</span></div>
+  </div></div>
+`; }
+
+document.getElementById('root').innerHTML = `<div class="ui light" id="stage">${kit()}</div>`;
+
+/* ================================================================
+   INTERACTIVITY — one delegated handler, scoped per .ui panel so the
+   light and dark copies behave independently. Nothing here is part of
+   the eventual skin; it just makes the mock clickable to feel the flow.
+   ================================================================ */
+const root = document.getElementById('root');
+let docN = 0;
+
+function activate(el, groupSel, itemSel){
+  const g = el.closest(groupSel);
+  g.querySelectorAll(itemSel).forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+}
+function ftBody(name){
+  return ({
+    Edit:'Editing the main record fields. The active tab wears the Pacific snowcap and pours into the body surface through its concave feet; inactive tabs sit tight beside it as quiet chips.',
+    Categories:'Assign this record to one or more categories. Changes here save with the record.',
+    Manage:'Advanced management — slug, publish window and per-record permissions.'
+  })[name] || '';
+}
+function swapCode(ui, tab){
+  const pre = ui.querySelector('.edbody pre'), lang = ui.querySelector('.elang');
+  if(!pre) return;
+  if(tab === 'Code'){
+    pre.innerHTML = '<b>public function</b> onRun() {\n    <b>$this</b>->page[<b>\'posts\'</b>] = Post::all();\n}';
+    if(lang) lang.textContent = 'php';
+  } else {
+    pre.innerHTML = '<b>{% for</b> post <b>in</b> posts <b>%}</b>\n    &lt;h2&gt;<b>{{</b> post.title <b>}}</b>&lt;/h2&gt;\n<b>{% endfor %}</b>';
+    if(lang) lang.textContent = 'htm';
+  }
+}
+function toggleAll(ui, hbox){
+  const on = !hbox.classList.contains('on');
+  hbox.classList.toggle('on', on); hbox.innerHTML = on ? I.check : '';
+  ui.querySelectorAll('table.lw tbody tr').forEach(tr => {
+    const b = tr.querySelector('.box'); if(!b) return;
+    b.classList.toggle('on', on); b.innerHTML = on ? I.check : ''; tr.classList.toggle('sel', on);
+  });
+}
+/* real List sorting: sortable columns idle with a faint ⇅ double chevron;
+   clicking a new column sorts it ascending (single up chevron, accent), clicking
+   again flips the direction (down). Non-sortable columns never react. */
+function sortBy(th){
+  if(!th.classList.contains('sortable')) return;
+  if(th.classList.contains('sort-asc') || th.classList.contains('sort-desc')){
+    const asc = !th.classList.contains('sort-asc');
+    th.classList.toggle('sort-asc', asc); th.classList.toggle('sort-desc', !asc);
+    const s = th.querySelector('.si'); if(s) s.outerHTML = asc ? I.sortU : I.sortD;
+    return;
+  }
+  th.parentElement.querySelectorAll('th.sortable').forEach(h => {
+    h.classList.remove('srt', 'sort-asc', 'sort-desc');
+    const s = h.querySelector('.si'); if(s) s.outerHTML = I.sortB;
+  });
+  th.classList.add('srt', 'sort-asc');
+  const s = th.querySelector('.si'); if(s) s.outerHTML = I.sortU;
+}
+function addDoc(dock){
+  const b = document.createElement('button'); b.className = 'dtab';
+  b.innerHTML = '<i class="cap"></i>' + I.doc + 'untitled-' + (++docN) + '.htm<span class="dx">' + I.x + '</span>';
+  dock.querySelector('.dadd').before(b);
+}
+
+root.addEventListener('click', e => {
+  const ui = e.target.closest('.ui'); if(!ui) return;
+
+  // close a document tab (before the generic .dtab handler)
+  const dx = e.target.closest('.dtab .dx');
+  if(dx){
+    const tab = dx.closest('.dtab'), dock = tab.closest('.dock'), wasOn = tab.classList.contains('on');
+    tab.remove();
+    if(wasOn){ const f = dock.querySelector('.dtab'); if(f) f.classList.add('on'); }
+    return;
+  }
+
+  // tab families
+  let el;
+  if((el = e.target.closest('.ftab'))){ activate(el,'.ftabs','.ftab'); const hdr = el.closest('.fancy-hdr'); const b = hdr ? hdr.parentElement.querySelector(':scope > .fancy-body') : null; if(b) b.textContent = ftBody(el.textContent.trim()); return; }
+  if((el = e.target.closest('.dtab'))){ activate(el,'.dock','.dtab'); return; }
+  if((el = e.target.closest('.tt'))){
+    const bar = el.closest('.ttbar');
+    bar.querySelectorAll(':scope > .tt').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+    const panes = bar.nextElementSibling;
+    if(panes && panes.classList.contains('ttpanes')){
+      panes.querySelectorAll(':scope > .ttpane').forEach(p => p.classList.toggle('on', p.dataset.pane === el.dataset.pane));
+    }
+    return;
+  }
+  if((el = e.target.closest('.stabs button'))){ activate(el,'.stabs','button'); return; }
+  if((el = e.target.closest('.etab'))){ activate(el,'.edbar','.etab'); swapCode(ui, el.textContent.trim()); return; }
+  if((el = e.target.closest('.dadd'))){ addDoc(el.closest('.dock')); return; }
+  if((el = e.target.closest('.seg button'))){ activate(el,'.seg','button'); return; }
+
+  // filter chips
+  if((el = e.target.closest('.chip.set'))){ el.remove(); return; }
+  if((el = e.target.closest('.chip.add'))){ const c = document.createElement('button'); c.className = 'chip set'; c.innerHTML = '<span class="k">Role</span> Admin ' + I.x; el.before(c); return; }
+  if((el = e.target.closest('.chip'))){ el.classList.toggle('set'); return; }
+
+  // pagination
+  if((el = e.target.closest('.pgr button')) && !el.disabled){ if(/^\d+$/.test(el.textContent.trim())) activate(el,'.pgr','button'); return; }
+
+  // list header: setup popup, select-all box, or sort (list widget only)
+  const th = e.target.closest('table.lw thead th');
+  if(th){
+    if(th.classList.contains('lsetup')){
+      if(e.target.closest('.lsu-btn')){ th.classList.toggle('open'); return; }
+      if(e.target.closest('.lsu-x')){ th.classList.remove('open'); return; }
+      if(e.target.closest('.lsu-ft .btn.link')){ th.querySelectorAll('.lsu-list .box').forEach(b => { b.classList.add('on'); b.innerHTML = I.check; }); return; }
+      const pb = e.target.closest('.box');
+      if(pb){ const on = pb.classList.toggle('on'); pb.innerHTML = on ? I.check : ''; }
+      return;
+    }
+    const hb = e.target.closest('.box'); if(hb) toggleAll(ui, hb); else sortBy(th); return;
+  }
+
+  // row checkbox
+  if((el = e.target.closest('table.lw tbody .box'))){ const on = el.classList.toggle('on'); el.innerHTML = on ? I.check : ''; el.closest('tr').classList.toggle('sel', on); return; }
+
+  // record navigation (▲ prev / ▼ next, position updates)
+  if((el = e.target.closest('.form-record-nav-btn'))){
+    if(el.classList.contains('is-disabled')) return;
+    const nav = el.closest('.form-record-nav'), pos = nav.querySelector('.form-record-nav-position');
+    const m = pos.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+    if(m){
+      const t = +m[2]; let n = +m[1] + (el.dataset.dir === 'prev' ? -1 : 1);
+      n = Math.min(t, Math.max(1, n)); pos.textContent = n + ' / ' + t;
+      nav.querySelectorAll('.form-record-nav-btn').forEach(b => b.classList.toggle('is-disabled', (b.dataset.dir === 'prev' && n === 1) || (b.dataset.dir === 'next' && n === t)));
+    }
+    return;
+  }
+
+  // sidebar vertical tabs (secondaryTabs) — switch the matching pane
+  if((el = e.target.closest('.vtab'))){
+    activate(el,'.vtabs','.vtab');
+    const idx = [...el.parentElement.children].indexOf(el);
+    el.closest('.sbl').querySelectorAll('.vpane').forEach((p, i) => p.classList.toggle('on', i === idx));
+    return;
+  }
+
+  // translatable (ml*) locale selector
+  if((el = e.target.closest('.ml-copy'))){ el.closest('.mlf').classList.remove('open'); return; }
+  if((el = e.target.closest('.ml-menu a'))){
+    const mlf = el.closest('.mlf');
+    mlf.querySelectorAll('.ml-menu a').forEach(a => a.classList.remove('is-current-locale'));
+    el.classList.add('is-current-locale');
+    mlf.querySelector('.ml-btn').textContent = el.dataset.loc;
+    mlf.classList.remove('open'); return;
+  }
+  if((el = e.target.closest('.ml-btn'))){ el.closest('.mlf').classList.toggle('open'); return; }
+
+  // grouped repeater "Add new item" palette
+  if((el = e.target.closest('.rgp-x'))){ el.closest('.rgadd').classList.remove('open'); return; }
+  if((el = e.target.closest('.rgp-clear'))){
+    const rg = el.closest('.rgp'), ip = rg.querySelector('.rgp-search .ipt');
+    ip.value = ''; el.style.display = 'none'; rg.classList.remove('none');
+    rg.querySelectorAll('.rgp-it').forEach(b => b.classList.remove('hide'));
+    return;
+  }
+  if((el = e.target.closest('.rgp-it'))){
+    const wrap = el.closest('.rgadd'), g = el.dataset.g;
+    const rep = wrap.closest('.fld').querySelector('.rep');
+    if(rep) rep.insertAdjacentHTML('beforeend', repItem('New ' + g.toLowerCase(), true, '', g));
+    wrap.classList.remove('open'); return;
+  }
+  if((el = e.target.closest('.rep-addg'))){
+    const wr = el.closest('.rgadd');
+    if(wr.classList.toggle('open')){ const ip = wr.querySelector('.rgp-search .ipt'); if(ip) ip.focus(); }
+    return;
+  }
+  if(e.target.closest('.rgp')) return; // clicks inside the palette (e.g. search box)
+
+  // dropdown / relation select
+  if((el = e.target.closest('.ddm .it'))){
+    const dd = el.closest('.dd'); dd.classList.remove('open');
+    dd.querySelectorAll('.it').forEach(i => i.classList.remove('on')); el.classList.add('on');
+    const s = dd.querySelector('.sel-ipt'); if(s) s.childNodes[0].textContent = el.textContent.trim() + ' ';
+    return;
+  }
+  if((el = e.target.closest('.dd .sel-ipt'))){ el.closest('.dd').classList.toggle('open'); return; }
+
+  // field-gallery widgets
+  if((el = e.target.closest('.cpick .sw'))){
+    const CP = ['#57b9d2','#6cc551','#cf9d33','#d65d29','#466d81'];
+    const i = ((+el.dataset.i || 0) + 1) % CP.length; el.dataset.i = i;
+    el.style.background = CP[i]; const ip = el.parentElement.querySelector('.ipt'); if(ip) ip.value = CP[i].toUpperCase();
+    return;
+  }
+  if((el = e.target.closest('.sens .cpy'))){ el.innerHTML = I.check; setTimeout(() => { el.innerHTML = I.copy; }, 900); return; }
+  if((el = e.target.closest('.sens .rev'))){
+    const ip = el.closest('.sens').querySelector('.ipt');
+    ip.value = ip.value.indexOf('•') === 0 ? (ip.dataset.val || '') : '••••••••••••••';
+    return;
+  }
+  if((el = e.target.closest('.rep-hd .rm'))){ el.closest('.rep-item').remove(); return; }
+  if((el = e.target.closest('.rep-hd'))){ el.closest('.rep-item').classList.toggle('open'); return; }
+  if((el = e.target.closest('.rep-add'))){
+    el.closest('.fld').querySelector('.rep').insertAdjacentHTML('beforeend',
+      repItem('New item', true, '<div class="fld"><label>Title</label><input class="ipt" placeholder="Item title"></div>'));
+    return;
+  }
+  if((el = e.target.closest('.fitem .rm'))){ el.closest('.fitem').remove(); return; }
+  if((el = e.target.closest('.thumbc .uo-x'))){ el.closest('.thumbc').remove(); return; }
+
+  // iconpicker: addon opens the picker popup; a grid icon selects it
+  if((el = e.target.closest('.icp-trigger'))){ el.closest('.icp').classList.toggle('open'); return; }
+  if((el = e.target.closest('.icp .icg'))){ const icp = el.closest('.icp'); icp.querySelectorAll('.icg').forEach(b => b.classList.remove('on')); el.classList.add('on'); icp.querySelector('.ig-addon').innerHTML = el.innerHTML; icp.querySelector('.icp-input').value = el.dataset.i || ''; icp.classList.remove('open'); return; }
+  // recordfinder: clear button empties the selection
+  if((el = e.target.closest('.rf-clear'))){ const rf = el.closest('.rf'); rf.querySelector('.rf-val').innerHTML = '<span class="rf-s">Click to find a record…</span>'; el.remove(); return; }
+
+  // hint callout — ONLY the × dismisses it (matches _hint.php behaviour)
+  if((el = e.target.closest('.co-close'))){
+    const c = el.closest('.callout');
+    c.style.transition = 'opacity .2s, transform .2s'; c.style.opacity = '0'; c.style.transform = 'translateY(-4px)';
+    setTimeout(() => c.remove(), 200); return;
+  }
+  if(e.target.closest('.callout')) return;
+
+  // checkboxlist quick-select links
+  if((el = e.target.closest('.qsel a'))){
+    const all = el.classList.contains('qs-all');
+    el.closest('.fld').querySelectorAll('.radio .box').forEach(b => { b.classList.toggle('on', all); b.innerHTML = all ? I.check : ''; });
+    return;
+  }
+
+  // permissioneditor — a section header's Allow/Inherit/Deny bulk-sets every
+  // row in THAT section (rows following the header, up to the next header)
+  if((el = e.target.closest('.pmr.pmh .pc'))){
+    const hd = el.closest('.pmr.pmh');
+    const i = [...hd.querySelectorAll('.pc')].indexOf(el);
+    for(let r = hd.nextElementSibling; r && !r.classList.contains('pmh'); r = r.nextElementSibling){
+      r.querySelectorAll('.pc .dot').forEach((d, j) => d.classList.toggle('on', j === i));
+    }
+    return;
+  }
+  // permissioneditor — radios are row-scoped (Allow / Inherit / Deny columns)
+  if((el = e.target.closest('.pmr .dot'))){
+    const r = el.closest('.pmr'); r.querySelectorAll('.dot').forEach(d => d.classList.remove('on')); el.classList.add('on'); return;
+  }
+
+  // brand palette — reset the three pickers and drop the inline --brand-* overrides
+  if((el = e.target.closest('.bp-reset'))){
+    const uiEl = el.closest('.ui');
+    uiEl.querySelectorAll('.bp').forEach(w => {
+      const v = BRAND_DEFAULTS[w.dataset.var];
+      uiEl.style.removeProperty(w.dataset.var);
+      w.querySelector('.bp-in').value = v;
+      w.querySelector('.bp-hex').textContent = v;
+    });
+    return;
+  }
+
+  // (theme presets + chrome-tint now live only in the top-right #topswap cluster)
+
+  // form controls
+  if((el = e.target.closest('.switch'))){ el.classList.toggle('on'); return; }
+  if((el = e.target.closest('.fld .box'))){ const on = el.classList.toggle('on'); el.innerHTML = on ? I.check : ''; return; }
+  if((el = e.target.closest('.radio .dot'))){ const f = el.closest('.fld'); f.querySelectorAll('.dot').forEach(d => d.classList.remove('on')); el.classList.add('on'); return; }
+  if((el = e.target.closest('.balloon span'))){ activate(el,'.balloon','span'); return; }
+  if((el = e.target.closest('.tags .tg svg'))){ el.closest('.tg').remove(); return; }
+
+  // modal demo — ×, Cancel or the confirm action all close it; the scrim
+  // collapses to a reopen pill so the component stays reachable in the kit
+  if((el = e.target.closest('.modal-close'))){ el.closest('.scrim').classList.add('closed'); return; }
+  if((el = e.target.closest('.modal-reopen'))){ el.closest('.scrim').classList.remove('closed'); return; }
+
+  // dismiss an alert
+  if((el = e.target.closest('.alert'))){ el.style.transition = 'opacity .2s, transform .2s'; el.style.opacity = '0'; el.style.transform = 'translateY(-4px)'; setTimeout(() => el.remove(), 200); return; }
+});
+
+// live search filters the list and updates the footer count; the grouped-repeater
+// palette search filters its group grid and shows the no-results state
+root.addEventListener('input', e => {
+  // brand pickers: write the --brand-* var onto the stage (inline style wins
+  // over the .ui defaults) — every color-mix() derivation recomputes live, in
+  // whichever mode is active and correctly in the other when toggled
+  const bpin = e.target.closest('.bp-in');
+  if(bpin){
+    const w = bpin.closest('.bp'), uiEl = bpin.closest('.ui');
+    uiEl.style.setProperty(w.dataset.var, bpin.value);
+    w.querySelector('.bp-hex').textContent = bpin.value;
+    refreshInk();
+    return;
+  }
+  const g = e.target.closest('.rgp-search .ipt');
+  if(g){
+    const rg = g.closest('.rgp'), q = g.value.trim().toLowerCase();
+    rg.querySelector('.rgp-clear').style.display = q ? '' : 'none';
+    let n = 0;
+    rg.querySelectorAll('.rgp-it').forEach(b => { const hit = b.textContent.toLowerCase().includes(q); b.classList.toggle('hide', !hit); if(hit) n++; });
+    rg.classList.toggle('none', !n);
+    return;
+  }
+  const s = e.target.closest('.search .ipt'); if(!s) return;
+  const ui = e.target.closest('.ui'), q = s.value.trim().toLowerCase();
+  let shown = 0;
+  ui.querySelectorAll('table.lw tbody tr').forEach(tr => { const hit = tr.textContent.toLowerCase().includes(q); tr.style.display = hit ? '' : 'none'; if(hit) shown++; });
+  const info = ui.querySelector('.lw-foot span'); if(info) info.innerHTML = 'Showing <b>' + shown + '</b> of <b>42</b> records';
+});
+
+// quick light/dark switch, top-right — flips the single stage's mode class so
+// every element is exercised by the real light/dark styling, no duplication.
+const stage = document.getElementById('stage');
+const SUN = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"/></svg>';
+const MOON = '<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4a7 7 0 100 16 8 8 0 0010.5-5.5z"/></svg>';
+// luminance-conditional ink — keeps text readable on the brand-DERIVED solids
+// (fancy header, primary buttons, active pagination) whatever brand colour is
+// picked, so a light brand like the Fall preset can't ship white-on-orange sub-AA.
+const _inkProbe = document.createElement('span'); _inkProbe.style.cssText = 'position:absolute;left:-9999px;width:0;height:0;';
+function _lum(str){ const m = str.match(/[\d.]+/g); if(!m) return 1; let [r,g,b] = m.slice(0,3).map(Number); if(!/^color\(/i.test(str)){ r/=255; g/=255; b/=255; } /* rgb() is 0-255; color(srgb …) is already 0-1 */ const f = v => v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); return 0.2126*f(r) + 0.7152*f(g) + 0.0722*f(b); }
+function _inkFor(varName){ _inkProbe.style.backgroundColor = 'var(' + varName + ')'; return _lum(getComputedStyle(_inkProbe).backgroundColor) > 0.2 ? '#141109' : '#ffffff'; }
+function refreshInk(){
+  if(_inkProbe.parentNode !== stage) stage.appendChild(_inkProbe);
+  const hInk = _inkFor('--hdr-a');                 // lighter gradient stop = the harder case
+  stage.style.setProperty('--hdr-fg', hInk);
+  if(hInk === '#ffffff') stage.style.removeProperty('--hdr-dim'); else stage.style.setProperty('--hdr-dim', 'rgba(0,0,0,.55)');
+  stage.style.setProperty('--primary-fg', _inkFor('--primary'));
+  stage.style.setProperty('--on-ink', _inkFor('--sel'));
+}
+
+// apply a brand preset to a .ui stage and sync the section pickers + corner dots
+function applyPreset(uiEl, key){
+  const p = BRAND_PRESETS[key]; if(!p) return;
+  uiEl.querySelectorAll('.bp').forEach(w => {
+    const v = p[w.dataset.var]; if(!v) return;
+    uiEl.style.setProperty(w.dataset.var, v);
+    const inp = w.querySelector('.bp-in'); if(inp) inp.value = v;
+    const hex = w.querySelector('.bp-hex'); if(hex) hex.textContent = v;
+  });
+  document.querySelectorAll('.ts-theme').forEach(b => b.classList.toggle('on', b.dataset.preset === key));
+  refreshInk();
+}
+
+// fixed top-right control cluster: quick theme swatches + the light/dark toggle,
+// reachable from anywhere on the page (no scrolling back to the palette bar)
+const topswap = document.createElement('div');
+topswap.id = 'topswap';
+const THEME_KEYS = ['winter','mario','zelda','fall'];
+topswap.innerHTML = '<div class="ts-themes" title="Quick theme">' + THEME_KEYS.map(k =>
+  `<button class="ts-theme${k==='winter'?' on':''}" data-preset="${k}" title="${BRAND_PRESETS[k].label}" style="--d:${BRAND_PRESETS[k].dot}"><span></span></button>`).join('') + '</div>';
+
+const toggle = document.createElement('button');
+toggle.id = 'theme-toggle';
+function paintToggle(){ const dark = stage.classList.contains('dark'); toggle.innerHTML = (dark ? SUN : MOON) + '<span>' + (dark ? 'Light' : 'Dark') + '</span>'; topswap.classList.toggle('is-light', !dark); refreshInk(); }
+toggle.addEventListener('click', () => { const dark = stage.classList.toggle('dark'); stage.classList.toggle('light', !dark); paintToggle(); });
+
+// dark-chrome brand tint toggle — lives in the cluster so it's reachable too
+// (only affects dark mode; dimmed in light where it's a no-op)
+const tintBtn = document.createElement('button');
+tintBtn.id = 'tint-toggle'; tintBtn.className = 'on';
+tintBtn.innerHTML = '<span class="tdot"></span>Tint';
+tintBtn.title = 'Tint the dark-mode chrome with the brand colour';
+tintBtn.addEventListener('click', () => { const on = tintBtn.classList.toggle('on'); stage.style.setProperty('--chrome-tint', on ? '14%' : '0%'); });
+
+topswap.appendChild(tintBtn);
+topswap.appendChild(toggle);
+paintToggle();
+topswap.addEventListener('click', e => { const t = e.target.closest('.ts-theme'); if(t) applyPreset(stage, t.dataset.preset); });
+document.body.appendChild(topswap);
+</script>
+</body>
+</html>

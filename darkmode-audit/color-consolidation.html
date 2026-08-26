@@ -1,0 +1,1504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winter core — light-mode colour consolidation proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..800;1,300..800&family=Mulish:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+<style>
+:root{ --font-base:'Public Sans',ui-sans-serif,system-ui,sans-serif; --font-head:'Mulish',var(--font-base);
+  --pg:#0b1220; --card:#101a2d; --card-bd:#1d2a42; --ink:#cbd5e1; --dim:#94a3b8; --faint:#64748b; --hd:#f1f5f9; --acc:#57b9d2; }
+*{ box-sizing:border-box }
+body{ margin:0; font-family:var(--font-base); background:var(--pg); color:var(--dim); font-size:13.5px; line-height:1.5; padding:26px 30px 90px; -webkit-font-smoothing:antialiased }
+h1{ font-family:var(--font-head); font-weight:800; color:var(--hd); font-size:21px; margin:0 0 6px }
+h1 em{ color:var(--acc); font-style:normal }
+.sub{ max-width:1000px; margin:0 0 18px }
+.stats{ display:flex; gap:14px; flex-wrap:wrap; margin:0 0 10px }
+.stat{ background:var(--card); border:1px solid var(--card-bd); border-radius:12px; padding:12px 18px; display:flex; gap:12px; align-items:center }
+.stat b{ font-family:var(--font-head); font-size:26px; color:var(--hd); font-weight:800 }
+.stat span{ font-size:11px; color:var(--faint); line-height:1.35 }
+.wins{ max-width:1100px; background:linear-gradient(120deg,#12233a,#101a2d); border:1px solid var(--card-bd); border-radius:12px; padding:14px 18px; margin:0 0 26px; font-size:12.5px }
+.wins b{ color:var(--hd) } .wins code{ color:var(--acc) }
+.wins li{ margin:3px 0 }
+.toc{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 26px; max-width:1200px }
+.toc a{ color:var(--dim); text-decoration:none; border:1px solid var(--card-bd); background:var(--card); border-radius:99px; padding:4px 11px; font-size:11.5px }
+.toc a:hover{ color:var(--hd); border-color:var(--acc) }
+.toc a i{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:-1px; border:1px solid rgba(255,255,255,.25) }
+code{ font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.92em }
+
+.card{ background:var(--card); border:1px solid var(--card-bd); border-radius:14px; padding:18px 20px; margin:0 0 20px; max-width:1280px }
+.card-t{ display:flex; align-items:center; gap:10px; flex-wrap:wrap }
+.tok{ color:var(--acc); background:rgba(87,185,210,.09); border:1px solid rgba(87,185,210,.25); padding:2px 9px; border-radius:7px; font-size:13px }
+.badge{ font-size:10px; text-transform:uppercase; letter-spacing:.06em; font-weight:700; border-radius:99px; padding:3px 9px }
+.b-token{ background:rgba(108,197,81,.12); color:#8fdf74 }
+.b-map{ background:rgba(87,185,210,.12); color:#7fd0e4 }
+.b-keep{ background:rgba(222,135,84,.14); color:#e8a97e }
+.b-drop{ background:rgba(148,163,184,.12); color:#94a3b8 }
+.b-n{ background:rgba(148,163,184,.1); color:var(--dim) }
+.card h3{ font-family:var(--font-head); font-weight:800; color:var(--hd); font-size:15.5px; margin:8px 0 2px }
+.role{ margin:0; font-size:12.5px; color:var(--dim) }
+.card-body{ display:flex; gap:22px; margin-top:14px; align-items:flex-start; flex-wrap:wrap }
+.left{ flex:1 1 380px; min-width:340px }
+.right{ flex:1.2 1 460px; min-width:380px }
+
+.swrow{ display:flex; flex-wrap:wrap; gap:4px 10px; margin:2px 0 10px }
+.sw{ background:none; border:none; padding:4px 2px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; width:64px; font-family:var(--font-base) }
+.sw .dot{ width:30px; height:30px; border-radius:50%; display:block; box-shadow:inset 0 0 0 1px rgba(255,255,255,.14), 0 1px 4px rgba(0,0,0,.45); position:relative; transition:transform .12s }
+.sw:hover .dot{ transform:scale(1.12) }
+.sw.win .dot{ outline:2px solid var(--acc); outline-offset:3px }
+.sw.ref .dot{ outline:2px dashed #e8a97e; outline-offset:3px }
+.sw.on .dot::after{ content:'✓'; position:absolute; inset:0; display:grid; place-items:center; font-size:13px; font-weight:800; color:inherit }
+.swx{ font-family:ui-monospace,Menlo,monospace; font-size:9.5px; color:var(--dim) }
+.sw.on .swx{ color:var(--hd); font-weight:700 }
+.swc{ font-size:9px; color:var(--faint) }
+.active-line{ font-size:11.5px; color:var(--faint); margin:0 0 8px }
+.active-line .act{ color:var(--hd); background:rgba(148,163,184,.12); padding:1px 7px; border-radius:5px }
+.act-tag{ color:#8fdf74 } .act-tag.off{ color:#e8a97e }
+.note{ font-size:12px; background:rgba(222,135,84,.08); border-left:3px solid rgba(222,135,84,.55); color:#d9c1ad; padding:7px 11px; border-radius:0 8px 8px 0; margin:0 0 10px }
+.usage{ font-size:11.8px; color:var(--faint); margin:0 0 8px } .usage b{ color:var(--dim) }
+details{ font-size:11.5px } summary{ cursor:pointer; color:var(--acc); font-size:11px }
+.dets{ max-height:230px; overflow:auto; margin-top:8px; border:1px solid var(--card-bd); border-radius:8px; padding:8px 10px; background:#0c1424 }
+.dh{ color:var(--hd); margin:7px 0 3px; font-weight:600 } .dh:first-child{ margin-top:0 }
+.dsw{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:-1px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.2) }
+.dr{ display:flex; gap:8px; padding:1.5px 0 1.5px 16px; color:var(--faint) }
+.dp{ color:#7fd0e4; flex:0 0 130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.dsel{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.df{ flex:0 0 auto; color:#54627a }
+
+.pv-title{ font-size:10px; text-transform:uppercase; letter-spacing:.07em; font-weight:700; color:var(--faint); margin:0 0 7px }
+.pv{ background:#e9edf0; border-radius:10px; padding:16px; color:#333; font-size:12.5px; font-family:var(--font-base); display:flex; gap:12px; align-items:stretch; box-shadow:inset 0 0 0 1px rgba(255,255,255,.06) }
+.pv-flat{ display:block }
+.pv a{ text-decoration:none; cursor:pointer }
+.pv-side{ background:#2b3e50; border-radius:6px; padding:10px 0; min-width:120px; display:flex; flex-direction:column }
+.pv-side-item{ padding:6px 14px; font-size:12px } .pv-side-item.dim{ color:rgba(255,255,255,.45) }
+.pv-main{ flex:1; display:flex; flex-direction:column; gap:10px }
+.pv-panel{ background:#fff; border:1px solid #dde3e7; border-radius:6px; padding:10px 12px }
+.pv-panel-title{ font-weight:700; color:#2b3e50; margin-bottom:4px; font-family:'Mulish' }
+.pv-line{ font-size:12px; color:#666 }
+.pv-sheet{ background:#fff; border:1px solid #dde3e7; border-radius:4px; padding:14px 16px; flex:1; color:#444 }
+.pv-mark{ background:#ff0; color:#000; padding:0 3px }
+.pv-chip{ display:inline-block; font-size:10px; padding:1px 7px; border-radius:3px; margin-top:8px }
+.pv-table{ width:100%; border-collapse:collapse; font-size:12px }
+.pv-table td,.pv-table th{ padding:5px 8px; text-align:left }
+.pv-table th{ font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:#95a5a6 }
+.pv-grid{ --gr:#e0e0e0 } .pv-grid td{ border:1px solid var(--gr) }
+.pv-pop{ background:#fff; border:1px solid #dde3e7; border-radius:6px; margin-top:10px; max-width:260px; overflow:hidden; box-shadow:0 4px 14px rgba(43,62,80,.12) }
+.pv-pop-head{ padding:7px 12px; font-weight:600; color:#2a3e51; border-bottom:1px solid #e6eaec }
+.pv-pop-body{ padding:9px 12px; color:#666; font-size:12px }
+.pv-menu{ background:#fff; border:1px solid #dde3e7; border-radius:6px; padding:5px 0; min-width:140px; height:fit-content; box-shadow:0 4px 14px rgba(43,62,80,.12) }
+.pv-menu-item{ padding:6px 14px; color:#39454a }
+.pv-input{ border:1px solid #d1d6d9; border-radius:4px; background:#fff; padding:6px 10px; font-size:12.5px; color:#385487 }
+.pv-label{ font-size:11px; font-weight:600; color:#2a3e51; margin-bottom:4px }
+.pv-help{ font-size:10.5px; color:#999 }
+.pv-btn{ border:1px solid transparent; border-radius:4px; padding:6px 13px; font-size:12px; font-weight:600; font-family:var(--font-base); margin-right:6px; cursor:pointer }
+.pv-switch{ display:inline-block; width:38px; height:20px; border-radius:99px; background:#eee; position:relative; vertical-align:middle }
+.pv-switch.on{ background:#8da85e }
+.pv-knob{ position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25) }
+.pv-knob.r{ left:auto; right:2px }
+.pv-empty{ flex:1; display:grid; place-items:center; border-radius:6px; color:#666; font-size:12.5px; min-height:90px }
+.pv-progress{ height:7px; border-radius:99px; background:#f5f5f5; overflow:hidden; margin-top:8px }
+.pv-cal{ display:flex; gap:4px; margin-top:8px }
+.pv-cal span{ width:30px; height:26px; display:grid; place-items:center; border-radius:4px; background:#fff; border:1px solid #e6eaec; font-size:11.5px }
+.pv-tabbar{ display:flex; gap:2px; border-bottom:1px solid #e0e0e0 }
+.pv-tab{ padding:8px 12px; font-size:12px }
+.pv-tab.on{ color:#2b3e50; font-weight:600; border-bottom:2px solid #ec8017 }
+.pv-dot{ display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:3px; vertical-align:middle }
+.pv-crumb{ border-radius:4px; padding:6px 12px; color:#2a3e51; font-size:12px }
+.pv-flash{ color:#fff; border-radius:5px; padding:9px 13px; font-size:12.5px; box-shadow:0 3px 10px rgba(0,0,0,.12) }
+.pv-co{ flex:1 1 45%; border-radius:6px; overflow:hidden; border:1px solid rgba(0,0,0,.05); background:var(--c) }
+.pv-co b{ display:block; background:var(--h); color:var(--i); padding:6px 11px; font-size:12px }
+.pv-co span{ display:block; padding:7px 11px; color:var(--i); font-size:11px }
+.foot{ max-width:1100px; color:var(--faint); font-size:11.5px; margin-top:34px; border-top:1px solid var(--card-bd); padding-top:14px }
+@media (max-width:900px){ .card-body{ flex-direction:column } .right{ min-width:0; width:100% } }
+</style>
+</head>
+<body>
+<h1>Winter core light-mode palette — <em>consolidation proposal</em></h1>
+<p class="sub">Every hardcoded hex in <code>modules/backend/assets/less</code> + <code>modules/system/assets/ui/less</code> (105 files), clustered by perceptual closeness <em>and</em> shared role into proposed CSS-variable tokens. Click any swatch to preview that candidate on the group's real UI elements — the <span style="outline:2px solid var(--acc);outline-offset:2px;border-radius:50%;display:inline-block;width:10px;height:10px;background:#f9f9f9;vertical-align:-1px"></span> ring marks the recommended winner (existing <code>@gray-*</code>/<code>@color-*</code> values win ties), dashed <span style="outline:2px dashed #e8a97e;outline-offset:2px;border-radius:50%;display:inline-block;width:10px;height:10px;background:#e01346;vertical-align:-1px"></span> = existing brand token shown for comparison. Dark <code>--drk-*</code> palette is out of scope (separate audit).</p>
+<div class="stats">
+<div class="stat"><b>152</b><span>distinct hex literals<br>(142 unique colours)</span></div>
+<div class="stat"><b>428</b><span>total occurrences<br>across 105 .less files</span></div>
+<div class="stat"><b>21</b><span>proposed light-mode tokens<br>(+ brand &amp; state mappings)</span></div>
+<div class="stat"><b>394</b><span>occurrences collapsed<br>onto tokens</span></div>
+</div>
+<div class="wins"><b>Headline near-duplicate wins:</b>
+<ul style="margin:6px 0 0;padding-left:18px">
+<li><b>Silver cluster:</b> 12 hexes / 33 uses (<code>#bdc3c7 #b5babd #bbb #b2b9be…</code>) all mean “placeholder / disabled control” → one token, incl. <b>three identical <code>@color-scroll-indicator</code> vars</b> defined in three files.</li>
+<li><b>Off-whites:</b> 10 hexes / 37 uses (<code>#f9f9f9 #f5f5f5 #f6f6f6 #eee #fafafa #f0f0f0…</code>) collapse to just three roles: page bg, hover surface, muted control fill.</li>
+<li><b><code>#2b3e50</code> vs <code>#2a3e51</code>:</b> the same slate written two ways, 16 uses combined — plus <code>#feffff</code>, which is white with a typo.</li>
+<li><b>Nine stray blues</b> re-implement “selected/interactive” that <code>var(--brand-secondary)</code> already owns; <b>seven one-shot oranges</b> do one job (<code>#ec8017</code> tab marker anchors it).</li>
+<li><b><code>#666</code> beats <code>#555</code> 17:9</b> for secondary text even though the named <code>@gray</code> is #555 — standardise on #666.</li>
+</ul></div>
+<nav class="toc"><a href="#g-white"><i style="background:#ffffff"></i>--wn-white</a><a href="#g-black"><i style="background:#000000"></i>--wn-black</a><a href="#g-bg"><i style="background:#f9f9f9"></i>--wn-bg</a><a href="#g-hover"><i style="background:#f5f5f5"></i>--wn-surface-hover</a><a href="#g-muted"><i style="background:#eeeeee"></i>--wn-surface-muted</a><a href="#g-cool"><i style="background:#ecf0f1"></i>--wn-surface-cool</a><a href="#g-bsub"><i style="background:#e1e1e1"></i>--wn-border-subtle</a><a href="#g-border"><i style="background:#cccccc"></i>--wn-border</a><a href="#g-binput"><i style="background:#d1d6d9"></i>--wn-border-input</a><a href="#g-silver"><i style="background:#bdc3c7"></i>--wn-grey-silver</a><a href="#g-concrete"><i style="background:#95a5a6"></i>--wn-grey-concrete</a><a href="#g-tmuted"><i style="background:#999999"></i>--wn-text-muted</a><a href="#g-tsec"><i style="background:#666666"></i>--wn-text-secondary</a><a href="#g-text"><i style="background:#333333"></i>--wn-text</a><a href="#g-heading"><i style="background:#2b3e50"></i>--wn-heading</a><a href="#g-slate"><i style="background:#405261"></i>--wn-slate</a><a href="#g-tinput"><i style="background:#385487"></i>--wn-text-input</a><a href="#g-chrome"><i style="background:#151515"></i>--wn-chrome-dark</a><a href="#g-blues"><i style="background:#2da7c7"></i>var(--brand-secondary)</a><a href="#g-danger"><i style="background:#cc3300"></i>--wn-danger-muted</a><a href="#g-orange"><i style="background:#ec8017"></i>--wn-accent-orange</a><a href="#g-success"><i style="background:#8da85e"></i>--wn-success-muted</a><a href="#g-state"><i style="background:#31708f"></i>--wn-state-*</a><a href="#g-drop"><i style="background:#7a43b6"></i>(exclude)</a></nav>
+
+<section class="card kind-token" id="g-white">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-white</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">1 hex &middot; 84 uses</span>
+    </div>
+    <h3>Pure white</h3>
+    <p class="role">Panel & control surfaces; text/icons on dark chrome (main menu, sidebar, fancy layout).</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#ffffff" title="#ffffff"><span class="dot" style="background:#ffffff;color:#0e1a28"></span><span class="swx">ffffff</span><span class="swc">&times;84</span></button></div>
+      <div class="active-line">Previewing <code class="act">#ffffff</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Single colour, but 85 raw literals split across #fff / #ffffff. One token ends the churn and gives dark mode a single hook.</div>
+      <p class="usage"><b>Appears on:</b> Panel/list/treeview item backgrounds · active main-menu & sidebar-nav text/icons · fancy-layout tab text · popup surfaces · counter badge text.</p>
+      <details><summary>All 84 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#ffffff"></span><code>#ffffff</code> — 84 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-mainmenu-active</span><span class="df">backend/core/variables.less:22</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-active-text</span><span class="df">backend/core/variables.less:34</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-active-icon</span><span class="df">backend/core/variables.less:35</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-counter-text</span><span class="df">backend/core/variables.less:39</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-tree-inactive-header</span><span class="df">backend/core/variables.less:43</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-tree-inactive-text</span><span class="df">backend/core/variables.less:45</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-tree-active-header</span><span class="df">backend/core/variables.less:46</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filelist-hero-item-bg</span><span class="df">backend/core/variables.less:90</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-master-tabs-active-text</span><span class="df">backend/core/variables.less:97</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-secondary-tabs-active-text</span><span class="df">backend/core/variables.less:102</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-form-text</span><span class="df">backend/core/variables.less:113</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-item-bg</span><span class="df">backend/core/variables.less:126</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-submenu-text</span><span class="df">backend/core/variables.less:135</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.flyout-toggle &amp;:hover i</span><span class="df">backend/layout/flyout.less:38</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">breadcrumb-fancy .form-record-nav .form-record-nav-btn &amp;:not(.is-disable</span><span class="df">backend/layout/fancylayout.less:666</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">widget &gt; .layout-row &gt; .form-tabless-fields  .form-buttons:not(.normaliz</span><span class="df">backend/layout/fancylayout.less:722</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel"> .layout-row &gt; .form-tabless-fields  .form-buttons:not(.normalized) .btn</span><span class="df">backend/layout/fancylayout.less:737</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.form-record-nav .form-record-nav-btn &amp;:not(.is-disabled):hover</span><span class="df">backend/controls/record-navigation.less:56</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.global-notice</span><span class="df">backend/controls/global-notice.less:11</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@dropdown-bg</span><span class="df">system/dropdown.variables.less:1</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">.stripe-loading-indicator .stripe, .stripe-loaded</span><span class="df">system/loader.less:231</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">.stripe-loading-indicator .stripe, .stripe-loaded</span><span class="df">system/loader.less:231</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-parent-bg</span><span class="df">system/list.variables.less:20</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-head-bg</span><span class="df">system/list.variables.less:23</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">select</span><span class="df">system/site.print.less:68</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.table th</span><span class="df">system/site.print.less:78</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-popover-bg</span><span class="df">system/popover.less:13</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">div.control-popover &amp;.popover-danger &gt; div</span><span class="df">system/popover.less:217</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">div.control-popover &amp;.popover-danger .popover-head</span><span class="df">system/popover.less:246</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">div.control-popover &amp;.popover-danger .popover-head .close</span><span class="df">system/popover.less:251</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data .list-badge</span><span class="df">system/list.less:352</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.list-scrollable-container &amp;:after, &amp;:before</span><span class="df">system/list.less:614</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-active</span><span class="df">system/select.variables.less:11</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-choice-bg</span><span class="df">system/select.variables.less:15</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-checkbox-icon</span><span class="df">system/checkbox.less:15</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.custom-radio label &amp;:before</span><span class="df">system/checkbox.less:76</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.custom-switch input &amp;:checked ~ span span &amp;:first-of-type</span><span class="df">system/checkbox.less:285</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.custom-switch &gt; span span &amp;:last-child</span><span class="df">system/checkbox.less:320</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">&amp;.focus</span><span class="df">system/button.mixins.less:61</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.open &gt; .dropdown-toggle&amp;</span><span class="df">system/button.mixins.less:69</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.open &gt; .dropdown-toggle&amp; &amp;.focus</span><span class="df">system/button.mixins.less:76</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@tooltip-color</span><span class="df">system/tooltip.variables.less:6</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@highlight-hover-text</span><span class="df">system/global.variables.less:150</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@highlight-active-text</span><span class="df">system/global.variables.less:153</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@component-active-color</span><span class="df">system/global.variables.less:179</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.pika-single</span><span class="df">system/datepicker.date.less:11</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.pika-label</span><span class="df">system/datepicker.date.less:42</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.is-selected .pika-button</span><span class="df">system/datepicker.date.less:149</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.pika-button:hover</span><span class="df">system/datepicker.date.less:164</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-balloon-control-default-text</span><span class="df">system/checkbox.balloon.less:5</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filter &gt; .filter-scope &amp;.active .filter-setting</span><span class="df">system/filter.less:88</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filter &gt; .filter-scope &amp;.button-group button &amp;.btn-primary</span><span class="df">system/filter.less:168</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filter &gt; .filter-scope &amp;.button-group button &amp;:hover:not(.btn-p</span><span class="df">system/filter.less:173</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filter &gt; .filter-has-popover &amp;.active .filter-setting</span><span class="df">system/filter.less:244</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filter-popover .filter-items, .filter-active-items a &amp;:hover</span><span class="df">system/filter.less:307</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@progress-bar-color</span><span class="df">system/progressbar.less:12</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-bg</span><span class="df">system/tab.less:20</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-content-active-bg</span><span class="df">system/tab.less:22</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@nav-open-link-hover-color</span><span class="df">system/tab.less:31</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-flash-text</span><span class="df">system/flashmessage.less:16</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.clockpicker-popover</span><span class="df">system/datepicker.time.less:18</span></div>
+<div class="dr"><code class="dp">border-top-color</code><span class="dsel">.clockpicker-popover &amp;.top &gt; .arrow:after</span><span class="df">system/datepicker.time.less:91</span></div>
+<div class="dr"><code class="dp">border-right-color</code><span class="dsel">.clockpicker-popover &amp;.right &gt; .arrow:after</span><span class="df">system/datepicker.time.less:106</span></div>
+<div class="dr"><code class="dp">border-bottom-color</code><span class="dsel">.clockpicker-popover &amp;.bottom &gt; .arrow:after</span><span class="df">system/datepicker.time.less:122</span></div>
+<div class="dr"><code class="dp">border-left-color</code><span class="dsel">.clockpicker-popover &amp;.left &gt; .arrow:after</span><span class="df">system/datepicker.time.less:137</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.clockpicker-popover .popover-title</span><span class="df">system/datepicker.time.less:169</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.clockpicker-plate</span><span class="df">system/datepicker.time.less:190</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@input-bg</span><span class="df">system/form.variables.less:6</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-field-bg</span><span class="df">system/form.variables.less:46</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-checkboxlist-background</span><span class="df">system/form.variables.less:53</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.bg-primary</span><span class="df">system/site.typography.less:116</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-chart-tooltip-text</span><span class="df">system/chart.less:15</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.clear-input-text</span><span class="df">system/toolbar.less:127</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-value-bg</span><span class="df">system/inspector.less:16</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-active-bg</span><span class="df">system/inspector.less:17</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">.inspector-dictionary-container table.inspector-dictionary-table tbody t</span><span class="df">system/inspector.less:536</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@close-text-shadow</span><span class="df">system/icon.variables.less:7</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-default-color</span><span class="df">system/button.variables.less:3</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-primary-color</span><span class="df">system/button.variables.less:7</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-success-color</span><span class="df">system/button.variables.less:15</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-info-color</span><span class="df">system/button.variables.less:19</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-warning-color</span><span class="df">system/button.variables.less:23</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-danger-color</span><span class="df">system/button.variables.less:27</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-text</span><span class="df">system/breadcrumb.less:11</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#ffffff">
+  <div class="pv-side"><span class="pv-side-item" style="color:var(--g)">&#9632;&nbsp; Dashboard</span><span class="pv-side-item dim">&#9633;&nbsp; CMS</span><span class="pv-side-item dim">&#9633;&nbsp; Media</span></div>
+  <div class="pv-main">
+    <div class="pv-panel" style="background:var(--g)"><div class="pv-panel-title">Recent posts</div><div class="pv-line">A treeview / file-list item resting on the token.</div></div>
+    <div class="pv-panel" style="background:var(--g)"><div class="pv-line">Popup surface — buttons, counters and fancy-tab text also use it as ink on dark.</div></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-black">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-black</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">1 hex &middot; 19 uses</span>
+    </div>
+    <h3>Pure black</h3>
+    <p class="role">Print stylesheet ink, &lt;mark&gt; text, greyscale derivation base, editor-toolbar hover ink.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#000000" title="#000000"><span class="dot" style="background:#000000;color:#fff"></span><span class="swx">000000</span><span class="swc">&times;19</span></button></div>
+      <div class="active-line">Previewing <code class="act">#000000</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">5 of these are the lighten(#000, n%) greyscale definitions in global.variables.less; the print-only uses (site.print.less) can stay literal if preferred.</div>
+      <p class="usage"><b>Appears on:</b> site.print.less ink & borders · mark text · @gray-* derivation base · toolbar editor button hover · active list-setup icon.</p>
+      <details><summary>All 19 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#000000"></span><code>#000000</code> — 19 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-mainmenu-collapsed</span><span class="df">backend/core/variables.less:24</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-tabs.secondary-tabs &amp;.secondary-content-tabs .tab-collapse-icon</span><span class="df">backend/layout/fancylayout.less:441</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-text-active</span><span class="df">system/list.variables.less:29</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">*</span><span class="df">system/site.print.less:10</span></div>
+<div class="dr"><code class="dp">border-top-color</code><span class="dsel">.dropup &gt; .btn &gt; .caret</span><span class="df">system/site.print.less:84</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">.label</span><span class="df">system/site.print.less:88</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-list table.table.data .list-setup a</span><span class="df">system/list.less:521</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-darker</span><span class="df">system/global.variables.less:123</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-dark</span><span class="df">system/global.variables.less:124</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray</span><span class="df">system/global.variables.less:125</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-light</span><span class="df">system/global.variables.less:126</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-lighter</span><span class="df">system/global.variables.less:127</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">mark</span><span class="df">system/site.normalize.less:142</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-toolbar-editor-btn-hover</span><span class="df">system/toolbar.variables.less:11</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filter-text-active</span><span class="df">system/filter.less:17</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filter &gt; .filter-has-popover &amp;:hover</span><span class="df">system/filter.less:252</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-chart-tooltip-bg</span><span class="df">system/chart.less:14</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@close-color</span><span class="df">system/icon.variables.less:6</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">.btn-secondary</span><span class="df">system/button.base.less:60</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#000000">
+  <div class="pv-sheet">
+    <div style="color:var(--g);font-weight:600">Invoice #1024 — print stylesheet</div>
+    <div class="pv-line">All ink is forced to <span style="color:var(--g)">the token</span> when printing; <span class="pv-mark">highlighted</span> mark text too.</div>
+    <span class="pv-chip" style="border:1px solid var(--g);color:var(--g)">label</span>
+    <span style="display:inline-block;margin-left:8px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--g);vertical-align:middle"></span>
+    <span class="pv-help" style="margin-left:6px">dropup caret</span>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-bg">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-bg</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">5 hexes &middot; 11 uses</span>
+    </div>
+    <h3>Page / app background</h3>
+    <p class="role">The page canvas and “barely off-white” header fills sitting directly on it.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#f9f9f9" title="#f9f9f9"><span class="dot" style="background:#f9f9f9;color:#0e1a28"></span><span class="swx">f9f9f9</span><span class="swc">&times;6</span></button><button class="sw" data-hex="#fafafa" title="#fafafa"><span class="dot" style="background:#fafafa;color:#0e1a28"></span><span class="swx">fafafa</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#f8f8f8" title="#f8f8f8"><span class="dot" style="background:#f8f8f8;color:#0e1a28"></span><span class="swx">f8f8f8</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#f7f7f7" title="#f7f7f7"><span class="dot" style="background:#f7f7f7;color:#0e1a28"></span><span class="swx">f7f7f7</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#feffff" title="#feffff"><span class="dot" style="background:#feffff;color:#0e1a28"></span><span class="swx">feffff</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#f9f9f9</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner is the existing @body-bg (#f9f9f9). #fafafa/#f8f8f8/#f7f7f7/#feffff are visually indistinguishable from it at 1–2 levels of nesting.</div>
+      <p class="usage"><b>Appears on:</b> body background (@body-bg) · account-menu bg · popover & popup header/content fills · table accent stripe · filter dropdown items bg · clockpicker title/content · fancy primary tab active bg · auth-screen heading (#feffff!).</p>
+      <details><summary>All 11 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#f9f9f9"></span><code>#f9f9f9</code> — 6 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-accountmenu-bg</span><span class="df">backend/core/variables.less:26</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">agging .control-treeview &amp;.treeview-light ol.dragging, ol.dragging ol &gt; </span><span class="df">backend/controls/treeview.less:578</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@table-bg-accent</span><span class="df">system/list.variables.less:9</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-popover-head-bg</span><span class="df">system/popover.less:15</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@body-bg</span><span class="df">system/global.variables.less:6</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-popup-content-bg</span><span class="df">system/popup.variables.less:8</span></div>
+<div class="dh"><span class="dsw" style="background:#fafafa"></span><code>#fafafa</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-primary-tabs-active-bg</span><span class="df">backend/core/variables.less:108</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filter-items-bg</span><span class="df">system/filter.less:18</span></div>
+<div class="dh"><span class="dsw" style="background:#f8f8f8"></span><code>#f8f8f8</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.clockpicker-popover .popover-content</span><span class="df">system/datepicker.time.less:180</span></div>
+<div class="dh"><span class="dsw" style="background:#f7f7f7"></span><code>#f7f7f7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.clockpicker-popover .popover-title</span><span class="df">system/datepicker.time.less:40</span></div>
+<div class="dh"><span class="dsw" style="background:#feffff"></span><code>#feffff</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-outer-heading</span><span class="df">backend/core/variables.less:63</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv pv-flat" style="--g:#f9f9f9;background:var(--g)">
+  <div class="pv-panel"><div class="pv-panel-title">A white panel on the page canvas</div>
+    <table class="pv-table"><tr><td>Striped row</td><td>—</td></tr><tr style="background:var(--g)"><td>Accent stripe row</td><td>uses token</td></tr><tr><td>Striped row</td><td>—</td></tr></table>
+  </div>
+  <div class="pv-pop"><div class="pv-pop-head" style="background:var(--g)">Popover header</div><div class="pv-pop-body">Popup content fill also maps here.</div></div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-hover">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-surface-hover</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">3 hexes &middot; 13 uses</span>
+    </div>
+    <h3>Subtle hover / accent surface</h3>
+    <p class="role">Hover & accent fill for rows, dropdown links, select options and inset editor surfaces.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#f5f5f5" title="#f5f5f5"><span class="dot" style="background:#f5f5f5;color:#0e1a28"></span><span class="swx">f5f5f5</span><span class="swc">&times;7</span></button><button class="sw" data-hex="#f2f2f2" title="#f2f2f2"><span class="dot" style="background:#f2f2f2;color:#0e1a28"></span><span class="swx">f2f2f2</span><span class="swc">&times;4</span></button><button class="sw" data-hex="#f0f0f0" title="#f0f0f0"><span class="dot" style="background:#f0f0f0;color:#0e1a28"></span><span class="swx">f0f0f0</span><span class="swc">&times;2</span></button></div>
+      <div class="active-line">Previewing <code class="act">#f5f5f5</code><span class="act-tag"> — recommended</span></div>
+      
+      <p class="usage"><b>Appears on:</b> dropdown link hover · table row hover · select2 option hover · datepicker cell hover · list progress track · toolbar-editor bg · inspector bg · table totals row · simplelist active item · status-list hairline.</p>
+      <details><summary>All 13 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#f5f5f5"></span><code>#f5f5f5</code> — 7 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@dropdown-link-hover-bg</span><span class="df">system/dropdown.variables.less:8</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@table-bg-hover</span><span class="df">system/list.variables.less:10</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-progress-bg</span><span class="df">system/list.variables.less:40</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-hover-bg</span><span class="df">system/select.variables.less:9</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.pika-button</span><span class="df">system/datepicker.date.less:140</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">—</span><span class="df">system/form.mixins.less:7</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-datepicker-hover-bg</span><span class="df">system/datepicker.variables.less:7</span></div>
+<div class="dh"><span class="dsw" style="background:#f2f2f2"></span><code>#f2f2f2</code> — 4 occurrences</div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">table.table.data .table-totals</span><span class="df">system/list.less:35</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-toolbar-editor-bg</span><span class="df">system/toolbar.variables.less:6</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-bg</span><span class="df">system/inspector.less:15</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.inspector-columns-editor .inspector-wrapper</span><span class="df">system/inspector.less:478</span></div>
+<div class="dh"><span class="dsw" style="background:#f0f0f0"></span><code>#f0f0f0</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.control-simplelist &amp;.is-selectable li &amp;.active a</span><span class="df">backend/controls/simplelist.less:186</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">.control-status-list &gt; ul li</span><span class="df">system/chart.less:316</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#f5f5f5">
+  <div class="pv-menu"><div class="pv-menu-item">Edit</div><div class="pv-menu-item" style="background:var(--g)">Duplicate&nbsp;<span class="pv-help">(hover)</span></div><div class="pv-menu-item">Delete</div></div>
+  <div class="pv-panel" style="flex:1">
+    <table class="pv-table"><tr><td>Row one</td></tr><tr style="background:var(--g)"><td>Row two — hovered</td></tr><tr><td>Row three</td></tr></table>
+    <div class="pv-progress"><span style="background:var(--g);display:block;height:100%;width:100%"></span></div><div class="pv-help">list progress / inspector bg track</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-muted">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-surface-muted</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">4 hexes &middot; 13 uses</span>
+    </div>
+    <h3>Muted control fill</h3>
+    <p class="role">Resting fill for switches, custom selects, preview (read-only) fields and empty states.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#eeeeee" title="#eeeeee"><span class="dot" style="background:#eeeeee;color:#0e1a28"></span><span class="swx">eeeeee</span><span class="swc">&times;6</span></button><button class="sw" data-hex="#f6f6f6" title="#f6f6f6"><span class="dot" style="background:#f6f6f6;color:#0e1a28"></span><span class="swx">f6f6f6</span><span class="swc">&times;5</span></button><button class="sw" data-hex="#efefef" title="#efefef"><span class="dot" style="background:#efefef;color:#0e1a28"></span><span class="swx">efefef</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e0e4e5" title="#e0e4e5"><span class="dot" style="background:#e0e4e5;color:#0e1a28"></span><span class="swx">e0e4e5</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#eeeeee</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner #eee is the existing @gray-lighter. #f6f6f6 is nearly as frequent (5×) but only 2 luminance points away — keeping the named token wins.</div>
+      <p class="usage"><b>Appears on:</b> switch/checkbox track bg · custom select bg · form preview-field bg & border · file-list “no records” bg · scrollpanel fix button · inspector group-header bg.</p>
+      <details><summary>All 13 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#eeeeee"></span><code>#eeeeee</code> — 6 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scrollpanel-fix-button-light</span><span class="df">backend/core/variables.less:57</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filelist-norecords-bg</span><span class="df">backend/core/variables.less:87</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-border-light</span><span class="df">system/list.variables.less:26</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-lighter</span><span class="df">system/global.variables.less:127</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">.form-preview</span><span class="df">system/form.less:26</span></div>
+<div class="dr"><code class="dp">border-color</code><span class="dsel">.form-group-preview .form-control</span><span class="df">system/form.less:231</span></div>
+<div class="dh"><span class="dsw" style="background:#f6f6f6"></span><code>#f6f6f6</code> — 5 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-switch-input-bg</span><span class="df">backend/core/variables.less:78</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-custom-select-bg</span><span class="df">backend/core/variables.less:83</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-bg</span><span class="df">system/select.variables.less:8</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-checkbox-switch-bg</span><span class="df">system/checkbox.less:18</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-field-preview-bg</span><span class="df">system/form.variables.less:44</span></div>
+<div class="dh"><span class="dsw" style="background:#efefef"></span><code>#efefef</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scrollpanel-border</span><span class="df">backend/core/variables.less:55</span></div>
+<div class="dh"><span class="dsw" style="background:#e0e4e5"></span><code>#e0e4e5</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.inspector-fields tr.group th</span><span class="df">system/inspector.less:76</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#eeeeee">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">Status</div>
+    <span class="pv-switch" style="background:var(--g)"><span class="pv-knob"></span></span><span class="pv-help" style="margin-left:8px">switch track at rest</span>
+    <div class="pv-label" style="margin-top:10px">Created at (preview field)</div>
+    <div class="pv-input" style="background:var(--g);border-color:var(--g)">2026-08-25 14:02</div>
+  </div>
+  <div class="pv-empty" style="background:var(--g)">No records found</div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-cool">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-surface-cool</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">1 hex &middot; 7 uses</span>
+    </div>
+    <h3>Clouds — cool sidebar surface</h3>
+    <p class="role">Flat-UI “clouds”: the blue-tinted fill for form sidebars, filter bars and tree group headers.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#ecf0f1" title="#ecf0f1"><span class="dot" style="background:#ecf0f1;color:#0e1a28"></span><span class="swx">ecf0f1</span><span class="swc">&times;7</span></button></div>
+      <div class="active-line">Previewing <code class="act">#ecf0f1</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Perceptually distinct from the warm off-whites (blue-tinted) and defined 6 separate times as @color-panel-light / @color-form-sidebar / @color-filter-bg / @color-list-accent / sidebar tree group — one hex, six names.</div>
+      <p class="usage"><b>Appears on:</b> form sidebar bg · filter bar bg · sidebar-nav tree group bg · side-panel fix button · list accent cells · compact-toolbar separator.</p>
+      <details><summary>All 7 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#ecf0f1"></span><code>#ecf0f1</code> — 7 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-tree-group</span><span class="df">backend/core/variables.less:41</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-panel-light</span><span class="df">backend/core/variables.less:60</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">#layout-side-panel .fix-button</span><span class="df">backend/layout/sidepanel.less:14</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-accent</span><span class="df">system/list.variables.less:32</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filter-bg</span><span class="df">system/filter.less:13</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-sidebar</span><span class="df">system/form.variables.less:43</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">.compact-toolbar div.control-toolbar &amp;.separator</span><span class="df">system/toolbar.less:242</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#ecf0f1">
+  <div style="flex:1;background:var(--g);border-radius:6px;padding:12px">
+    <div class="pv-label">Form sidebar</div>
+    <div class="pv-input" style="background:#fff">Featured image</div>
+    <div class="pv-help" style="margin-top:6px">sits beside the white form area</div>
+  </div>
+  <div class="pv-panel" style="flex:1;padding:0">
+    <div style="background:var(--g);padding:8px 12px;font-weight:600;color:#2a3e51">Filter bar / tree group</div>
+    <div style="padding:8px 12px">All records</div>
+    <div style="padding:8px 12px;background:var(--g)">List accent cell</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-bsub">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-border-subtle</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">11 hexes &middot; 23 uses</span>
+    </div>
+    <h3>Subtle border / divider</h3>
+    <p class="role">Hairlines: menu dividers, legend rules, dictionary-grid cell borders, panel outlines.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw" data-hex="#e0e0e0" title="#e0e0e0"><span class="dot" style="background:#e0e0e0;color:#0e1a28"></span><span class="swx">e0e0e0</span><span class="swc">&times;7</span></button><button class="sw" data-hex="#e5e5e5" title="#e5e5e5"><span class="dot" style="background:#e5e5e5;color:#0e1a28"></span><span class="swx">e5e5e5</span><span class="swc">&times;3</span></button><button class="sw win on" data-hex="#e1e1e1" title="#e1e1e1"><span class="dot" style="background:#e1e1e1;color:#0e1a28"></span><span class="swx">e1e1e1</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#e2e2e2" title="#e2e2e2"><span class="dot" style="background:#e2e2e2;color:#0e1a28"></span><span class="swx">e2e2e2</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#ebebeb" title="#ebebeb"><span class="dot" style="background:#ebebeb;color:#0e1a28"></span><span class="swx">ebebeb</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#e8eaeb" title="#e8eaeb"><span class="dot" style="background:#e8eaeb;color:#0e1a28"></span><span class="swx">e8eaeb</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#dfdfdf" title="#dfdfdf"><span class="dot" style="background:#dfdfdf;color:#0e1a28"></span><span class="swx">dfdfdf</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e3e5e7" title="#e3e5e7"><span class="dot" style="background:#e3e5e7;color:#0e1a28"></span><span class="swx">e3e5e7</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e4e7e8" title="#e4e7e8"><span class="dot" style="background:#e4e7e8;color:#0e1a28"></span><span class="swx">e4e7e8</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#dbdee0" title="#dbdee0"><span class="dot" style="background:#dbdee0;color:#0e1a28"></span><span class="swx">dbdee0</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e1e2e4" title="#e1e2e4"><span class="dot" style="background:#e1e2e4;color:#0e1a28"></span><span class="swx">e1e2e4</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#e1e1e1</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner ≠ most frequent: #e0e0e0 has 7 uses, but #e1e1e1 is already named @color-border-light in BOTH backend and system variables — the 1-point difference is invisible, so the named value wins.</div>
+      <p class="usage"><b>Appears on:</b> account-menu divider · tab border · inspector dictionary cell borders · dropdown divider · legend & modal-header rules · footer border · panel border + triangle · tab content border · list grid lines · treelist indent rule · secondary-button fill (#e1e2e4 — a fill, not a border).</p>
+      <details><summary>All 23 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#e0e0e0"></span><code>#e0e0e0</code> — 7 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-accountmenu-divider</span><span class="df">backend/core/variables.less:28</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-border</span><span class="df">system/tab.less:16</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">div.inspector-dictionary-container</span><span class="df">system/inspector.less:499</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">div.inspector-dictionary-container table.headers td</span><span class="df">system/inspector.less:517</span></div>
+<div class="dr"><code class="dp">border-right</code><span class="dsel">div.inspector-dictionary-container table.headers td &amp;:first-child</span><span class="df">system/inspector.less:520</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">div.inspector-dictionary-container table.inspector-dictionary-table tbod</span><span class="df">system/inspector.less:533</span></div>
+<div class="dr"><code class="dp">border-right</code><span class="dsel">-dictionary-container table.inspector-dictionary-table tbody tr td &amp;:fir</span><span class="df">system/inspector.less:559</span></div>
+<div class="dh"><span class="dsw" style="background:#e5e5e5"></span><code>#e5e5e5</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@dropdown-divider-bg</span><span class="df">system/dropdown.variables.less:4</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@legend-border-color</span><span class="df">system/form.variables.less:24</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@modal-header-border-color</span><span class="df">system/popup.variables.less:19</span></div>
+<div class="dh"><span class="dsw" style="background:#e1e1e1"></span><code>#e1e1e1</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-border-light</span><span class="df">backend/core/variables.less:18</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-border-light</span><span class="df">system/global.variables.less:121</span></div>
+<div class="dh"><span class="dsw" style="background:#e2e2e2"></span><code>#e2e2e2</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-checkboxlist-border</span><span class="df">system/form.variables.less:52</span></div>
+<div class="dr"><code class="dp">border-top</code><span class="dsel">.inspector-table-list</span><span class="df">system/inspector.less:494</span></div>
+<div class="dh"><span class="dsw" style="background:#ebebeb"></span><code>#ebebeb</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">border</code><span class="dsel">.control-treeview a.menu-control</span><span class="df">backend/controls/treeview.less:432</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">.clockpicker-popover .popover-title</span><span class="df">system/datepicker.time.less:41</span></div>
+<div class="dh"><span class="dsw" style="background:#e8eaeb"></span><code>#e8eaeb</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@panel-border-color</span><span class="df">backend/controls/panels.less:2</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">div.panel &amp;.triangle-down &amp;:before</span><span class="df">backend/controls/panels.less:54</span></div>
+<div class="dh"><span class="dsw" style="background:#dfdfdf"></span><code>#dfdfdf</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-footer-border</span><span class="df">backend/core/variables.less:31</span></div>
+<div class="dh"><span class="dsw" style="background:#e3e5e7"></span><code>#e3e5e7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-content-border</span><span class="df">system/tab.less:23</span></div>
+<div class="dh"><span class="dsw" style="background:#e4e7e8"></span><code>#e4e7e8</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-grid</span><span class="df">system/list.variables.less:39</span></div>
+<div class="dh"><span class="dsw" style="background:#dbdee0"></span><code>#dbdee0</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">border-left</code><span class="dsel">.control-treelist ol ol</span><span class="df">backend/controls/treelist.less:15</span></div>
+<div class="dh"><span class="dsw" style="background:#e1e2e4"></span><code>#e1e2e4</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-secondary-bg</span><span class="df">system/button.variables.less:12</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#e1e1e1">
+  <div class="pv-panel" style="flex:1;padding:0">
+    <div style="padding:8px 12px">Account</div>
+    <div style="border-top:1px solid var(--g);padding:8px 12px">Preferences</div>
+    <div style="border-top:1px solid var(--g);padding:8px 12px">Sign out</div>
+  </div>
+  <div class="pv-panel" style="flex:1.4;border:1px solid var(--g);padding:0">
+    <table class="pv-table pv-grid" style="--gr:var(--g)"><tr><td>Key</td><td>Value</td></tr><tr><td>title</td><td>Home</td></tr><tr><td>slug</td><td>/</td></tr></table>
+    <div class="pv-help" style="padding:6px 10px">dictionary grid · legend rule · modal header rule</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-border">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-border</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">6 hexes &middot; 22 uses</span>
+    </div>
+    <h3>Default border</h3>
+    <p class="role">The workhorse border: inputs, tables, dropped-state fills, nav-tab rules.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#cccccc" title="#cccccc"><span class="dot" style="background:#cccccc;color:#0e1a28"></span><span class="swx">cccccc</span><span class="swc">&times;9</span></button><button class="sw" data-hex="#dddddd" title="#dddddd"><span class="dot" style="background:#dddddd;color:#0e1a28"></span><span class="swx">dddddd</span><span class="swc">&times;9</span></button><button class="sw" data-hex="#d0d0d0" title="#d0d0d0"><span class="dot" style="background:#d0d0d0;color:#0e1a28"></span><span class="swx">d0d0d0</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d6d6d6" title="#d6d6d6"><span class="dot" style="background:#d6d6d6;color:#0e1a28"></span><span class="swx">d6d6d6</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#c9c9c9" title="#c9c9c9"><span class="dot" style="background:#c9c9c9;color:#0e1a28"></span><span class="swx">c9c9c9</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#c0c0c0" title="#c0c0c0"><span class="dot" style="background:#c0c0c0;color:#0e1a28"></span><span class="swx">c0c0c0</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#cccccc</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner is the existing @color-border (#cccccc). Caveat: 4 of the #ddd uses are hover FILLS (list hover/active, toolbar btn hover, datepicker today) — those should migrate to --wn-surface-hover instead of this token.</div>
+      <p class="usage"><b>Appears on:</b> @color-border (both modules) · input placeholder (!) · select choice border · dropdown fallback border · table/list borders & nav-tab rules · clockpicker plate ring · dragging treeview fill · active tab top rule · dropdown title rule · fieldset (normalize).</p>
+      <details><summary>All 22 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#cccccc"></span><code>#cccccc</code> — 9 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-border</span><span class="df">backend/core/variables.less:17</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filelist-cb-border</span><span class="df">backend/core/variables.less:88</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">body.dragging .control-treeview ol.dragging, ol.dragging ol</span><span class="df">backend/controls/treeview.less:559</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@dropdown-fallback-border</span><span class="df">system/dropdown.variables.less:3</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-choice-border</span><span class="df">system/select.variables.less:16</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-border</span><span class="df">system/global.variables.less:120</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">—</span><span class="df">system/form.mixins.less:7</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">.clockpicker-plate</span><span class="df">system/datepicker.time.less:191</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@input-color-placeholder</span><span class="df">system/form.variables.less:16</span></div>
+<div class="dh"><span class="dsw" style="background:#dddddd"></span><code>#dddddd</code> — 9 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@table-border-color</span><span class="df">system/list.variables.less:13</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-active</span><span class="df">system/list.variables.less:15</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-hover</span><span class="df">system/list.variables.less:16</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">.table-bordered td</span><span class="df">system/site.print.less:97</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-toolbar-editor-btn-bg-hover</span><span class="df">system/toolbar.variables.less:9</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@nav-tabs-border-color</span><span class="df">system/tab.less:33</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@nav-tabs-active-link-hover-border-color</span><span class="df">system/tab.less:39</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@nav-tabs-justified-link-border-color</span><span class="df">system/tab.less:41</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.pika-single .is-today .pika-button</span><span class="df">system/datepicker.less:42</span></div>
+<div class="dh"><span class="dsw" style="background:#d0d0d0"></span><code>#d0d0d0</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-active-border</span><span class="df">system/tab.less:19</span></div>
+<div class="dh"><span class="dsw" style="background:#d6d6d6"></span><code>#d6d6d6</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">border-top-color</code><span class="dsel">abs, &gt; div &gt; ul.nav-tabs, &gt; div &gt; div &gt; ul.nav-tabs &gt; li &amp;.active a &gt; sp</span><span class="df">system/tab.less:334</span></div>
+<div class="dh"><span class="dsw" style="background:#c9c9c9"></span><code>#c9c9c9</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-dropdown-title-border</span><span class="df">system/dropdown.variables.less:17</span></div>
+<div class="dh"><span class="dsw" style="background:#c0c0c0"></span><code>#c0c0c0</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">border</code><span class="dsel">fieldset</span><span class="df">system/site.normalize.less:412</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#cccccc">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">Title</div>
+    <div class="pv-input" style="border-color:var(--g)"><span style="color:var(--g)">Placeholder uses it too…</span></div>
+    <div class="pv-cal"><span>12</span><span style="background:var(--g)">13</span><span>14</span></div>
+    <div class="pv-help">“today” cell &amp; hover fills (#ddd) — see caveat</div>
+  </div>
+  <table class="pv-table pv-grid" style="--gr:var(--g);flex:1"><tr><td>Bordered</td><td>table</td></tr><tr><td>cell</td><td>dividers</td></tr></table>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-binput">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-border-input</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">7 hexes &middot; 8 uses</span>
+    </div>
+    <h3>Input border (cool grey)</h3>
+    <p class="role">The slightly blue-grey border Winter draws on form inputs, editors and filters.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw" data-hex="#d4d8da" title="#d4d8da"><span class="dot" style="background:#d4d8da;color:#0e1a28"></span><span class="swx">d4d8da</span><span class="swc">&times;2</span></button><button class="sw win on" data-hex="#d1d6d9" title="#d1d6d9"><span class="dot" style="background:#d1d6d9;color:#0e1a28"></span><span class="swx">d1d6d9</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d7dbdd" title="#d7dbdd"><span class="dot" style="background:#d7dbdd;color:#0e1a28"></span><span class="swx">d7dbdd</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#c8cccd" title="#c8cccd"><span class="dot" style="background:#c8cccd;color:#0e1a28"></span><span class="swx">c8cccd</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d9dee0" title="#d9dee0"><span class="dot" style="background:#d9dee0;color:#0e1a28"></span><span class="swx">d9dee0</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d0d9dd" title="#d0d9dd"><span class="dot" style="background:#d0d9dd;color:#0e1a28"></span><span class="swx">d0d9dd</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d5d9d8" title="#d5d9d8"><span class="dot" style="background:#d5d9d8;color:#0e1a28"></span><span class="swx">d5d9d8</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#d1d6d9</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner is the existing @input-border. #d9dee0 (progress track), #d0d9dd (breadcrumb bg) and #d5d9d8 (inactive fancy tab) are fills of the same cool grey — same token still reads correctly.</div>
+      <p class="usage"><b>Appears on:</b> @input-border · list & toolbar-editor borders · filter border · inspector grid · progress-bar track · breadcrumb bg · fancy primary tab inactive bg.</p>
+      <details><summary>All 8 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#d4d8da"></span><code>#d4d8da</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-border</span><span class="df">system/list.variables.less:25</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-toolbar-editor-border</span><span class="df">system/toolbar.variables.less:7</span></div>
+<div class="dh"><span class="dsw" style="background:#d1d6d9"></span><code>#d1d6d9</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@input-border</span><span class="df">system/form.variables.less:10</span></div>
+<div class="dh"><span class="dsw" style="background:#d7dbdd"></span><code>#d7dbdd</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filter-border</span><span class="df">system/filter.less:15</span></div>
+<div class="dh"><span class="dsw" style="background:#c8cccd"></span><code>#c8cccd</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-grid</span><span class="df">system/inspector.less:20</span></div>
+<div class="dh"><span class="dsw" style="background:#d9dee0"></span><code>#d9dee0</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@progress-bg</span><span class="df">system/progressbar.less:11</span></div>
+<div class="dh"><span class="dsw" style="background:#d0d9dd"></span><code>#d0d9dd</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-background</span><span class="df">system/breadcrumb.less:13</span></div>
+<div class="dh"><span class="dsw" style="background:#d5d9d8"></span><code>#d5d9d8</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-primary-tabs-inactive-bg</span><span class="df">backend/core/variables.less:109</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#d1d6d9">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">Email address</div><div class="pv-input" style="border-color:var(--g)">hello@winter.test</div>
+    <div class="pv-label" style="margin-top:8px">Country</div><div class="pv-input" style="border-color:var(--g)">Canada <span style="float:right;color:#95a5a6">&#9662;</span></div>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">Progress track / cool-grey fills</div>
+    <div class="pv-progress" style="background:var(--g)"><span style="background:#2da7c7;display:block;height:100%;width:45%"></span></div>
+    <div class="pv-crumb" style="background:var(--g);margin-top:10px">Breadcrumb bg</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-silver">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-grey-silver</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">13 hexes &middot; 34 uses</span>
+    </div>
+    <h3>Silver — placeholder & disabled controls</h3>
+    <p class="role">Flat-UI “silver”: placeholders, disabled/inactive glyphs, scroll indicators, tree hardware.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#bdc3c7" title="#bdc3c7"><span class="dot" style="background:#bdc3c7;color:#0e1a28"></span><span class="swx">bdc3c7</span><span class="swc">&times;8</span></button><button class="sw" data-hex="#b5babd" title="#b5babd"><span class="dot" style="background:#b5babd;color:#0e1a28"></span><span class="swx">b5babd</span><span class="swc">&times;5</span></button><button class="sw" data-hex="#bbbbbb" title="#bbbbbb"><span class="dot" style="background:#bbbbbb;color:#0e1a28"></span><span class="swx">bbbbbb</span><span class="swc">&times;4</span></button><button class="sw" data-hex="#b2b9be" title="#b2b9be"><span class="dot" style="background:#b2b9be;color:#0e1a28"></span><span class="swx">b2b9be</span><span class="swc">&times;3</span></button><button class="sw" data-hex="#bcc3c7" title="#bcc3c7"><span class="dot" style="background:#bcc3c7;color:#0e1a28"></span><span class="swx">bcc3c7</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#bdbdbd" title="#bdbdbd"><span class="dot" style="background:#bdbdbd;color:#0e1a28"></span><span class="swx">bdbdbd</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#b6b6b6" title="#b6b6b6"><span class="dot" style="background:#b6b6b6;color:#0e1a28"></span><span class="swx">b6b6b6</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#c4c4c4" title="#c4c4c4"><span class="dot" style="background:#c4c4c4;color:#0e1a28"></span><span class="swx">c4c4c4</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#aaaaaa" title="#aaaaaa"><span class="dot" style="background:#aaaaaa;color:#0e1a28"></span><span class="swx">aaaaaa</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#b7c0c2" title="#b7c0c2"><span class="dot" style="background:#b7c0c2;color:#0e1a28"></span><span class="swx">b7c0c2</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#b6bfc7" title="#b6bfc7"><span class="dot" style="background:#b6bfc7;color:#0e1a28"></span><span class="swx">b6bfc7</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#a1aab1" title="#a1aab1"><span class="dot" style="background:#a1aab1;color:#0e1a28"></span><span class="swx">a1aab1</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#cfcfcf" title="#cfcfcf"><span class="dot" style="background:#cfcfcf;color:#0e1a28"></span><span class="swx">cfcfcf</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#bdc3c7</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">The single biggest near-duplicate cluster: 13 hexes / 34 uses, all within a few Lab points of Flat-UI silver #bdc3c7.</div>
+      <p class="usage"><b>Appears on:</b> inspector & trigger placeholders · sidebar back-link text · tree move/menu controls · scroll indicators (3 separate identical @color-scroll-indicator vars!) · inactive tab text · pagination inactive · record-nav disabled · icon buttons · balloon control bg · sidebar input controls · status label chip · list icons &amp; arrows.</p>
+      <details><summary>All 34 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#bdc3c7"></span><code>#bdc3c7</code> — 8 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-back-link-text</span><span class="df">backend/core/variables.less:51</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-control</span><span class="df">backend/core/variables.less:129</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.flyout-toggle</span><span class="df">backend/layout/flyout.less:29</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-treelist li &gt; div.record &amp;:before</span><span class="df">backend/controls/treelist.less:34</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-treelist li &gt; div.record &gt; a.move</span><span class="df">backend/controls/treelist.less:46</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-treeview a.menu-control</span><span class="df">backend/controls/treeview.less:433</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">.inspector-columns-editor</span><span class="df">system/inspector.less:471</span></div>
+<div class="dr"><code class="dp">border-left</code><span class="dsel">.inspector-columns-editor .inspector-wrapper</span><span class="df">system/inspector.less:479</span></div>
+<div class="dh"><span class="dsw" style="background:#b5babd"></span><code>#b5babd</code> — 5 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields td &amp;.text &amp;::-webkit-input-placeholder</span><span class="df">system/inspector.less:122</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields td &amp;.text &amp;:-moz-placeholder</span><span class="df">system/inspector.less:126</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields td &amp;.text &amp;::-moz-placeholder</span><span class="df">system/inspector.less:130</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields td &amp;.text &amp;:-ms-input-placeholder</span><span class="df">system/inspector.less:134</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields td &amp;.trigger-cell a.trigger &amp;.placeholder</span><span class="df">system/inspector.less:180</span></div>
+<div class="dh"><span class="dsw" style="background:#bbbbbb"></span><code>#bbbbbb</code> — 4 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scroll-indicator</span><span class="df">backend/core/variables.less:58</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scroll-indicator</span><span class="df">system/toolbar.variables.less:5</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scroll-indicator</span><span class="df">system/tab.less:14</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-inactive-text</span><span class="df">system/tab.less:17</span></div>
+<div class="dh"><span class="dsw" style="background:#b2b9be"></span><code>#b2b9be</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-custom-select-border</span><span class="df">backend/core/variables.less:82</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-border</span><span class="df">system/select.variables.less:6</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">.select2-dropdown &amp;.ocInspectorDropdown .select2-search</span><span class="df">system/inspector.less:669</span></div>
+<div class="dh"><span class="dsw" style="background:#bcc3c7"></span><code>#bcc3c7</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-balloon-control-default-bg</span><span class="df">system/checkbox.balloon.less:6</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-icon-btn-default</span><span class="df">system/button.variables.less:33</span></div>
+<div class="dh"><span class="dsw" style="background:#bdbdbd"></span><code>#bdbdbd</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-field-icon</span><span class="df">system/form.variables.less:47</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-toolbar.editor-toolbar .toolbar-item .btn</span><span class="df">system/toolbar.less:199</span></div>
+<div class="dh"><span class="dsw" style="background:#b6b6b6"></span><code>#b6b6b6</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-report-widget-control-inactive</span><span class="df">backend/core/variables.less:122</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-pagination-inactive</span><span class="df">system/pagination.less:13</span></div>
+<div class="dh"><span class="dsw" style="background:#c4c4c4"></span><code>#c4c4c4</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-input-sidebar-control</span><span class="df">backend/core/variables.less:76</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-input-sidebar-control</span><span class="df">system/form.variables.less:38</span></div>
+<div class="dh"><span class="dsw" style="background:#aaaaaa"></span><code>#aaaaaa</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scrollpanel-fix-button</span><span class="df">backend/core/variables.less:56</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.control-status-list &gt; ul li .status-label</span><span class="df">system/chart.less:373</span></div>
+<div class="dh"><span class="dsw" style="background:#b7c0c2"></span><code>#b7c0c2</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filelist &amp;.filelist-hero ul li &gt; a .list-icon</span><span class="df">backend/controls/filelist.less:290</span></div>
+<div class="dh"><span class="dsw" style="background:#b6bfc7"></span><code>#b6bfc7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.form-record-nav .form-record-nav-btn &amp;.is-disabled</span><span class="df">backend/controls/record-navigation.less:61</span></div>
+<div class="dh"><span class="dsw" style="background:#a1aab1"></span><code>#a1aab1</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-icon</span><span class="df">system/list.variables.less:19</span></div>
+<div class="dh"><span class="dsw" style="background:#cfcfcf"></span><code>#cfcfcf</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-arrow</span><span class="df">system/list.variables.less:18</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#bdc3c7">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">Search</div>
+    <div class="pv-input"><span style="color:var(--g)">Type to filter records…</span></div>
+    <div style="margin-top:10px;color:var(--g)">&#9656; &#9662; tree controls &nbsp; &#10515; move handle</div>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-tabbar"><span class="pv-tab" style="color:var(--g)">Inactive tab</span><span class="pv-tab on">Active</span></div>
+    <div style="margin-top:10px"><span class="pv-dot" style="background:var(--g)"></span><span class="pv-dot" style="background:var(--g)"></span><span class="pv-dot" style="background:var(--g)"></span> <span class="pv-help">scroll indicators (&times;3 duplicate vars)</span></div>
+    <div style="margin-top:8px;color:var(--g)">&#8249; &nbsp;disabled record-nav&nbsp; &#8250;</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-concrete">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-grey-concrete</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">7 hexes &middot; 23 uses</span>
+    </div>
+    <h3>Concrete — muted labels & icons</h3>
+    <p class="role">Flat-UI “concrete”: section headings, table headers, inactive tab text, pagination glyphs.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#95a5a6" title="#95a5a6"><span class="dot" style="background:#95a5a6;color:#0e1a28"></span><span class="swx">95a5a6</span><span class="swc">&times;13</span></button><button class="sw" data-hex="#7e8c8d" title="#7e8c8d"><span class="dot" style="background:#7e8c8d;color:#fff"></span><span class="swx">7e8c8d</span><span class="swc">&times;3</span></button><button class="sw" data-hex="#98a7a8" title="#98a7a8"><span class="dot" style="background:#98a7a8;color:#0e1a28"></span><span class="swx">98a7a8</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#808c8d" title="#808c8d"><span class="dot" style="background:#808c8d;color:#fff"></span><span class="swx">808c8d</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#7f8c8d" title="#7f8c8d"><span class="dot" style="background:#7f8c8d;color:#fff"></span><span class="swx">7f8c8d</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#919898" title="#919898"><span class="dot" style="background:#919898;color:#0e1a28"></span><span class="swx">919898</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#9098a2" title="#9098a2"><span class="dot" style="background:#9098a2;color:#0e1a28"></span><span class="swx">9098a2</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#95a5a6</code><span class="act-tag"> — recommended</span></div>
+      
+      <p class="usage"><b>Appears on:</b> panel h3.section labels · name-value list th · tree-path segments & carets · selector-group links · list row icons · select2 search icon · fancy tab inactive/active text · status-list & report-widget titles · pagination text · safe/special row text · select focus border · breadcrumb inactive bg.</p>
+      <details><summary>All 23 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#95a5a6"></span><code>#95a5a6</code> — 13 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-primary-tabs-inactive-text</span><span class="df">backend/core/variables.less:106</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-item-comment</span><span class="df">backend/core/variables.less:128</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">ul.tree-path li &amp;:after</span><span class="df">backend/controls/tree-path.less:18</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">ul.tree-path li &amp;.go-up a</span><span class="df">backend/controls/tree-path.less:36</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">ul.tree-path li a</span><span class="df">backend/controls/tree-path.less:54</span></div>
+<div class="dr"><code class="dp">border-bottom</code><span class="dsel">.control-filelist &amp;.filelist-hero ul li &amp;.separator</span><span class="df">backend/controls/filelist.less:374</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">.control-filelist &amp;.filelist-hero ul li &amp;.separator &amp;:after</span><span class="df">backend/controls/filelist.less:387</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.name-value-list th</span><span class="df">backend/controls/namevaluelist.less:18</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.nav.selector-group li a</span><span class="df">backend/controls/selector-group.less:9</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">div.panel h3.section, &gt; label</span><span class="df">backend/controls/panels.less:68</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody &amp;.icons</span><span class="df">system/list.less:283</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.select2-container--default .select2-search--dropdown &amp;:after</span><span class="df">system/select.less:57</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.select2-dropdown &amp;.ocInspectorDropdown .select2-search &amp;:after</span><span class="df">system/inspector.less:676</span></div>
+<div class="dh"><span class="dsw" style="background:#7e8c8d"></span><code>#7e8c8d</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-report-widget-title</span><span class="df">backend/core/variables.less:121</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-status-list-text</span><span class="df">system/list.variables.less:42</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-status-list-text</span><span class="df">system/chart.less:12</span></div>
+<div class="dh"><span class="dsw" style="background:#98a7a8"></span><code>#98a7a8</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody tr.safe, tr.special td, th, td a, th a</span><span class="df">system/list.less:249</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-pagination</span><span class="df">system/pagination.less:14</span></div>
+<div class="dh"><span class="dsw" style="background:#808c8d"></span><code>#808c8d</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-primary-tabs-active-text</span><span class="df">backend/core/variables.less:107</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-border-focus</span><span class="df">system/select.variables.less:7</span></div>
+<div class="dh"><span class="dsw" style="background:#7f8c8d"></span><code>#7f8c8d</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-primary-tabs-bg</span><span class="df">backend/core/variables.less:105</span></div>
+<div class="dh"><span class="dsw" style="background:#919898"></span><code>#919898</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-secondary-tabs-inactive-text</span><span class="df">backend/core/variables.less:103</span></div>
+<div class="dh"><span class="dsw" style="background:#9098a2"></span><code>#9098a2</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-inactive-background</span><span class="df">system/breadcrumb.less:14</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#95a5a6">
+  <div class="pv-panel" style="flex:1">
+    <div style="color:var(--g);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;font-weight:700">Section heading</div>
+    <table class="pv-table" style="margin-top:6px"><tr><th style="color:var(--g)">Name</th><th style="color:var(--g)">Updated</th></tr><tr><td>About page</td><td>2d ago</td></tr></table>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <div style="color:var(--g)">Home <span>&#8250;</span> Blog <span>&#8250;</span> <span style="color:#2b3e50;font-weight:600">Post</span></div>
+    <div style="margin-top:8px;color:var(--g)">&#8249; 1 2 <b style="color:#2b3e50">3</b> 4 &#8250; <span class="pv-help">pagination</span></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-tmuted">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-text-muted</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">6 hexes &middot; 26 uses</span>
+    </div>
+    <h3>Muted text</h3>
+    <p class="role">Help text, descriptions, de-emphasised copy, disabled calendar days.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#999999" title="#999999"><span class="dot" style="background:#999999;color:#0e1a28"></span><span class="swx">999999</span><span class="swc">&times;20</span></button><button class="sw" data-hex="#8f8f8f" title="#8f8f8f"><span class="dot" style="background:#8f8f8f;color:#fff"></span><span class="swx">8f8f8f</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#9b9b9b" title="#9b9b9b"><span class="dot" style="background:#9b9b9b;color:#0e1a28"></span><span class="swx">9b9b9b</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#9da3a7" title="#9da3a7"><span class="dot" style="background:#9da3a7;color:#0e1a28"></span><span class="swx">9da3a7</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#888888" title="#888888"><span class="dot" style="background:#888888;color:#fff"></span><span class="swx">888888</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#777777" title="#777777"><span class="dot" style="background:#777777;color:#fff"></span><span class="swx">777777</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#999999</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner is the existing @gray-light / @text-muted (#999). #777 (help-block) and #888 (disabled rows) sit between this and --wn-text-secondary — flag for an eyeball check in place.</div>
+      <p class="usage"><b>Appears on:</b> @text-muted · outer/auth description · custom input border+sortable caret · loading-indicator text · tree list text · datepicker weekday header & disabled days · select2 placeholder · breadcrumb text · treeview active comment · @color-text-description · disabled/deleted row text · help-block text.</p>
+      <details><summary>All 26 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#999999"></span><code>#999999</code> — 20 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-outer-description</span><span class="df">backend/core/variables.less:64</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-custom-input-border</span><span class="df">backend/core/variables.less:74</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sortable-caret</span><span class="df">backend/core/variables.less:118</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-loading-indicator-text</span><span class="df">system/loader.less:11</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-text-tree</span><span class="df">system/list.variables.less:30</span></div>
+<div class="dr"><code class="dp">border</code><span class="dsel">blockquote</span><span class="df">system/site.print.less:36</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.custom-radio input:disabled + label:before</span><span class="df">system/checkbox.less:149</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-light</span><span class="df">system/global.variables.less:126</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.pika-table th</span><span class="df">system/datepicker.date.less:120</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.is-disabled .pika-button</span><span class="df">system/datepicker.date.less:159</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">ntainer--default .select2-selection--multiple .select2-selection__choice</span><span class="df">system/select.less:351</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-toolbar-editor-btn-bg-active</span><span class="df">system/toolbar.variables.less:10</span></div>
+<div class="dr"><code class="dp">border-top-color</code><span class="dsel">.clockpicker-popover &amp;.top &gt; .arrow</span><span class="df">system/datepicker.time.less:83</span></div>
+<div class="dr"><code class="dp">border-right-color</code><span class="dsel">.clockpicker-popover &amp;.right &gt; .arrow</span><span class="df">system/datepicker.time.less:98</span></div>
+<div class="dr"><code class="dp">border-bottom-color</code><span class="dsel">.clockpicker-popover &amp;.bottom &gt; .arrow</span><span class="df">system/datepicker.time.less:114</span></div>
+<div class="dr"><code class="dp">border-left-color</code><span class="dsel">.clockpicker-popover &amp;.left &gt; .arrow</span><span class="df">system/datepicker.time.less:129</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.clockpicker-popover .popover-title</span><span class="df">system/datepicker.time.less:170</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@input-color-disabled</span><span class="df">system/form.variables.less:17</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@modal-content-fallback-border-color</span><span class="df">system/popup.variables.less:16</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scoreboard-description</span><span class="df">system/chart.less:18</span></div>
+<div class="dh"><span class="dsw" style="background:#8f8f8f"></span><code>#8f8f8f</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-item-active-comment</span><span class="df">backend/core/variables.less:134</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-text-description</span><span class="df">system/global.variables.less:117</span></div>
+<div class="dh"><span class="dsw" style="background:#9b9b9b"></span><code>#9b9b9b</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-text</span><span class="df">backend/core/variables.less:70</span></div>
+<div class="dh"><span class="dsw" style="background:#9da3a7"></span><code>#9da3a7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-text-active</span><span class="df">backend/core/variables.less:69</span></div>
+<div class="dh"><span class="dsw" style="background:#888888"></span><code>#888888</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody tr.disabled, tr.deleted td, th, td a, th a</span><span class="df">system/list.less:237</span></div>
+<div class="dh"><span class="dsw" style="background:#777777"></span><code>#777777</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-help-block-text</span><span class="df">system/form.variables.less:48</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#999999">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">API throttle</div>
+    <div class="pv-input">60</div>
+    <div style="color:var(--g);font-size:11.5px;margin-top:5px">Maximum requests per minute — help text sits on the token.</div>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <div style="font-weight:700;color:#2b3e50">Reorder records</div>
+    <div style="color:var(--g);font-size:11.5px">Drag rows to change display order (description text).</div>
+    <div style="color:var(--g);margin-top:8px">&#8635; Loading…</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-tsec">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-text-secondary</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">2 hexes &middot; 26 uses</span>
+    </div>
+    <h3>Secondary text</h3>
+    <p class="role">Table body text, form labels on dark, switch labels, footer text — the default reading grey.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#666666" title="#666666"><span class="dot" style="background:#666666;color:#fff"></span><span class="swx">666666</span><span class="swc">&times;17</span></button><button class="sw" data-hex="#555555" title="#555555"><span class="dot" style="background:#555555;color:#fff"></span><span class="swx">555555</span><span class="swc">&times;9</span></button></div>
+      <div class="active-line">Previewing <code class="act">#666666</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">#666 outnumbers #555 nearly 2:1 (17 vs 9) even though the named @gray is #555 — recommend standardising on #666 and re-pointing @gray usages at the token.</div>
+      <p class="usage"><b>Appears on:</b> @color-list-text & list head · account-menu/footer text · auth form labels · custom input icons · switch labels & track · select icon · datepicker day numbers · pagination icons · sweet-alert muted text · form preview text · form-control-validation default.</p>
+      <details><summary>All 26 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#666666"></span><code>#666666</code> — 17 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-accountmenu-text</span><span class="df">backend/core/variables.less:27</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-footer-text</span><span class="df">backend/core/variables.less:32</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-outer-form-label</span><span class="df">backend/core/variables.less:67</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-custom-input-icon</span><span class="df">backend/core/variables.less:73</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filelist-norecords-text</span><span class="df">backend/core/variables.less:86</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-text-head</span><span class="df">system/list.variables.less:27</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-text</span><span class="df">system/list.variables.less:28</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody tr.processing td, th, td a, th a</span><span class="df">system/list.less:219</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-icon</span><span class="df">system/select.variables.less:5</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.custom-switch input &amp;:checked ~ span span &amp;:last-of-type</span><span class="df">system/checkbox.less:289</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">.custom-switch input ~ span</span><span class="df">system/checkbox.less:295</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.custom-switch &gt; span span &amp;:first-of-type</span><span class="df">system/checkbox.less:326</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.pika-button</span><span class="df">system/datepicker.date.less:136</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-pagination-icon</span><span class="df">system/pagination.less:11</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.clockpicker-tick</span><span class="df">system/datepicker.time.less:220</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scoreboard-title</span><span class="df">system/chart.less:17</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scoreboard-body</span><span class="df">system/chart.less:19</span></div>
+<div class="dh"><span class="dsw" style="background:#555555"></span><code>#555555</code> — 9 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.sweet-alert p.text-muted</span><span class="df">backend/controls/alert.less:35</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-norecords-text</span><span class="df">system/list.variables.less:33</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:10</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:22</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:30</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:50</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray</span><span class="df">system/global.variables.less:125</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">—</span><span class="df">system/form.mixins.less:7</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-field-preview-text</span><span class="df">system/form.variables.less:45</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#666666">
+  <div class="pv-panel" style="flex:1.4">
+    <table class="pv-table"><tr><th>Title</th><th>Status</th></tr><tr><td style="color:var(--g)">Welcome to Winter</td><td style="color:var(--g)">Published</td></tr><tr><td style="color:var(--g)">Second post</td><td style="color:var(--g)">Draft</td></tr></table>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <span class="pv-switch on"><span class="pv-knob r"></span></span> <span style="color:var(--g)">ON</span>
+    <div style="color:var(--g);margin-top:8px;font-size:11.5px">&copy; 2026 Winter CMS — footer text</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-text">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-text</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">5 hexes &middot; 19 uses</span>
+    </div>
+    <h3>Primary text</h3>
+    <p class="role">Highest-emphasis neutral ink: dropdown links, datepicker, inspector, callout body.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#333333" title="#333333"><span class="dot" style="background:#333333;color:#fff"></span><span class="swx">333333</span><span class="swc">&times;13</span></button><button class="sw" data-hex="#2f2d26" title="#2f2d26"><span class="dot" style="background:#2f2d26;color:#fff"></span><span class="swx">2f2d26</span><span class="swc">&times;3</span></button><button class="sw" data-hex="#39454a" title="#39454a"><span class="dot" style="background:#39454a;color:#fff"></span><span class="swx">39454a</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#515c5d" title="#515c5d"><span class="dot" style="background:#515c5d;color:#fff"></span><span class="swx">515c5d</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#222222" title="#222222"><span class="dot" style="background:#222222;color:#fff"></span><span class="swx">222222</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#333333</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner is the existing @gray-dark (#333). 4 of the 13 uses are Bootstrap gradient-mixin defaults (dead weight). #2f2d26 (callout text, warm), #39454a / #515c5d (cool) and the @gray-darker definition (#222) all read as “near-black text” in situ.</div>
+      <p class="usage"><b>Appears on:</b> dropdown link colour · datepicker text · select2 clear/choice hover · recordfinder button · inspector text & dictionary headers · menu-toggle icon bg · callout header/content text · select2 selection text.</p>
+      <details><summary>All 19 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#333333"></span><code>#333333</code> — 13 occurrences</div>
+<div class="dr"><code class="dp">background</code><span class="dsel">nav#layout-mainmenu .menu-toggle .menu-toggle-icon</span><span class="df">backend/layout/mainmenu.less:506</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:10</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:22</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:30</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:50</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-dark</span><span class="df">system/global.variables.less:124</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.pika-single</span><span class="df">system/datepicker.date.less:10</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.select2-container--default .select2-selection__clear &amp;:hover</span><span class="df">system/select.less:194</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">-default .select2-selection--multiple .select2-selection__choice__remove</span><span class="df">system/select.less:360</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-form-field-recordfinder-btn</span><span class="df">system/form.variables.less:50</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-text</span><span class="df">system/inspector.less:18</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields th &gt; div a.expandControl span &amp;:after</span><span class="df">system/inspector.less:349</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">div.inspector-dictionary-container table.headers td</span><span class="df">system/inspector.less:515</span></div>
+<div class="dh"><span class="dsw" style="background:#2f2d26"></span><code>#2f2d26</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.callout &gt; .header</span><span class="df">system/callout.less:98</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.callout &gt; .content</span><span class="df">system/callout.less:130</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.callout &gt; .content h1, h2, h3, h4, h5, h6</span><span class="df">system/callout.less:134</span></div>
+<div class="dh"><span class="dsw" style="background:#39454a"></span><code>#39454a</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@dropdown-link-color</span><span class="df">system/dropdown.variables.less:6</span></div>
+<div class="dh"><span class="dsw" style="background:#515c5d"></span><code>#515c5d</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-select-text</span><span class="df">system/select.variables.less:17</span></div>
+<div class="dh"><span class="dsw" style="background:#222222"></span><code>#222222</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@gray-darker</span><span class="df">system/global.variables.less:123</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#333333">
+  <div class="pv-menu"><div class="pv-menu-item" style="color:var(--g)">Open</div><div class="pv-menu-item" style="color:var(--g)">Duplicate</div><div class="pv-menu-item" style="color:var(--g)">Export…</div></div>
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-cal" style="color:var(--g)"><span>19</span><span>20</span><span style="background:#f5f5f5">21</span><span>22</span></div>
+    <div style="color:var(--g);margin-top:8px">Inspector value text &amp; callout body copy.</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-heading">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-heading</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">4 hexes &middot; 18 uses</span>
+    </div>
+    <h3>Heading slate</h3>
+    <p class="role">Winter’s signature dark slate: headings, popup titles, strong labels — and the auth-screen backdrop.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#2b3e50" title="#2b3e50"><span class="dot" style="background:#2b3e50;color:#fff"></span><span class="swx">2b3e50</span><span class="swc">&times;12</span></button><button class="sw" data-hex="#2a3e51" title="#2a3e51"><span class="dot" style="background:#2a3e51;color:#fff"></span><span class="swx">2a3e51</span><span class="swc">&times;4</span></button><button class="sw" data-hex="#2b343d" title="#2b343d"><span class="dot" style="background:#2b343d;color:#fff"></span><span class="swx">2b343d</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#1f2d3d" title="#1f2d3d"><span class="dot" style="background:#1f2d3d;color:#fff"></span><span class="swx">1f2d3d</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#2b3e50</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">#2a3e51 is the same colour as #2b3e50 (±1/255 on two channels) yet appears 4 more times — the clearest find-and-replace in the whole audit. Careful: @color-outer-bg uses it as a BACKGROUND on auth screens.</div>
+      <p class="usage"><b>Appears on:</b> form @color-label & popup/popover header text · breadcrumb active text · sweet-alert h2 · file-list hero titles · treeview item titles · name-value td · selector-group active · sidebar back-link bg · auth outer bg · record-nav hover ink · breadcrumb bg (#2b343d).</p>
+      <details><summary>All 18 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#2b3e50"></span><code>#2b3e50</code> — 12 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-back-link-bg</span><span class="df">backend/core/variables.less:50</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-outer-bg</span><span class="df">backend/core/variables.less:65</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filelist-title-hero</span><span class="df">backend/core/variables.less:89</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-item-title</span><span class="df">backend/core/variables.less:127</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.flyout-toggle</span><span class="df">backend/layout/flyout.less:26</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-tabs.secondary-tabs &amp;.secondary-content-tabs &gt; div &gt; ul.nav-tab</span><span class="df">backend/layout/fancylayout.less:385</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">&amp;.secondary-content-tabs &amp;.primary-collapsed &gt; div &gt; ul.nav-tabs &gt; li &amp;.</span><span class="df">backend/layout/fancylayout.less:464</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-filelist &amp;.filelist-hero ul li &amp;.separator h5</span><span class="df">backend/controls/filelist.less:394</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.name-value-list td</span><span class="df">backend/controls/namevaluelist.less:24</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.sweet-alert h2</span><span class="df">backend/controls/alert.less:23</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.nav.selector-group li &amp;.active a</span><span class="df">backend/controls/selector-group.less:18</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">fields td div.external-param-editor-container div.external-editor div.co</span><span class="df">system/inspector.less:233</span></div>
+<div class="dh"><span class="dsw" style="background:#2a3e51"></span><code>#2a3e51</code> — 4 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-popover-head-text</span><span class="df">system/popover.less:16</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-label</span><span class="df">system/form.variables.less:31</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-popup-header-text</span><span class="df">system/popup.variables.less:6</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-active-text</span><span class="df">system/breadcrumb.less:12</span></div>
+<div class="dh"><span class="dsw" style="background:#2b343d"></span><code>#2b343d</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-breadcrumb-background</span><span class="df">backend/core/variables.less:71</span></div>
+<div class="dh"><span class="dsw" style="background:#1f2d3d"></span><code>#1f2d3d</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.form-record-nav .form-record-nav-btn &amp;:not(.is-disabled):hover</span><span class="df">backend/controls/record-navigation.less:57</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#2b3e50">
+  <div class="pv-panel" style="flex:1.3">
+    <div style="font-family:'Mulish';font-weight:800;font-size:15px;color:var(--g)">Manage your blog</div>
+    <div class="pv-help">popup titles · form labels · hero titles</div>
+    <div style="margin-top:8px;color:#95a5a6">Home &#8250; <span style="color:var(--g);font-weight:600">Blog</span></div>
+  </div>
+  <div style="flex:1;background:var(--g);border-radius:6px;padding:14px;color:#fff">
+    <div style="font-weight:700">Sign in</div>
+    <div style="color:rgba(255,255,255,.65);font-size:11.5px">Auth “outer” screens use the SAME hex as a background.</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-slate">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-slate</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">4 hexes &middot; 8 uses</span>
+    </div>
+    <h3>Mid slate — secondary chrome</h3>
+    <p class="role">Secondary buttons, record navigation, default button fill — slate at mid strength.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#405261" title="#405261"><span class="dot" style="background:#405261;color:#fff"></span><span class="swx">405261</span><span class="swc">&times;3</span></button><button class="sw" data-hex="#5a6b7b" title="#5a6b7b"><span class="dot" style="background:#5a6b7b;color:#fff"></span><span class="swx">5a6b7b</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#656d79" title="#656d79"><span class="dot" style="background:#656d79;color:#fff"></span><span class="swx">656d79</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#475354" title="#475354"><span class="dot" style="background:#475354;color:#fff"></span><span class="swx">475354</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#405261</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Winner is the existing @color-text-title / @btn-secondary-color (#405261).</div>
+      <p class="usage"><b>Appears on:</b> @btn-secondary-color text · tree-path root link · record-nav position & buttons · @btn-default-bg + border · fancy secondary tabs bg.</p>
+      <details><summary>All 8 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#405261"></span><code>#405261</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">ul.tree-path li &amp;.root a</span><span class="df">backend/controls/tree-path.less:50</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-text-title</span><span class="df">system/global.variables.less:116</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-secondary-color</span><span class="df">system/button.variables.less:11</span></div>
+<div class="dh"><span class="dsw" style="background:#5a6b7b"></span><code>#5a6b7b</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.form-record-nav .form-record-nav-position</span><span class="df">backend/controls/record-navigation.less:25</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.form-record-nav .form-record-nav-btn</span><span class="df">backend/controls/record-navigation.less:47</span></div>
+<div class="dh"><span class="dsw" style="background:#656d79"></span><code>#656d79</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-default-bg</span><span class="df">system/button.variables.less:4</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@btn-default-border</span><span class="df">system/button.variables.less:5</span></div>
+<div class="dh"><span class="dsw" style="background:#475354"></span><code>#475354</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-secondary-tabs-bg</span><span class="df">backend/core/variables.less:101</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#405261">
+  <div class="pv-panel" style="flex:1">
+    <button class="pv-btn" style="background:var(--g);color:#fff;border-color:var(--g)">Default button</button>
+    <button class="pv-btn" style="background:#e1e2e4;color:var(--g)">Secondary</button>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <span style="color:var(--g)">&#8249;</span> <span style="color:var(--g);font-weight:600">3 of 12</span> <span style="color:var(--g)">&#8250;</span>
+    <span class="pv-help" style="margin-left:8px">record navigation</span>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-tinput">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-text-input</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">1 hex &middot; 2 uses</span>
+    </div>
+    <h3>Input value navy</h3>
+    <p class="role">The signature desaturated navy Winter uses for text typed into inputs.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#385487" title="#385487"><span class="dot" style="background:#385487;color:#fff"></span><span class="swx">385487</span><span class="swc">&times;2</span></button></div>
+      <div class="active-line">Previewing <code class="act">#385487</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Only 2 occurrences, but both define the same visible thing (form inputs + inspector inputs) — worth its own token so dark mode can retune it once.</div>
+      <p class="usage"><b>Appears on:</b> @input-color (all form controls) · @color-inspector-input-text.</p>
+      <details><summary>All 2 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#385487"></span><code>#385487</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@input-color</span><span class="df">system/form.variables.less:9</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-input-text</span><span class="df">system/inspector.less:19</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#385487">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-label">Page title</div>
+    <div class="pv-input" style="color:var(--g)">Winter is coming to town</div>
+    <div class="pv-help" style="margin-top:5px">every value the user types renders in this navy</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-chrome">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-chrome-dark</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">2 hexes &middot; 2 uses</span>
+    </div>
+    <h3>Main-menu dark chrome</h3>
+    <p class="role">The near-black top menu bar and its active-item wash.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#151515" title="#151515"><span class="dot" style="background:#151515;color:#fff"></span><span class="swx">151515</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#262626" title="#262626"><span class="dot" style="background:#262626;color:#fff"></span><span class="swx">262626</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#151515</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Two-value micro-scale: bar #151515, active/collapsed wash #262626. Could be one token + color-mix, or two (--wn-chrome-dark, --wn-chrome-dark-active).</div>
+      <p class="usage"><b>Appears on:</b> @color-mainmenu bar bg · @color-mainmenu-active-bg · @color-mainmenu-collapsed (#000 sits in the black group).</p>
+      <details><summary>All 2 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#151515"></span><code>#151515</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-mainmenu</span><span class="df">backend/core/variables.less:20</span></div>
+<div class="dh"><span class="dsw" style="background:#262626"></span><code>#262626</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-mainmenu-active-bg</span><span class="df">backend/core/variables.less:23</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv pv-flat" style="--g:#151515;padding:0;overflow:hidden">
+  <div style="background:var(--g);display:flex;align-items:center;gap:2px;padding:0 10px">
+    <span style="color:#fff;font-weight:800;padding:10px 8px;font-family:'Mulish'">W</span>
+    <span style="color:#bbb;padding:10px 10px">CMS</span>
+    <span style="color:#fff;background:#262626;padding:10px 10px">Blog</span>
+    <span style="color:#bbb;padding:10px 10px">Media</span>
+  </div>
+  <div style="padding:12px 14px" class="pv-help">top main-menu bar · #262626 = active item wash</div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-map" id="g-blues">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">var(--brand-secondary)</code>
+      <span class="badge b-map">map to existing brand var</span>
+      <span class="badge b-n">9 hexes &middot; 12 uses</span>
+    </div>
+    <h3>Stray blues → brand</h3>
+    <p class="role">Nine ad-hoc blues doing “selected / interactive” work that the brand tokens already own.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on ref" data-hex="#2da7c7" title="existing @brand-secondary"><span class="dot" style="background:#2da7c7;color:#fff"></span><span class="swx">2da7c7</span><span class="swc">brand</span></button><button class="sw" data-hex="#33aaff" title="#33aaff"><span class="dot" style="background:#33aaff;color:#0e1a28"></span><span class="swx">33aaff</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#5fb6f5" title="#5fb6f5"><span class="dot" style="background:#5fb6f5;color:#0e1a28"></span><span class="swx">5fb6f5</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#2581b8" title="#2581b8"><span class="dot" style="background:#2581b8;color:#fff"></span><span class="swx">2581b8</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#328ec8" title="#328ec8"><span class="dot" style="background:#328ec8;color:#fff"></span><span class="swx">328ec8</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#2c9cb9" title="#2c9cb9"><span class="dot" style="background:#2c9cb9;color:#fff"></span><span class="swx">2c9cb9</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#4da7e8" title="#4da7e8"><span class="dot" style="background:#4da7e8;color:#0e1a28"></span><span class="swx">4da7e8</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#178fe5" title="#178fe5"><span class="dot" style="background:#178fe5;color:#fff"></span><span class="swx">178fe5</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#2f99da" title="#2f99da"><span class="dot" style="background:#2f99da;color:#fff"></span><span class="swx">2f99da</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#337ab7" title="#337ab7"><span class="dot" style="background:#337ab7;color:#fff"></span><span class="swx">337ab7</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#2da7c7</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">No new token — these should collapse onto the existing brand vars. #2c9cb9 is within a whisker of @brand-secondary (#2da7c7); the azure datepicker family (#33aaff/#178fe5/#5fb6f5) may map better to --brand-accent. Toggle to judge.</div>
+      <p class="usage"><b>Appears on:</b> datepicker today/selected · treeview drop-target & light submenu bg/border · fancy form inactive tab · custom select hover bg · progress bar fill · inspector focused row border · frozen row text · flash info bg.</p>
+      <details><summary>All 12 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#33aaff"></span><code>#33aaff</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.is-today .pika-button</span><span class="df">system/datepicker.date.less:144</span></div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.is-selected .pika-button</span><span class="df">system/datepicker.date.less:151</span></div>
+<div class="dh"><span class="dsw" style="background:#5fb6f5"></span><code>#5fb6f5</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-flash-info-bg</span><span class="df">system/flashmessage.less:15</span></div>
+<div class="dr"><code class="dp">border-color</code><span class="dsel">r-dictionary-container table.inspector-dictionary-table tbody tr td &amp;.ac</span><span class="df">system/inspector.less:540</span></div>
+<div class="dh"><span class="dsw" style="background:#2581b8"></span><code>#2581b8</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-light-submenu-bg</span><span class="df">backend/core/variables.less:136</span></div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">.control-treeview ol &gt; li &amp;.drop-target &gt; div</span><span class="df">backend/controls/treeview.less:323</span></div>
+<div class="dh"><span class="dsw" style="background:#328ec8"></span><code>#328ec8</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-treeview-light-submenu-border</span><span class="df">backend/core/variables.less:137</span></div>
+<div class="dh"><span class="dsw" style="background:#2c9cb9"></span><code>#2c9cb9</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-fancy-form-inactive-tab</span><span class="df">backend/core/variables.less:116</span></div>
+<div class="dh"><span class="dsw" style="background:#4da7e8"></span><code>#4da7e8</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-custom-select-bg-hover</span><span class="df">backend/core/variables.less:84</span></div>
+<div class="dh"><span class="dsw" style="background:#178fe5"></span><code>#178fe5</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">box-shadow</code><span class="dsel">.is-selected .pika-button</span><span class="df">system/datepicker.date.less:152</span></div>
+<div class="dh"><span class="dsw" style="background:#2f99da"></span><code>#2f99da</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@progress-bar-bg</span><span class="df">system/progressbar.less:14</span></div>
+<div class="dh"><span class="dsw" style="background:#337ab7"></span><code>#337ab7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody tr.frozen td, th, td a, th a</span><span class="df">system/list.less:213</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#2da7c7">
+  <div class="pv-panel" style="flex:1">
+    <div class="pv-cal"><span>12</span><span style="background:var(--g);color:#fff">13</span><span>14</span></div>
+    <div style="margin-top:8px"><a style="color:var(--g)">Selected / interactive link</a></div>
+  </div>
+  <div class="pv-panel" style="flex:1;padding:0">
+    <div style="background:var(--g);color:#fff;padding:7px 12px">Drop target row</div>
+    <div style="padding:7px 12px">Normal row</div>
+    <div class="pv-progress" style="margin:8px 12px 10px"><span style="background:var(--g);display:block;height:100%;width:60%"></span></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-danger">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-danger-muted</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">8 hexes &middot; 12 uses</span>
+    </div>
+    <h3>Rust red — errors & negatives</h3>
+    <p class="role">The muted rust red used for error flashes, invalid fields, “off” switches and negative values.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#cc3300" title="#cc3300"><span class="dot" style="background:#cc3300;color:#fff"></span><span class="swx">cc3300</span><span class="swc">&times;3</span></button><button class="sw" data-hex="#c03f31" title="#c03f31"><span class="dot" style="background:#c03f31;color:#fff"></span><span class="swx">c03f31</span><span class="swc">&times;3</span></button><button class="sw" data-hex="#d9350f" title="#d9350f"><span class="dot" style="background:#d9350f;color:#fff"></span><span class="swx">d9350f</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#a5382c" title="#a5382c"><span class="dot" style="background:#a5382c;color:#fff"></span><span class="swx">a5382c</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#bc4436" title="#bc4436"><span class="dot" style="background:#bc4436;color:#fff"></span><span class="swx">bc4436</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#ab2a1c" title="#ab2a1c"><span class="dot" style="background:#ab2a1c;color:#fff"></span><span class="swx">ab2a1c</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#b2341c" title="#b2341c"><span class="dot" style="background:#b2341c;color:#fff"></span><span class="swx">b2341c</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#c63e26" title="#c63e26"><span class="dot" style="background:#c63e26;color:#fff"></span><span class="swx">c63e26</span><span class="swc">&times;1</span></button><button class="sw ref" data-hex="#e01346" title="existing @brand-danger"><span class="dot" style="background:#e01346;color:#fff"></span><span class="swx">e01346</span><span class="swc">brand</span></button></div>
+      <div class="active-line">Previewing <code class="act">#cc3300</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">#cc3300 and #c03f31 tie at 3 uses each; #cc3300 wins as the flash-error/off-switch anchor. Deliberately distinct from @brand-danger (#e01346, shown dashed) — decide whether to keep the rust family or fold into the brand red.</div>
+      <p class="usage"><b>Appears on:</b> flash error bg · switch “off” fill · scoreboard negative · inspector changed/invalid · autumn editor button · sidebar counter badge · form save/delete buttons (fancy layout) · global notice bg · negative row text · active sort column.</p>
+      <details><summary>All 12 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#cc3300"></span><code>#cc3300</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-switch-input-off</span><span class="df">backend/core/variables.less:80</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-flash-error-bg</span><span class="df">system/flashmessage.less:13</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scoreboard-negative</span><span class="df">system/chart.less:22</span></div>
+<div class="dh"><span class="dsw" style="background:#c03f31"></span><code>#c03f31</code> — 3 occurrences</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-toolbar.editor-toolbar .toolbar-item .btn.oc-autumn-button</span><span class="df">system/toolbar.less:223</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-inspector-changed</span><span class="df">system/inspector.less:21</span></div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.inspector-fields tr.invalid th</span><span class="df">system/inspector.less:83</span></div>
+<div class="dh"><span class="dsw" style="background:#d9350f"></span><code>#d9350f</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-sidebarnav-counter-bg</span><span class="df">backend/core/variables.less:38</span></div>
+<div class="dh"><span class="dsw" style="background:#a5382c"></span><code>#a5382c</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel">widget &gt; .layout-row &gt; .form-tabless-fields  .form-buttons:not(.normaliz</span><span class="df">backend/layout/fancylayout.less:721</span></div>
+<div class="dh"><span class="dsw" style="background:#bc4436"></span><code>#bc4436</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background-color</code><span class="dsel"> .layout-row &gt; .form-tabless-fields  .form-buttons:not(.normalized) .btn</span><span class="df">backend/layout/fancylayout.less:736</span></div>
+<div class="dh"><span class="dsw" style="background:#ab2a1c"></span><code>#ab2a1c</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.global-notice</span><span class="df">backend/controls/global-notice.less:10</span></div>
+<div class="dh"><span class="dsw" style="background:#b2341c"></span><code>#b2341c</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody tr.negative td, th, td a, th a</span><span class="df">system/list.less:225</span></div>
+<div class="dh"><span class="dsw" style="background:#c63e26"></span><code>#c63e26</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-active-sort</span><span class="df">system/list.variables.less:38</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#cc3300">
+  <div style="flex:1">
+    <div class="pv-flash" style="background:var(--g)">Something went wrong — flash error</div>
+    <div class="pv-panel" style="margin-top:10px">
+      <div class="pv-label" style="color:var(--g)">Title (invalid)</div>
+      <div class="pv-input" style="border-color:var(--g)">…</div>
+    </div>
+  </div>
+  <div class="pv-panel" style="flex:.7">
+    <span class="pv-switch" style="background:var(--g)"><span class="pv-knob"></span></span> <span class="pv-help">switch OFF</span>
+    <div style="color:var(--g);margin-top:8px;font-weight:700">−12.4% <span class="pv-help" style="font-weight:400">negative value</span></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-orange">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-accent-orange</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">7 hexes &middot; 7 uses</span>
+    </div>
+    <h3>Signal orange</h3>
+    <p class="role">Winter’s orange “you are here / caution” accents: active tab marker, active stripes, drag placeholders.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#ec8017" title="#ec8017"><span class="dot" style="background:#ec8017;color:#fff"></span><span class="swx">ec8017</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e6802b" title="#e6802b"><span class="dot" style="background:#e6802b;color:#fff"></span><span class="swx">e6802b</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#da5700" title="#da5700"><span class="dot" style="background:#da5700;color:#fff"></span><span class="swx">da5700</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d35714" title="#d35714"><span class="dot" style="background:#d35714;color:#fff"></span><span class="swx">d35714</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#ff9933" title="#ff9933"><span class="dot" style="background:#ff9933;color:#0e1a28"></span><span class="swx">ff9933</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#ff8000" title="#ff8000"><span class="dot" style="background:#ff8000;color:#fff"></span><span class="swx">ff8000</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e5a91a" title="#e5a91a"><span class="dot" style="background:#e5a91a;color:#0e1a28"></span><span class="swx">e5a91a</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#ec8017</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Every member occurs exactly once — seven oranges for one job. #ec8017 (the active-tab marker) is the most load-bearing, so it anchors the token. #ff8000!important on datepicker hover is the outlier to kill.</div>
+      <p class="usage"><b>Appears on:</b> active tab marker · selector-group active edge · balloon control active · treelist drag placeholder · list stripe active · datepicker hover (!important) · scoreboard icon.</p>
+      <details><summary>All 7 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#ec8017"></span><code>#ec8017</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-tab-active-marker</span><span class="df">system/tab.less:21</span></div>
+<div class="dh"><span class="dsw" style="background:#e6802b"></span><code>#e6802b</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">border-left</code><span class="dsel">.nav.selector-group li &amp;.active</span><span class="df">backend/controls/selector-group.less:13</span></div>
+<div class="dh"><span class="dsw" style="background:#da5700"></span><code>#da5700</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-balloon-control-active-bg</span><span class="df">system/checkbox.balloon.less:8</span></div>
+<div class="dh"><span class="dsw" style="background:#d35714"></span><code>#d35714</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">.control-treelist li &amp;.placeholder &amp;:before</span><span class="df">backend/controls/treelist.less:85</span></div>
+<div class="dh"><span class="dsw" style="background:#ff9933"></span><code>#ff9933</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-list-stripe-active</span><span class="df">system/list.variables.less:31</span></div>
+<div class="dh"><span class="dsw" style="background:#ff8000"></span><code>#ff8000</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background</code><span class="dsel">.pika-button:hover</span><span class="df">system/datepicker.date.less:165</span></div>
+<div class="dh"><span class="dsw" style="background:#e5a91a"></span><code>#e5a91a</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scoreboard-icon</span><span class="df">system/chart.less:20</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#ec8017">
+  <div class="pv-panel" style="flex:1;padding:0">
+    <div class="pv-tabbar" style="padding:0 10px"><span class="pv-tab" style="border-bottom:2px solid var(--g);color:#2b3e50;font-weight:600">Content</span><span class="pv-tab" style="color:#bbb">Settings</span><span class="pv-tab" style="color:#bbb">SEO</span></div>
+    <div style="padding:10px 12px" class="pv-help">active-tab marker · selector-group edge</div>
+  </div>
+  <div class="pv-panel" style="flex:1">
+    <span style="color:var(--g)">&#9650;</span> <b>Name</b> <span class="pv-help">active sort</span>
+    <div style="margin-top:8px"><span class="pv-dot" style="width:14px;height:14px;background:var(--g)"></span> <span class="pv-help">balloon control active</span></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-token" id="g-success">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-success-muted</code>
+      <span class="badge b-token">proposed token</span>
+      <span class="badge b-n">4 hexes &middot; 5 uses</span>
+    </div>
+    <h3>Moss green — success & “on”</h3>
+    <p class="role">The muted moss green for success flashes, “on” switches and positive values.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw win on" data-hex="#8da85e" title="#8da85e"><span class="dot" style="background:#8da85e;color:#0e1a28"></span><span class="swx">8da85e</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#6aab55" title="#6aab55"><span class="dot" style="background:#6aab55;color:#0e1a28"></span><span class="swx">6aab55</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#95b753" title="#95b753"><span class="dot" style="background:#95b753;color:#0e1a28"></span><span class="swx">95b753</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#278731" title="#278731"><span class="dot" style="background:#278731;color:#fff"></span><span class="swx">278731</span><span class="swc">&times;1</span></button><button class="sw ref" data-hex="#52a838" title="existing @brand-success"><span class="dot" style="background:#52a838;color:#fff"></span><span class="swx">52a838</span><span class="swc">brand</span></button></div>
+      <div class="active-line">Previewing <code class="act">#8da85e</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Alternative: fold into var(--brand-success) (#52a838, dashed) — toggle it against the moss family to decide.</div>
+      <p class="usage"><b>Appears on:</b> flash success bg · switch “on” fill · filter active bg · scoreboard positive · positive row text.</p>
+      <details><summary>All 5 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#8da85e"></span><code>#8da85e</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-switch-input-on</span><span class="df">backend/core/variables.less:79</span></div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-flash-success-bg</span><span class="df">system/flashmessage.less:12</span></div>
+<div class="dh"><span class="dsw" style="background:#6aab55"></span><code>#6aab55</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-filter-bg-active</span><span class="df">system/filter.less:14</span></div>
+<div class="dh"><span class="dsw" style="background:#95b753"></span><code>#95b753</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@color-scoreboard-positive</span><span class="df">system/chart.less:21</span></div>
+<div class="dh"><span class="dsw" style="background:#278731"></span><code>#278731</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">color</code><span class="dsel">table.table.data tbody tr.positive td, th, td a, th a</span><span class="df">system/list.less:231</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#8da85e">
+  <div style="flex:1">
+    <div class="pv-flash" style="background:var(--g)">Post saved successfully — flash</div>
+    <div class="pv-panel" style="margin-top:10px"><span class="pv-switch on" style="background:var(--g)"><span class="pv-knob r"></span></span> <span class="pv-help">switch ON</span>
+    <span style="color:var(--g);margin-left:14px;font-weight:700">+8.2%</span></div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-keep" id="g-state">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">--wn-state-*</code>
+      <span class="badge b-keep">keep — tokenize as family</span>
+      <span class="badge b-n">20 hexes &middot; 20 uses</span>
+    </div>
+    <h3>State & callout pastels</h3>
+    <p class="role">Systematic 4-variant families (info / success / warning / danger), each with header-bg, content-bg and icon/text. Already coherent — tokenize, don’t merge.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw" data-hex="#b9dbef" title="#b9dbef"><span class="dot" style="background:#b9dbef;color:#0e1a28"></span><span class="swx">b9dbef</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d8eaf4" title="#d8eaf4"><span class="dot" style="background:#d8eaf4;color:#0e1a28"></span><span class="swx">d8eaf4</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#597f97" title="#597f97"><span class="dot" style="background:#597f97;color:#fff"></span><span class="swx">597f97</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d3e9bf" title="#d3e9bf"><span class="dot" style="background:#d3e9bf;color:#0e1a28"></span><span class="swx">d3e9bf</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e6f1db" title="#e6f1db"><span class="dot" style="background:#e6f1db;color:#0e1a28"></span><span class="swx">e6f1db</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#6d915e" title="#6d915e"><span class="dot" style="background:#6d915e;color:#fff"></span><span class="swx">6d915e</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#f6e7b2" title="#f6e7b2"><span class="dot" style="background:#f6e7b2;color:#0e1a28"></span><span class="swx">f6e7b2</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#f8f0d5" title="#f8f0d5"><span class="dot" style="background:#f8f0d5;color:#0e1a28"></span><span class="swx">f8f0d5</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#9f8e51" title="#9f8e51"><span class="dot" style="background:#9f8e51;color:#fff"></span><span class="swx">9f8e51</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#f6b5b2" title="#f6b5b2"><span class="dot" style="background:#f6b5b2;color:#0e1a28"></span><span class="swx">f6b5b2</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#f8d6d5" title="#f8d6d5"><span class="dot" style="background:#f8d6d5;color:#0e1a28"></span><span class="swx">f8d6d5</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#9f5551" title="#9f5551"><span class="dot" style="background:#9f5551;color:#fff"></span><span class="swx">9f5551</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#dff0d8" title="#dff0d8"><span class="dot" style="background:#dff0d8;color:#0e1a28"></span><span class="swx">dff0d8</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#3c763d" title="#3c763d"><span class="dot" style="background:#3c763d;color:#fff"></span><span class="swx">3c763d</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#d9edf7" title="#d9edf7"><span class="dot" style="background:#d9edf7;color:#0e1a28"></span><span class="swx">d9edf7</span><span class="swc">&times;1</span></button><button class="sw win on" data-hex="#31708f" title="#31708f"><span class="dot" style="background:#31708f;color:#fff"></span><span class="swx">31708f</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#fcf8e3" title="#fcf8e3"><span class="dot" style="background:#fcf8e3;color:#0e1a28"></span><span class="swx">fcf8e3</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#8a6d3b" title="#8a6d3b"><span class="dot" style="background:#8a6d3b;color:#fff"></span><span class="swx">8a6d3b</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#f2dede" title="#f2dede"><span class="dot" style="background:#f2dede;color:#0e1a28"></span><span class="swx">f2dede</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#a94442" title="#a94442"><span class="dot" style="background:#a94442;color:#fff"></span><span class="swx">a94442</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#31708f</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">Callout trio-per-variant (callout.less) + Bootstrap state pairs (global.variables.less). Recommend 12 semantic tokens (--wn-state-{info,success,warning,danger}-{bg,surface,ink}) rather than perceptual merging — the swatches here are for reference, the preview shows all four variants.</div>
+      <p class="usage"><b>Appears on:</b> callout headers/content/icons (12 vars in callout.less) · @state-{success,info,warning,danger}-{text,bg} used by form validation states.</p>
+      <details><summary>All 20 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#b9dbef"></span><code>#b9dbef</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-info-header-bg</span><span class="df">system/callout.less:10</span></div>
+<div class="dh"><span class="dsw" style="background:#d8eaf4"></span><code>#d8eaf4</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-info-content-bg</span><span class="df">system/callout.less:11</span></div>
+<div class="dh"><span class="dsw" style="background:#597f97"></span><code>#597f97</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-info-icon</span><span class="df">system/callout.less:12</span></div>
+<div class="dh"><span class="dsw" style="background:#d3e9bf"></span><code>#d3e9bf</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-success-header-bg</span><span class="df">system/callout.less:19</span></div>
+<div class="dh"><span class="dsw" style="background:#e6f1db"></span><code>#e6f1db</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-success-content-bg</span><span class="df">system/callout.less:20</span></div>
+<div class="dh"><span class="dsw" style="background:#6d915e"></span><code>#6d915e</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-success-icon</span><span class="df">system/callout.less:21</span></div>
+<div class="dh"><span class="dsw" style="background:#f6e7b2"></span><code>#f6e7b2</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-warning-header-bg</span><span class="df">system/callout.less:13</span></div>
+<div class="dh"><span class="dsw" style="background:#f8f0d5"></span><code>#f8f0d5</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-warning-content-bg</span><span class="df">system/callout.less:14</span></div>
+<div class="dh"><span class="dsw" style="background:#9f8e51"></span><code>#9f8e51</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-warning-icon</span><span class="df">system/callout.less:15</span></div>
+<div class="dh"><span class="dsw" style="background:#f6b5b2"></span><code>#f6b5b2</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-danger-header-bg</span><span class="df">system/callout.less:16</span></div>
+<div class="dh"><span class="dsw" style="background:#f8d6d5"></span><code>#f8d6d5</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-danger-content-bg</span><span class="df">system/callout.less:17</span></div>
+<div class="dh"><span class="dsw" style="background:#9f5551"></span><code>#9f5551</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@callout-danger-icon</span><span class="df">system/callout.less:18</span></div>
+<div class="dh"><span class="dsw" style="background:#dff0d8"></span><code>#dff0d8</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-success-bg</span><span class="df">system/global.variables.less:130</span></div>
+<div class="dh"><span class="dsw" style="background:#3c763d"></span><code>#3c763d</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-success-text</span><span class="df">system/global.variables.less:129</span></div>
+<div class="dh"><span class="dsw" style="background:#d9edf7"></span><code>#d9edf7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-info-bg</span><span class="df">system/global.variables.less:134</span></div>
+<div class="dh"><span class="dsw" style="background:#31708f"></span><code>#31708f</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-info-text</span><span class="df">system/global.variables.less:133</span></div>
+<div class="dh"><span class="dsw" style="background:#fcf8e3"></span><code>#fcf8e3</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-warning-bg</span><span class="df">system/global.variables.less:138</span></div>
+<div class="dh"><span class="dsw" style="background:#8a6d3b"></span><code>#8a6d3b</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-warning-text</span><span class="df">system/global.variables.less:137</span></div>
+<div class="dh"><span class="dsw" style="background:#f2dede"></span><code>#f2dede</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-danger-bg</span><span class="df">system/global.variables.less:142</span></div>
+<div class="dh"><span class="dsw" style="background:#a94442"></span><code>#a94442</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@state-danger-text</span><span class="df">system/global.variables.less:141</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#31708f;flex-wrap:wrap">
+  <div class="pv-co" style="--h:#b9dbef;--c:#d8eaf4;--i:#597f97"><b>Info</b><span>Content fill + icon ink</span></div>
+  <div class="pv-co" style="--h:#d3e9bf;--c:#e6f1db;--i:#6d915e"><b>Success</b><span>Trio per variant</span></div>
+  <div class="pv-co" style="--h:#f6e7b2;--c:#f8f0d5;--i:#9f8e51"><b>Warning</b><span>Keep systematic</span></div>
+  <div class="pv-co" style="--h:#f6b5b2;--c:#f8d6d5;--i:#9f5551"><b>Danger</b><span>12 semantic tokens</span></div>
+  <div class="pv-panel" style="flex-basis:100%"><span style="color:var(--g);font-weight:600">Selected swatch preview ink</span> — <span class="pv-help">state text colours double as form-validation text.</span></div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="card kind-drop" id="g-drop">
+  <header class="card-h">
+    <div class="card-t">
+      <code class="tok">(exclude)</code>
+      <span class="badge b-drop">exclude from consolidation</span>
+      <span class="badge b-n">11 hexes &middot; 14 uses</span>
+    </div>
+    <h3>Dead weight & definitions</h3>
+    <p class="role">Not consolidation targets: unused Bootstrap gradient-mixin defaults, the brand palette definitions themselves, and one normalize literal.</p>
+  </header>
+  <div class="card-body">
+    <div class="left">
+      <div class="swrow"><button class="sw" data-hex="#00b3ee" title="#00b3ee"><span class="dot" style="background:#00b3ee;color:#fff"></span><span class="swx">00b3ee</span><span class="swc">&times;2</span></button><button class="sw win on" data-hex="#7a43b6" title="#7a43b6"><span class="dot" style="background:#7a43b6;color:#fff"></span><span class="swx">7a43b6</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#c3325f" title="#c3325f"><span class="dot" style="background:#c3325f;color:#fff"></span><span class="swx">c3325f</span><span class="swc">&times;2</span></button><button class="sw" data-hex="#ffff00" title="#ffff00"><span class="dot" style="background:#ffff00;color:#0e1a28"></span><span class="swx">ffff00</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#103141" title="#103141"><span class="dot" style="background:#103141;color:#fff"></span><span class="swx">103141</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#2da7c7" title="#2da7c7"><span class="dot" style="background:#2da7c7;color:#fff"></span><span class="swx">2da7c7</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#6cc551" title="#6cc551"><span class="dot" style="background:#6cc551;color:#0e1a28"></span><span class="swx">6cc551</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#52a838" title="#52a838"><span class="dot" style="background:#52a838;color:#fff"></span><span class="swx">52a838</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#48b9d5" title="#48b9d5"><span class="dot" style="background:#48b9d5;color:#0e1a28"></span><span class="swx">48b9d5</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#de8754" title="#de8754"><span class="dot" style="background:#de8754;color:#fff"></span><span class="swx">de8754</span><span class="swc">&times;1</span></button><button class="sw" data-hex="#e01346" title="#e01346"><span class="dot" style="background:#e01346;color:#fff"></span><span class="swx">e01346</span><span class="swc">&times;1</span></button></div>
+      <div class="active-line">Previewing <code class="act">#7a43b6</code><span class="act-tag"> — recommended</span></div>
+      <div class="note">#00b3ee/#7a43b6/#c3325f are three-colour-gradient mixin defaults never invoked in core (delete the mixins). #ffff00 is normalize.css &lt;mark&gt;. The @brand-* definitions in global.variables.less are the source of truth — they stay.</div>
+      <p class="usage"><b>Appears on:</b> global.mixins.gradient.less defaults · site.normalize.less mark · @brand-primary/secondary/accent/success/info/warning/danger definitions.</p>
+      <details><summary>All 14 occurrences</summary><div class="dets"><div class="dh"><span class="dsw" style="background:#00b3ee"></span><code>#00b3ee</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:36</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:43</span></div>
+<div class="dh"><span class="dsw" style="background:#7a43b6"></span><code>#7a43b6</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:36</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:43</span></div>
+<div class="dh"><span class="dsw" style="background:#c3325f"></span><code>#c3325f</code> — 2 occurrences</div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:36</span></div>
+<div class="dr"><code class="dp">?</code><span class="dsel">#gradient</span><span class="df">system/global.mixins.gradient.less:43</span></div>
+<div class="dh"><span class="dsw" style="background:#ffff00"></span><code>#ffff00</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">background</code><span class="dsel">mark</span><span class="df">system/site.normalize.less:141</span></div>
+<div class="dh"><span class="dsw" style="background:#103141"></span><code>#103141</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-primary</span><span class="df">system/global.variables.less:101</span></div>
+<div class="dh"><span class="dsw" style="background:#2da7c7"></span><code>#2da7c7</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-secondary</span><span class="df">system/global.variables.less:102</span></div>
+<div class="dh"><span class="dsw" style="background:#6cc551"></span><code>#6cc551</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-accent</span><span class="df">system/global.variables.less:103</span></div>
+<div class="dh"><span class="dsw" style="background:#52a838"></span><code>#52a838</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-success</span><span class="df">system/global.variables.less:111</span></div>
+<div class="dh"><span class="dsw" style="background:#48b9d5"></span><code>#48b9d5</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-info</span><span class="df">system/global.variables.less:112</span></div>
+<div class="dh"><span class="dsw" style="background:#de8754"></span><code>#de8754</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-warning</span><span class="df">system/global.variables.less:113</span></div>
+<div class="dh"><span class="dsw" style="background:#e01346"></span><code>#e01346</code> — 1 occurrence</div>
+<div class="dr"><code class="dp">less-var</code><span class="dsel">@brand-danger</span><span class="df">system/global.variables.less:114</span></div></div></details>
+    </div>
+    <div class="right">
+      <div class="pv-title">Live preview — click swatches to swap the colour in place</div>
+      
+<div class="pv" style="--g:#7a43b6">
+  <div class="pv-panel" style="flex:1">
+    <div style="height:12px;border-radius:3px;background:linear-gradient(90deg,#00b3ee,#7a43b6,#c3325f)"></div>
+    <div class="pv-help" style="margin-top:6px">the never-used three-colour gradient mixin defaults — recommend deleting the mixins outright</div>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+<div class="foot">Method: every <code>#rrggbb</code>/<code>#rgb</code> literal in the two core LESS trees was extracted with its property, enclosing selector and file:line (LESS variable <em>definitions</em> are listed too, since re-pointing them at tokens is the cheapest migration path). Counts: 152 raw literals → 142 unique colours → 428 occurrences. Brand definitions (<code>@brand-*</code>) and the state/callout semantic families are catalogued but intentionally not merged. Generated August 2026 — darkmode-audit / color-consolidation.</div>
+<script>
+document.querySelectorAll('.card').forEach(card => {
+  const pv = card.querySelector('.pv');
+  const act = card.querySelector('.active-line .act');
+  const tag = card.querySelector('.act-tag');
+  const winner = card.querySelector('.sw.win');
+  const winHex = winner ? winner.dataset.hex : null;
+  card.querySelectorAll('.sw').forEach(btn => {
+    btn.addEventListener('click', () => {
+      card.querySelectorAll('.sw.on').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      if (pv) pv.style.setProperty('--g', btn.dataset.hex);
+      if (act) act.textContent = btn.dataset.hex;
+      if (tag) {
+        if (btn.dataset.hex === winHex) { tag.textContent = ' — recommended'; tag.classList.remove('off'); }
+        else if (btn.classList.contains('ref')) { tag.textContent = ' — existing brand token (comparison)'; tag.classList.add('off'); }
+        else { tag.textContent = ' — candidate (not recommended)'; tag.classList.add('off'); }
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
