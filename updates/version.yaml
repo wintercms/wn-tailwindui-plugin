@@ -1,4 +1,7 @@
 1.0.1: First version of TailwindUI
+1.0.2:
+    - "Added the asset_url link tag to the backend and auth layouts so Snowboard resolves asset URLs correctly when Winter is served from a subdirectory or a separate asset domain, matching the core backend layout."
+    - "Removed a dead stylesheet reference from the auth layout that requested a backend.css file this skin does not ship."
 1.1.0:
     - "Rebuilt the backend navigation chrome with plain HTML/CSS and minimal vanilla JS, removing the Vue and Headless UI dependency (much smaller asset bundle)."
     - "Fixed direct navigation to JS-based sub-menu items so a deep link opens the correct child instead of the default one (#6)."
