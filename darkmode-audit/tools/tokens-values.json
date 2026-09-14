@@ -1,0 +1,875 @@
+{
+    "--wn-text": {
+        "hex": "#445a6b",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#666666",
+        "note": "text · primary"
+    },
+    "--wn-border": {
+        "hex": "#d1dbe0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#cccccc",
+        "note": "border · default"
+    },
+    "--wn-surface-raised": {
+        "hex": "#ffffff",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#ffffff",
+        "note": "surface · raised"
+    },
+    "--wn-text-inverse": {
+        "hex": "#ffffff",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#ffffff",
+        "note": "text · inverse"
+    },
+    "--wn-text-heading": {
+        "hex": "#314457",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#2b3e50",
+        "note": "text · heading"
+    },
+    "--wn-surface-chrome": {
+        "hex": "#314457",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#2b3e50",
+        "note": "surface · chrome"
+    },
+    "--wn-icon": {
+        "hex": "#c9d6e0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#bdc3c7",
+        "note": "icon · icon"
+    },
+    "--wn-surface-overlay": {
+        "hex": "#d1dbe0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#cbcbcb",
+        "note": "surface · overlay"
+    },
+    "--wn-text-muted": {
+        "hex": "#a3b6c0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#b5babd",
+        "note": "text · muted"
+    },
+    "--wn-border-input": {
+        "hex": "#a3b6c0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#b2b9be",
+        "note": "border · input"
+    },
+    "--wn-surface-input": {
+        "hex": "#ffffff",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#ffffff",
+        "note": "surface · input"
+    },
+    "--wn-surface-selected": {
+        "hex": "#314457",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#404040",
+        "note": "surface · selected"
+    },
+    "--wn-surface-hover": {
+        "hex": "#f0f5f8",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#f5f5f5",
+        "note": "slate-1 — kept a step below canvas so hover reads"
+    },
+    "--wn-text-secondary": {
+        "hex": "#91a6b8",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#999999",
+        "note": "text · secondary"
+    },
+    "--wn-border-focus": {
+        "hex": "#e1e8ee",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#e0e0e0",
+        "note": "border · focus"
+    },
+    "--wn-border-subtle": {
+        "hex": "#e8edef",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#e1e1e1",
+        "note": "border · subtle"
+    },
+    "--wn-shadow": {
+        "hex": "#ffffff",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#ffffff",
+        "note": "shadow · shadow"
+    },
+    "--wn-surface-stripe": {
+        "hex": "#f0f5f8",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#f5f5f5",
+        "note": "slate-1 — table zebra; distinct from canvas"
+    },
+    "--wn-surface-canvas": {
+        "hex": "#f7fafb",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#f9f9f9",
+        "note": "surface · canvas"
+    },
+    "--wn-text-link": {
+        "hex": "#314457",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#39454a",
+        "note": "text · link"
+    },
+    "--wn-text-strong": {
+        "hex": "#050f14",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#000000",
+        "note": "text · strong"
+    },
+    "--wn-text-faint": {
+        "hex": "#d1dbe0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#dddddd",
+        "note": "text · faint"
+    },
+    "--wn-border-strong": {
+        "hex": "#91a6b8",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#999999",
+        "note": "border · strong"
+    },
+    "--wn-border-inverse": {
+        "hex": "#ffffff",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#ffffff",
+        "note": "border · inverse"
+    },
+    "--wn-border-dark": {
+        "hex": "#050f14",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#222222",
+        "note": "border · dark"
+    },
+    "--wn-icon-muted": {
+        "hex": "#a3b6c0",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#95a5a6",
+        "note": "icon · muted"
+    },
+    "--wn-icon-strong": {
+        "hex": "#445a6b",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#555555",
+        "note": "icon · strong"
+    },
+    "--wn-surface-mid": {
+        "hex": "#91a6b8",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "was": "#999999",
+        "note": "surface · mid"
+    },
+    "--wn-balloon-control-active-bg": {
+        "hex": "#da5700",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-balloon-control-active-bg"
+    },
+    "--wn-blockquote-level1-color": {
+        "hex": "#5e35b1",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @blockquote-level1-color"
+    },
+    "--wn-blockquote-level2-color": {
+        "hex": "#00bcd4",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @blockquote-level2-color"
+    },
+    "--wn-blockquote-level3-color": {
+        "hex": "#43a047",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @blockquote-level3-color"
+    },
+    "--wn-callout-danger-content-bg": {
+        "hex": "#f8d6d5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-danger-content-bg"
+    },
+    "--wn-callout-danger-header-bg": {
+        "hex": "#f6b5b2",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-danger-header-bg"
+    },
+    "--wn-callout-danger-icon": {
+        "hex": "#9f5551",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-danger-icon"
+    },
+    "--wn-callout-info-content-bg": {
+        "hex": "#d8eaf4",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-info-content-bg"
+    },
+    "--wn-callout-info-header-bg": {
+        "hex": "#b9dbef",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-info-header-bg"
+    },
+    "--wn-callout-info-icon": {
+        "hex": "#597f97",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-info-icon"
+    },
+    "--wn-callout-success-content-bg": {
+        "hex": "#e6f1db",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-success-content-bg"
+    },
+    "--wn-callout-success-header-bg": {
+        "hex": "#d3e9bf",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-success-header-bg"
+    },
+    "--wn-callout-success-icon": {
+        "hex": "#6d915e",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-success-icon"
+    },
+    "--wn-callout-warning-content-bg": {
+        "hex": "#f8f0d5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-warning-content-bg"
+    },
+    "--wn-callout-warning-header-bg": {
+        "hex": "#f6e7b2",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-warning-header-bg"
+    },
+    "--wn-callout-warning-icon": {
+        "hex": "#9f8e51",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @callout-warning-icon"
+    },
+    "--wn-chart-tooltip-bg": {
+        "hex": "#000000",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-chart-tooltip-bg"
+    },
+    "--wn-chart-tooltip-text": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-chart-tooltip-text"
+    },
+    "--wn-custom-select-bg-hover": {
+        "hex": "#4da7e8",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-custom-select-bg-hover"
+    },
+    "--wn-fileupload-inactive-icon": {
+        "hex": "#808b93",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @fileupload-inactive-icon"
+    },
+    "--wn-fileupload-object-active-bg": {
+        "hex": "#4da7e8",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @fileupload-object-active-bg"
+    },
+    "--wn-fileupload-progress-bar-bg": {
+        "hex": "#f5f5f5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @fileupload-progress-bar-bg"
+    },
+    "--wn-fileupload-progress-bar-color": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @fileupload-progress-bar-color"
+    },
+    "--wn-flash-default-bg": {
+        "hex": "#7a7e83",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-default-bg"
+    },
+    "--wn-flash-text": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-text"
+    },
+    "--wn-flash-warning-bg": {
+        "hex": "#b87410",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-warning-bg"
+    },
+    "--wn-flashmessage-flash-error-bg": {
+        "hex": "#cc3300",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-error-bg"
+    },
+    "--wn-flashmessage-flash-info-bg": {
+        "hex": "#5fb6f5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-info-bg"
+    },
+    "--wn-flashmessage-flash-success-bg": {
+        "hex": "#8da85e",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-success-bg"
+    },
+    "--wn-framework-flash-error-bg": {
+        "hex": "#cc3300",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-error-bg"
+    },
+    "--wn-framework-flash-info-bg": {
+        "hex": "#5fb6f5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-info-bg"
+    },
+    "--wn-framework-flash-success-bg": {
+        "hex": "#8da85e",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-success-bg"
+    },
+    "--wn-highlight-active-text": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @highlight-active-text"
+    },
+    "--wn-highlight-hover-text": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @highlight-hover-text"
+    },
+    "--wn-input-color": {
+        "hex": "#385487",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @input-color"
+    },
+    "--wn-inspector-changed": {
+        "hex": "#c03f31",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-inspector-changed"
+    },
+    "--wn-inspector-input-text": {
+        "hex": "#385487",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-inspector-input-text"
+    },
+    "--wn-list-active-sort": {
+        "hex": "#c63e26",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-list-active-sort"
+    },
+    "--wn-list-progress-bg": {
+        "hex": "#f5f5f5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-list-progress-bg"
+    },
+    "--wn-list-stripe-active": {
+        "hex": "#ff9933",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-list-stripe-active"
+    },
+    "--wn-loading-indicator-text": {
+        "hex": "#999999",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-loading-indicator-text"
+    },
+    "--wn-mainmenu-active-bg": {
+        "hex": "#262626",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-mainmenu-active-bg"
+    },
+    "--wn-progress-bar-bg": {
+        "hex": "#2f99da",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @progress-bar-bg"
+    },
+    "--wn-progress-bar-color": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @progress-bar-color"
+    },
+    "--wn-progress-bg": {
+        "hex": "#d9dee0",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @progress-bg"
+    },
+    "--wn-scoreboard-body": {
+        "hex": "#666666",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-scoreboard-body"
+    },
+    "--wn-scoreboard-description": {
+        "hex": "#999999",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-scoreboard-description"
+    },
+    "--wn-scoreboard-icon": {
+        "hex": "#e5a91a",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-scoreboard-icon"
+    },
+    "--wn-scoreboard-negative": {
+        "hex": "#cc3300",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-scoreboard-negative"
+    },
+    "--wn-scoreboard-positive": {
+        "hex": "#95b753",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-scoreboard-positive"
+    },
+    "--wn-scoreboard-title": {
+        "hex": "#666666",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-scoreboard-title"
+    },
+    "--wn-sidebarnav-counter-bg": {
+        "hex": "#d9350f",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-sidebarnav-counter-bg"
+    },
+    "--wn-snowboard-flash-error-bg": {
+        "hex": "#bb380c",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-error-bg"
+    },
+    "--wn-snowboard-flash-info-bg": {
+        "hex": "#3f91cc",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-info-bg"
+    },
+    "--wn-snowboard-flash-success-bg": {
+        "hex": "#6f9927",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-success-bg"
+    },
+    "--wn-status-list-text": {
+        "hex": "#7e8c8d",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-status-list-text"
+    },
+    "--wn-stripe-loader-color": {
+        "hex": "#0090c0",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @stripe-loader-color"
+    },
+    "--wn-switch-input-off": {
+        "hex": "#cc3300",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-switch-input-off"
+    },
+    "--wn-switch-input-on": {
+        "hex": "#8da85e",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-switch-input-on"
+    },
+    "--wn-tab-active-marker": {
+        "hex": "#ec8017",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-tab-active-marker"
+    },
+    "--wn-table-disabled-field": {
+        "hex": "#f7f7f7",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @table-disabled-field"
+    },
+    "--wn-table-even-row": {
+        "hex": "#fafafa",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @table-even-row"
+    },
+    "--wn-table-odd-row": {
+        "hex": "#ffffff",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @table-odd-row"
+    },
+    "--wn-treeview-light-submenu-bg": {
+        "hex": "#2581b8",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-treeview-light-submenu-bg"
+    },
+    "--wn-treeview-light-submenu-border": {
+        "hex": "#328ec8",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-treeview-light-submenu-border"
+    },
+    "--wn-warning": {
+        "hex": "#c84530",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-warning"
+    },
+    "--wn-warning-component-bg": {
+        "hex": "#ffc107",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-warning-component-bg"
+    },
+    "--wn-alert-text": {
+        "hex": "#2b3e50",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "alert.less h2"
+    },
+    "--wn-alert-text-2": {
+        "hex": "#555555",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "alert.less p.text-muted"
+    },
+    "--wn-callout-text": {
+        "hex": "#2f2d26",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "callout.less > .header"
+    },
+    "--wn-chart-bg": {
+        "hex": "#aaaaaa",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "chart.less .status-label"
+    },
+    "--wn-chart-border": {
+        "hex": "#f0f0f0",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "chart.less li"
+    },
+    "--wn-checkbox-misc": {
+        "hex": "#666666",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "checkbox.less"
+    },
+    "--wn-datepicker-date-bg": {
+        "hex": "#ff8000",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "datepicker.date.less .pika-button:hover"
+    },
+    "--wn-datepicker-date-shadow": {
+        "hex": "#178fe5",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "datepicker.date.less .is-selected .pika-button"
+    },
+    "--wn-datepicker-date-text": {
+        "hex": "#33aaff",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "datepicker.date.less .is-today .pika-button"
+    },
+    "--wn-details-misc": {
+        "hex": "#cccccc",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "details.less"
+    },
+    "--wn-fancylayout-bg": {
+        "hex": "#a5382c",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fancylayout.less &[data-control=\"delete-button\"]"
+    },
+    "--wn-fancylayout-text": {
+        "hex": "#000000",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fancylayout.less .tab-collapse-icon.primary"
+    },
+    "--wn-filelist-misc": {
+        "hex": "#95a5a6",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "filelist.less &:after"
+    },
+    "--wn-filetype-ai": {
+        "hex": "#f29200",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-ai"
+    },
+    "--wn-filetype-eps": {
+        "hex": "#f9b234",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-eps"
+    },
+    "--wn-filetype-json": {
+        "hex": "#a9a9a9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-json"
+    },
+    "--wn-filetype-label": {
+        "hex": "#ffffff",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-extension"
+    },
+    "--wn-filetype-odt": {
+        "hex": "#0f70b7",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-odt"
+    },
+    "--wn-filetype-pdf": {
+        "hex": "#e30713",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-pdf"
+    },
+    "--wn-filetype-pptx": {
+        "hex": "#d04526",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-pptx"
+    },
+    "--wn-filetype-psd": {
+        "hex": "#2daae2",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-psd"
+    },
+    "--wn-filetype-scss": {
+        "hex": "#b73fd9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-scss"
+    },
+    "--wn-filetype-txt": {
+        "hex": "#248bd0",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-txt"
+    },
+    "--wn-filetype-woff2": {
+        "hex": "#c4ca10",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-woff2"
+    },
+    "--wn-filetype-xlsx": {
+        "hex": "#3baa34",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-xlsx"
+    },
+    "--wn-filetype-xml": {
+        "hex": "#ea9b47",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-xml"
+    },
+    "--wn-filetype-zip": {
+        "hex": "#363a56",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less &-zip"
+    },
+    "--wn-fileupload-base-bg": {
+        "hex": "#5fb6f5",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fileupload.base.less .upload-progress"
+    },
+    "--wn-fileupload-base-bg-2": {
+        "hex": "#f9f9f9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fileupload.base.less .uploader-block-button()"
+    },
+    "--wn-fileupload-base-border": {
+        "hex": "#bdc3c7",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fileupload.base.less .uploader-block-button()"
+    },
+    "--wn-fileupload-base-shadow": {
+        "hex": "#ffffff",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fileupload.base.less .icon-container:after"
+    },
+    "--wn-fileupload-imagemulti-border": {
+        "hex": "#f6f8f9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fileupload.imagemulti.less .icon-container"
+    },
+    "--wn-fileupload-imagesingle-border": {
+        "hex": "#f6f8f9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fileupload.imagesingle.less .icon-container"
+    },
+    "--wn-framework-extras-misc": {
+        "hex": "#ffffff",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "framework.extras.less .stripe, .stripe-loaded"
+    },
+    "--wn-global-mixins-gradient-misc": {
+        "hex": "#555555",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "global.mixins.gradient.less .directional(@start-color: #555; @end-color: #333; @deg: 45deg)"
+    },
+    "--wn-global-mixins-gradient-misc-2": {
+        "hex": "#333333",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "global.mixins.gradient.less .directional(@start-color: #555; @end-color: #333; @deg: 45deg)"
+    },
+    "--wn-global-notice-bg": {
+        "hex": "#ab2a1c",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "global-notice.less .global-notice"
+    },
+    "--wn-import-text": {
+        "hex": "#4da7e8",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "import.less &:hover .column-icon"
+    },
+    "--wn-import-text-2": {
+        "hex": "#333333",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "import.less .column-icon"
+    },
+    "--wn-inspector-border": {
+        "hex": "#5fb6f5",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "inspector.less &.active div"
+    },
+    "--wn-inspector-text": {
+        "hex": "#c03f31",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "inspector.less tr.invalid th"
+    },
+    "--wn-install-border": {
+        "hex": "#024e6a",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "install.less .typeahead, .tt-hint"
+    },
+    "--wn-install-text": {
+        "hex": "#c03f31",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "install.less h4"
+    },
+    "--wn-list-text": {
+        "hex": "#337ab7",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "list.less td, th, td a, th a"
+    },
+    "--wn-list-text-2": {
+        "hex": "#b2341c",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "list.less td, th, td a, th a"
+    },
+    "--wn-list-text-3": {
+        "hex": "#278731",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "list.less td, th, td a, th a"
+    },
+    "--wn-loader-misc": {
+        "hex": "#ffffff",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "loader.less .stripe, .stripe-loaded"
+    },
+    "--wn-mediafinder-imagesingle-border": {
+        "hex": "#f6f8f9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediafinder.imagesingle.less .icon-container"
+    },
+    "--wn-mediamanager-border": {
+        "hex": "#2581b8",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less .icon-container"
+    },
+    "--wn-mediamanager-border-2": {
+        "hex": "#f6f8f9",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less li .icon-container"
+    },
+    "--wn-mediamanager-border-3": {
+        "hex": "#ecf0f1",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "mediamanager.less li .icon-container"
+    },
+    "--wn-panels-misc": {
+        "hex": "#e8eaeb",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "panels.less &:before"
+    },
+    "--wn-repeater-border": {
+        "hex": "#e0e0e0",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "repeater.less &.in-progress"
+    },
+    "--wn-repeater-text": {
+        "hex": "#d35714",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "repeater.less &:before"
+    },
+    "--wn-richeditor-border": {
+        "hex": "#2581b8",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "richeditor.less &:focus, &.inspector-open"
+    },
+    "--wn-selector-group-border": {
+        "hex": "#e6802b",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "selector-group.less &.active"
+    },
+    "--wn-site-normalize-bg": {
+        "hex": "#ffff00",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "site.normalize.less mark"
+    },
+    "--wn-snowboard-extras-misc": {
+        "hex": "#ffffff",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "snowboard.extras.less .stripe, .stripe-loaded"
+    },
+    "--wn-styles-bg": {
+        "hex": "#7b8892",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "styles.less th, th"
+    },
+    "--wn-sweet-alert-animations-border": {
+        "hex": "#f8d486",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "sweet-alert-animations.less @-webkit-keyframes pulseWarning"
+    },
+    "--wn-sweet-alert-animations-border-2": {
+        "hex": "#f8bb86",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "sweet-alert-animations.less @-webkit-keyframes pulseWarning"
+    },
+    "--wn-table-border": {
+        "hex": "#ec0000",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "table.less td.active.error"
+    },
+    "--wn-theme-selector-misc": {
+        "hex": "#bdc3c7",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "winter.theme-selector.less &:after"
+    },
+    "--wn-theme-selector-text": {
+        "hex": "#f1a84e",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "winter.theme-selector.less &.icon-star"
+    },
+    "--wn-toolbar-text": {
+        "hex": "#c03f31",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "toolbar.less .btn.oc-autumn-button"
+    },
+    "--wn-treelist-text": {
+        "hex": "#d35714",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "treelist.less &:before"
+    },
+    "--wn-treeview-bg": {
+        "hex": "#2581b8",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "treeview.less > div"
+    },
+    "--wn-updates-bg": {
+        "hex": "#e01346",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "updates.less .important-update-label"
+    },
+    "--wn-fancy-tab-inactive": {
+        "raw": "color-mix(in srgb, var(--brand-secondary, #2da7c7) 82%, black)",
+        "hex": "#2589a3",
+        "section": "Derived from brand — runtime color-mix so user branding propagates",
+        "note": "fancy-layout inactive tab; was a hardcoded #2c9cb9 that did not track the brand",
+        "supports": "(color: color-mix(in srgb, red 50%, black))"
+    },
+    "--wn-fancy-tab-bg": {
+        "raw": "color-mix(in srgb, var(--brand-secondary, #2da7c7) 66%, black)",
+        "hex": "#1e6e83",
+        "section": "Derived from brand — runtime color-mix so user branding propagates",
+        "note": "fancy-layout tab strip background; was darken(@brand-secondary, 5%)",
+        "supports": "(color: color-mix(in srgb, red 50%, black))"
+    },
+    "--wn-surface-accent": {
+        "hex": "#e8edef",
+        "was": "#ecf0f1",
+        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
+        "note": "indigo-0 — list/media zebra, a stronger tier than the table stripe"
+    },
+    "--wn-focus-on-dark": {
+        "hex": "#ffffff",
+        "section": "Focus indicators — chosen by the backdrop they sit on",
+        "note": "ring/bar on dark surfaces (fancy master tab strip)"
+    },
+    "--wn-focus-on-light": {
+        "hex": "#103141",
+        "section": "Focus indicators — chosen by the backdrop they sit on",
+        "note": "ring/bar on light or brand surfaces; white only reaches 2.8:1 on the brand cyan"
+    }
+}

@@ -1,0 +1,3950 @@
+[
+    {
+        "file": "modules/backend/assets/less/controls/alert.less",
+        "line": 23,
+        "token": "--wn-alert-text",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/alert.less",
+        "line": 35,
+        "token": "--wn-alert-text-2",
+        "hex": "#555555"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/filelist.less",
+        "line": 290,
+        "token": "--wn-icon",
+        "hex": "#b7c0c2"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/filelist.less",
+        "line": 374,
+        "token": "--wn-border-strong",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/filelist.less",
+        "line": 387,
+        "token": "--wn-filelist-misc",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/filelist.less",
+        "line": 394,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/global-notice.less",
+        "line": 10,
+        "token": "--wn-global-notice-bg",
+        "hex": "#ab2a1c"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/global-notice.less",
+        "line": 11,
+        "token": "--wn-text-inverse",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/namevaluelist.less",
+        "line": 18,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/namevaluelist.less",
+        "line": 24,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/panels.less",
+        "line": 2,
+        "token": "--wn-border-subtle",
+        "hex": "#e8eaeb"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/panels.less",
+        "line": 54,
+        "token": "--wn-panels-misc",
+        "hex": "#e8eaeb"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/panels.less",
+        "line": 68,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/record-navigation.less",
+        "line": 25,
+        "token": "--wn-text",
+        "hex": "#5a6b7b"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/record-navigation.less",
+        "line": 47,
+        "token": "--wn-text",
+        "hex": "#5a6b7b"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/record-navigation.less",
+        "line": 56,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/record-navigation.less",
+        "line": 57,
+        "token": "--wn-text-heading",
+        "hex": "#1f2d3d"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/record-navigation.less",
+        "line": 61,
+        "token": "--wn-text-muted",
+        "hex": "#b6bfc7"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/selector-group.less",
+        "line": 9,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/selector-group.less",
+        "line": 13,
+        "token": "--wn-selector-group-border",
+        "hex": "#e6802b"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/selector-group.less",
+        "line": 18,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/simplelist.less",
+        "line": 186,
+        "token": "--wn-surface-hover",
+        "hex": "#f0f0f0"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/tree-path.less",
+        "line": 18,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/tree-path.less",
+        "line": 36,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/tree-path.less",
+        "line": 50,
+        "token": "--wn-text",
+        "hex": "#405261"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/tree-path.less",
+        "line": 54,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treelist.less",
+        "line": 15,
+        "token": "--wn-border-focus",
+        "hex": "#dbdee0"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treelist.less",
+        "line": 34,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treelist.less",
+        "line": 46,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treelist.less",
+        "line": 85,
+        "token": "--wn-treelist-text",
+        "hex": "#d35714"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treeview.less",
+        "line": 323,
+        "token": "--wn-treeview-bg",
+        "hex": "#2581b8"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treeview.less",
+        "line": 432,
+        "token": "--wn-border-subtle",
+        "hex": "#ebebeb"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treeview.less",
+        "line": 433,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treeview.less",
+        "line": 559,
+        "token": "--wn-surface-overlay",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/backend/assets/less/controls/treeview.less",
+        "line": 578,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 17,
+        "token": "--wn-border",
+        "hex": "#cccccc"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 18,
+        "token": "--wn-border-subtle",
+        "hex": "#e1e1e1"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 20,
+        "token": "--wn-text-strong",
+        "hex": "#151515"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 22,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 23,
+        "token": "--wn-mainmenu-active-bg",
+        "hex": "#262626"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 24,
+        "token": "--wn-text-strong",
+        "hex": "#000000"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 26,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 27,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 28,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 31,
+        "token": "--wn-border-focus",
+        "hex": "#dfdfdf"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 34,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 35,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 38,
+        "token": "--wn-sidebarnav-counter-bg",
+        "hex": "#d9350f"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 39,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 41,
+        "token": "--wn-text-inverse",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 43,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 45,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 46,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 50,
+        "token": "--wn-surface-chrome",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 51,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 55,
+        "token": "--wn-border-subtle",
+        "hex": "#efefef"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 56,
+        "token": "--wn-text-muted",
+        "hex": "#aaaaaa"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 57,
+        "token": "--wn-text-inverse",
+        "hex": "#eeeeee"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 58,
+        "token": "--wn-text-muted",
+        "hex": "#bbbbbb"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 63,
+        "token": "--wn-text-inverse",
+        "hex": "#feffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 64,
+        "token": "--wn-text-secondary",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 65,
+        "token": "--wn-surface-chrome",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 67,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 69,
+        "token": "--wn-text-secondary",
+        "hex": "#9da3a7"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 70,
+        "token": "--wn-text-secondary",
+        "hex": "#9B9B9B"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 71,
+        "token": "--wn-surface-chrome",
+        "hex": "#2b343d"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 76,
+        "token": "--wn-text-muted",
+        "hex": "#C4C4C4"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 78,
+        "token": "--wn-surface-hover",
+        "hex": "#f6f6f6"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 79,
+        "token": "--wn-switch-input-on",
+        "hex": "#8da85e"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 80,
+        "token": "--wn-switch-input-off",
+        "hex": "#cc3300"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 82,
+        "token": "--wn-border-input",
+        "hex": "#b2b9be"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 83,
+        "token": "--wn-surface-hover",
+        "hex": "#f6f6f6"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 84,
+        "token": "--wn-custom-select-bg-hover",
+        "hex": "#4da7e8"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 86,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 87,
+        "token": "--wn-surface-hover",
+        "hex": "#eeeeee"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 88,
+        "token": "--wn-border",
+        "hex": "#cccccc"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 89,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 90,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 96,
+        "token": "--wn-fancy-tab-bg",
+        "hex": "#1e6e83"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 97,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 101,
+        "token": "--wn-surface-selected",
+        "hex": "#475354"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 102,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 103,
+        "token": "--wn-text-secondary",
+        "hex": "#919898"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 105,
+        "token": "--wn-surface-mid",
+        "hex": "#7F8C8D"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 106,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 107,
+        "token": "--wn-text-secondary",
+        "hex": "#808c8d"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 108,
+        "token": "--wn-surface-canvas",
+        "hex": "#fafafa"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 109,
+        "token": "--wn-surface-overlay",
+        "hex": "#d5d9d8"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 113,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 116,
+        "token": "--wn-fancy-tab-inactive",
+        "hex": "#2589a3"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 118,
+        "token": "--wn-text-secondary",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 121,
+        "token": "--wn-text-secondary",
+        "hex": "#7e8c8d"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 122,
+        "token": "--wn-text-muted",
+        "hex": "#b6b6b6"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 126,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 127,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 128,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 129,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 134,
+        "token": "--wn-text-secondary",
+        "hex": "#8f8f8f"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 135,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 136,
+        "token": "--wn-treeview-light-submenu-bg",
+        "hex": "#2581b8"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 137,
+        "token": "--wn-treeview-light-submenu-border",
+        "hex": "#328ec8"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 385,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 441,
+        "token": "--wn-fancylayout-text",
+        "hex": "#000000"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 464,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 666,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 721,
+        "token": "--wn-fancylayout-bg",
+        "hex": "#a5382c"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 722,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/flyout.less",
+        "line": 26,
+        "token": "--wn-surface-chrome",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/flyout.less",
+        "line": 29,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/flyout.less",
+        "line": 38,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/mainmenu.less",
+        "line": 506,
+        "token": "--wn-surface-selected",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/sidepanel.less",
+        "line": 14,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 231,
+        "token": "--wn-sweet-alert-animations-border",
+        "hex": "#F8D486"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 233,
+        "token": "--wn-sweet-alert-animations-border-2",
+        "hex": "#F8BB86"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 236,
+        "token": "--wn-sweet-alert-animations-border",
+        "hex": "#F8D486"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 238,
+        "token": "--wn-sweet-alert-animations-border-2",
+        "hex": "#F8BB86"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 245,
+        "token": "--wn-sweet-alert-animations-border",
+        "hex": "#F8D486"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 247,
+        "token": "--wn-sweet-alert-animations-border-2",
+        "hex": "#F8BB86"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 250,
+        "token": "--wn-sweet-alert-animations-border",
+        "hex": "#F8D486"
+    },
+    {
+        "file": "modules/backend/assets/vendor/sweet-alert/sweet-alert-animations.less",
+        "line": 252,
+        "token": "--wn-sweet-alert-animations-border-2",
+        "hex": "#F8BB86"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/export.less",
+        "line": 7,
+        "token": "--wn-surface-hover",
+        "hex": "#f0f0f0"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 3,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 4,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 35,
+        "token": "--wn-surface-hover",
+        "hex": "#f0f0f0"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 75,
+        "token": "--wn-icon",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 80,
+        "token": "--wn-import-text",
+        "hex": "#4da7e8"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 127,
+        "token": "--wn-text-link",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 131,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 132,
+        "token": "--wn-surface-overlay",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 177,
+        "token": "--wn-icon-strong",
+        "hex": "#595959"
+    },
+    {
+        "file": "modules/backend/behaviors/importexportcontroller/assets/less/import.less",
+        "line": 184,
+        "token": "--wn-import-text-2",
+        "hex": "#333333"
+    },
+    {
+        "file": "modules/backend/behaviors/relationcontroller/assets/less/relation.less",
+        "line": 3,
+        "token": "--wn-border-subtle",
+        "hex": "#eeeeee"
+    },
+    {
+        "file": "modules/backend/formwidgets/fieldset/assets/less/fieldset.less",
+        "line": 3,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 5,
+        "token": "--wn-text-inverse",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 32,
+        "token": "--wn-fileupload-base-bg",
+        "hex": "#5fb6f5"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 40,
+        "token": "--wn-fileupload-base-border",
+        "hex": "#BDC3C7"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 42,
+        "token": "--wn-fileupload-base-bg-2",
+        "hex": "#F9F9F9"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 62,
+        "token": "--wn-text-muted",
+        "hex": "#BDC3C7"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 143,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 162,
+        "token": "--wn-text-heading",
+        "hex": "#2A3E51"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 184,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 201,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 255,
+        "token": "--wn-fileupload-base-shadow",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 324,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 372,
+        "token": "--wn-text",
+        "hex": "#666"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 379,
+        "token": "--wn-surface-raised",
+        "hex": "#FEFEFE"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 380,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 381,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 382,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 384,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 399,
+        "token": "--wn-surface-overlay",
+        "hex": "#BDC3C7"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.filemulti.less",
+        "line": 56,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.filesingle.less",
+        "line": 77,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.imagemulti.less",
+        "line": 23,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.imagemulti.less",
+        "line": 24,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.imagemulti.less",
+        "line": 35,
+        "token": "--wn-fileupload-imagemulti-border",
+        "hex": "#f6f8f9"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.imagesingle.less",
+        "line": 22,
+        "token": "--wn-fileupload-imagesingle-border",
+        "hex": "#f6f8f9"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.less",
+        "line": 4,
+        "token": "--wn-fileupload-progress-bar-color",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.less",
+        "line": 5,
+        "token": "--wn-fileupload-progress-bar-bg",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.less",
+        "line": 6,
+        "token": "--wn-fileupload-inactive-icon",
+        "hex": "#808b93"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.less",
+        "line": 7,
+        "token": "--wn-fileupload-object-active-bg",
+        "hex": "#4da7e8"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.less",
+        "line": 8,
+        "token": "--wn-surface-stripe",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.less",
+        "line": 9,
+        "token": "--wn-border-subtle",
+        "hex": "#eeeeee"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 3,
+        "token": "--wn-text-faint",
+        "hex": "#dddddd"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 4,
+        "token": "--wn-text-link",
+        "hex": "#404040"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 5,
+        "token": "--wn-surface-mid",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 6,
+        "token": "--wn-surface-selected",
+        "hex": "#404040"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 7,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 15,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 113,
+        "token": "--wn-border-strong",
+        "hex": "#808C8D"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 184,
+        "token": "--wn-text-muted",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 187,
+        "token": "--wn-text-muted",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 192,
+        "token": "--wn-text-muted",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/formwidgets/markdowneditor/assets/less/markdowneditor.less",
+        "line": 203,
+        "token": "--wn-text",
+        "hex": "#515c5d"
+    },
+    {
+        "file": "modules/backend/formwidgets/mediafinder/assets/less/mediafinder.base.less",
+        "line": 76,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/formwidgets/mediafinder/assets/less/mediafinder.base.less",
+        "line": 84,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/formwidgets/mediafinder/assets/less/mediafinder.base.less",
+        "line": 106,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/formwidgets/mediafinder/assets/less/mediafinder.filesingle.less",
+        "line": 64,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/formwidgets/mediafinder/assets/less/mediafinder.imagesingle.less",
+        "line": 16,
+        "token": "--wn-mediafinder-imagesingle-border",
+        "hex": "#f6f8f9"
+    },
+    {
+        "file": "modules/backend/formwidgets/nestedform/assets/less/nestedform.less",
+        "line": 3,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/backend/formwidgets/permissioneditor/assets/less/permissioneditor.less",
+        "line": 3,
+        "token": "--wn-border-focus",
+        "hex": "#DBE1E3"
+    },
+    {
+        "file": "modules/backend/formwidgets/permissioneditor/assets/less/permissioneditor.less",
+        "line": 4,
+        "token": "--wn-border-subtle",
+        "hex": "#ECF0F1"
+    },
+    {
+        "file": "modules/backend/formwidgets/permissioneditor/assets/less/permissioneditor.less",
+        "line": 51,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/formwidgets/permissioneditor/assets/less/permissioneditor.less",
+        "line": 87,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/formwidgets/permissioneditor/assets/less/permissioneditor.less",
+        "line": 138,
+        "token": "--wn-text-muted",
+        "hex": "#AAA"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 27,
+        "token": "--wn-border-focus",
+        "hex": "#dbdee0"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 47,
+        "token": "--wn-repeater-text",
+        "hex": "#d35714"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 59,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 66,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 81,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 122,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 129,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 141,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 148,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 195,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 199,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 208,
+        "token": "--wn-text-muted",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 223,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 240,
+        "token": "--wn-repeater-border",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 331,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 342,
+        "token": "--wn-icon-muted",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 364,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 371,
+        "token": "--wn-text",
+        "hex": "#666"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 380,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 401,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 411,
+        "token": "--wn-text",
+        "hex": "#666"
+    },
+    {
+        "file": "modules/backend/formwidgets/repeater/assets/less/repeater.less",
+        "line": 429,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
+        "line": 3,
+        "token": "--wn-border-focus",
+        "hex": "#DDD"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
+        "line": 4,
+        "token": "--wn-blockquote-level1-color",
+        "hex": "#5E35B1"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
+        "line": 5,
+        "token": "--wn-blockquote-level2-color",
+        "hex": "#00BCD4"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
+        "line": 6,
+        "token": "--wn-blockquote-level3-color",
+        "hex": "#43A047"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/_froala.less",
+        "line": 57,
+        "token": "--wn-surface-hover",
+        "hex": "#f2f2f2"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/_froala.less",
+        "line": 134,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 7,
+        "token": "--wn-text-faint",
+        "hex": "#dddddd"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 8,
+        "token": "--wn-text-link",
+        "hex": "#404040"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 9,
+        "token": "--wn-surface-mid",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 10,
+        "token": "--wn-surface-selected",
+        "hex": "#404040"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 11,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 47,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 51,
+        "token": "--wn-surface-overlay",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 54,
+        "token": "--wn-text-strong",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 186,
+        "token": "--wn-border-input",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 190,
+        "token": "--wn-text",
+        "hex": "#6c7071"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 197,
+        "token": "--wn-richeditor-border",
+        "hex": "#2581b8"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 255,
+        "token": "--wn-text-muted",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 260,
+        "token": "--wn-border-input",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 265,
+        "token": "--wn-text-muted",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
+        "line": 268,
+        "token": "--wn-border-input",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/backend/models/editorsetting/default_styles.less",
+        "line": 6,
+        "token": "--wn-text-muted",
+        "hex": "#AAA"
+    },
+    {
+        "file": "modules/backend/models/editorsetting/default_styles.less",
+        "line": 10,
+        "token": "--wn-border-dark",
+        "hex": "#222"
+    },
+    {
+        "file": "modules/backend/models/editorsetting/default_styles.less",
+        "line": 11,
+        "token": "--wn-border-dark",
+        "hex": "#222"
+    },
+    {
+        "file": "modules/backend/models/editorsetting/default_styles.less",
+        "line": 46,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/backend/models/editorsetting/default_styles.less",
+        "line": 75,
+        "token": "--wn-border",
+        "hex": "#CCC"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 8,
+        "token": "--wn-mediamanager-border",
+        "hex": "#2581b8"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 11,
+        "token": "--wn-text-inverse",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 16,
+        "token": "--wn-mediamanager-border",
+        "hex": "#2581b8"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 24,
+        "token": "--wn-text-inverse",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 62,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 77,
+        "token": "--wn-filetype-label",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 81,
+        "token": "--wn-text",
+        "hex": "#576D7E"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 88,
+        "token": "--wn-filetype-scss",
+        "hex": "#B73FD9"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 92,
+        "token": "--wn-filetype-xml",
+        "hex": "#EA9B47"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 96,
+        "token": "--wn-filetype-json",
+        "hex": "#A9A9A9"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 99,
+        "token": "--wn-filetype-pdf",
+        "hex": "#E30713"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 102,
+        "token": "--wn-filetype-txt",
+        "hex": "#248BD0"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 105,
+        "token": "--wn-filetype-ai",
+        "hex": "#F29200"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 108,
+        "token": "--wn-filetype-eps",
+        "hex": "#F9B234"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 111,
+        "token": "--wn-filetype-psd",
+        "hex": "#2DAAE2"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 117,
+        "token": "--wn-filetype-woff2",
+        "hex": "#C4CA10"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 123,
+        "token": "--wn-filetype-odt",
+        "hex": "#0F70B7"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 129,
+        "token": "--wn-filetype-xlsx",
+        "hex": "#3BAA34"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 134,
+        "token": "--wn-filetype-pptx",
+        "hex": "#D04526"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 139,
+        "token": "--wn-filetype-zip",
+        "hex": "#363A56"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 145,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 146,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 159,
+        "token": "--wn-icon",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 192,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 212,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 228,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 240,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 264,
+        "token": "--wn-icon",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 276,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 277,
+        "token": "--wn-surface-hover",
+        "hex": "#f6f8f9"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 282,
+        "token": "--wn-mediamanager-border-2",
+        "hex": "#f6f8f9"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 300,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 361,
+        "token": "--wn-mediamanager-border-3",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 363,
+        "token": "--wn-mediamanager-border-2",
+        "hex": "#f6f8f9"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 417,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 425,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 432,
+        "token": "--wn-icon",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 550,
+        "token": "--wn-border-strong",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 561,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 567,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 586,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 656,
+        "token": "--wn-surface-selected",
+        "hex": "#555"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 677,
+        "token": "--wn-text-inverse",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
+        "line": 683,
+        "token": "--wn-border-strong",
+        "hex": "#8e8e8e"
+    },
+    {
+        "file": "modules/backend/widgets/reportcontainer/assets/less/reportcontainer.less",
+        "line": 142,
+        "token": "--wn-text-muted",
+        "hex": "#bcc3c7"
+    },
+    {
+        "file": "modules/backend/widgets/reportcontainer/assets/less/reportcontainer.less",
+        "line": 146,
+        "token": "--wn-border-input",
+        "hex": "#bcc3c7"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 7,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 8,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 9,
+        "token": "--wn-table-odd-row",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 10,
+        "token": "--wn-table-even-row",
+        "hex": "#fafafa"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 11,
+        "token": "--wn-table-disabled-field",
+        "hex": "#f7f7f7"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 41,
+        "token": "--wn-text",
+        "hex": "#555555"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 70,
+        "token": "--wn-text-link",
+        "hex": "#333333"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 72,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 93,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 137,
+        "token": "--wn-surface-hover",
+        "hex": "#fbecec"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 140,
+        "token": "--wn-table-border",
+        "hex": "#ec0000"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 143,
+        "token": "--wn-table-border",
+        "hex": "#ec0000"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 145,
+        "token": "--wn-table-border",
+        "hex": "#ec0000"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 183,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 194,
+        "token": "--wn-text-heading",
+        "hex": "#323e50"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 265,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 267,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 279,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 349,
+        "token": "--wn-border-strong",
+        "hex": "#808c8d"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 350,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 368,
+        "token": "--wn-surface-raised",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 410,
+        "token": "--wn-icon-muted",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 489,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/backend/widgets/table/assets/less/table.less",
+        "line": 499,
+        "token": "--wn-text",
+        "hex": "#555555"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 8,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 9,
+        "token": "--wn-text-link",
+        "hex": "#475354"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 11,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 12,
+        "token": "--wn-text-faint",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 13,
+        "token": "--wn-surface-hover",
+        "hex": "#f1f3f4"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 15,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 16,
+        "token": "--wn-warning-component-bg",
+        "hex": "#ffc107"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.components.less",
+        "line": 17,
+        "token": "--wn-text-link",
+        "hex": "#343a40"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 11,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 12,
+        "token": "--wn-border-subtle",
+        "hex": "#e3e7e9"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 21,
+        "token": "--wn-border-subtle",
+        "hex": "#f2f3f4"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 30,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 37,
+        "token": "--wn-text-secondary",
+        "hex": "#808c8d"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 41,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 55,
+        "token": "--wn-theme-selector-text",
+        "hex": "#f1a84e"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 67,
+        "token": "--wn-surface-overlay",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 68,
+        "token": "--wn-border-input",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 75,
+        "token": "--wn-theme-selector-misc",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 107,
+        "token": "--wn-border-subtle",
+        "hex": "#e3e7e9"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 110,
+        "token": "--wn-border-subtle",
+        "hex": "#f2f3f4"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 121,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/cms/assets/less/winter.theme-selector.less",
+        "line": 122,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/cms/widgets/assetlist/assets/less/assetlist.less",
+        "line": 96,
+        "token": "--wn-surface-hover",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 12,
+        "token": "--wn-stripe-loader-color",
+        "hex": "#0090c0"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 31,
+        "token": "--wn-framework-extras-misc",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 68,
+        "token": "--wn-framework-flash-success-bg",
+        "hex": "#8da85e"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 69,
+        "token": "--wn-framework-flash-error-bg",
+        "hex": "#cc3300"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 71,
+        "token": "--wn-framework-flash-info-bg",
+        "hex": "#5fb6f5"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 72,
+        "token": "--wn-flash-text",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/less/settings/settings.less",
+        "line": 12,
+        "token": "--wn-text-heading",
+        "hex": "#293e50"
+    },
+    {
+        "file": "modules/system/assets/less/settings/settings.less",
+        "line": 47,
+        "token": "--wn-text",
+        "hex": "#777"
+    },
+    {
+        "file": "modules/system/assets/less/settings/settings.less",
+        "line": 56,
+        "token": "--wn-surface-hover",
+        "hex": "#f0f0f0"
+    },
+    {
+        "file": "modules/system/assets/less/settings/settings.less",
+        "line": 62,
+        "token": "--wn-icon-strong",
+        "hex": "#555"
+    },
+    {
+        "file": "modules/system/assets/less/settings/settings.less",
+        "line": 73,
+        "token": "--wn-surface-overlay",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 12,
+        "token": "--wn-stripe-loader-color",
+        "hex": "#0090c0"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 31,
+        "token": "--wn-snowboard-extras-misc",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 68,
+        "token": "--wn-snowboard-flash-success-bg",
+        "hex": "#6f9927"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 69,
+        "token": "--wn-snowboard-flash-error-bg",
+        "hex": "#bb380c"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 70,
+        "token": "--wn-flash-warning-bg",
+        "hex": "#b87410"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 71,
+        "token": "--wn-snowboard-flash-info-bg",
+        "hex": "#3f91cc"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 72,
+        "token": "--wn-flash-default-bg",
+        "hex": "#7a7e83"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 73,
+        "token": "--wn-flash-text",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 103,
+        "token": "--wn-snowboard-extras-misc",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 7,
+        "token": "--wn-warning",
+        "hex": "#c84530"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 13,
+        "token": "--wn-surface-hover",
+        "hex": "#f3f3f3"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 111,
+        "token": "--wn-border-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 121,
+        "token": "--wn-styles-bg",
+        "hex": "#7b8892"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 133,
+        "token": "--wn-surface-overlay",
+        "hex": "#d8d9db"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 171,
+        "token": "--wn-surface-hover",
+        "hex": "#ebebeb"
+    },
+    {
+        "file": "modules/system/assets/less/styles.less",
+        "line": 194,
+        "token": "--wn-styles-bg",
+        "hex": "#7b8892"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 17,
+        "token": "--wn-details-misc",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 35,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 36,
+        "token": "--wn-surface-selected",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 60,
+        "token": "--wn-border-focus",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 64,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 65,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/details.less",
+        "line": 68,
+        "token": "--wn-surface-canvas",
+        "hex": "#f8f8f8"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 6,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 42,
+        "token": "--wn-border-subtle",
+        "hex": "#E6E9E9"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 59,
+        "token": "--wn-text-secondary",
+        "hex": "#808C8D"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 65,
+        "token": "--wn-install-text",
+        "hex": "#C03F31"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 79,
+        "token": "--wn-border-subtle",
+        "hex": "#E6E9E9"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 80,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 106,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 142,
+        "token": "--wn-install-text",
+        "hex": "#C03F31"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 150,
+        "token": "--wn-text",
+        "hex": "#777"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 151,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 156,
+        "token": "--wn-border-subtle",
+        "hex": "#E6E9E9"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 159,
+        "token": "--wn-text-link",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 160,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 163,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 232,
+        "token": "--wn-install-border",
+        "hex": "#024e6a"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 237,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 238,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 244,
+        "token": "--wn-border-subtle",
+        "hex": "#E6E9E9"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 247,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 253,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 254,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 264,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 289,
+        "token": "--wn-text-link",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 290,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 291,
+        "token": "--wn-border-subtle",
+        "hex": "#f0f0f0"
+    },
+    {
+        "file": "modules/system/assets/less/updates/install.less",
+        "line": 294,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 9,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 14,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 17,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 18,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 57,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 66,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 71,
+        "token": "--wn-text-link",
+        "hex": "#455152"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 77,
+        "token": "--wn-updates-bg",
+        "hex": "#e01346"
+    },
+    {
+        "file": "modules/system/assets/less/updates/updates.less",
+        "line": 78,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/breadcrumb.less",
+        "line": 11,
+        "token": "--wn-text-inverse",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/breadcrumb.less",
+        "line": 12,
+        "token": "--wn-text-heading",
+        "hex": "#2A3E51"
+    },
+    {
+        "file": "modules/system/assets/ui/less/breadcrumb.less",
+        "line": 13,
+        "token": "--wn-surface-overlay",
+        "hex": "#d0d9dd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/breadcrumb.less",
+        "line": 14,
+        "token": "--wn-surface-mid",
+        "hex": "#9098a2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.mixins.less",
+        "line": 61,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.mixins.less",
+        "line": 69,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.mixins.less",
+        "line": 76,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 3,
+        "token": "--wn-text-inverse",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 7,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 15,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 19,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 23,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 27,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/button.variables.less",
+        "line": 33,
+        "token": "--wn-icon",
+        "hex": "#bcc3c7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 10,
+        "token": "--wn-callout-info-header-bg",
+        "hex": "#b9dbef"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 11,
+        "token": "--wn-callout-info-content-bg",
+        "hex": "#d8eaf4"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 12,
+        "token": "--wn-callout-info-icon",
+        "hex": "#597f97"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 13,
+        "token": "--wn-callout-warning-header-bg",
+        "hex": "#f6e7b2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 14,
+        "token": "--wn-callout-warning-content-bg",
+        "hex": "#f8f0d5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 15,
+        "token": "--wn-callout-warning-icon",
+        "hex": "#9f8e51"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 16,
+        "token": "--wn-callout-danger-header-bg",
+        "hex": "#f6b5b2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 17,
+        "token": "--wn-callout-danger-content-bg",
+        "hex": "#f8d6d5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 18,
+        "token": "--wn-callout-danger-icon",
+        "hex": "#9f5551"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 19,
+        "token": "--wn-callout-success-header-bg",
+        "hex": "#d3e9bf"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 20,
+        "token": "--wn-callout-success-content-bg",
+        "hex": "#e6f1db"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 21,
+        "token": "--wn-callout-success-icon",
+        "hex": "#6d915e"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 98,
+        "token": "--wn-callout-text",
+        "hex": "#2f2d26"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 130,
+        "token": "--wn-callout-text",
+        "hex": "#2f2d26"
+    },
+    {
+        "file": "modules/system/assets/ui/less/callout.less",
+        "line": 134,
+        "token": "--wn-callout-text",
+        "hex": "#2f2d26"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 12,
+        "token": "--wn-status-list-text",
+        "hex": "#7e8c8d"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 14,
+        "token": "--wn-chart-tooltip-bg",
+        "hex": "#000000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 15,
+        "token": "--wn-chart-tooltip-text",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 17,
+        "token": "--wn-scoreboard-title",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 18,
+        "token": "--wn-scoreboard-description",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 19,
+        "token": "--wn-scoreboard-body",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 20,
+        "token": "--wn-scoreboard-icon",
+        "hex": "#e5a91a"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 21,
+        "token": "--wn-scoreboard-positive",
+        "hex": "#95b753"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 22,
+        "token": "--wn-scoreboard-negative",
+        "hex": "#cc3300"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 316,
+        "token": "--wn-chart-border",
+        "hex": "#f0f0f0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/chart.less",
+        "line": 373,
+        "token": "--wn-chart-bg",
+        "hex": "#aaa"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.balloon.less",
+        "line": 5,
+        "token": "--wn-text-inverse",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.balloon.less",
+        "line": 6,
+        "token": "--wn-surface-overlay",
+        "hex": "#bcc3c7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.balloon.less",
+        "line": 8,
+        "token": "--wn-balloon-control-active-bg",
+        "hex": "#da5700"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 15,
+        "token": "--wn-text-inverse",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 18,
+        "token": "--wn-surface-hover",
+        "hex": "#f6f6f6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 76,
+        "token": "--wn-surface-raised",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 149,
+        "token": "--wn-surface-mid",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 285,
+        "token": "--wn-text-inverse",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 289,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 295,
+        "token": "--wn-checkbox-misc",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 320,
+        "token": "--wn-text-inverse",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/checkbox.less",
+        "line": 326,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 10,
+        "token": "--wn-text-link",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 11,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 42,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 120,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 136,
+        "token": "--wn-text",
+        "hex": "#666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 140,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 144,
+        "token": "--wn-datepicker-date-text",
+        "hex": "#33aaff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 149,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 151,
+        "token": "--wn-datepicker-date-text",
+        "hex": "#33aaff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 152,
+        "token": "--wn-datepicker-date-shadow",
+        "hex": "#178fe5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 159,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 164,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.date.less",
+        "line": 165,
+        "token": "--wn-datepicker-date-bg",
+        "hex": "#ff8000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.less",
+        "line": 42,
+        "token": "--wn-surface-overlay",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 18,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 40,
+        "token": "--wn-surface-canvas",
+        "hex": "#f7f7f7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 41,
+        "token": "--wn-border-subtle",
+        "hex": "#ebebeb"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 83,
+        "token": "--wn-border-strong",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 91,
+        "token": "--wn-border-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 98,
+        "token": "--wn-border-strong",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 106,
+        "token": "--wn-border-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 114,
+        "token": "--wn-border-strong",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 122,
+        "token": "--wn-border-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 129,
+        "token": "--wn-border-strong",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 137,
+        "token": "--wn-border-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 169,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 170,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 180,
+        "token": "--wn-surface-canvas",
+        "hex": "#f8f8f8"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 190,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 191,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.time.less",
+        "line": 220,
+        "token": "--wn-text",
+        "hex": "#666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/datepicker.variables.less",
+        "line": 7,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/dropdown.variables.less",
+        "line": 1,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/dropdown.variables.less",
+        "line": 3,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/ui/less/dropdown.variables.less",
+        "line": 4,
+        "token": "--wn-border-subtle",
+        "hex": "#e5e5e5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/dropdown.variables.less",
+        "line": 8,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/dropdown.variables.less",
+        "line": 17,
+        "token": "--wn-border",
+        "hex": "#c9c9c9"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 13,
+        "token": "--wn-surface-hover",
+        "hex": "#ECF0F1"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 15,
+        "token": "--wn-border",
+        "hex": "#D7DBDD"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 17,
+        "token": "--wn-text-strong",
+        "hex": "#000000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 18,
+        "token": "--wn-surface-canvas",
+        "hex": "#fafafa"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 88,
+        "token": "--wn-text-inverse",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 168,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 173,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 244,
+        "token": "--wn-text-inverse",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 252,
+        "token": "--wn-text-strong",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/filter.less",
+        "line": 307,
+        "token": "--wn-text-inverse",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/flashmessage.less",
+        "line": 12,
+        "token": "--wn-flashmessage-flash-success-bg",
+        "hex": "#8da85e"
+    },
+    {
+        "file": "modules/system/assets/ui/less/flashmessage.less",
+        "line": 13,
+        "token": "--wn-flashmessage-flash-error-bg",
+        "hex": "#cc3300"
+    },
+    {
+        "file": "modules/system/assets/ui/less/flashmessage.less",
+        "line": 15,
+        "token": "--wn-flashmessage-flash-info-bg",
+        "hex": "#5fb6f5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/flashmessage.less",
+        "line": 16,
+        "token": "--wn-flash-text",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.less",
+        "line": 26,
+        "token": "--wn-border-subtle",
+        "hex": "#eee"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.less",
+        "line": 231,
+        "token": "--wn-border-subtle",
+        "hex": "#eee"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 6,
+        "token": "--wn-surface-input",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 9,
+        "token": "--wn-input-color",
+        "hex": "#385487"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 16,
+        "token": "--wn-text-faint",
+        "hex": "#cccccc"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 17,
+        "token": "--wn-text-secondary",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 24,
+        "token": "--wn-border-subtle",
+        "hex": "#e5e5e5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 31,
+        "token": "--wn-text-heading",
+        "hex": "#2A3E51"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 38,
+        "token": "--wn-text-muted",
+        "hex": "#C4C4C4"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 43,
+        "token": "--wn-text-inverse",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 44,
+        "token": "--wn-surface-hover",
+        "hex": "#f6f6f6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 45,
+        "token": "--wn-text",
+        "hex": "#555555"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 46,
+        "token": "--wn-surface-input",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 47,
+        "token": "--wn-icon",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 48,
+        "token": "--wn-text",
+        "hex": "#777777"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 52,
+        "token": "--wn-border-subtle",
+        "hex": "#e2e2e2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/form.variables.less",
+        "line": 53,
+        "token": "--wn-surface-raised",
+        "hex": "#FFFFFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.mixins.gradient.less",
+        "line": 30,
+        "token": "--wn-global-mixins-gradient-misc",
+        "hex": "#555"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.mixins.gradient.less",
+        "line": 30,
+        "token": "--wn-global-mixins-gradient-misc-2",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.mixins.gradient.less",
+        "line": 50,
+        "token": "--wn-global-mixins-gradient-misc",
+        "hex": "#555"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.mixins.gradient.less",
+        "line": 50,
+        "token": "--wn-global-mixins-gradient-misc-2",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 6,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 116,
+        "token": "--wn-text",
+        "hex": "#405261"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 117,
+        "token": "--wn-text-secondary",
+        "hex": "#8f8f8f"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 120,
+        "token": "--wn-border",
+        "hex": "#cccccc"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 121,
+        "token": "--wn-border-subtle",
+        "hex": "#e1e1e1"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 150,
+        "token": "--wn-highlight-hover-text",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 153,
+        "token": "--wn-highlight-active-text",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/global.variables.less",
+        "line": 179,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/icon.variables.less",
+        "line": 6,
+        "token": "--wn-text-strong",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/icon.variables.less",
+        "line": 7,
+        "token": "--wn-shadow",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 15,
+        "token": "--wn-surface-hover",
+        "hex": "#f2f2f2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 16,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 17,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 18,
+        "token": "--wn-text-link",
+        "hex": "#333333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 19,
+        "token": "--wn-inspector-input-text",
+        "hex": "#385487"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 20,
+        "token": "--wn-text-faint",
+        "hex": "#c8cccd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 21,
+        "token": "--wn-inspector-changed",
+        "hex": "#c03f31"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 76,
+        "token": "--wn-surface-overlay",
+        "hex": "#e0e4e5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 83,
+        "token": "--wn-inspector-text",
+        "hex": "#c03f31"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 122,
+        "token": "--wn-text-muted",
+        "hex": "#b5babd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 126,
+        "token": "--wn-text-muted",
+        "hex": "#b5babd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 130,
+        "token": "--wn-text-muted",
+        "hex": "#b5babd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 134,
+        "token": "--wn-text-muted",
+        "hex": "#b5babd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 180,
+        "token": "--wn-text-muted",
+        "hex": "#b5babd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 233,
+        "token": "--wn-text-heading",
+        "hex": "#2b3e50"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 349,
+        "token": "--wn-text-link",
+        "hex": "#333333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 471,
+        "token": "--wn-border-input",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 478,
+        "token": "--wn-surface-hover",
+        "hex": "#f2f2f2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 479,
+        "token": "--wn-border-input",
+        "hex": "#bdc3c7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 494,
+        "token": "--wn-border-subtle",
+        "hex": "#e2e2e2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 499,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 515,
+        "token": "--wn-text-link",
+        "hex": "#333333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 517,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 520,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 533,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 536,
+        "token": "--wn-border-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 540,
+        "token": "--wn-inspector-border",
+        "hex": "#5fb6f5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 559,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 669,
+        "token": "--wn-border-input",
+        "hex": "#b2b9be"
+    },
+    {
+        "file": "modules/system/assets/ui/less/inspector.less",
+        "line": 676,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 35,
+        "token": "--wn-surface-hover",
+        "hex": "#f2f2f2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 213,
+        "token": "--wn-list-text",
+        "hex": "#337ab7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 219,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 225,
+        "token": "--wn-list-text-2",
+        "hex": "#b2341c"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 231,
+        "token": "--wn-list-text-3",
+        "hex": "#278731"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 237,
+        "token": "--wn-text-secondary",
+        "hex": "#888888"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 249,
+        "token": "--wn-text-secondary",
+        "hex": "#98a7a8"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 283,
+        "token": "--wn-icon-muted",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 352,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 521,
+        "token": "--wn-text-strong",
+        "hex": "#000000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.less",
+        "line": 614,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 9,
+        "token": "--wn-surface-stripe",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 13,
+        "token": "--wn-border-focus",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 15,
+        "token": "--wn-text-faint",
+        "hex": "#dddddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 16,
+        "token": "--wn-text-faint",
+        "hex": "#dddddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 18,
+        "token": "--wn-text-faint",
+        "hex": "#cfcfcf"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 19,
+        "token": "--wn-icon-muted",
+        "hex": "#a1aab1"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 20,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 23,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 26,
+        "token": "--wn-border-subtle",
+        "hex": "#eeeeee"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 27,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 28,
+        "token": "--wn-text",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 29,
+        "token": "--wn-text-strong",
+        "hex": "#000000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 30,
+        "token": "--wn-text-secondary",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 31,
+        "token": "--wn-list-stripe-active",
+        "hex": "#ff9933"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 32,
+        "token": "--wn-surface-stripe",
+        "hex": "#ECF0F1"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 33,
+        "token": "--wn-text",
+        "hex": "#555555"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 38,
+        "token": "--wn-list-active-sort",
+        "hex": "#c63e26"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 39,
+        "token": "--wn-text-faint",
+        "hex": "#E4E7E8"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 40,
+        "token": "--wn-list-progress-bg",
+        "hex": "#F5F5F5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 42,
+        "token": "--wn-status-list-text",
+        "hex": "#7e8c8d"
+    },
+    {
+        "file": "modules/system/assets/ui/less/loader.less",
+        "line": 11,
+        "token": "--wn-loading-indicator-text",
+        "hex": "#999999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/loader.less",
+        "line": 231,
+        "token": "--wn-loader-misc",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/system/assets/ui/less/pagination.less",
+        "line": 11,
+        "token": "--wn-icon-strong",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/pagination.less",
+        "line": 13,
+        "token": "--wn-text-muted",
+        "hex": "#b6b6b6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/pagination.less",
+        "line": 14,
+        "token": "--wn-text-secondary",
+        "hex": "#98a7a8"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popover.less",
+        "line": 13,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popover.less",
+        "line": 15,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popover.less",
+        "line": 16,
+        "token": "--wn-text-heading",
+        "hex": "#2a3e51"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popover.less",
+        "line": 217,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popover.less",
+        "line": 246,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popover.less",
+        "line": 251,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popup.variables.less",
+        "line": 6,
+        "token": "--wn-text-heading",
+        "hex": "#2A3E51"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popup.variables.less",
+        "line": 8,
+        "token": "--wn-surface-canvas",
+        "hex": "#f9f9f9"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popup.variables.less",
+        "line": 16,
+        "token": "--wn-border-strong",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/popup.variables.less",
+        "line": 19,
+        "token": "--wn-border-subtle",
+        "hex": "#e5e5e5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/progressbar.less",
+        "line": 11,
+        "token": "--wn-progress-bg",
+        "hex": "#d9dee0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/progressbar.less",
+        "line": 12,
+        "token": "--wn-progress-bar-color",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/progressbar.less",
+        "line": 14,
+        "token": "--wn-progress-bar-bg",
+        "hex": "#2f99da"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.less",
+        "line": 57,
+        "token": "--wn-text-secondary",
+        "hex": "#95a5a6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.less",
+        "line": 194,
+        "token": "--wn-text-link",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.less",
+        "line": 351,
+        "token": "--wn-text-secondary",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.less",
+        "line": 360,
+        "token": "--wn-text-link",
+        "hex": "#333"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 5,
+        "token": "--wn-icon-strong",
+        "hex": "#666666"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 6,
+        "token": "--wn-border-input",
+        "hex": "#b2b9be"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 7,
+        "token": "--wn-border-strong",
+        "hex": "#808c8d"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 8,
+        "token": "--wn-surface-hover",
+        "hex": "#f6f6f6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 9,
+        "token": "--wn-surface-hover",
+        "hex": "#f5f5f5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 11,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 15,
+        "token": "--wn-surface-input",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 16,
+        "token": "--wn-border",
+        "hex": "#ccc"
+    },
+    {
+        "file": "modules/system/assets/ui/less/select.variables.less",
+        "line": 17,
+        "token": "--wn-text",
+        "hex": "#515c5d"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.normalize.less",
+        "line": 141,
+        "token": "--wn-site-normalize-bg",
+        "hex": "#ff0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.normalize.less",
+        "line": 142,
+        "token": "--wn-text-strong",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.normalize.less",
+        "line": 412,
+        "token": "--wn-border",
+        "hex": "#c0c0c0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 10,
+        "token": "--wn-text-strong",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 36,
+        "token": "--wn-border-strong",
+        "hex": "#999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 68,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 78,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 84,
+        "token": "--wn-border-dark",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 88,
+        "token": "--wn-border-dark",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.print.less",
+        "line": 97,
+        "token": "--wn-border-focus",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/site.typography.less",
+        "line": 116,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 14,
+        "token": "--wn-text-muted",
+        "hex": "#bbbbbb"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 16,
+        "token": "--wn-border-focus",
+        "hex": "#e0e0e0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 17,
+        "token": "--wn-text-muted",
+        "hex": "#bbbbbb"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 19,
+        "token": "--wn-border",
+        "hex": "#d0d0d0"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 20,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 21,
+        "token": "--wn-tab-active-marker",
+        "hex": "#ec8017"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 22,
+        "token": "--wn-surface-raised",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 23,
+        "token": "--wn-border-subtle",
+        "hex": "#e3e5e7"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 31,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 33,
+        "token": "--wn-border-focus",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 39,
+        "token": "--wn-border-focus",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 41,
+        "token": "--wn-border-focus",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 334,
+        "token": "--wn-border-focus",
+        "hex": "#d6d6d6"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.less",
+        "line": 127,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.less",
+        "line": 199,
+        "token": "--wn-text-muted",
+        "hex": "#bdbdbd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.less",
+        "line": 223,
+        "token": "--wn-toolbar-text",
+        "hex": "#c03f31"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.less",
+        "line": 242,
+        "token": "--wn-border-subtle",
+        "hex": "#ecf0f1"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.variables.less",
+        "line": 5,
+        "token": "--wn-text-muted",
+        "hex": "#bbbbbb"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.variables.less",
+        "line": 6,
+        "token": "--wn-surface-hover",
+        "hex": "#f2f2f2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.variables.less",
+        "line": 7,
+        "token": "--wn-border",
+        "hex": "#d4d8da"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.variables.less",
+        "line": 9,
+        "token": "--wn-surface-overlay",
+        "hex": "#ddd"
+    },
+    {
+        "file": "modules/system/assets/ui/less/toolbar.variables.less",
+        "line": 11,
+        "token": "--wn-text-strong",
+        "hex": "#000"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tooltip.variables.less",
+        "line": 6,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/system/assets/ui/vendor/select2/css/select2.less",
+        "line": 49,
+        "token": "--wn-border-input",
+        "hex": "#aaa"
+    },
+    {
+        "file": "modules/system/assets/ui/vendor/select2/css/select2.less",
+        "line": 112,
+        "token": "--wn-surface-raised",
+        "hex": "#fff"
+    }
+]
