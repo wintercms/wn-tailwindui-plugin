@@ -1,12 +1,17 @@
 # Dark-mode / brand-colour architecture — handoff
 
-_Last updated: 2026-08-25. Pick-up doc for continuing on another machine._
+_Last updated: 2026-09-14. Pick-up doc for continuing on another machine._
 
 ## TL;DR — where we are
 
 1. **Dark-mode bug fixes (G1–G26): shipped.** On `wip/darkmode-fixes`, rebased clean onto `main`, open as **PR wintercms/wn-tailwindui-plugin#58**.
 2. **Core brand-var exposure: merged.** `modules/backend/models/brandsetting/custom.less` now emits `:root { --brand-primary/secondary/accent }`, so those CSS vars are live in the backend.
-3. **Active work = the light-mode colour cleanup** (Task #14 "brand architecture P2–P4"), driven by an interactive report (below). Nothing here is applied to core yet — it's the plan + approval gate.
+3. **Light-mode colour cleanup: shipped.** Core's colour literals now route through a
+   `--wn-*` token block — open as **PR wintercms/winter#1541** (4 commits on
+   `wip/colour-tokens-experiment`). See `HANDOFF-token-experiment.md` for what shipped,
+   the tooling in `tools/`, and what is still open. The interactive reports below
+   (`color-consolidation.html`, `color-token-map.html`) were the approval gate and are
+   now **superseded** — their groupings predate the fit guard that shipped.
 4. **A full design mock exists** (`palette-ui-kit-fable.html`) — a *prototype* of the future skin direction. Reviewed by "Fable" at **A− / shippable direction**. NOT implemented in the real skin.
 
 ## Branches / PRs
@@ -14,12 +19,23 @@ _Last updated: 2026-08-25. Pick-up doc for continuing on another machine._
 - Plugin repo `wintercms/wn-tailwindui-plugin`:
   - `wip/darkmode-fixes` → **PR #58** (dark-mode fixes + Phase-1 brand-derived fancy accent). Rebased onto `main` (the Builder-support base was squash-merged as #57, so those 4 commits were dropped). Backup tag `backup/darkmode-fixes-pre-rebase` exists locally at the old tip if ever needed.
   - `darkmode.css` derives `--drk-accent-*` from `--brand-secondary` via `color-mix()` (falls back to committed literals if the core var isn't present, so #58 is self-contained).
-- Core repo `wintercms/winter` (`develop`):
+- Core repo `wintercms/winter`:
   - `custom.less` brand-var block: **merged**.
+  - `wip/colour-tokens-experiment` → **PR #1541** (colour tokens + brand asset refresh +
+    tab/toolbar focus indicators). Based on `develop` at `44e9d68f8`.
 
 ## The artifacts (all in `plugins/winter/tailwindui/darkmode-audit/`)
 
-- **`color-consolidation.html`** ← START HERE for the current task. Interactive report: every core light-mode hardcode (152 distinct hex / 428 uses across 105 LESS files) clustered into **21 proposed `--wn-*` tokens**. Each group card = clickable circle swatches (winner ring-highlighted) + a live preview of the real UI elements it's used on; click a swatch to toggle the candidate in place. **This is the approval gate — the owner reviews and signs off / overrides each group's winner before any mass find-replace.**
+- **`HANDOFF-token-experiment.md`** ← START HERE. Covers PR #1541: what shipped, the
+  committed tooling in `tools/`, the traps worth knowing, and the three open items
+  (the 56 LESS-function-locked literals, 11 pre-existing contrast failures, no tests).
+- **`tools/`** — the colour-token tooling, in git. `tools/README.md` first. Changing a
+  colour is: edit `tools/tokens-values.json` → `apply.php` → `build.sh`.
+- **`color-consolidation.html`**, **`color-token-map.html`** — *superseded*. These were
+  the approval gate for the tokenisation now shipped in #1541: interactive reports
+  clustering every core light-mode hardcode into proposed `--wn-*` tokens, with live
+  previews of the UI each group paints. Their groupings predate the fit guard that
+  shipped, so they no longer match the applied token set — keep for reference only.
 - `color-centralization-audit.md` — the *dark plugin* palette audit (`--drk-*`), separate from the core light-mode work above.
 - `color-misuse-audit.md` — ~34 off-palette misuse accents in the dark skin (still only audited, not fixed): e.g. `#3498db` (darkmode.css:82,133), `#0180ff` (981), gold filter-active, neon User.Statistics, media-manager title rainbow.
 - `brand-color-variable-architecture.md` — the P1–P4 design doc.
