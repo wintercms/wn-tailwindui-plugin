@@ -1500,5 +1500,223 @@ document.querySelectorAll('.card').forEach(card => {
   });
 });
 </script>
+
+<!-- ===== decisions layer (additive; records approvals for hand-off) ===== -->
+<style>
+  .dec-bar{position:sticky;top:0;z-index:900;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:10px 16px;background:#0e1a28;color:#e8eef4;border-bottom:1px solid #2a3a4a;
+    font:500 13px/1.4 'Public Sans',ui-sans-serif,system-ui,sans-serif}
+  .dec-bar .dec-t{font-weight:700;letter-spacing:.01em}
+  .dec-prog{display:flex;align-items:center;gap:8px;margin-left:auto}
+  .dec-track{width:150px;height:7px;border-radius:4px;background:#24384a;overflow:hidden}
+  .dec-fill{height:100%;background:#57b9d2;width:0%;transition:width .18s ease}
+  .dec-n{font-variant-numeric:tabular-nums;font-size:12px;color:#a8bccc;white-space:nowrap}
+  .dec-btn{border:1px solid #3a5064;background:#17293a;color:#e8eef4;border-radius:7px;
+    padding:6px 12px;font:600 12px/1 'Public Sans',sans-serif;cursor:pointer}
+  .dec-btn:hover{background:#20374b;border-color:#57b9d2}
+  .dec-btn.primary{background:#2da7c7;border-color:#2da7c7;color:#06202a}
+  .dec-btn.primary:hover{background:#57b9d2}
+  .dec-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+    padding:9px 12px;margin:10px 0 0;border-top:1px dashed #d8dee4}
+  .dec-state{font:700 10px/1 'Public Sans',sans-serif;text-transform:uppercase;letter-spacing:.08em;
+    padding:4px 8px;border-radius:20px;white-space:nowrap}
+  .dec-state.pending{background:#f3e6d4;color:#8a5a1c}
+  .dec-state.ok{background:#dff0d8;color:#3c763d}
+  .dec-state.over{background:#dceef5;color:#1b6477}
+  .dec-note{flex:1;min-width:190px;padding:6px 9px;border:1px solid #cfd8de;border-radius:6px;
+    font:400 12px/1.4 'Public Sans',sans-serif;color:#0e1a28;background:#fff}
+  .dec-note:focus{outline:2px solid #57b9d2;outline-offset:1px}
+  .dec-clear{border:0;background:none;color:#8a97a2;font:500 11px/1 'Public Sans',sans-serif;
+    cursor:pointer;text-decoration:underline}
+  .dec-clear:hover{color:#ab4a21}
+  .dec-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:1000;
+    background:#0e1a28;color:#fff;padding:10px 16px;border-radius:8px;
+    font:600 13px/1 'Public Sans',sans-serif;box-shadow:0 6px 22px rgba(0,0,0,.28)}
+  @media print{.dec-bar,.dec-row,.dec-toast{display:none}}
+</style>
+<script>
+(function(){
+  "use strict";
+  var LS = 'wn-colour-decisions-v1';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch (e) { state = {}; }
+  function save(){ try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} }
+
+  var cards = [].slice.call(document.querySelectorAll('section.card.kind-token'));
+  var meta = {};
+
+  cards.forEach(function(card){
+    var id = card.id;
+    if (!id) return;
+    var tokEl = card.querySelector('.tok');
+    var winEl = card.querySelector('.sw.win');
+    if (!tokEl || !winEl) return;
+    var h3 = card.querySelector('h3');
+    meta[id] = {
+      token: tokEl.textContent.trim(),
+      title: h3 ? h3.textContent.trim() : '',
+      winner: winEl.dataset.hex
+    };
+
+    var row = document.createElement('div');
+    row.className = 'dec-row';
+    var badge = document.createElement('span');
+    badge.className = 'dec-state pending';
+    badge.textContent = 'not approved';
+    var note = document.createElement('input');
+    note.type = 'text';
+    note.className = 'dec-note';
+    note.placeholder = 'Reason for an override, or any note (optional)';
+    note.value = (state[id] && state[id].note) || '';
+    note.addEventListener('input', function(){
+      state[id] = state[id] || { hex: null };
+      state[id].note = note.value;
+      save();
+    });
+    var clear = document.createElement('button');
+    clear.type = 'button'; clear.className = 'dec-clear'; clear.textContent = 'clear';
+    clear.addEventListener('click', function(){
+      delete state[id]; save(); note.value = '';
+      var w = card.querySelector('.sw.win'); if (w) w.click();
+      delete state[id]; save();   // the replayed click re-records; drop it again
+      paint(); refresh();
+    });
+    row.appendChild(badge); row.appendChild(note); row.appendChild(clear);
+    card.appendChild(row);
+    card._decBadge = badge;
+
+    // Record on any swatch click. Their handler runs first and does the visuals.
+    card.querySelectorAll('.sw').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        state[id] = { hex: btn.dataset.hex, note: note.value || '' };
+        save(); paint(); refresh();
+      });
+    });
+  });
+
+  function paint(){
+    cards.forEach(function(card){
+      var d = state[card.id], m = meta[card.id], b = card._decBadge;
+      if (!b || !m) return;
+      if (!d || !d.hex) { b.className = 'dec-state pending'; b.textContent = 'not approved'; }
+      else if (d.hex.toLowerCase() === m.winner.toLowerCase()) { b.className = 'dec-state ok'; b.textContent = 'approved'; }
+      else { b.className = 'dec-state over'; b.textContent = 'override'; }
+    });
+  }
+
+  // Toolbar
+  var bar = document.createElement('div');
+  bar.className = 'dec-bar';
+  var t = document.createElement('span'); t.className = 'dec-t'; t.textContent = 'Consolidation decisions';
+  var hint = document.createElement('span');
+  hint.style.cssText = 'font-size:12px;color:#a8bccc';
+  hint.textContent = 'click a swatch in any group to approve it';
+  var prog = document.createElement('span'); prog.className = 'dec-prog';
+  var track = document.createElement('span'); track.className = 'dec-track';
+  var fill = document.createElement('span'); fill.className = 'dec-fill';
+  track.appendChild(fill);
+  var num = document.createElement('span'); num.className = 'dec-n';
+  prog.appendChild(num); prog.appendChild(track);
+  var copyBtn = document.createElement('button');
+  copyBtn.type = 'button'; copyBtn.className = 'dec-btn primary'; copyBtn.textContent = 'Copy decisions';
+  var resetBtn = document.createElement('button');
+  resetBtn.type = 'button'; resetBtn.className = 'dec-btn'; resetBtn.textContent = 'Reset all';
+  bar.appendChild(t); bar.appendChild(hint); bar.appendChild(prog);
+  bar.appendChild(copyBtn); bar.appendChild(resetBtn);
+  document.body.insertBefore(bar, document.body.firstChild);
+
+  function decided(){ return cards.filter(function(c){ return state[c.id] && state[c.id].hex; }); }
+  function refresh(){
+    var n = decided().length, total = cards.length;
+    num.textContent = n + ' of ' + total + ' approved';
+    fill.style.width = total ? Math.round(n / total * 100) + '%' : '0%';
+  }
+
+  function buildText(){
+    var done = [], pending = [], overrides = 0;
+    cards.forEach(function(card){
+      var m = meta[card.id], d = state[card.id];
+      if (!m) return;
+      if (!d || !d.hex) { pending.push(m.token); return; }
+      var isWin = d.hex.toLowerCase() === m.winner.toLowerCase();
+      if (!isWin) overrides++;
+      var line = m.token + ': ' + d.hex + (isWin ? '   [recommended]' : '   [OVERRIDE — recommended ' + m.winner + ']');
+      if (d.note) line += '\n    note: ' + d.note;
+      done.push(line);
+    });
+    var out = [];
+    out.push('Winter core light-mode palette — consolidation decisions');
+    out.push(done.length + ' of ' + cards.length + ' groups approved' + (overrides ? ' (' + overrides + ' override' + (overrides === 1 ? '' : 's') + ')' : ''));
+    out.push('source: darkmode-audit/color-consolidation.html');
+    out.push('');
+    if (done.length) { out.push('APPROVED'); out.push(done.join('\n')); out.push(''); }
+    if (pending.length) { out.push('PENDING (' + pending.length + ')'); out.push('  ' + pending.join(', ')); out.push(''); }
+    var json = { version: 1, total: cards.length, approved: done.length, decisions: {} };
+    cards.forEach(function(card){
+      var m = meta[card.id], d = state[card.id];
+      if (!m || !d || !d.hex) return;
+      json.decisions[m.token] = {
+        hex: d.hex,
+        recommended: m.winner,
+        override: d.hex.toLowerCase() !== m.winner.toLowerCase(),
+        note: d.note || ''
+      };
+    });
+    out.push('---JSON---');
+    out.push(JSON.stringify(json));
+    return out.join('\n');
+  }
+
+  function toast(msg){
+    var el = document.createElement('div');
+    el.className = 'dec-toast'; el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 2100);
+  }
+
+  copyBtn.addEventListener('click', function(){
+    var text = buildText();
+    function fallback(){
+      // navigator.clipboard is unavailable in some file:// contexts
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      toast(ok ? 'Decisions copied — paste them to Claude' : 'Copy failed — select the text manually');
+      if (!ok) { window.prompt('Copy the decisions below:', text); }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){
+        toast('Decisions copied — paste them to Claude');
+      }, fallback);
+    } else { fallback(); }
+  });
+
+  resetBtn.addEventListener('click', function(){
+    if (!window.confirm('Clear all recorded decisions? The report itself is untouched.')) return;
+    state = {}; save();
+    cards.forEach(function(card){
+      var n = card.querySelector('.dec-note'); if (n) n.value = '';
+      var w = card.querySelector('.sw.win'); if (w) w.click();
+    });
+    state = {}; save();
+    paint(); refresh();
+  });
+
+  // Restore prior session: replay the click so the existing preview logic runs.
+  Object.keys(state).forEach(function(id){
+    var card = document.getElementById(id), d = state[id];
+    if (!card || !d || !d.hex) return;
+    var btn = card.querySelector('.sw[data-hex="' + d.hex + '"]');
+    if (btn) btn.click();
+  });
+  try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {}
+
+  paint(); refresh();
+})();
+</script>
 </body>
 </html>
