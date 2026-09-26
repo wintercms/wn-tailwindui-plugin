@@ -91,14 +91,16 @@
 | (G7) | — | richeditor toolbar white — already tracked as G7 | reported |
 
 ## Capture characterizations (exact values for the fix)
+
 - **G21 fieldset** (`winter/test/records/update/3#secondarytab-formwidgets`): `.fieldset { background: rgb(245,245,245); border-color: rgb(209,214,217); color: rgb(201,209,217) }` → light bg + light text = low-contrast. Fix: darken bg + border in `darkmode.css`.
 - **G26 EasyForms builder** (`luketowers/easyforms/forms/update/N`): the field-palette cards **and the form canvas are white** — the builder is essentially un-dark-mode'd. Field inputs + fancy header are dark; everything else (palette, canvas, "Add field/Properties" toggle) is light. **Owner: LukeTowers.EasyForms** (its builder CSS gets dark-scoped rules). Big surface.
 
-## Still-uncaptured (setup/data blockers — do during fix pass)
-- **Winter.Builder** G23/G24/G25 (DataTable dropdowns / model form-builder / backend-menu editor): need a Builder-created plugin present (the test ones were deleted) — recreate a scratch plugin to capture.
-- Core surfaces named but characterized-from-report (screenshot + probe when fixing): settings-page tabs (G1), SSO logs preview (G2), relation-manager embed border (G5), switch field close-up (G4), CMS template delete button (G17), Pages list + delete (G18), Pages menu-editor tabs (G19), theme-editor component list (G20), dashboard report-widget box-shadow (G22), settings hint headers (G10).
+## Previously uncaptured surfaces — all resolved
+
+Every surface this section once listed as uncaptured was captured during the fix pass; see the fix log at the top for each result. G4, G8 and G17 turned out not to be dark-mode bugs. The only item not visually confirmed is **G24** (Builder model form-builder): its rules were written from the `.less` source, but reaching the form-builder needs a Builder-created model.
 
 ## Blocked on data (can't capture until seeded)
+
 - **Mall Orders / Discounts / Payments** — all lists are **empty** (`mall:seed-demo` never populated products→orders). The list *chrome* is fine; the rich order-detail / discount-rule / payment-gateway screens need a working seed (or manual data) first. **Prereq: fix the Mall seed.**
 
 ## Round 3 (user-reported) + fix-ownership directive
@@ -108,23 +110,25 @@
 | ID | Sev | Issue | Fix owner |
 |----|-----|-------|-----------|
 | **G21** | Moderate | **Fieldset** form widget styling | core → **TailwindUI** (`winter/test/records/update/3#secondarytab-formwidgets`) |
-| **G22** | Moderate | **Dashboard/report-widget box-shadow** wrong in dark | `redirect/statistics` — if the shadow is Redirect's statistics CSS → **Winter.Redirect**; if core report-widget → TailwindUI (determine) |
-| **G23** | High | **DataTable dropdowns** (Builder migration builder) | **Winter.Builder** (its DataTable/build CSS) |
+| **G22** | Moderate | **Dashboard/report-widget box-shadow** wrong in dark | **Winter.Redirect** — confirmed: the shadow comes from its `statistics.css` |
+| **G23** | High | **DataTable dropdowns** (Builder migration builder) | **TailwindUI** — confirmed core `table.css`, not Builder's |
 | **G24** | High | **Model form-builder** UI | **Winter.Builder** |
 | **G25** | High | **Backend-menu editor** UI | **Winter.Builder** |
 | **G26** | High | **EasyForms visual form-builder** (entire thing) | **LukeTowers.EasyForms** |
 
 ### Fix ownership map
-- **TailwindUI `darkmode.css` (core/shared):** G1 tabs, G2 preview panels, G3 `.control-table`, G4 switches, G5 relation embeds, G6 btn-default, G7 markdown/richeditor toolbars (core editors), G8 mail-branding, G9 theme picker, G10 hint headers, G11 media, G13 md-table borders, G14 list totals, G15 filters, G16 fancy header, G21 fieldset, event-log preview.
-- **Winter.Builder:** G23 DataTable dropdowns, G24 model form-builder, G25 backend-menu editor (+ the earlier Builder tab-sides work already there).
+
+- **TailwindUI `darkmode.css` (core/shared):** G1 tabs, G2 preview panels, G3 `.control-table`, G5 relation embeds, G6 btn-default, G7 markdown/richeditor toolbars (core editors), G9 theme picker, G11 media, G13 md-table borders, G14 list totals, G15 filters, G16 fancy header, G19 master-area tab wings, G20 theme-editor component list, G21 fieldset, G23 table-widget dropdowns, event-log preview. (G4, G8 and G17 were not dark-mode bugs; G10 and G18 verified clean.)
+- **Winter.Builder:** G24 model form-builder, G25 backend-menu editor (+ the earlier Builder tab-sides work already there).
 - **LukeTowers.EasyForms:** G26 form-builder.
 - **Winter.Translate:** G12 ML locale badge (the badge is MLControl's markup — Translate owns it).
-- **Winter.Redirect:** G22 if it's the statistics page's own shadow; G17/G18 CMS/Pages delete buttons + G19/G20 are Pages/CMS-editor (Winter.Pages / core CMS module — determine per-element).
+- **Winter.Redirect:** G22 statistics-page shadow.
 - **Winter.Mall:** currency badge + its orders/discounts/payments chrome (pending capture).
 
 Each plugin already loads backend CSS (e.g. Builder `build.js`/`builder.css`, EasyForms builder assets, Blog `winter.blog-preview.css`); the dark rules get appended there, scoped to the dark selector — mirroring how TailwindUI scopes its own.
 
 ## Root-cause clusters (for the fix pass)
+
 1. **Undarkened light backgrounds** (the "white band" family): list totals G14, mail-branding preview G8, preview/detail panels G2, `.control-table` cells G3, media checkerboard G11, theme placeholder G9.
 2. **Tabs / wings** install-wide: G1, G19.
 3. **Buttons**: `btn-default` grey G6, theme indigo buttons G9, CMS/Pages delete buttons G17/G18.
@@ -132,7 +136,9 @@ Each plugin already loads backend CSS (e.g. Builder `build.js`/`builder.css`, Ea
 5. **Editor toolbars** G7; **fancy header** G16; **hint headers** G10; **switches** G4; **relation embeds** G5; **component list** G20; **badges** G12; **md borders** G13.
 
 ## Genuinely OK (still believe these pass — but re-verify with a critical eye)
+
 Chart.js statistics charts; Settings *index* (the category grid, not the tabbed sub-pages); nav/sidebar. Everything else gets re-scrutinised.
 
 ## Corrected approach for the fix phase
+
 Priority order: **G1 tabs** and **G2 preview panels** and **G3 tables** first (structural, install-wide, most visible), then **G6/G7/G8** (flash-bangs), then the rest. Each fix in `darkmode.css` with a light-mode regression check. Re-screenshot each fixed surface — no more "looks fine from a glance."

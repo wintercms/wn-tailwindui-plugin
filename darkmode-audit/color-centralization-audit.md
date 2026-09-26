@@ -20,7 +20,7 @@ The two files that hold ~99% of the colors — `darkmode.css` and `fancy-layout.
 
 `app.css` is the single entry:
 
-```
+```css
 @import 'base.css';            /* @tailwind base/components/utilities */
 @import 'components/all.css';   /* -> imports fancy-layout.css */
 @import 'widgets/all.css';
@@ -41,6 +41,7 @@ Everything lands in one stylesheet. **CSS custom properties declared in `:root` 
 Counts include comment mentions; `rgb()` values are double-counted where they appear twice on one declaration line (webkit + standard). Grouped near-duplicates are flagged with ⇒ collapse hints.
 
 ### 1a. Already-declared `:root` var values (baseline palette)
+
 | Value | Var it defines | Line |
 |---|---|---|
 | `#0d1117` | `--drk-bg-color-a` | 2 (also reused literally at 743×3, 744×3 — see below) |
@@ -54,6 +55,7 @@ Counts include comment mentions; `rgb()` values are double-counted where they ap
 | `#30363d` | `--drk-border-color` | 10 |
 
 **Values that duplicate an existing var but are still written literally (should use the var):**
+
 | Literal | Should be | Occurrences (file:line) |
 |---|---|---|
 | `#0d1117` | `var(--drk-bg-color-a)` | 743, 743, 743, 744, 744, 744 (a `background: #0d1117 … #0d1117` gradient/shorthand) |
@@ -65,6 +67,7 @@ Counts include comment mentions; `rgb()` values are double-counted where they ap
 | `#30363d` | `var(--drk-border-color)` | 10 only ✅ |
 
 ### 1b. Fancy / accent TEAL family — THE KEY GROUP
+
 | Value | Role | file:line |
 |---|---|---|
 | `#1a4653` | header band + master-tab active + active-tab wings | darkmode.css:509, 538, 552 (+ comment 526) |
@@ -75,6 +78,7 @@ Counts include comment mentions; `rgb()` values are double-counted where they ap
 The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`, `#0c2d35`, `#2c9cb9`, `#0f88a8`, `#0e7d9a`, `#12303a`) **do NOT appear as literals anywhere in the source** — they come from the runtime `--secondary` brand color family and *leak through wherever the skin does not override the tab bar/wing*. See §4 for exactly which tab types still leak.
 
 ### 1c. Base dark backgrounds NOT covered by an existing var (one-off darks)
+
 | Value | file:line | Notes |
 |---|---|---|
 | `#202833` | 484, 619 | hover bg (filelist / component-list) ⇒ candidate: one "hover-raised" var |
@@ -102,6 +106,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | `#0c2d6b` | 160, 208 | deep blue (focus/selection accent) |
 
 ### 1d. Button/raised greys (cluster around `--drk-bg-color-btn` #21262d and mid-greys)
+
 | Value | file:line |
 |---|---|
 | `#43474a` | 1148, 1154, 1162 (mediafinder/fileupload buttons) |
@@ -112,6 +117,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | `#373838` | 222 |
 
 ### 1e. Borders / hairlines NOT using `--drk-border-color`
+
 | Value | file:line | Notes |
 |---|---|---|
 | `#555` | 693, 766, 1615, 1623, 1627, 1641, 1717, 1800 (8×) | tab `span.title > span` top-border + others ⇒ mid-grey border var |
@@ -122,6 +128,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | `#898989` | 1149 | mediafinder find-button dotted border |
 
 ### 1f. Text / foreground greys
+
 | Value | file:line |
 |---|---|
 | `#d1d1d1` | 233, 238, 242, 246, 250 (5×) |
@@ -131,10 +138,12 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | `#c8c8c8` | 262, 283 |
 | `#c3c3c3` | 891 |
 | `#d6d6d6` | 1003, 1032 |
-| `#d0…` misc: `#a0a0a0` 1081, `#a5a5a5` 267, `#9a9a9a` 417, `#999` 921, `#8a8a8a` 1002, `#8b8b8b` 1307, `#777` 767/1023/1027/1990, `#707070` 2098, `#646464` 266, `#b2bfca` 1685, `#8194a5` 1681, `#8b949e` 153, `#e0dfdf` 1422, `#e6ebed` 631, `#f0f6fc` 70/367/379/385 |
-| **These 20+ near-grey text shades between `#777`–`#f0f6fc`** ⇒ collapse to ~3 tiers: bright text (`--drk-color`), muted text, faint text. |
+| misc | `#a0a0a0` 1081, `#a5a5a5` 267, `#9a9a9a` 417, `#999` 921, `#8a8a8a` 1002, `#8b8b8b` 1307, `#777` 767/1023/1027/1990, `#707070` 2098, `#646464` 266, `#b2bfca` 1685, `#8194a5` 1681, `#8b949e` 153, `#e0dfdf` 1422, `#e6ebed` 631, `#f0f6fc` 70/367/379/385 |
+
+**These 20+ near-grey text shades between `#777`–`#f0f6fc`** ⇒ collapse to ~3 tiers: bright text (`--drk-color`), muted text, faint text.
 
 ### 1g. Status / semantic
+
 | Value | Meaning | file:line | Owned/Override |
 |---|---|---|---|
 | `#ffd700` gold | active/hover filter scope, active state | 898, 903, 907, 911, 1677 | skin-owned |
@@ -166,6 +175,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | GitHub semantic `rgb()` alpha set (below) | callouts/labels | — | override of GitHub-style core |
 
 **GitHub-style semantic alpha `rgb()` set** (used for label/callout backgrounds & borders — these mirror core's GitHub palette; skin-owned overrides):
+
 | Value | file:line |
 |---|---|
 | `rgb(248 81 73 / 15%)` danger bg | 1383×2, 1387×2, 1464×2, 1492×2, 1530×2 (10) |
@@ -180,6 +190,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | `rgb(110 118 129 / 40%)` neutral border | 2154 |
 
 ### 1h. Syntax-highlighting colors (`#winter-log-viewer` snippet, lines 1899-1906, + docs)
+
 | Value | Token | line |
 |---|---|---|
 | `#c9d1d9` | bracket | 1899 (= `--drk-color`) |
@@ -197,6 +208,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 | docs: `#2c2f38` pre bg (2161), `rgb(110 118 129 / 40%)` code border (2154), `#c9d1d9` (2156) | | |
 
 ### 1i. Pure white / black / misc
+
 | Value | file:line |
 |---|---|
 | `#fff` (18×) | darkmode 128,133,174,217,317,444,450,598,670,824,1243,1263,1264,1589,1655,1814; fancy-layout 184,193 |
@@ -227,6 +239,7 @@ The **bright source teals** named in the brief (`#2da7c7`, `#238199`, `#175767`,
 Declared in the existing `:root { … }` block in `darkmode.css` (top of file). Keeps `--drk-` prefix. All values below are *proposed* consolidations — near-duplicates collapse to one var.
 
 ### 3a. New ACCENT / TEAL family (the priority — kills wing inconsistency)
+
 ```css
 /* Fancy-layout accent (muted teal) — header, breadcrumb, tab bars & wings */
 --drk-accent-bar:      #153a45; /* bar/background behind tabs + breadcrumb + master/secondary-content containers */
@@ -234,7 +247,9 @@ Declared in the existing `:root { … }` block in `darkmode.css` (top of file). 
 --drk-accent-active:   #1e515f; /* current breadcrumb segment / strongest accent */
 --drk-accent-recessed: #123138; /* inactive tab title (pushed into the bar) */
 ```
+
 Mapping (all in `darkmode.css` unless noted):
+
 | Current literal | file:line | ⇒ Var |
 |---|---|---|
 | `#153a45` | 513, 529, 548 | `--drk-accent-bar` |
@@ -243,17 +258,20 @@ Mapping (all in `darkmode.css` unless noted):
 | `#123138` | 543 | `--drk-accent-recessed` |
 
 ### 3b. Extend base backgrounds (fold in one-offs)
+
 ```css
 --drk-bg-color-raised:   #34495e; /* slate raised surface (was #34495e ×5, #395169) */
 --drk-bg-color-hover:    #202833; /* row/item hover (was #202833 ×2, cluster ~#1a2938/#192634) */
 --drk-bg-color-recessed: #0e253c; /* deep navy panels (folds #0c121a #081934 #0d1520 #121922 #10161e) */
 ```
+
 - `#34495e`(826,827,938,939,982) + `#395169`(854) ⇒ `--drk-bg-color-raised` (`#395169` is a hover of it; could add `--drk-bg-color-raised-hover: #395169`).
 - `#202833`(484,619) + `#1a2938`(825) `#192634`(861) `#15232c`(1696) `#1d242e`(145) `#13171d`(119) ⇒ collapse toward `--drk-bg-color-c` / `--drk-bg-color-hover` (test each; some are content-tab backgrounds that may want to stay slightly distinct).
 - `#0e253c`(850,987) `#0c121a`(868) `#081934`(1568,1572) `#0d1520`(1757) `#121922`(1770) `#10161e`(1558) ⇒ `--drk-bg-color-recessed` (or reuse `--drk-bg-color-inset`).
 - Stray literals of existing vars (§1a table): replace with `var(--drk-bg-color-a/-inset/-btn/-b)`.
 
 ### 3c. New border/text tiers
+
 ```css
 --drk-border-color-strong: #555;     /* was #555 ×8, #565656, #646464 */
 --drk-border-color-btn:    #6a6a6a;  /* raised-button hairline (was #6a6a6a, #7b7b7b, #898989) */
@@ -261,9 +279,11 @@ Mapping (all in `darkmode.css` unless noted):
 --drk-color-faint:  #777;            /* tertiary text (folds #707070 #646464 as text) */
 --drk-color-bright: #f0f6fc;         /* emphasis text (folds #e6ebed #e0dfdf #d6d6d6 #d1d1d1 #c8c8c8 #c5c5c5 #c3c3c3 #bbb) — verify per shade */
 ```
+
 (The `#d1d1d1 #c5c5c5 #c8c8c8 #bbb …` tier is a judgment call: they may map to `--drk-color` (#c9d1d9) rather than bright. Recommend: map the `#c*`/`#d*` greys → `--drk-color`, the `#8*/#9*` greys → `--drk-color-muted`, the `#7*` → `--drk-color-faint`.)
 
 ### 3d. Semantic (optional but recommended — stops per-selector drift)
+
 ```css
 --drk-status-active:  #ffd700; /* gold active/hover (filter scope ×5) */
 --drk-status-info:    #0180ff; /* active control-table (folds #028dff) */
@@ -272,9 +292,11 @@ Mapping (all in `darkmode.css` unless noted):
 --drk-accent-delete:       #a5382c; /* fancy delete pill (fancy-layout.css) */
 --drk-accent-delete-hover: #bc4436;
 ```
+
 GitHub alpha `rgb()` set + `#3fb950 #238636 #58a6ff` are self-consistent GitHub-palette overrides — optional `--drk-gh-*` vars; lower priority.
 
 ### 3e. Syntax highlighting (optional grouping)
+
 ```css
 --drk-syntax-variable: #ff7b52; --drk-syntax-control: #c586c0;
 --drk-syntax-string:   #98c379; --drk-syntax-number:  #569cd6;
@@ -283,6 +305,7 @@ GitHub alpha `rgb()` set + `#3fb950 #238636 #58a6ff` are self-consistent GitHub-
 ```
 
 ### Collapse recommendations (highest value first)
+
 1. **Teal → 4 accent vars** (removes the wing inconsistency; §4).
 2. **~20 grey text shades → 3-4 vars** (biggest raw-count win).
 3. **~12 one-off dark bgs → 3 vars** (`raised`/`hover`/`recessed`).
@@ -296,6 +319,7 @@ GitHub alpha `rgb()` set + `#3fb950 #238636 #58a6ff` are self-consistent GitHub-
 Wing = `span.title::before` / `::after` (skewed slivers). "Title" = the pill background. For consistency, **wing color must equal its title's background**. Current state:
 
 ### MASTER-TABS (Builder/CMS document "browser" tabs) — `darkmode.css`
+
 | Selector | Lines | Current | Target var |
 |---|---|---|---|
 | container bar `div.tabs-container` | 533-536 → 529 | `#153a45` | `--drk-accent-bar` |
@@ -304,24 +328,28 @@ Wing = `span.title::before` / `::after` (skewed slivers). "Title" = the pill bac
 | welcome tab (Builder) title + wings | 2035-2041 → `var(--drk-bg-color-a)` | matches doc bg | keep (special-case) |
 
 ### PRIMARY-TABS (fancy header) — `darkmode.css`
+
 | Selector | Lines | Current | Target |
 |---|---|---|---|
 | header band `.form-tabless-fields, .control-tabs.primary-tabs > … ul.nav-tabs` | 507-510 | `#1a4653` | `--drk-accent-raised` |
 | active-tab wings `.control-tabs.primary-tabs > … li.active … span.title:before/:after` | 1720-1722 | `var(--drk-bg-color-a)` | **INCONSISTENT** — wings use page-bg, not the accent; decide: match title (accent) vs. blend into content (bg-a). Document intent. |
 
 ### PRIMARY-TABS.MASTER-AREA (Builder editor tabs) — `fancy-layout.css` (unlayered)
+
 | Selector | Lines | Current | Target |
 |---|---|---|---|
 | active-tab wings `::before/::after` (light) | 276-286 | `#fafafa` | keep light (var `--tui-tab-active` optional) |
 | active-tab wings `::before/::after` (dark) | 295-297 | `#21262d` (= `--drk-bg-color-btn`) | `var(--drk-bg-color-btn)` — literal today |
 
 ### BREADCRUMB (fancy) — `darkmode.css`
+
 | Selector | Lines | Current | Target |
 |---|---|---|---|
 | bar `.control-breadcrumb` | 511-514 | `#153a45` | `--drk-accent-bar` |
 | current segment `li:last-child, li.active` | 517-521 | `#1e515f` | `--drk-accent-active` |
 
 ### SECONDARY-CONTENT-TABS — `darkmode.css`
+
 | Selector | Lines | Current | Target |
 |---|---|---|---|
 | bar `… secondary-content-tabs … ul.nav-tabs` | 545-548 | `#153a45` | `--drk-accent-bar` |
@@ -329,6 +357,7 @@ Wing = `span.title::before` / `::after` (skewed slivers). "Title" = the pill bac
 | **wings for secondary-content active tab: NOT overridden** | — | leaks bright `--secondary` | **ADD** `::before/::after` rule = `--drk-accent-raised` |
 
 ### CONTENT-TABS / SECONDARY-TABS (non-content) — `darkmode.css` + `fancy-layout.css`
+
 | Selector | Lines | Current | Notes |
 |---|---|---|---|
 | content-tabs `ul.nav-tabs:before` rail | 1712-1713 | `#565656` | border var |
@@ -360,6 +389,7 @@ All target rules are under `.dark`/`[data-color-scheme="dark"]` (except the ligh
 **Estimated total replacements:** ~120 literal→var substitutions across `darkmode.css` (+ ~3 in `fancy-layout.css`), plus ~1 new wing rule. New `:root` var declarations: ~15-25.
 
 **Per-file light-mode confidence:**
+
 - `darkmode.css` — 100% under `.dark`; safe. ✅
 - `fancy-layout.css` — mixed: lines 183-297 include light (`#fafafa` 285, `#a5382c/#bc4436` delete pill — always-on) and dark (295-297). Only convert the dark rule to vars; treat 285/183/192 as owned always-on colors (var them under a non-`--drk-` name if desired). ⚠ verify light mode.
 - `widgets/table.css`, `custom.css` — light-mode; **exclude from dark refactor.** ✅

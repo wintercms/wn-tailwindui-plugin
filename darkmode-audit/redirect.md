@@ -1,5 +1,7 @@
 # Dark-mode audit — Winter.Redirect
 
+> **Historical snapshot.** This is the first-pass capture from before any fixes were made, kept for the record. Statuses here are out of date; the fix log at the top of [`findings.md`](findings.md) is the source of truth for what was fixed, verified clean, or ruled out.
+
 **Scaffolder:** `scaffold:winter.redirect --fresh` — 34 redirects (all match/target types, 301/302/303/404/410, enabled/disabled/scheduled), 3 categories, **516 client hit records + 27 logs** so the charts render with real data. Authored + registered (uncommitted).
 
 ## Captured

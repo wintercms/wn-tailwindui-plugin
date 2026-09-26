@@ -7,6 +7,7 @@ variables. **Dark mode** should **auto-generate dark-safe variants** of the bran
 palette via `color-mix()`, with the **option of a custom dark palette**.
 
 Confirmed decisions:
+
 - **Scope: CORE (upstream).** Rewrite core LESS + `BrandSetting` to emit/consume CSS
   vars. Lands as a Winter core PR (note: `modules/` is clobbered by `composer update`,
   so it must land upstream to persist locally).
@@ -29,11 +30,11 @@ Confirmed decisions:
   **recompiled at runtime** by `BrandSetting::compileCss()` (`Less_Parser->ModifyVars`
   with the admin's colors), cached under `backend::brand.custom_css`, injected as a
   `<style>` block. Cache-bust = `php artisan cache:clear`.
-- **There are no CSS custom properties today.** Branding "overrides" by recompiling
-  LESS; the skin's `darkmode.css` then fights the compiled hex → the whack-a-mole.
+- _Originally there were no CSS custom properties at all._ Branding "overrides" by recompiling LESS, and the skin's `darkmode.css` then fought the compiled hex → the whack-a-mole. Since then `custom.less` emits `--brand-primary/secondary/accent` and core routes its colours through `--wn-*` tokens (wintercms/winter#1541).
 
 Existing dark-variant math already in `custom.less` (reuse the ratios):
-```
+
+```less
 @custom-dark-secondary: mix(black, saturate(@brand-secondary, 20%), 25%);
 @custom-dark-primary:   mix(black, saturate(@brand-primary,   5%), 15%);
 @custom-dark-accent:    mix(black, desaturate(@brand-accent, 35%), 20%);
@@ -46,66 +47,76 @@ Existing dark-variant math already in `custom.less` (reuse the ratios):
 ## 2. Target architecture
 
 ### 2a. Brand palette as CSS variables (the single source)
+
 `BrandSetting`/`custom.less` emit a `:root` block from the settings values:
+
 ```css
 :root {
   --brand-primary:   #103141;
   --brand-secondary: #2da7c7;
   --brand-accent:    #6cc551;
-  /* optional custom dark overrides (empty unless set in settings) */
-  --brand-primary-dark:   /* unset → auto-derived */;
-  --brand-secondary-dark: /* unset → auto-derived */;
-  --brand-accent-dark:    /* unset → auto-derived */;
+  /* optional custom dark overrides, emitted ONLY when set in settings */
+  --brand-secondary-dark: #1f7f99;
 }
 ```
+
+An unset dark override must be **omitted**, never emitted empty. `--brand-secondary-dark: ;` is a valid empty value, not the guaranteed-invalid one, so `var(--brand-secondary-dark, …)` would substitute the empty value instead of using its fallback, and every colour derived from it would be dropped.
+
 Because `custom.less` is injected **after** the static `winter.css`, re-declaring these
 `:root` vars lets the settings override the build-time defaults live.
 
 ### 2b. Purpose variables (named, derived — the vocabulary the whole backend uses)
+
 Declared once (core `variables.less` for build-time defaults, mirrored/overridden by the
 injected block). Light-mode values derive from the brand palette:
+
 ```css
 :root {
-  --ui-header-bg:        var(--brand-secondary);
-  --ui-tab-bar:          /* mix(secondary, black 25%) */;
-  --ui-tab-active:       var(--brand-secondary);
-  --ui-tab-inactive:     /* mix(secondary, black 31%) */;
-  --ui-breadcrumb-bar:   /* mix(secondary, black 16%) */;
-  --ui-breadcrumb-cur:   /* mix(secondary, black 16%) */;
-  --ui-list-active:      var(--brand-secondary);
-  --ui-accent:           var(--brand-accent);
+  --ui-header-bg:        var(--brand-secondary, #2da7c7);
+  --ui-tab-bar:          color-mix(in srgb, var(--brand-secondary, #2da7c7), black 25%);
+  --ui-tab-active:       var(--brand-secondary, #2da7c7);
+  --ui-tab-inactive:     color-mix(in srgb, var(--brand-secondary, #2da7c7), black 31%);
+  --ui-breadcrumb-bar:   color-mix(in srgb, var(--brand-secondary, #2da7c7), black 16%);
+  --ui-breadcrumb-cur:   color-mix(in srgb, var(--brand-secondary, #2da7c7), black 16%);
+  --ui-list-active:      var(--brand-secondary, #2da7c7);
+  --ui-accent:           var(--brand-accent, #6cc551);
   /* …one per purpose currently hardcoded off @brand-* … */
 }
 ```
+
 Every backend rule references a **purpose var** (`background: var(--ui-tab-active)`),
 never `@brand-secondary` or a raw hex. Wing rule = same var as its title (structurally
 kills wing drift).
 
 ### 2c. Dark mode = auto-derive from the SAME brand vars (skin `darkmode.css`)
+
 Under `.dark` / `html[data-color-scheme="dark"]`, redeclare the purpose vars using
 `color-mix()` against the live brand vars, falling back to any custom dark override:
+
 ```css
 html[data-color-scheme="dark"] {
   /* base for mixing toward */
   --ui-dark-base: #0d1117;
 
-  --ui-header-bg:      color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary)) 34%, var(--ui-dark-base));
-  --ui-tab-bar:        color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary)) 28%, var(--ui-dark-base));
-  --ui-tab-active:     color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary)) 34%, var(--ui-dark-base));
-  --ui-tab-inactive:   color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary)) 22%, var(--ui-dark-base));
-  --ui-breadcrumb-bar: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary)) 26%, var(--ui-dark-base));
-  --ui-breadcrumb-cur: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary)) 38%, var(--ui-dark-base));
-  --ui-list-active:    var(--brand-secondary-dark, var(--brand-secondary));
-  --ui-accent:         var(--brand-accent-dark, var(--brand-accent));
+  --ui-header-bg:      color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 34%, var(--ui-dark-base));
+  --ui-tab-bar:        color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 28%, var(--ui-dark-base));
+  --ui-tab-active:     color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 34%, var(--ui-dark-base));
+  --ui-tab-inactive:   color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 22%, var(--ui-dark-base));
+  --ui-breadcrumb-bar: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 26%, var(--ui-dark-base));
+  --ui-breadcrumb-cur: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 38%, var(--ui-dark-base));
+  --ui-list-active:    var(--brand-secondary-dark, var(--brand-secondary, #2da7c7));
+  --ui-accent:         var(--brand-accent-dark, var(--brand-accent, #6cc551));
 }
 ```
-The `var(--brand-secondary-dark, var(--brand-secondary))` pattern = **custom dark palette
+
+The `var(--brand-secondary-dark, var(--brand-secondary, #2da7c7))` pattern = **custom dark palette
 if set, else auto-derive from the brand color**. Change the brand color in settings and
 BOTH light and dark chrome follow, with zero per-selector overrides. The mix percentages
 replace today's scattered `--drk-accent-*` literals (`#1a4653`≈34%, `#153a45`≈26%,
 `#123138`≈22%, `#1e515f`≈38% of `#2da7c7` toward `#0d1117` — tune to match).
 
 ### 2d. Custom dark palette (settings UI)
+
 Add to `modules/backend/models/brandsetting/fields.yaml` (Colors tab): optional
 `primary_color_dark / secondary_color_dark / accent_color_dark` colorpickers (+ a
 "derive automatically" toggle). `BrandSetting` emits `--brand-*-dark` only when set;
@@ -117,6 +128,7 @@ darkmode.css already prefers them via the `var(x, fallback)` pattern above.
 
 **Phase 1 — Var foundation on the brand chrome (custom.less + darkmode.css).**
 Runtime-compiled + skin only, no core build needed; cache-bust = `cache:clear`.
+
 1. `custom.less`: prepend a `:root` block emitting `--brand-primary/secondary/accent` +
    the `--ui-*` purpose vars (LESS-derived light values). Rewrite its chrome rules to use
    the purpose vars.
@@ -131,6 +143,7 @@ Runtime-compiled + skin only, no core build needed; cache-bust = `cache:clear`.
 Files in §1. Declare build-time defaults in `variables.less` `:root`. Rebuild core
 (`php artisan mix:compile` for the backend module per `winter.mix.js`). This makes the
 static `winter.css` var-based too (so non-custom.less brand usages also react to settings
+
 + dark). ~10 files.
 
 **Phase 3 — Custom dark palette UI.** fields.yaml + BrandSetting + lang strings.
@@ -141,6 +154,7 @@ static `winter.css` var-based too (so non-custom.less brand usages also react to
 ---
 
 ## 4. Risks / notes
+
 - `color-mix()` needs a modern browser — the backend already targets modern (CSS vars,
   `:has()`, etc. in use). Acceptable.
 - Core changes get clobbered by `composer update` → must land as a Winter core PR; keep a

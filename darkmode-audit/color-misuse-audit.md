@@ -7,6 +7,7 @@ Scope: `plugins/winter/tailwindui/assets/src/css/{darkmode.css, components/fancy
 Line numbers are from the **current** `darkmode.css` (2204 lines) — the file has grown since the inventory (which was ~2163 lines), so line refs differ from that document.
 
 **Reference palette (the roles colors SHOULD map to):**
+
 - brand-primary `#103141` navy / brand-secondary `#2da7c7` teal / brand-accent `#6cc551` green
 - semantic: success green, info blue/cyan, warning amber-orange, danger red
 - neutral greys: text / border / bg
@@ -37,6 +38,7 @@ Line numbers are from the **current** `darkmode.css` (2204 lines) — the file h
 ## Section 2 — By category
 
 ### Category 1 — Semantic color used non-semantically
+
 A semantic hue (danger-red / success-green / warning-amber / info-blue) applied where there is no such state.
 
 | file:line | color | element/selector | why wrong | suggested role |
@@ -110,6 +112,7 @@ A semantic hue (danger-red / success-green / warning-amber / info-blue) applied 
 One conceptual role, currently rendered with N different colors:
 
 **ACTIVE / SELECTION indicator** — should be ONE (brand teal / `--drk-bg-color-selection`):
+
 - `#3498db` mainmenu active (82), sidenav active (133)
 - `#005087` balloon-selector active (258)
 - `#ffd700` filter-scope active/hover (939-952)
@@ -151,6 +154,7 @@ One conceptual role, currently rendered with N different colors:
 | named neon | 4 | `aqua greenyellow orangered cyan` |
 
 **Top consolidation wins (highest impact first):**
+
 1. **Collapse the 8+ "active/selection" colors → one brand-teal selection var.** Biggest single coherence win; also aligns the dark skin with the core LESS which already uses `@brand-secondary` for every active state. (nav `#3498db`, balloon `#005087`, filter `#ffd700`, table `#0180ff/#028dff`, active-row `#1e1600/#1e261e/#34495e`, menu `#1f6feb`.)
 2. **Kill the user-statistics named-neon block** (aqua/greenyellow/orangered/cyan) → success/danger/neutral.
 3. **Detox the media-manager rainbow** (amber/red/gold/coral titles + cyan item-title) → neutral-text.

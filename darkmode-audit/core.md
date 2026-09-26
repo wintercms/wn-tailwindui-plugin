@@ -1,5 +1,7 @@
 # Dark-mode audit — Core backend (shared widgets & sections)
 
+> **Historical snapshot.** This is the first-pass capture from before any fixes were made, kept for the record. Statuses here are out of date; the fix log at the top of [`findings.md`](findings.md) is the source of truth for what was fixed, verified clean, or ruled out.
+
 **Layout:** side menu + inline icons · **Scheme:** dark
 These surfaces are shared by every plugin, so fixes here cascade widely. `darkmode.css` already has sections for List/Form/Tabs/Modals/Dashboard/CMS/media/eventlogs — the audit finds the gaps.
 

@@ -13,6 +13,7 @@ states, long-text truncation, pagination, etc.). Built to support the dark-mode
 audit and general "install it and click around" local testing.
 
 ### Shared conventions (every command follows this)
+
 - **Signature:** `scaffold:{author}.{plugin} {--fresh}`.
 - **Env-guarded:** refuses to run when `app()->environment('production')` (returns
   `FAILURE` before touching anything). This is checked **first** in `handle()`.
@@ -46,6 +47,7 @@ changes were bundled.
 | Winter.Pages | wn-pages-plugin | `wip/scaffold-command` @ `d2f8001` | guard (2) | 6 pages (nested), 1 menu, 2 content, 1 snippet |
 
 Plus, already committed earlier (not part of this batch):
+
 - **LukeTowers.EasyForms** — `scaffold:luketowers.easyforms` on branch
   `wip/bugfixes-and-ci`, with a **full** feature test. This is the reference
   implementation the others were modelled on.
@@ -54,6 +56,7 @@ Plus, already committed earlier (not part of this batch):
 `SeedDemoData` command + full seeder suite (`classes/seeders/*`).
 
 ### Test coverage — "full" vs "guard"
+
 - **full (4 tests):** create-data / idempotent-without-`--fresh` /
   `--fresh`-recreates / refuses-in-production. Asserts exact seeded row counts.
   Used where the plugin's models migrate cleanly under the isolated test harness
@@ -68,13 +71,17 @@ Plus, already committed earlier (not part of this batch):
 ## How to verify
 
 Run a plugin's test suite:
-```
+
+```bash
 php artisan winter:test -p Winter.Blog -- --filter ScaffoldCommandTest
 ```
+
 Cross-check the real seed against the dev DB/theme (idempotent + `--fresh`):
-```
+
+```bash
 php artisan scaffold:winter.redirect --fresh
 ```
+
 (dev env reports `development`, so the production guard doesn't fire.)
 
 ## Harness gotchas discovered (read before adding more / debugging tests)
@@ -118,7 +125,8 @@ php artisan scaffold:winter.redirect --fresh
 - Repos with an `https://` origin (Blog, Blocks) push directly. Repos with a
   `git@github.com:` origin (User, Pages, Redirect, Translate) were pushed with a
   one-shot rewrite (no persistent remote change):
-  ```
+
+  ```bash
   git -c url."https://github.com/".insteadOf="git@github.com:" push -u origin wip/scaffold-command
   ```
 

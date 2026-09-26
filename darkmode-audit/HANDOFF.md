@@ -50,6 +50,7 @@ Self-contained HTML prototype of the proposed TailwindUI skin. Single `#stage`, 
 **It is a proposal, not shipped.** Porting it into the real skin is a *separate* effort (feasibility audit concluded it's ~all plugin-side CSS + the one small core var-PR, no core markup changes).
 
 ### Locked design decisions (from the owner)
+
 - Palette = the official Winter Design System: Indigo Dye (primary) · Pacific Blue (accent) · Slate (neutral) · Mantis (success) · Flame (danger) · **Marigold** (warning, muted gold S 62 between Mantis/Flame — not the loud amber).
 - Fonts: **Public Sans** (base) + **Mulish** (headings, at display sizes only — dashboard KPIs / empty-state / modal titles; the dense chrome stays ≤14px).
 - Tabs = "snowcap"; fancy header uses **Option B** (flowing feet on the active tab only). Snowcap indicator inset unified to 12px.
@@ -69,9 +70,11 @@ Self-contained HTML prototype of the proposed TailwindUI skin. Single `#stage`, 
 **D. Dark mode = token redefinition** — once core renders from ~20 `--wn-*` vars, dark mode becomes a redefinition block under `.dark`; the plugin's `darkmode.css` per-element overrides (~64 KB) largely delete themselves. Then also apply the ~34 `color-misuse-audit.md` fixes.
 
 ## The point of all this
+
 Core currently hardcodes 430 colour occurrences (152 distinct, ~10 near-duplicate off-whites, a bypassed `@gray-*` scale) — which is *why* the dark skin needs hundreds of per-element overrides. Centralising to ~20 CSS-var tokens makes the palette retunable in one place and lets dark mode + brand changes flip tokens instead of overriding rules — drastically simplifying overrides in **both** core and the plugin.
 
 ## Build / verify notes
+
 - Plugin skin build: `php artisan vite:compile Winter.TailwindUI` then `php artisan winter:mirror public --relative`; bust brand CSS cache with `php artisan cache:clear`.
 - Core backend LESS → `winter.css`: rebuild via the backend module's mix pipeline (`modules/backend/winter.mix.js`).
 - `composer update` clobbers `modules/` — core changes must go via a Winter core PR (same as the merged `custom.less` change).
