@@ -183,7 +183,10 @@
                     background-color: #a5382c !important;
                     color: #fff !important;
 
-                    &:after {
+                    /* Only label it when a title is present, matching core: the CMS
+                       and Pages toolbars render it icon-only with no title, where an
+                       empty label still adds its margin as dead space. */
+                    &[title]:not([title=""]):after {
                         content: attr(title);
                         @apply ml-[6px];
                     }
@@ -286,15 +289,14 @@
 }
 
 /*
- * Dark mode: the active master-area tab title is darkened to #21262d (see
- * darkmode.css, G1), so its wings must follow instead of staying #fafafa —
- * otherwise the active CMS/Builder tab reads as a dark pill flanked by two
- * white skewed slivers. Kept here, unlayered, alongside the base wing rules
- * so it isn't purged. (G19)
+ * Dark mode: the active master-area tab title takes the dark canvas colour it
+ * joins, so its wings must follow instead of staying #fafafa, or the tab reads
+ * as a dark pill between two white skewed slivers. Kept here, unlayered,
+ * alongside the base wing rules so it isn't purged. (G19)
  */
 html[data-color-scheme="dark"] .control-tabs.primary-tabs.master-area ul.nav-tabs > li.active > a > span.title::before,
 html[data-color-scheme="dark"] .control-tabs.primary-tabs.master-area ul.nav-tabs > li.active > a > span.title::after {
-    background: #21262d !important;
+    background: var(--drk-bg-color-a) !important;
 }
 
 .control-tabs.primary-tabs.master-area ul.nav-tabs > li.active > a > span.title::before {

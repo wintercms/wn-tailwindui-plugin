@@ -125,14 +125,20 @@
     .wn-logo,
     .oc-logo,
     .layout.control-tabs.wn-logo-transparent:not(.has-tabs),
+    .layout.control-tabs.oc-logo-transparent:not(.has-tabs),
     .flex-layout-column.wn-logo-transparent:not(.has-tabs),
-    .layout-cell.wn-logo-transparent {
+    .flex-layout-column.oc-logo-transparent:not(.has-tabs),
+    .layout-cell.wn-logo-transparent,
+    .layout-cell.oc-logo-transparent {
         background-image: url("/modules/backend/assets/images/logo-light.svg");
     }
 
     .layout.control-tabs.wn-logo-transparent:not(.has-tabs):after,
+    .layout.control-tabs.oc-logo-transparent:not(.has-tabs):after,
     .flex-layout-column.wn-logo-transparent:not(.has-tabs):after,
-    .layout-cell.wn-logo-transparent:after {
+    .flex-layout-column.oc-logo-transparent:not(.has-tabs):after,
+    .layout-cell.wn-logo-transparent:after,
+    .layout-cell.oc-logo-transparent:after {
         background: rgba(13, 17, 23, 0.8);
     }
 
@@ -464,7 +470,15 @@
 
             > div:hover,
             &.dragged div {
-                background-color: #9a9a9a !important;
+                background-color: var(--drk-bg-color-hover) !important;
+            }
+
+            /* Core paints the active row (and its 1px edge lines) with
+               --wn-text-faint, which is a text colour here. */
+            &.active > div,
+            &.active > div > span.borders:before,
+            &.active > div > span.borders:after {
+                background-color: var(--drk-bg-color-selection);
             }
         }
     }
@@ -485,7 +499,7 @@
                 a,
                 a:hover,
                 a:focus {
-                    background: var(--drk-bg-color-b);
+                    background: var(--drk-bg-color-selection);
                 }
             }
             &.group {
@@ -527,18 +541,20 @@
                 > a {
                     border-bottom-color: var(--drk-border-color);
                 }
+
+                &.active > a {
+                    border-bottom-color: var(--drk-bg-color-selection);
+
+                    > span.borders:before {
+                        background-color: var(--drk-bg-color-selection);
+                    }
+                }
             }
 
             &.single-level ul li:hover > a {
                 background: #202833;
             }
         }
-    }
-
-    .layout.control-tabs.oc-logo-transparent:not(.has-tabs):after,
-    .flex-layout-column.oc-logo-transparent:not(.has-tabs):after,
-    .layout-cell.oc-logo-transparent:after {
-        background-color: transparent;
     }
 
     .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs > div > ul.nav-tabs > li.active > a {
@@ -604,11 +620,29 @@
         background-color: var(--drk-accent-bar) !important;
     }
 
-    /* Secondary-content-tabs active title + wings (wings leaked before) */
+    /* Secondary-content-tabs: the active tab (title + wings) takes the surface of
+       the editor toolbar it sits on, the way it takes the editor's white in light
+       mode. fancy-layout.css gives its link bg-white, which showed as white edges
+       round the tab, and core draws inactive wings in literal white. */
     .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title,
     .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:before,
     .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:after {
-        background-color: var(--drk-accent-raised) !important;
+        background-color: var(--drk-bg-color-c) !important;
+    }
+
+    .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active > a {
+        background-color: transparent;
+    }
+
+    /* The editor toolbar under these tabs has a white top border, invisible on
+       white in light mode but a bright line under the tabs here. */
+    .fancy-layout .control-tabs.secondary-content-tabs .field-richeditor .fr-toolbar {
+        border-top-color: var(--drk-bg-color-c);
+    }
+
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li:not(.active) a > span.title:before,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li:not(.active) a > span.title:after {
+        background-color: transparent;
     }
 
     /* Plain secondary tabs (fancy-layout.css paints the bar bg-secondary and the
@@ -649,13 +683,14 @@
         border-color: var(--drk-border-color);
     }
 
+    .control-assetlist ul li:hover,
     .control-assetlist ul li a.link:hover {
-        background: #000;
+        background: var(--drk-bg-color-hover);
     }
 
-    .control-assetlist ul li.active a.link,
-    .control-assetlist ul li a.link:hover {
-        background: var(--drk-bg-color-b);
+    .control-assetlist ul li.active a,
+    .control-assetlist ul li.active a.link {
+        background: var(--drk-bg-color-selection);
     }
 
     .control-assetlist p.parent.parent a.link:after {
@@ -1550,34 +1585,19 @@
                 border-bottom: 2px solid #555;
             }
 
+            /* Tab surfaces come from core's tokens, as in light mode: the active
+               tab takes the canvas colour and joins the panel below, inactive
+               tabs sit back on --wn-surface-overlay. */
             li {
                 a > span.title {
-                    background-color: var(--drk-bg-color-a) !important;
-
                     &:before,
                     &:after {
-                        background: var(--drk-bg-color-a) !important;
                         border: none;
                     }
                 }
 
-                &.active {
-                    a {
-                        /* Raised active-tab surface: use a palette dark instead
-                           of the washed #555 grey that read as a broken lozenge. */
-                        --drk-bg-color-a: #21262d;
-
-                        &:before {
-                            background-color: var(--drk-bg-color-a);
-                        }
-
-                        > span.title {
-
-                            span {
-                                color: #fff;
-                            }
-                        }
-                    }
+                &.active a > span.title span {
+                    color: #fff;
                 }
             }
         }
@@ -1627,11 +1647,6 @@
 
     .control-tabs > div > ul.nav-tabs > li a > span.title > span {
         border-top: 2px solid #555;
-    }
-
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title:after {
-        background: var(--drk-bg-color-a);
     }
 
     .control-tabs > div > ul.nav-tabs > li a > span.title > span {
