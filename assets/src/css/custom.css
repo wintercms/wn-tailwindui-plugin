@@ -87,7 +87,7 @@ a.bg-primary:hover {
 .open .dropdown-toggle {
     &.btn-default,
     &.btn-secondary {
-        @apply text-gray-700 bg-gray-300 border-none;
+        @apply text-gray-700 bg-gray-300 border-none dark:text-gray-100 dark:bg-gray-600;
     }
 }
 

@@ -1,4 +1,7 @@
 1.0.1: First version of TailwindUI
+1.0.2:
+    - "Added the asset_url link tag to the backend and auth layouts so Snowboard resolves asset URLs correctly when Winter is served from a subdirectory or a separate asset domain, matching the core backend layout."
+    - "Removed a dead stylesheet reference from the auth layout that requested a backend.css file this skin does not ship."
 1.1.0:
     - "Rebuilt the backend navigation chrome with plain HTML/CSS and minimal vanilla JS, removing the Vue and Headless UI dependency (much smaller asset bundle)."
     - "Fixed direct navigation to JS-based sub-menu items so a deep link opens the correct child instead of the default one (#6)."
@@ -12,3 +15,9 @@
     - "Fixed fancy-layout form styling: action buttons, tabs, saving indicator, delete button, and the Winter.Translate language-switcher overhang; compacted the form header."
 1.1.1:
     - "Fixed Winter.Builder compatibility: restored the side-panel positioning context so its tabs no longer paint over the plugin panel, wired up the plugin-list flyout, and honoured sub-menu items' registered attributes so Versions switches panes and Permissions/Backend Menu open correctly (#8)."
+1.2.0:
+    - "Requires Winter 1.2.15+: dark mode is now built on core's colour tokens, which darkens many backend surfaces that previously kept their light-mode colours (text, icons, borders, placeholders and panels)."
+    - "Fixed dark-mode styling across the backend and bundled plugins: toolbar buttons, fieldsets, table widget cells and dropdowns, list totals, editor toolbars, media previews, the event log, theme picker, filters, relation embeds and CMS/Builder tab wings."
+    - "The dark fancy-layout header, tabs and breadcrumb now derive from the configured brand colour instead of a fixed teal."
+    - "Consolidated the dark-mode palette: one accent colour for links, active states and focus, one selection colour, and neutral headings in place of the previous assortment of one-off colours."
+    - "Fixed broken logos after the Winter 1.2.15 brand refresh, and the dark-mode logos and empty-editor watermark."

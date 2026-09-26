@@ -31,7 +31,7 @@
                 <div class="flex items-center mb-2 h-12 shrink-0">
                     <img
                         class="h-10 w-auto <?= $itemMode === 'tile' ? 'm-auto' : '' ?>"
-                        src="<?= e($logoImage) ?: Url::asset('modules/backend/assets/images/winter-logo-white.svg') ?>"
+                        src="<?= e($logoImage) ?: Url::asset('modules/backend/assets/images/logo-light.svg') ?>"
                         alt="<?= $appName ?>"
                     >
                 </div>

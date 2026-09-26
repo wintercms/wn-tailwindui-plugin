@@ -8,7 +8,7 @@
                 border-b-0;
 
             &.btn-default {
-                @apply border-gray-200;
+                @apply border-gray-200 dark:border-gray-600;
             }
 
             &.btn-primary {

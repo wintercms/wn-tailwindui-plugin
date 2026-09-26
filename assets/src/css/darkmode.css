@@ -7,8 +7,28 @@
     --drk-bg-color-selection: #2c434e;
     --drk-color: #c9d1d9;
     --drk-color-danger: #f85149;
+    --drk-color-success: #3fb950;
+    --drk-color-warning: #d29922;
     --drk-border-color: #30363d;
     --drk-box-shadow: 0 8px 24px #010409;
+
+    /* Fancy-layout accent (muted teal) — the ONE place to retune the header,
+       breadcrumb, and every tab bar/title/wing so they never drift back to the
+       bright runtime --secondary teal. wing colour always == its title colour. */
+    --drk-accent-bar: #153a45;       /* bar behind tabs + breadcrumb + master/secondary-content containers */
+    --drk-accent-raised: #1a4653;    /* active tab title + wings + header band */
+    --drk-accent-active: #1e515f;    /* current breadcrumb segment / strongest accent */
+    --drk-accent-recessed: #123138;  /* inactive tab title + wings (pushed into the bar) */
+
+    /* Extra dark surfaces (fold in the one-off literals) */
+    --drk-bg-color-raised: #34495e;  /* slate raised surface */
+    --drk-bg-color-hover: #202833;   /* row/item hover */
+    --drk-bg-color-recessed: #0e253c;/* deep navy panels */
+
+    /* Border + text tiers */
+    --drk-border-color-strong: #555; /* mid-grey hairline */
+    --drk-color-muted: #8b949e;      /* secondary text */
+    --drk-color-faint: #777;         /* tertiary text */
 }
 
 @layer components {
@@ -31,24 +51,103 @@
 }
 
 .dark {
+    /* Dark accent = auto-derived from the LIVE brand colour. The branding
+       settings emit --brand-secondary (see BrandSetting/custom.less); here we
+       color-mix() it toward the dark base to get dark-safe variants, so the
+       whole fancy/tab/breadcrumb chrome retints from the brand palette with no
+       per-selector overrides. A custom dark palette overrides via
+       --brand-secondary-dark. Percentages match the approved muted teal.
+       (#2da7c7 fallback = the default brand secondary, for when the settings
+       block hasn't emitted the var yet.) */
+    --drk-accent-bar: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 26%, var(--drk-bg-color-a));
+    --drk-accent-raised: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 35%, var(--drk-bg-color-a));
+    --drk-accent-active: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 43%, var(--drk-bg-color-a));
+    --drk-accent-recessed: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 20%, var(--drk-bg-color-a));
+
+    /* The one colour for "active", links and focus on dark surfaces: the brand
+       secondary, lifted toward white so it stays legible whatever the brand is. */
+    --drk-color-accent: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 75%, white);
+    --drk-color-accent-hover: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 50%, white);
+
+    /* Core colour tokens (wintercms/winter#1541), redefined for dark mode. Core
+       paints through these, so most of the backend darkens here rather than
+       selector by selector; the rules below only cover what differs from them.
+       Identity tokens are redefined only where the light value is unreadable on a
+       dark surface or this file already repainted them consistently. */
+    --wn-text: var(--drk-color);
+    --wn-text-heading: var(--drk-color);
+    --wn-text-strong: var(--drk-color);
+    --wn-text-link: var(--drk-color);
+    --wn-text-muted: var(--drk-color-muted);
+    --wn-text-secondary: var(--drk-color-muted);
+    --wn-text-faint: var(--drk-color-faint);
+    --wn-icon-muted: var(--drk-color-muted);
+    --wn-icon-strong: var(--drk-color);
+    --wn-border: var(--drk-border-color);
+    --wn-border-subtle: var(--drk-border-color);
+    --wn-border-focus: var(--drk-border-color);
+    --wn-border-input: var(--drk-border-color);
+    --wn-border-strong: var(--drk-border-color-strong);
+    --wn-surface-canvas: var(--drk-bg-color-a);
+    --wn-surface-raised: var(--drk-bg-color-b);
+    --wn-surface-mid: var(--drk-bg-color-b);
+    --wn-surface-overlay: var(--drk-bg-color-c);
+    --wn-surface-chrome: var(--drk-bg-color-c);
+    --wn-surface-input: var(--drk-bg-color-inset);
+    --wn-surface-hover: var(--drk-bg-color-hover);
+    --wn-surface-selected: var(--drk-bg-color-selection);
+    --wn-surface-stripe: #121922;
+    --wn-surface-accent: #0c121a;
+
+    --wn-table-odd-row: var(--drk-bg-color-b);
+    --wn-table-even-row: #121922;
+    --wn-table-disabled-field: var(--drk-bg-color-inset);
+    --wn-alert-text: var(--drk-color);
+    --wn-alert-text-2: var(--drk-color-muted);
+    --wn-callout-text: var(--drk-color);
+    --wn-callout-warning-header-bg: var(--drk-bg-color-a);
+    --wn-chart-border: var(--drk-border-color);
+    --wn-status-list-text: #bbbbbb;
+    --wn-scoreboard-title: #bbbbbb;
+    --wn-scoreboard-body: var(--drk-color);
+    --wn-scoreboard-description: var(--drk-color-muted);
+    --wn-fileupload-base-bg-2: #43474a;
+
     body {
         color: var(--drk-color);
-        background: var(--drk-bg-color-a);
+    }
+
+    /* Core logos (.wn-logo, and the empty-editor watermark) draw logo-dark.svg,
+       whose dark lettering disappears on a dark surface: swap to the white-lettered
+       variant, and dim the watermark with its overlay so it stays a watermark.
+       Root-absolute because Vite would otherwise try to resolve a relative path
+       into core from this repo; on a subdirectory install the logo is simply absent. */
+    .wn-logo,
+    .oc-logo,
+    .layout.control-tabs.wn-logo-transparent:not(.has-tabs),
+    .layout.control-tabs.oc-logo-transparent:not(.has-tabs),
+    .flex-layout-column.wn-logo-transparent:not(.has-tabs),
+    .flex-layout-column.oc-logo-transparent:not(.has-tabs),
+    .layout-cell.wn-logo-transparent,
+    .layout-cell.oc-logo-transparent {
+        background-image: url("/modules/backend/assets/images/logo-light.svg");
     }
 
     .layout.control-tabs.wn-logo-transparent:not(.has-tabs):after,
+    .layout.control-tabs.oc-logo-transparent:not(.has-tabs):after,
     .flex-layout-column.wn-logo-transparent:not(.has-tabs):after,
-    .layout-cell.wn-logo-transparent:after {
-        background: transparent;
+    .flex-layout-column.oc-logo-transparent:not(.has-tabs):after,
+    .layout-cell.wn-logo-transparent:after,
+    .layout-cell.oc-logo-transparent:after {
+        background: rgba(13, 17, 23, 0.8);
     }
-
 
     nav#layout-mainmenu {
         background-color: var(--drk-bg-color-b);
     }
 
     nav#layout-mainmenu.navbar ul li.active {
-        border-top: solid 3px #3498db;
+        border-top: solid 3px var(--drk-color-accent);
         margin-top: 2px;
     }
 
@@ -66,7 +165,7 @@
 
     nav#layout-mainmenu ul li .mainmenu-accountmenu li a:hover,
     nav#layout-mainmenu ul li .mainmenu-accountmenu li a:focus {
-        background: #1f6feb;
+        background: var(--drk-bg-color-selection);
         color: #f0f6fc;
     }
 
@@ -83,13 +182,12 @@
     nav#layout-mainmenu ul li .mainmenu-accountmenu li:first-child a:hover:after,
     nav#layout-mainmenu ul li .mainmenu-accountmenu li:first-child a:focus:after,
     nav#layout-mainmenu ul li .mainmenu-accountmenu li:first-child a:active:after {
-        border-bottom-color: #1f6feb;
+        border-bottom-color: var(--drk-bg-color-selection);
     }
 
     nav#layout-mainmenu ul li .mainmenu-accountmenu li.divider {
         background-color: var(--drk-border-color);
     }
-
 
     /* sidenav */
     nav.layout-sidenav {
@@ -99,7 +197,7 @@
 
     #layout-sidenav li.active {
         background: var(--drk-bg-color-btn);
-        border-left: solid 4px #3498db;
+        border-left: solid 4px var(--drk-color-accent);
     }
 
     #layout-sidenav li.active a:hover {
@@ -137,16 +235,8 @@
         color: #bbb;
     }
 
-    .table > thead > tr > th {
-        border-bottom-color: var(--drk-border-color);
-    }
-
     .table-striped > tbody > tr:nth-child(odd) > td {
         background-color: #1d242e;
-    }
-
-    .table > tbody > tr > td {
-        border-top-color: var(--drk-border-color);
     }
 
     .text-muted {
@@ -155,23 +245,16 @@
 
     input.form-control.icon.search.growable:focus,
     input.form-control[name="search"]:focus {
-        border-color: #1f6feb;
-        outline: none;
-        box-shadow: 0 0 0 3px #0c2d6b;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--drk-color-accent) 35%, transparent);
     }
 
     .toolbar-widget {
         .clear-input-text {
-            color: var(--drk-color);
             background-color: var(--drk-bg-color-inset);
             &:hover, &:focus {
                 color: var(--drk-color);
             }
         }
-    }
-
-    .field-recordfinder .btn {
-        color: #fff;
     }
 
     .select2-dropdown {
@@ -182,7 +265,6 @@
     }
 
     .select2-container--default .select2-selection {
-        background-color: #010409;
         border: 1px solid var(--drk-border-color);
         box-shadow: 0 0 transparent;
     }
@@ -192,7 +274,7 @@
     }
 
     .select2-container--default .select2-selection--single .select2-selection__arrow b:before {
-        color: #f0f8ff;
+        color: var(--drk-color);
     }
 
     .select2-container--default .select2-search--dropdown .select2-search__field {
@@ -203,9 +285,9 @@
     }
 
     .select2-container--default .select2-search--dropdown .select2-search__field:focus {
-        border-color: #1f6feb;
+        border-color: var(--drk-color-accent);
         outline: none;
-        box-shadow: 0 0 0 3px #0c2d6b;
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--drk-color-accent) 35%, transparent);
     }
 
     .select2-container--default .select2-results__option--highlighted[aria-selected] {
@@ -224,9 +306,8 @@
     }
 
     .control-balloon-selector ul li.active {
-        background: #005087 !important;
+        background: var(--drk-bg-color-selection) !important;
     }
-
 
     /* tooltip */
     .tooltip-inner {
@@ -251,7 +332,6 @@
     }
 
     /* End tooltip */
-
 
     /* Dashboard */
     .report-widget {
@@ -283,42 +363,25 @@
         color: #c8c8c8;
     }
 
-    .control-status-list > ul li {
-        color: #bbb;
-        border-bottom-color: var(--drk-border-color);
-    }
-
-    .control-status-list > ul li:last-child {
-        border-bottom: none;
-    }
-
     .control-status-list > ul li .status-text.success {
-        color: #31ac5f;
+        color: var(--drk-color-success);
     }
 
     .text-success {
-        color: #31ac5f;
+        color: var(--drk-color-success);
     }
 
     .control-status-list > ul li .status-text.warning {
-        color: #ce9178;
+        color: var(--drk-color-warning);
     }
 
     .report-widget a:not(.btn) {
-        color: #00b0b3;
+        color: var(--drk-color-accent);
     }
 
     .report-widget a:not(.btn):hover,
     .report-widget a:not(.btn):focus {
-        color: #00ffff;
-    }
-
-    .report-widget a:not(.btn).status-label.primary {
-        color: #fff;
-    }
-
-    .control-chart div.chart-legend table {
-        color: #bbb;
+        color: var(--drk-color-accent-hover);
     }
 
     .dropdown-menu .dropdown-container > ul {
@@ -333,7 +396,7 @@
     .dropdown-menu .dropdown-container > ul li.first-item a:hover:after,
     .dropdown-menu .dropdown-container > ul li.first-item a:focus:after,
     .dropdown-menu .dropdown-container > ul li.first-item a:active:after {
-        border-bottom-color: #1f6feb;
+        border-bottom-color: var(--drk-bg-color-selection);
     }
 
     .dropdown-menu .dropdown-container > ul li a {
@@ -350,10 +413,6 @@
         border-top-color: var(--drk-bg-color-c);
     }
 
-    .dropdown-menu .divider {
-        background-color: var(--drk-border-color);
-    }
-
     .dropdown-menu .dropdown-container > ul:first-child {
         border-top: 1px solid var(--drk-border-color);
     }
@@ -365,30 +424,28 @@
     .dropdown-menu .dropdown-container > ul li a:hover,
     .dropdown-menu .dropdown-container > ul li a:focus {
         color: #f0f6fc;
-        background-color: #1f6feb;
+        background-color: var(--drk-bg-color-selection);
     }
 
     .dropdown.dropup .dropdown-menu .dropdown-container > ul li.last-item a:hover:after,
     .dropdown.dropup .dropdown-menu .dropdown-container > ul li.last-item a:focus:after,
     .dropdown.dropup .dropdown-menu .dropdown-container > ul li.last-item a:active:after {
-        border-top-color: #1f6feb;
+        border-top-color: var(--drk-bg-color-selection);
     }
 
     .report-container .manage-widgets:hover {
-        border-color: #0f5acc;
+        border-color: var(--drk-color-accent);
         color: #f0f6fc;
-        background-color: #1f6feb;
+        background-color: var(--drk-bg-color-selection);
     }
 
     .report-container .dropdown.open .manage-widgets {
-        background-color: #1f6feb;
+        background-color: var(--drk-bg-color-selection);
         color: #f0f6fc;
-        border-color: #0f5acc;
+        border-color: var(--drk-color-accent);
     }
 
     /* END Dashboard */
-
-
 
     /* CMS */
     .control-scrollpanel {
@@ -399,7 +456,6 @@
     .control-treeview {
         ol li {
             > div {
-                background-color: var(--drk-bg-color-b);
                 a {
                     color: #c5c5c5;
                 }
@@ -414,7 +470,15 @@
 
             > div:hover,
             &.dragged div {
-                background-color: #9a9a9a !important;
+                background-color: var(--drk-bg-color-hover) !important;
+            }
+
+            /* Core paints the active row (and its 1px edge lines) with
+               --wn-text-faint, which is a text colour here. */
+            &.active > div,
+            &.active > div > span.borders:before,
+            &.active > div > span.borders:after {
+                background-color: var(--drk-bg-color-selection);
             }
         }
     }
@@ -435,7 +499,7 @@
                 a,
                 a:hover,
                 a:focus {
-                    background: var(--drk-bg-color-b);
+                    background: var(--drk-bg-color-selection);
                 }
             }
             &.group {
@@ -453,12 +517,11 @@
         }
 
         p.no-data {
-            color: #d16969;
+            color: var(--drk-color-muted);
         }
 
         &.filelist-hero {
             ul li {
-                background: var(--drk-bg-color-b);
 
                 &.separator {
                     background: var(--drk-bg-color-a);
@@ -478,18 +541,20 @@
                 > a {
                     border-bottom-color: var(--drk-border-color);
                 }
+
+                &.active > a {
+                    border-bottom-color: var(--drk-bg-color-selection);
+
+                    > span.borders:before {
+                        background-color: var(--drk-bg-color-selection);
+                    }
+                }
             }
 
             &.single-level ul li:hover > a {
                 background: #202833;
             }
         }
-    }
-
-    .layout.control-tabs.oc-logo-transparent:not(.has-tabs):after,
-    .flex-layout-column.oc-logo-transparent:not(.has-tabs):after,
-    .layout-cell.oc-logo-transparent:after {
-        background-color: transparent;
     }
 
     .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs > div > ul.nav-tabs > li.active > a {
@@ -500,8 +565,125 @@
         background: var(--drk-bg-color-a) !important;
     }
 
-    #layout-side-panel div.control-toolbar input.form-control {
-        box-shadow: none;
+    /* ================================================================
+       Fancy-layout accent (G16 + tab wings) — centralised on the
+       --drk-accent-* vars (declared in :root). The bright runtime
+       --secondary teal leaks onto any tab bar/title/WING we don't
+       override, so for every tab type: bar → --drk-accent-bar, active
+       title AND its wings → --drk-accent-raised, inactive title AND its
+       wings → --drk-accent-recessed. Retune all of it from :root.
+       ================================================================ */
+
+    /* Header band + primary-tab nav bar. Scoped to the top-level form like
+       core's fancy-layout rules, so a nested form's fields and tabs don't pick
+       up the header colour. */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .form-tabless-fields,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.primary-tabs > div > ul.nav-tabs {
+        background-color: var(--drk-accent-raised) !important;
+    }
+
+    /* Breadcrumb: the whole structure on the accent scale, as core draws it in
+       light mode from the brand colour (which the runtime brand CSS would
+       otherwise keep bright here): recessed segments whose arrow tips match them,
+       header-coloured separators, and the current segment raised. */
+    .fancy-layout .control-breadcrumb {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li {
+        background-color: var(--drk-accent-recessed) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li::after {
+        border-left-color: var(--drk-accent-recessed) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:not(:last-child)::before {
+        border-left-color: var(--drk-accent-raised) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:last-child,
+    .fancy-layout .control-breadcrumb li.active {
+        background-color: var(--drk-accent-active) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:last-child::after,
+    .fancy-layout .control-breadcrumb li.active::after {
+        border-left-color: var(--drk-accent-active) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:last-child::before {
+        border-left-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Master-tabs (Builder/CMS document "browser" tabs) — bar */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Master-tabs active title + wings */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:before,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:before,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:after,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li.active a > span.title:after {
+        background-color: var(--drk-accent-raised) !important;
+    }
+
+    /* Master-tabs inactive title + wings (wings leaked bright teal before) */
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:before,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:before,
+    body.fancy-layout .master-tabs.control-tabs > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:after,
+    .master-tabs.control-tabs.fancy-layout > div > div.tabs-container > ul.nav-tabs > li:not(.active) a > span.title:after {
+        background-color: var(--drk-accent-recessed) !important;
+    }
+
+    /* Secondary-content-tabs bar */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs.primary-collapsed > div > ul.nav-tabs {
+        background-color: var(--drk-accent-bar) !important;
+    }
+
+    /* Secondary-content-tabs: the active tab (title + wings) takes the surface of
+       the editor toolbar it sits on, the way it takes the editor's white in light
+       mode. fancy-layout.css gives its link bg-white, which showed as white edges
+       round the tab, and core draws inactive wings in literal white. */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:before,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active a > span.title:after {
+        background-color: var(--drk-bg-color-c) !important;
+    }
+
+    .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li.active > a {
+        background-color: transparent;
+    }
+
+    /* The editor toolbar under these tabs has a white top border, invisible on
+       white in light mode but a bright line under the tabs here. */
+    .fancy-layout .control-tabs.secondary-content-tabs .field-richeditor .fr-toolbar {
+        border-top-color: var(--drk-bg-color-c);
+    }
+
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li:not(.active) a > span.title:before,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.secondary-tabs.secondary-content-tabs > div > ul.nav-tabs > li:not(.active) a > span.title:after {
+        background-color: transparent;
+    }
+
+    /* Plain secondary tabs (fancy-layout.css paints the bar bg-secondary and the
+       active tab bg-white): bar → --drk-accent-bar, and the active tab takes the
+       page background so it joins the content below, as it does in light mode.
+       Left alone, the bar glowed bright brand teal and the active tab was white
+       behind light text (~1.5:1). */
+    .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs:not(.secondary-content-tabs) > div > ul.nav-tabs {
+        background-color: var(--drk-accent-bar);
+    }
+
+    .fancy-layout :not(.nested-form) > .form-widget > .layout-row > .control-tabs.secondary-tabs:not(.secondary-content-tabs) > div > ul.nav-tabs > li.active > a {
+        background-color: var(--drk-bg-color-a);
+        color: var(--drk-color);
     }
 
     /* Froala richtext editor */
@@ -517,17 +699,25 @@
         }
     }
 
-    .control-assetlist ul li a.link {
-        color: var(--drk-color);
+    /* G13: markdown/rich preview tables keep light gray-200 cell borders even
+       under prose-invert — darken them explicitly. */
+    .field-markdowneditor .editor-preview table,
+    .field-markdowneditor .editor-preview table td,
+    .field-markdowneditor .editor-preview table th,
+    .field-richeditor .fr-view table,
+    .field-richeditor .fr-view table td,
+    .field-richeditor .fr-view table th {
+        border-color: var(--drk-border-color);
     }
 
+    .control-assetlist ul li:hover,
     .control-assetlist ul li a.link:hover {
-        background: #000;
+        background: var(--drk-bg-color-hover);
     }
 
-    .control-assetlist ul li.active a.link,
-    .control-assetlist ul li a.link:hover {
-        background: var(--drk-bg-color-b);
+    .control-assetlist ul li.active a,
+    .control-assetlist ul li.active a.link {
+        background: var(--drk-bg-color-selection);
     }
 
     .control-assetlist p.parent.parent a.link:after {
@@ -546,7 +736,6 @@
 
     .component-list .components div.layout div.layout-row div.layout-cell {
         border-top: 1px solid var(--drk-border-color);
-        background: var(--drk-bg-color-b);
     }
 
     .draggable-component-item:hover,
@@ -572,29 +761,20 @@
     .draggable-component-item > div:after,
     .component-list .components div.layout-cell > div:after,
     div.control-componentlist div.components div.layout-cell > div:after {
-        color: var(--drk-bg-color-b);
-        text-shadow: 0 0 1px #6fc2f1;
+        text-shadow: 0 0 1px var(--drk-color-accent);
     }
 
     .component-list .components div.layout div.layout-row div.layout-cell > div:before {
-        color: var(--drk-bg-color-b);
-        text-shadow: 0 0 1px #6fc2f1;
-    }
-
-    div.control-componentlist div.components div.layout-cell > div:before,
-    .component-list .components div.layout-cell > div span.name,
-    div.control-componentlist div.components div.layout-cell > div span.name,
-    div.control-componentlist div.components div.layout-cell > div a.remove {
-        color: var(--drk-color);
+        text-shadow: 0 0 1px var(--drk-color-accent);
     }
 
     .component-list .components div.layout-cell > div span.description,
     div.control-componentlist div.components div.layout-cell > div span.description {
-        color: #bdb884;
+        color: var(--drk-color-muted);
     }
 
     div.control-componentlist div.components div.layout-cell > div span.alias {
-        color: #7fffd4;
+        color: var(--drk-color-muted);
     }
 
     #cms-master-tabs .form-buttons .btn.btn-primary {
@@ -606,18 +786,10 @@
         background-color: transparent;
     }
 
-    .fancy-layout .form-buttons .btn {
-        border: 0;
-    }
-
     #cms-master-tabs.fancy-layout .control-tabs.primary-tabs > div > ul.nav-tabs > li a span.title {
         margin: -2px 0px;
         background: var(--drk-bg-color-a);
         padding: 5px 5px 3px 5px;
-    }
-
-    .fancy-layout .control-tabs.secondary-tabs > div > ul.nav-tabs {
-        background-color: var(--drk-bg-color-b);
     }
 
     #cms-master-tabs .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title > span {
@@ -631,34 +803,21 @@
 
     /* END - CMS */
 
-
     /* backend/media */
     .whiteboard {
         background: var(--drk-bg-color-b);
     }
 
     .nav.selector-group li.active a {
-        color: #d16969;
+        color: var(--drk-color-accent);
     }
 
     ul.tree-path li.root a {
-        color: #ce9178;
+        color: var(--drk-color);
     }
 
     table.name-value-list td {
-        color: #31ac5f;
-    }
-
-    div.panel.border-left {
-        border-left-color: var(--drk-border-color);
-    }
-
-    div.panel.border-right {
-        border-right-color: var(--drk-border-color);
-    }
-
-    div.panel.border-bottom {
-        border-bottom-color: var(--drk-border-color);
+        color: var(--drk-color);
     }
 
     div.panel.triangle-down:after {
@@ -671,20 +830,20 @@
 
     div[data-control="media-manager"] .sidebar-image-placeholder {
         box-sizing: content-box;
-        background-image: -webkit-linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef),
-            -webkit-linear-gradient(45deg, #efefef 25%, transparent 25%, transparent 75%, #efefef 75%, #efefef);
+        background-image: -webkit-linear-gradient(45deg, #0d1117 25%, transparent 25%, transparent 75%, #0d1117 75%, #0d1117),
+            -webkit-linear-gradient(45deg, #0d1117 25%, transparent 25%, transparent 75%, #0d1117 75%, #0d1117);
         background-position: 0 0, 10px 10px;
         background-size: 21px 21px;
-        background-color: #d2d2d2;
+        background-color: var(--drk-bg-color-c);
     }
 
     div[data-control="media-manager"] .sidebar-image-placeholder i.icon-level-up {
-        color: #d16969;
+        color: var(--drk-color-muted);
     }
 
     div[data-control="media-manager"] .sidebar-image-placeholder p {
-        color: #d16969;
-        background: #fff;
+        color: var(--drk-color-muted);
+        background: var(--drk-bg-color-b);
     }
 
     #MediaManager-manager-filters .nav > li > a:hover,
@@ -699,15 +858,15 @@
     }
 
     div[data-control="media-manager"] .media-list li h4 {
-        color: #ff9800;
+        color: var(--drk-color);
     }
 
     div[data-control="media-manager"] .media-list li[data-item-type="folder"] h4 {
-        color: #d16969;
+        color: var(--drk-color);
     }
 
     div[data-control="media-manager"] .media-list li[data-item-type="file"] h4 {
-        color: #ffc107;
+        color: var(--drk-color);
     }
 
     div[data-control="media-manager"] table.table tr[data-item-type=folder] i.icon-folder {
@@ -719,23 +878,18 @@
     }
 
     tr[data-item-type="file"] .item-title {
-        color: #00ffff;
+        color: var(--drk-color);
     }
 
     [data-control="preview-sidebar"] .panel [data-label="title"] {
-        color: #d16969;
+        color: var(--drk-color);
     }
 
     div[data-control="media-manager"] .upload-progress {
         background: inherit;
     }
 
-    div[data-control="media-manager"] .upload-progress h5 {
-        color: var(--drk-color);
-    }
-
     /* END - backend/media */
-
 
     /* List - Список */
     .list-scrollable-container:after,
@@ -762,13 +916,8 @@
         border-bottom-color: var(--drk-border-color);
     }
 
-    table.table.data thead {
-        background: var(--drk-bg-color-b);
-    }
-
     table.table.data tbody td,
     table.table.data tbody th {
-        color: var(--drk-color);
         border-top: 1px solid var(--drk-border-color);
     }
 
@@ -794,27 +943,22 @@
         ;
     }
 
-    table.table.data tbody tr:nth-child(even) td,
-    table.table.data tbody tr:nth-child(even) th {
-        background-color: #0c121a;
-    }
-
     table.table.data thead td > a,
     table.table.data thead th > a,
     table.table.data thead td > span,
     table.table.data thead th > span {
-        color: #deb887;
+        color: var(--drk-color);
     }
 
     .control-list table.table.data .list-setup a {
-        color: #deb887;
+        color: var(--drk-color);
     }
 
     table.table.data thead td > a:hover,
     table.table.data thead th > a:hover,
     table.table.data thead td > span:hover,
     table.table.data thead th > span:hover {
-        color: #daeb60;
+        color: var(--drk-color-accent);
     }
 
     .control-filter a,
@@ -826,25 +970,25 @@
     .control-filter > .filter-scope.active,
     .control-filter > .filter-scope:hover.custom-checkbox label,
     .control-filter > .filter-scope.active.custom-checkbox label {
-        color: #cddc39;
+        color: var(--drk-color-accent);
     }
 
     .control-filter > .filter-scope:hover .filter-label,
     .control-filter > .filter-scope.active .filter-label {
-        color: #cddc39;
+        color: var(--drk-color-accent);
     }
 
     .control-filter > .filter-has-popover:hover {
-        color: #ffeb3b;
+        color: var(--drk-color-accent);
     }
 
     .control-filter > .filter-has-popover:hover .filter-label {
-        color: #cddc39;
+        color: var(--drk-color-accent);
     }
 
     .control-filter-popover .filter-items {
         background-color: #353535;
-        border-bottom-color: #3e71a5;
+        border-bottom-color: var(--drk-border-color);
     }
 
     .control-filter-popover .filter-items a,
@@ -863,39 +1007,32 @@
         color: var(--drk-color);
     }
 
-
     table.table.data thead td,
     table.table.data thead th {
         border-top: 1px solid #34495e !important;
         border-bottom: 1px solid #34495e !important;
-        border-color: #0180ff;
+        border-color: var(--drk-border-color);
     }
 
     table.table.data .list-checkbox {
-        border-right: 1px solid #0180ff;
+        border-right: 1px solid var(--drk-border-color);
     }
 
-    .table > thead > tr > td.active,
-    .table > tbody > tr > td.active,
-    .table > tfoot > tr > td.active,
-    .table > thead > tr > th.active,
-    .table > tbody > tr > th.active,
-    .table > tfoot > tr > th.active,
-    .table > thead > tr.active > td,
-    .table > tbody > tr.active > td,
-    .table > tfoot > tr.active > td,
-    .table > thead > tr.active > th,
-    .table > tbody > tr.active > th,
-    .table > tfoot > tr.active > th {
-        background-color: #1e1600;
+    /* List totals header/footer rows: core paints them light #f2f2f2 bands. */
+    table.table.data tr.table-totals,
+    table.table.data tr.table-totals td,
+    table.table.data tr.table-totals th {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+        border-color: var(--drk-border-color);
     }
 
     table.table.data thead th.sort-asc.active {
-        background: #1e261e;
+        background: var(--drk-bg-color-selection);
     }
 
     table.table.data thead th.sort-desc.active {
-        background: #34495e;
+        background: var(--drk-bg-color-selection);
     }
 
     table.table.data tbody tr.active:nth-child(even) td,
@@ -903,14 +1040,8 @@
         background-color: #0e253c;
     }
 
-    .field-checkboxlist .field-checkboxlist-inner {
-        background-color: var(--drk-bg-color-b);
-        border-color: var(--drk-border-color);
-        box-shadow: none;
-    }
-
     .field-checkboxlist .checkboxlist-controls > div > a:hover > i {
-        color: #1f99dc;
+        color: var(--drk-color-accent);
     }
 
     .custom-checkbox label:before,
@@ -949,40 +1080,23 @@
     }
 
     .field-fileupload .upload-object.is-error .info h4 {
-        color: #ed1700;
+        color: var(--drk-color-danger);
     }
 
     .control-list p.no-data {
-        color: #d7ba7d;
+        color: var(--drk-color-muted);
     }
-
 
     /* breadcrumb */
     .control-breadcrumb {
-        background-color: var(--drk-bg-color-c);
         border: solid 1px var(--drk-border-color);
     }
 
-    .control-breadcrumb li {
-        background-color: var(--drk-bg-color-b);
-    }
-
-    .control-breadcrumb li:before {
-        border-left: 15px solid var(--drk-bg-color-c);
-    }
-
-    .control-breadcrumb li:after {
-        border-left: 15px solid var(--drk-bg-color-b);
-    }
-
     .control-breadcrumb li:last-child {
-        background-color: transparent;
         color: var(--drk-color);
     }
 
     /* END - breadcrumb */
-
-
 
     /* Form */
     .loading-indicator-container .loading-indicator {
@@ -1020,22 +1134,14 @@
     }
 
     .field-section h4 {
-        color: #fa8072;
-    }
-
-    .form-control[disabled],
-    .form-control[readonly],
-    fieldset[disabled] .form-control {
-        background-color: #010409 !important;
         color: var(--drk-color);
     }
 
-    .field-codeeditor {
-        border: 2px solid #27709c;
-    }
-
-    .field-repeater .field-repeater-add-item {
+    /* Fieldset form widget: core gives it a light #f5f5f5 panel — darken it. */
+    .fieldset {
+        background-color: var(--drk-bg-color-inset);
         border-color: var(--drk-border-color);
+        color: var(--drk-color);
     }
 
     .field-repeater li.field-repeater-item {
@@ -1050,17 +1156,12 @@
     }
 
     .field-fileupload .upload-object h4 {
-        color: #d7ba7d;
+        color: var(--drk-color);
     }
 
     .field-mediafinder.style-image-single .find-button {
         background: #43474a;
         border: 2px dotted #898989;
-    }
-
-    .field-fileupload.style-image-single .upload-button,
-    .field-fileupload.style-image-multi .upload-button {
-        background-color: #43474a;
     }
 
     .field-mediafinder.style-image-single .find-button .find-button-icon:before {
@@ -1083,7 +1184,7 @@
     }
 
     .field-mediafinder .find-object h4 {
-        color: #ff7f50;
+        color: var(--drk-color);
     }
 
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -1097,14 +1198,17 @@
     }
 
     .field-fileupload .upload-object .info h4 a,
-    .field-fileupload .upload-object .meta a.upload-remove-button,
+    .field-fileupload .upload-object .meta a.upload-remove-button {
+        color: var(--drk-color-danger);
+    }
+
     .field-fileupload .upload-object .meta a.drag-handle {
-        color: #ef0319;
+        color: var(--drk-color-muted);
     }
 
     .form-preview {
-        background: #343434;
-        border: 1px solid #626262;
+        background: var(--drk-bg-color-b);
+        border: 1px solid var(--drk-border-color);
     }
 
     .nested-form.panel-styles {
@@ -1115,6 +1219,14 @@
 
     .field-section {
         border-bottom-color: var(--drk-border-color);
+    }
+
+    /* Input-group addons (e.g. the email/URL field icons): core paints them a
+       literal #eee that has no token, so they would stay a light box. */
+    .input-group-addon {
+        background-color: var(--drk-bg-color-btn);
+        border-color: var(--drk-border-color);
+        color: var(--drk-color);
     }
 
     /* END - Form */
@@ -1132,6 +1244,53 @@
     }
     .ace-github .ace_marker-layer .ace_selection {
         background: var(--drk-bg-color-selection);
+    }
+
+    /* Editor toolbars: core ships them light #f2f2f2. Darken the bar, its
+       border and its buttons for both the markdown editor and Froala. */
+    .control-toolbar.editor-toolbar,
+    .fr-toolbar,
+    .fr-toolbar.fr-top {
+        background: var(--drk-bg-color-c);
+        border-color: var(--drk-border-color);
+    }
+
+    .control-toolbar.editor-toolbar .btn {
+        color: var(--drk-color);
+    }
+
+    .control-toolbar.editor-toolbar .btn:hover,
+    .control-toolbar.editor-toolbar .btn:focus {
+        color: #fff;
+        background: var(--drk-bg-color-btn);
+    }
+
+    .fr-toolbar .fr-command.fr-btn,
+    .fr-toolbar .fr-command.fr-btn i,
+    .fr-toolbar .fr-command.fr-btn svg path {
+        color: var(--drk-color);
+    }
+
+    .fr-toolbar .fr-command.fr-btn:hover,
+    .fr-toolbar .fr-command.fr-btn:focus,
+    .fr-toolbar .fr-command.fr-btn.fr-active {
+        background: var(--drk-bg-color-btn);
+    }
+
+    .fr-toolbar .fr-command.fr-btn.fr-active,
+    .fr-toolbar .fr-command.fr-btn.fr-active i,
+    .fr-toolbar .fr-command.fr-btn.fr-active svg path {
+        color: #fff;
+        fill: #fff;
+    }
+
+    .fr-toolbar .fr-more-toolbar,
+    .fr-toolbar.fr-toolbar .fr-newline {
+        background: var(--drk-bg-color-c);
+    }
+
+    .fr-toolbar .fr-separator {
+        background: var(--drk-border-color);
     }
 
     /* control-popover */
@@ -1161,7 +1320,7 @@
     }
 
     div.control-popover .popover-head p {
-        color: #bdb884;
+        color: var(--drk-color-muted);
     }
 
     div.control-popover .popover-head .close {
@@ -1246,7 +1405,7 @@
 
     div.control-popover.popover-danger > div {
         background-image: linear-gradient(rgb(248 81 73 / 15%), rgb(248 81 73 / 15%));
-        border-color: #9f0700;
+        border-color: var(--drk-color-danger);
     }
 
     div.control-popover.popover-danger.placement-top .popover-head:before {
@@ -1254,22 +1413,14 @@
     }
 
     div.control-popover.popover-danger.placement-top > div:after {
-        border-top-color: #9f0700;
+        border-top-color: var(--drk-color-danger);
     }
-
 
     /* alert */
     .sweet-alert {
-        background-color: var(--drk-bg-color-a);
-        color: var(--drk-color);
         border: solid 1px var(--drk-border-color);
         box-shadow: var(--drk-box-shadow);
     }
-
-    .sweet-alert h2 {
-        color: var(--drk-color);
-    }
-
 
     /* Modals */
     .modal-content {
@@ -1296,12 +1447,10 @@
         background: rgb(0 0 0 / 50%);
     }
 
-
     /* Flash message */
     .flash-message {
         background: var(--drk-bg-color-a);
         color: var(--drk-color);
-        border-style: solid;
         border-width: 1px;
         box-shadow: var(--drk-box-shadow);
     }
@@ -1326,13 +1475,7 @@
         border-color: rgb(248 81 73 / 40%);
     }
 
-
     /* Callout */
-    .callout > .header {
-        background: var(--drk-bg-color-a);
-        color: var(--drk-color);
-        border-style: solid;
-    }
 
     .callout.callout-success > .header {
         background-image: linear-gradient(rgb(46 160 67 / 15%), rgb(46 160 67 / 15%));
@@ -1346,7 +1489,6 @@
 
     .callout.callout-warning > .header {
         background-image: linear-gradient(rgb(187 128 9 / 15%), rgb(187 128 9 / 15%));
-        border-color: rgb(187 128 9 / 40%);
     }
 
     .callout.callout-danger > .header {
@@ -1356,7 +1498,6 @@
 
     .callout .content {
         background: var(--drk-bg-color-a);
-        color: var(--drk-color);
     }
 
     .callout .content a {
@@ -1378,20 +1519,17 @@
     }
 
     .callout.callout-warning > .content {
-        background-image: linear-gradient(rgb(187 128 9 / 15%), rgb(187 128 9 / 15%));
         border-color: rgb(187 128 9 / 40%);
     }
 
     .callout.callout-warning > .header+.content {
         background-color: var(--drk-bg-color-a);
-        background-image: none;
     }
 
     .callout.callout-danger > .content {
         background-image: linear-gradient(rgb(248 81 73 / 15%), rgb(248 81 73 / 15%));
         border-color: rgb(248 81 73 / 40%);
     }
-
 
     /* permission editor */
     .permissioneditor table th {
@@ -1413,10 +1551,15 @@
         color: #3fb950;
     }
 
-
     /* theme-selector-layout - /backend/cms/themes */
     .theme-selector-layout .theme-thumbnail {
         background: #10161e;
+    }
+
+    /* The default (no-preview) thumbnail is a light-grey PNG — invert just
+       that placeholder so it reads dark; real theme screenshots untouched. */
+    .theme-selector-layout .theme-thumbnail img[src*="default-theme-preview"] {
+        filter: invert(0.9);
     }
 
     .theme-selector-layout .layout-row.active .theme-thumbnail {
@@ -1433,17 +1576,19 @@
 
     .theme-selector-layout .create-new-theme,
     .theme-selector-layout .find-more-themes {
-        background: #263baf;
+        background: var(--drk-bg-color-btn);
+        border: 1px solid var(--drk-border-color);
         color: var(--drk-color);
     }
 
     .theme-selector-layout .create-new-theme:hover,
     .theme-selector-layout .find-more-themes:hover {
-        background: #283fc2;
+        background: var(--drk-bg-color-c);
+        color: #fff;
     }
 
     .theme-selector-layout .theme-description h3 {
-        color: #f9e23d;
+        color: var(--drk-color);
     }
 
     .theme-selector-layout .theme-description p.description {
@@ -1453,7 +1598,6 @@
     .theme-selector-layout .layout-row.links .theme-description {
         border-bottom: 1px solid var(--drk-border-color);
     }
-
 
     /* Tabs */
     .control-tabs.primary-tabs {
@@ -1468,49 +1612,25 @@
                 border-bottom: 2px solid #555;
             }
 
+            /* Tab surfaces come from core's tokens, as in light mode: the active
+               tab takes the canvas colour and joins the panel below, inactive
+               tabs sit back on --wn-surface-overlay. */
             li {
                 a > span.title {
-                    background-color: var(--drk-bg-color-a) !important;
-
-                    &:before {
-                        border-left: 2px solid #555;
-                    }
-
-                    &:after {
-                        border-right: 2px solid #555;
-                    }
-
                     &:before,
                     &:after {
-                        background: var(--drk-bg-color-a) !important;
-                        border-width: 2px !important;
                         border: none;
                     }
                 }
 
-                &.active {
-                    a {
-                        --drk-bg-color-a: #555;
-
-                        &:before {
-                            background-color: var(--drk-bg-color-a);
-                        }
-
-                        > span.title {
-                            &:before,
-                            &:after {
-                                border-color: #555;
-                            }
-
-                            span {
-                                color: #fff;
-                            }
-                        }
-                    }
+                &.active a > span.title span {
+                    color: #fff;
                 }
             }
         }
     }
+
+    /* Tab-content panel inherits a light gray-200 top border from core. */
 
     .control-tabs > ul.nav-tabs > li.active a,
     .control-tabs > div > ul.nav-tabs > li.active a,
@@ -1518,7 +1638,7 @@
     .control-tabs > ul.nav-tabs > li.active a:hover,
     .control-tabs > div > ul.nav-tabs > li.active a:hover,
     .control-tabs > div > div > ul.nav-tabs > li.active a:hover {
-        color: #ffd700;
+        color: var(--drk-color-accent);
     }
 
     .control-tabs > div > ul.nav-tabs > li a {
@@ -1544,11 +1664,6 @@
         background: var(--drk-bg-color-c);
     }
 
-    .control-tabs.content-tabs > ul.nav-tabs li {
-        border-top-color: var(--drk-border-color);
-        border-right-color: var(--drk-border-color);
-    }
-
     .control-tabs.content-tabs > ul.nav-tabs li:first-child {
         border-left-color: var(--drk-border-color);
     }
@@ -1561,11 +1676,6 @@
         border-top: 2px solid #555;
     }
 
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title:before,
-    .control-tabs.primary-tabs > div > ul.nav-tabs > li.active a > span.title:after {
-        background: var(--drk-bg-color-a);
-    }
-
     .control-tabs > div > ul.nav-tabs > li a > span.title > span {
         margin-top: -2px;
     }
@@ -1576,55 +1686,30 @@
 
     /* End - Tabs */
 
-
     /* control-table */
-    .control-table .table-container {
-        border-color: var(--drk-border-color);
-    }
 
     .control-table .toolbar {
         background: var(--drk-bg-color-b);
-        border-bottom-color: var(--drk-border-color);
     }
 
     .control-table.active .toolbar {
-        border-bottom-color: #028dff;
+        border-bottom-color: var(--drk-color-accent);
     }
 
     .control-table .toolbar a.btn {
-        color: var(--drk-color);
         border: 0;
     }
 
     .control-table table.headers th {
-        color: var(--drk-color);
         background: #0d1520;
-        border-right-color: var(--drk-border-color);
     }
 
     .control-table.active table.headers:after {
         border-bottom-color: var(--drk-border-color);
     }
 
-    .control-table table.data tr {
-        background-color: var(--drk-bg-color-b);
-    }
-
-    .control-table table.data tr:nth-child(2n) {
-        background-color: #121922;
-    }
-
-    .control-table table.data td {
-        border-color: var(--drk-border-color);
-    }
-
     .control-table td[data-column-type=string] input[type=text] {
         background: var(--drk-bg-color-inset);
-    }
-
-    .control-table table td,
-    .control-table table th {
-        color: var(--drk-color);
     }
 
     .control-table td[data-column-type=checkbox] div[data-checkbox-element] {
@@ -1632,6 +1717,29 @@
         border-color: var(--drk-border-color);
     }
 
+    /* Table-widget cell dropdown (e.g. Builder's migration column-type
+       selector): core table.css paints the list white with #555 text on the
+       non-focused items. */
+    .table-control-dropdown-list {
+        background: var(--drk-bg-color-b);
+        border-color: var(--drk-border-color);
+    }
+
+    .table-control-dropdown-list li {
+        color: var(--drk-color);
+    }
+
+    .table-control-dropdown-list li:focus,
+    .table-control-dropdown-list li:hover {
+        background: var(--drk-bg-color-selection);
+        color: #fff;
+    }
+
+    /* Active table cell (e.g. an open dropdown cell) renders a white content
+       container while being edited. */
+    .control-table table.data td.active .content-container {
+        background: var(--drk-bg-color-inset);
+    }
 
     /* eventlogs */
     .plugin-exception-beautifier .beautifier-message-container {
@@ -1660,12 +1768,55 @@
     }
 
     .plugin-exception-beautifier .beautifier-file {
-        color: #03a9f4;
+        color: var(--drk-color-accent);
     }
 
     .plugin-exception-beautifier .beautifier-line-number {
         color: red;
     }
+
+    /* Event-log preview: the #winter-log-viewer component ships a hardcoded
+       light theme via an inline <style> in core's _field_details.php partial.
+       Darken the panel, trace frames, code snippets and syntax highlighting.
+       (.dark #winter-log-viewer... outranks core's id-only inline rules.) */
+    #winter-log-viewer {
+        background: var(--drk-bg-color-a);
+    }
+
+    #winter-log-viewer .btn.btn-secondary[disabled] {
+        color: var(--drk-color);
+    }
+
+    #winter-log-viewer .trace {
+        border-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .trace-frame {
+        background: var(--drk-bg-color-b);
+    }
+
+    #winter-log-viewer .trace-frame:not(:last-child) {
+        border-bottom-color: var(--drk-border-color);
+    }
+
+    #winter-log-viewer .snippet-preview-container,
+    #winter-log-viewer .snippet-preview div.preview-line {
+        background: var(--drk-bg-color-inset);
+    }
+
+    #winter-log-viewer .snippet-preview div.preview-line.highlight {
+        background: var(--drk-bg-color-selection);
+    }
+
+    /* Code-snippet syntax highlighting recoloured for a dark background. */
+    #winter-log-viewer .snippet-preview span.bracket { color: #c9d1d9; }
+    #winter-log-viewer .snippet-preview span.variable { color: #ff7b52; }
+    #winter-log-viewer .snippet-preview span.control { color: #c586c0; }
+    #winter-log-viewer .snippet-preview span.string { color: #98c379; }
+    #winter-log-viewer .snippet-preview span.number { color: #569cd6; }
+    #winter-log-viewer .snippet-preview span.html { color: #dcdcaa; }
+    #winter-log-viewer .snippet-preview span.bool { color: #f97583; }
+    #winter-log-viewer .snippet-preview span.comment { color: #7d8f5a; }
 
     /* Import/Export */
     .import-behavior .import-file-columns,
@@ -1702,7 +1853,7 @@
     }
 
     .import-behavior .import-column-bindings > ul:before {
-        color: #8b7964;
+        color: var(--drk-color-muted);
     }
 
     .import-behavior .import-column-bindings > ul > li:not(.dragged) {
@@ -1737,7 +1888,7 @@
     }
 
     .field-notes .toolbar .btn-icon:hover {
-        background: #0654ca;
+        background: var(--drk-bg-color-selection);
     }
 
     .field-notes .toolbar [class*=" oc-icon-"]:before {
@@ -1760,7 +1911,6 @@
         border-color: var(--drk-border-color);
     }
 
-
     /* Widget Winter.User Statistics */
     .user-statistics-widget {
         background: #000;
@@ -1777,33 +1927,22 @@
     }
 
     .users-statistics-item-total {
-        color: aqua
+        color: var(--drk-color)
     }
 
     .users-statistics-item-activated {
-        color: greenyellow
+        color: var(--drk-color-success)
     }
 
     .users-statistics-item-banned {
-        color: orangered
+        color: var(--drk-color-danger)
     }
 
     .table-user-statistics td:not(:first-child) {
-        color: cyan
+        color: var(--drk-color)
     }
-
 
     /* Winter.Builder */
-    .fancy-layout.control-tabs.master-tabs > div > div.tabs-container > ul.nav-tabs > li.active[data-tab-id="welcome"] a > span.title,
-    .fancy-layout.control-tabs.master-tabs > div > div.tabs-container > ul.nav-tabs > li.active[data-tab-id="welcome"] a > span.title:before,
-    .fancy-layout.control-tabs.master-tabs > div > div.tabs-container > ul.nav-tabs > li.active[data-tab-id="welcome"] a > span.title:after {
-        background: var(--drk-bg-color-a);
-    }
-
-    #layout-side-panel div.control-toolbar.separator,
-    .compact-toolbar div.control-toolbar.separator {
-        border-bottom-color: var(--drk-border-color);
-    }
 
     #layout-side-panel div.control-toolbar input.form-control,
     .compact-toolbar div.control-toolbar input.form-control {
@@ -1812,12 +1951,12 @@
     }
 
     #layout-side-panel .sidepanel-content-header {
-        background: #184d70;
+        background: var(--drk-accent-bar);
         color: var(--drk-color);
     }
 
     #layout-side-panel .sidepanel-content-header:after {
-        border-top-color: #184d70;
+        border-top-color: var(--drk-accent-bar);
     }
 
     #layout-side-panel.layout-cell.w-350 {
@@ -1868,20 +2007,9 @@
         color: var(--drk-color-danger) !important;
     }
 
-    .fancy-layout .form-tabless-fields a.btn.btn-primary {
-        border: none;
-        color: var(--drk-color);
-        background: transparent;
-    }
-
     #builder-master-tabs .control-tabs > div > ul.nav-tabs > li a > span.title > span {
         border-top: 0;
     }
-
-    .control-table table.headers:after {
-        border-bottom-color: var(--drk-border-color);
-    }
-
 
     /* Winter.Docs */
     #docs-content h1,
@@ -1921,5 +2049,116 @@
 
     #docs-content pre code {
         background: #2c2f38;
+    }
+
+    /* Date and time pickers: their selected/today states use the brand palette,
+       which is tuned for light surfaces. Today was navy on a dark cell, the
+       selected date white on brand green (~2:1), the clock's selected hour a pale
+       bubble behind light numerals, and its header digits navy. */
+    .pika-single .is-selected .pika-button,
+    .pika-single .is-selected .pika-button:hover {
+        background-color: var(--drk-color-accent) !important;
+        color: var(--drk-bg-color-a) !important;
+        box-shadow: none !important;
+    }
+
+    .pika-single .is-today .pika-button {
+        color: var(--drk-color-accent) !important;
+        font-weight: bold;
+    }
+
+    .pika-single .pika-prev,
+    .pika-single .pika-next {
+        filter: invert(1);
+        opacity: .7;
+    }
+
+    .clockpicker-popover .clockpicker-canvas-bg {
+        fill: var(--drk-bg-color-selection);
+    }
+
+    .clockpicker-popover .clockpicker-canvas-fg,
+    .clockpicker-popover .clockpicker-canvas-bearing {
+        fill: var(--drk-color-accent);
+    }
+
+    .clockpicker-popover .clockpicker-canvas line {
+        stroke: var(--drk-color-accent);
+    }
+
+    .clockpicker-popover .popover-title .text-primary {
+        color: var(--drk-color-accent);
+    }
+
+    /* Icon picker modal: ships its own light palette (white panels and tiles),
+       but inherits dark-mode text, so labels were light grey on white. Its
+       styles are Vue-scoped and injected after this file with equal specificity,
+       so each rule is anchored on the open modal (.aim-modal.aim-open) to win. */
+    .aim-modal.aim-open .aim-modal--content {
+        background-color: var(--drk-bg-color-a);
+        color: var(--drk-color);
+    }
+
+    .aim-modal.aim-open .aim-modal--header,
+    .aim-modal.aim-open .aim-modal--footer {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+    }
+
+    .aim-modal.aim-open .aim-modal--header-logo-title {
+        color: var(--drk-color);
+    }
+
+    .aim-modal.aim-open .aim-modal--sidebar {
+        background-color: transparent;
+    }
+
+    .aim-modal.aim-open .aim-modal--sidebar-tab-item {
+        color: var(--drk-color-muted);
+    }
+
+    .aim-modal.aim-open .aim-modal--sidebar-tab-item.aesthetic-active {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+    }
+
+    .aim-modal.aim-open .aim-sidebar-preview {
+        background-color: var(--drk-bg-color-b);
+        border-color: var(--drk-border-color);
+    }
+
+    .aim-modal.aim-open .aim-icon-item {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+    }
+
+    .aim-modal.aim-open .aim-icon-item:hover {
+        background-color: var(--drk-bg-color-hover);
+    }
+
+    .aim-modal.aim-open .aim-icon-item.aesthetic-selected {
+        background-color: var(--drk-bg-color-selection);
+    }
+
+    .aim-modal.aim-open .aim-icon-item-name {
+        color: var(--drk-color-muted);
+    }
+
+    .aim-modal.aim-open .aim-modal--icon-search input {
+        background-color: var(--drk-bg-color-inset);
+        border: 1px solid var(--drk-border-color);
+        color: var(--drk-color);
+    }
+
+    .aim-modal.aim-open .aim-modal--footer .btn-secondary {
+        background-color: var(--drk-bg-color-btn);
+        border-color: var(--drk-border-color);
+        color: var(--drk-color);
+    }
+
+    /* The switch knob stays light in both modes, but core paints it with
+       --wn-surface-hover, which is dark here. */
+    label.custom-switch > .slide-button {
+        background-color: #f0f5f8;
     }
 }
