@@ -1,0 +1,10 @@
+{
+  "_comment": "Deliberate colour changes, so verify.php reports only unintended ones. Substring match against the selector.",
+  "winter.css": [
+    "div.tabs-container",
+    ":focus-visible"
+  ],
+  "storm.css": [
+    ":focus-visible"
+  ]
+}

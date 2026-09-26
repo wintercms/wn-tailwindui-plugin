@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winter core — colour token map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Mulish:wght@700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#fff;--surface:#f7fafb;--sunken:#f0f5f8;--line:#e1e8ee;--line2:#c9d6e0;
+ --ink:#0e1a28;--mut:#60788c;--faint:#7a8fa1;
+ --acc:#1b6477;--acc2:#2da7c7;
+ --ok:#417631;--okb:#f0f9ee;--warn:#a67e29;--warnb:#faf5ea;--bad:#ab4a21;--badb:#fbefea;
+ --f:'Public Sans',ui-sans-serif,system-ui,sans-serif;--fh:'Mulish',var(--f);--fm:'IBM Plex Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.55 var(--f);-webkit-font-smoothing:antialiased}
+h1,h2{font-family:var(--fh);font-weight:800;margin:0}
+code,.m{font-family:var(--fm);font-variant-numeric:tabular-nums}
+.wrap{max-width:1150px;margin:0 auto;padding:0 22px 100px}
+.bar{position:sticky;top:0;z-index:50;background:#0e1a28;color:#e9f1f6;padding:11px 22px;
+ display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:13px}
+.bar b{font-family:var(--fh)}
+.bar .sp{margin-left:auto;display:flex;gap:10px;align-items:center}
+.meter{width:170px;height:7px;background:#26384a;border-radius:4px;overflow:hidden}
+.meter i{display:block;height:100%;background:#57b9d2;width:0}
+.btn{border:1px solid #3b5468;background:#17293a;color:#e9f1f6;border-radius:7px;padding:6px 12px;
+ font:600 12px var(--f);cursor:pointer;border-color:#3b5468}
+.btn:hover{background:#20374b;border-color:#57b9d2}
+.btn.p{background:#2da7c7;border-color:#2da7c7;color:#062028}
+header.h{padding:30px 0 6px}
+header.h h1{font-size:25px;letter-spacing:-.02em}
+header.h p{color:var(--mut);max-width:80ch;margin:9px 0 0}
+.bands{display:flex;gap:0;margin:20px 0 6px;border-radius:8px;overflow:hidden;height:30px;border:1px solid var(--line)}
+.bands i{display:flex;align-items:center;justify-content:center;font:600 10.5px var(--f);color:#fff}
+.bandkey{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--mut);margin-bottom:6px}
+.bandkey span i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+h2.s{font-size:11.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);margin:34px 0 4px}
+.lead{color:var(--mut);max-width:82ch;margin:0 0 14px}
+.scale{display:flex;flex-direction:column;gap:5px;margin:8px 0 4px}
+.srow{display:flex;align-items:center;gap:9px}
+.srow .nm{width:74px;font:600 11px var(--f);color:var(--mut);text-align:right}
+.srow .steps{display:flex;flex:1;border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.srow .steps i{flex:1;height:24px}
+.tok{border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:#fff;overflow:hidden}
+.tok>.hd{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+.tok>.hd .n{font:500 13.5px var(--fm);color:var(--acc)}
+.tok>.hd .r{font-size:12px;color:var(--mut)}
+.tok>.bd{padding:12px 14px}
+.pill{font:700 9.5px var(--f);text-transform:uppercase;letter-spacing:.07em;padding:4px 8px;border-radius:20px;white-space:nowrap}
+.pill.ok{background:var(--okb);color:var(--ok)}
+.pill.warn{background:var(--warnb);color:var(--warn)}
+.pill.bad{background:var(--badb);color:var(--bad)}
+.pill.n{background:var(--sunken);color:var(--mut)}
+.map{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line2);border-radius:8px;padding:5px 10px 5px 5px;font-size:12px;background:#fff}
+.chip .d{width:20px;height:20px;border-radius:4px;border:1px solid rgba(0,0,0,.12)}
+.arrow{color:var(--faint)}
+.opts{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.opt{display:flex;align-items:center;gap:6px;border:1px solid var(--line2);border-radius:20px;
+ padding:3px 10px 3px 4px;font:500 11.5px var(--f);cursor:pointer;background:#fff}
+.opt:hover{border-color:var(--acc2)}
+.opt[aria-pressed=true]{background:var(--acc);color:#fff;border-color:var(--acc)}
+.opt .d{width:15px;height:15px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+.opt .de{font-family:var(--fm);font-size:10px;opacity:.75}
+details summary{cursor:pointer;color:var(--faint);font-size:11.5px;padding:5px 0}
+details summary:hover{color:var(--acc)}
+.vars{font-size:11.5px;color:var(--mut);margin-top:5px}
+.vars code{background:var(--sunken);padding:1px 5px;border-radius:3px;font-size:10.5px;margin-right:3px}
+.orph{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--sunken);font-size:12.5px}
+.orph .d{width:26px;height:26px;border-radius:5px;border:1px solid var(--line2)}
+.note{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--acc2);
+ border-radius:9px;padding:13px 15px;margin:14px 0;max-width:88ch}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0e1a28;color:#fff;
+ padding:10px 16px;border-radius:8px;font:600 13px var(--f);z-index:99}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>Colour token map</b>
+  <span id="prog" class="m"></span>
+  <span class="meter"><i id="fill"></i></span>
+  <span class="sp">
+    <button class="btn" id="reset">Reset</button>
+    <button class="btn p" id="copy">Copy decisions</button>
+  </span>
+</div>
+<div class="wrap">
+  <header class="h">
+    <h1>Winter core — colour token map</h1>
+    <p>Every colour core hardcodes today, mapped onto the design system scale you've already approved. The goal is that
+    <b>no colour is defined anywhere except this map</b> — so dark mode and theming become redefinitions rather than a hunt.</p>
+  </header>
+
+  <div class="bands" id="bands"></div>
+  <div class="bandkey" id="bandkey"></div>
+
+  <div class="note">
+    <b>Why not simply de-duplicate?</b> Core's 193 values aren't mostly accidental variants — collapsing only what's
+    imperceptible still leaves <b>123</b> of them. A small palette has to be <em>chosen</em>, not derived. So this maps onto
+    the design system's 6 families × 10 steps instead. That is a real visual change for some elements, shown per token below.
+  </div>
+
+  <h2 class="s">The scale everything maps onto</h2>
+  <div class="scale" id="scale"></div>
+
+  <h2 class="s">Tokens</h2>
+  <p class="lead">One per job. Each shows the design-system step it would take, and how far core's current value moves to get
+  there. Click a different step to override.</p>
+  <div id="tokens"></div>
+
+  <h2 class="s">No good fit</h2>
+  <p class="lead">Values more than ΔE 15 from any step — one-offs that need either a decision to accept a shift, or a new step.</p>
+  <div id="orphans"></div>
+</div>
+<script id="payload" type="application/json">{"meta":{"uses":717,"distinct":193,"files":91,"tokens":21,"bands":{"exact":222,"imperceptible":86,"sidebyside":133,"visible":216,"nofit":60},"orphanUses":60},"ds":{"indigo":["#e8edef","#d1dbe0","#a3b6c0","#7492a1","#466d81","#184962","#133a4e","#0e2c3b","#0a1d27","#050f14"],"pacific":["#eaf6f9","#d5edf4","#abdce9","#81cadd","#57b9d2","#2da7c7","#24869f","#1b6477","#124350","#092128"],"slate":["#f7fafb","#f0f5f8","#e1e8ee","#c9d6e0","#91a6b8","#60788c","#445a6b","#314457","#1c2b3b","#0e1a28"],"mantis":["#f0f9ee","#e2f3dc","#c4e8b9","#a7dc97","#89d174","#6cc551","#569e41","#417631","#2b4f20","#162710"],"flame":["#fbefea","#f7dfd4","#efbea9","#e69e7f","#de7d54","#d65d29","#ab4a21","#803819","#562510","#2b1308"],"marigold":["#faf5ea","#f5ebd6","#ecd8ad","#e2c485","#d9b15c","#cf9d33","#a67e29","#7c5e1f","#533f14","#291f0a"]},"steps":[50,100,200,300,400,500,600,700,800,900],"tokens":[{"slot":"text \u00b7 primary","token":"--wn-text","uses":160,"canonical":"#666666","target":"slate-600","targetHex":"#445a6b","de":14.3,"vals":[{"hex":"#666666","n":18,"to":"slate-600","toHex":"#445a6b","de":14.3},{"hex":"#95a5a6","n":17,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#999999","n":14,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#000000","n":11,"to":"base-black","toHex":"#000000","de":0},{"hex":"#333333","n":11,"to":"slate-800","toHex":"#1c2b3b","de":13},{"hex":"#2b3e50","n":8,"to":"slate-700","toHex":"#314457","de":2.7},{"hex":"#bdbdbd","n":6,"to":"indigo-200","toHex":"#a3b6c0","de":9.3},{"hex":"#555555","n":4,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#bbbbbb","n":4,"to":"indigo-200","toHex":"#a3b6c0","de":9},{"hex":"#aaaaaa","n":3,"to":"indigo-200","toHex":"#a3b6c0","de":9.2},{"hex":"#808c8d","n":3,"to":"indigo-300","toHex":"#7492a1","de":9.8},{"hex":"#2a3e51","n":3,"to":"slate-700","toHex":"#314457","de":2.7},{"hex":"#c03f31","n":3,"to":"flame-600","toHex":"#ab4a21","de":14.5},{"hex":"#5a6b7b","n":2,"to":"slate-500","toHex":"#60788c","de":5.7},{"hex":"#405261","n":2,"to":"slate-600","toHex":"#445a6b","de":3.6},{"hex":"#d35714","n":2,"to":"flame-500","toHex":"#d65d29","de":6.8},{"hex":"#cc3300","n":2,"to":"flame-500","toHex":"#d65d29","de":17.2},{"hex":"#b6b6b6","n":2,"to":"indigo-200","toHex":"#a3b6c0","de":8.6},{"hex":"#404040","n":2,"to":"slate-700","toHex":"#314457","de":13.9},{"hex":"#515c5d","n":2,"to":"slate-600","toHex":"#445a6b","de":10.4},{"hex":"#0090c0","n":2,"to":"pacific-500","toHex":"#2da7c7","de":13.3},{"hex":"#777777","n":2,"to":"slate-500","toHex":"#60788c","de":14.2},{"hex":"#7e8c8d","n":2,"to":"indigo-300","toHex":"#7492a1","de":9.5},{"hex":"#385487","n":2,"to":"indigo-500","toHex":"#184962","de":19.1},{"hex":"#98a7a8","n":2,"to":"indigo-200","toHex":"#a3b6c0","de":7.5},{"hex":"#151515","n":1,"to":"indigo-900","toHex":"#050f14","de":5.1},{"hex":"#9da3a7","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":8.3},{"hex":"#9b9b9b","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":12.4},{"hex":"#8da85e","n":1,"to":"mantis-300","toHex":"#a7dc97","de":20.2},{"hex":"#2c9cb9","n":1,"to":"pacific-500","toHex":"#2da7c7","de":4.4},{"hex":"#5e35b1","n":1,"to":"slate-700","toHex":"#314457","de":67},{"hex":"#00bcd4","n":1,"to":"pacific-400","toHex":"#57b9d2","de":9.4},{"hex":"#43a047","n":1,"to":"mantis-600","toHex":"#569e41","de":6.3},{"hex":"#6c7071","n":1,"to":"slate-500","toHex":"#60788c","de":13.1},{"hex":"#576d7e","n":1,"to":"slate-500","toHex":"#60788c","de":4.7},{"hex":"#323e50","n":1,"to":"slate-700","toHex":"#314457","de":3.2},{"hex":"#475354","n":1,"to":"slate-600","toHex":"#445a6b","de":10.6},{"hex":"#343a40","n":1,"to":"slate-700","toHex":"#314457","de":10},{"hex":"#c84530","n":1,"to":"flame-500","toHex":"#d65d29","de":13.8},{"hex":"#455152","n":1,"to":"slate-600","toHex":"#445a6b","de":10.9},{"hex":"#2f2d26","n":1,"to":"marigold-900","toHex":"#291f0a","de":11.5},{"hex":"#e5a91a","n":1,"to":"marigold-500","toHex":"#cf9d33","de":14.3},{"hex":"#95b753","n":1,"to":"mantis-400","toHex":"#89d174","de":16.3},{"hex":"#33aaff","n":1,"to":"pacific-500","toHex":"#2da7c7","de":31.5},{"hex":"#3c763d","n":1,"to":"mantis-700","toHex":"#417631","de":6.5},{"hex":"#31708f","n":1,"to":"indigo-400","toHex":"#466d81","de":7.9},{"hex":"#8a6d3b","n":1,"to":"marigold-700","toHex":"#7c5e1f","de":9.3},{"hex":"#a94442","n":1,"to":"flame-700","toHex":"#803819","de":19},{"hex":"#337ab7","n":1,"to":"pacific-600","toHex":"#24869f","de":24.6},{"hex":"#b2341c","n":1,"to":"flame-600","toHex":"#ab4a21","de":12.6},{"hex":"#278731","n":1,"to":"mantis-600","toHex":"#569e41","de":11.2},{"hex":"#888888","n":1,"to":"indigo-300","toHex":"#7492a1","de":13.4},{"hex":"#a1aab1","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":5.3},{"hex":"#ff9933","n":1,"to":"marigold-500","toHex":"#cf9d33","de":23.7},{"hex":"#c63e26","n":1,"to":"flame-500","toHex":"#d65d29","de":13.2},{"hex":"#ec8017","n":1,"to":"flame-500","toHex":"#d65d29","de":21.1}],"vars":["p.text-muted","th","td",".form-record-nav-position",".form-record-nav-btn","a","&:after","&.root a","&:before","@color-mainmenu"]},{"slot":"border \u00b7 default","token":"--wn-border","uses":113,"canonical":"#cccccc","target":"indigo-100","targetHex":"#d1dbe0","de":6.4,"vals":[{"hex":"#cccccc","n":14,"to":"indigo-100","toHex":"#d1dbe0","de":6.4},{"hex":"#e0e0e0","n":12,"to":"slate-200","toHex":"#e1e8ee","de":4.6},{"hex":"#ecf0f1","n":12,"to":"indigo-50","toHex":"#e8edef","de":1.3},{"hex":"#dddddd","n":6,"to":"indigo-100","toHex":"#d1dbe0","de":4.5},{"hex":"#ffffff","n":6,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#999999","n":6,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#eeeeee","n":4,"to":"indigo-50","toHex":"#e8edef","de":2.1},{"hex":"#bdc3c7","n":4,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#f6f8f9","n":4,"to":"slate-50","toHex":"#f7fafb","de":0.7},{"hex":"#e6e9e9","n":3,"to":"indigo-50","toHex":"#e8edef","de":1.8},{"hex":"#e5e5e5","n":3,"to":"indigo-50","toHex":"#e8edef","de":3.2},{"hex":"#dbdee0","n":2,"to":"indigo-100","toHex":"#d1dbe0","de":3.3},{"hex":"#ebebeb","n":2,"to":"indigo-50","toHex":"#e8edef","de":2.1},{"hex":"#f8d486","n":2,"to":"marigold-300","toHex":"#e2c485","de":9.7},{"hex":"#f8bb86","n":2,"to":"marigold-300","toHex":"#e2c485","de":13.6},{"hex":"#808c8d","n":2,"to":"indigo-300","toHex":"#7492a1","de":9.8},{"hex":"#bdbdbd","n":2,"to":"indigo-200","toHex":"#a3b6c0","de":9.3},{"hex":"#222222","n":2,"to":"pacific-900","toHex":"#092128","de":10.1},{"hex":"#f0f0f0","n":2,"to":"indigo-50","toHex":"#e8edef","de":2.4},{"hex":"#e2e2e2","n":2,"to":"indigo-50","toHex":"#e8edef","de":4.1},{"hex":"#d4d8da","n":2,"to":"indigo-100","toHex":"#d1dbe0","de":2.7},{"hex":"#000000","n":2,"to":"base-black","toHex":"#000000","de":0},{"hex":"#95a5a6","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#e8eaeb","n":1,"to":"indigo-50","toHex":"#e8edef","de":1.4},{"hex":"#dfdfdf","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":4.8},{"hex":"#efefef","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.3},{"hex":"#dbe1e3","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":3.1},{"hex":"#2581b8","n":1,"to":"pacific-600","toHex":"#24869f","de":19.1},{"hex":"#8e8e8e","n":1,"to":"indigo-300","toHex":"#7492a1","de":13.3},{"hex":"#bcc3c7","n":1,"to":"slate-300","toHex":"#c9d6e0","de":7.5},{"hex":"#ec0000","n":1,"to":"flame-500","toHex":"#d65d29","de":33.4},{"hex":"#024e6a","n":1,"to":"indigo-500","toHex":"#184962","de":3.8},{"hex":"#656d79","n":1,"to":"slate-500","toHex":"#60788c","de":7.8},{"hex":"#c9c9c9","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":7.3},{"hex":"#d7dbdd","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":2.6},{"hex":"#555555","n":1,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#f5f5f5","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.9},{"hex":"#e3e5e7","n":1,"to":"slate-200","toHex":"#e1e8ee","de":2.8},{"hex":"#d6d6d6","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":4.5}],"vars":["&.separator","@panel-border-color","ol","a.menu-control","@color-border","@color-accountmenu-divider","@color-footer-border","@color-scrollpanel-border","@color-filelist-cb-border","@-webkit-keyframes pulseWarning"]},{"slot":"surface \u00b7 raised","token":"--wn-surface-raised","uses":100,"canonical":"#ffffff","target":"base-white","targetHex":"#ffffff","de":0,"vals":[{"hex":"#ffffff","n":20,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#ecf0f1","n":7,"to":"indigo-50","toHex":"#e8edef","de":1.3},{"hex":"#f5f5f5","n":5,"to":"slate-50","toHex":"#f7fafb","de":1.9},{"hex":"#f0f0f0","n":4,"to":"indigo-50","toHex":"#e8edef","de":2.4},{"hex":"#f9f9f9","n":3,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#5fb6f5","n":3,"to":"pacific-500","toHex":"#2da7c7","de":20.9},{"hex":"#f2f2f2","n":3,"to":"slate-100","toHex":"#f0f5f8","de":2.4},{"hex":"#cccccc","n":2,"to":"indigo-100","toHex":"#d1dbe0","de":6.4},{"hex":"#f8d486","n":2,"to":"marigold-300","toHex":"#e2c485","de":9.7},{"hex":"#f8bb86","n":2,"to":"marigold-300","toHex":"#e2c485","de":13.6},{"hex":"#f6f8f9","n":2,"to":"slate-50","toHex":"#f7fafb","de":0.7},{"hex":"#8da85e","n":2,"to":"mantis-300","toHex":"#a7dc97","de":20.2},{"hex":"#cc3300","n":2,"to":"flame-500","toHex":"#d65d29","de":17.2},{"hex":"#7b8892","n":2,"to":"indigo-300","toHex":"#7492a1","de":6.8},{"hex":"#ab2a1c","n":1,"to":"flame-600","toHex":"#ab4a21","de":14.8},{"hex":"#2581b8","n":1,"to":"pacific-600","toHex":"#24869f","de":19.1},{"hex":"#eeeeee","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.1},{"hex":"#7f8c8d","n":1,"to":"indigo-300","toHex":"#7492a1","de":9.6},{"hex":"#a5382c","n":1,"to":"flame-600","toHex":"#ab4a21","de":13.2},{"hex":"#e8eaeb","n":1,"to":"indigo-50","toHex":"#e8edef","de":1.4},{"hex":"#bdc3c7","n":1,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#fbecec","n":1,"to":"flame-50","toHex":"#fbefea","de":2.8},{"hex":"#ec0000","n":1,"to":"flame-500","toHex":"#d65d29","de":33.4},{"hex":"#f1f3f4","n":1,"to":"slate-100","toHex":"#f0f5f8","de":1.5},{"hex":"#ffc107","n":1,"to":"marigold-500","toHex":"#cf9d33","de":27.1},{"hex":"#e0e0e0","n":1,"to":"slate-200","toHex":"#e1e8ee","de":4.6},{"hex":"#6f9927","n":1,"to":"mantis-600","toHex":"#569e41","de":14.2},{"hex":"#bb380c","n":1,"to":"flame-500","toHex":"#d65d29","de":12.5},{"hex":"#b87410","n":1,"to":"marigold-600","toHex":"#a67e29","de":15.6},{"hex":"#3f91cc","n":1,"to":"pacific-500","toHex":"#2da7c7","de":20.8},{"hex":"#7a7e83","n":1,"to":"slate-500","toHex":"#60788c","de":11.5},{"hex":"#f3f3f3","n":1,"to":"slate-100","toHex":"#f0f5f8","de":2.3},{"hex":"#d8d9db","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":3.5},{"hex":"#ebebeb","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.1},{"hex":"#f8f8f8","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.3},{"hex":"#e01346","n":1,"to":"flame-500","toHex":"#d65d29","de":36},{"hex":"#656d79","n":1,"to":"slate-500","toHex":"#60788c","de":7.8},{"hex":"#e1e2e4","n":1,"to":"slate-200","toHex":"#e1e8ee","de":3.4},{"hex":"#d8eaf4","n":1,"to":"pacific-100","toHex":"#d5edf4","de":2.7},{"hex":"#f8f0d5","n":1,"to":"marigold-100","toHex":"#f5ebd6","de":3.4},{"hex":"#f8d6d5","n":1,"to":"flame-100","toHex":"#f7dfd4","de":6.6},{"hex":"#e6f1db","n":1,"to":"mantis-100","toHex":"#e2f3dc","de":2.2},{"hex":"#aaaaaa","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":9.2},{"hex":"#bcc3c7","n":1,"to":"slate-300","toHex":"#c9d6e0","de":7.5},{"hex":"#f6f6f6","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.7},{"hex":"#dddddd","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":4.5},{"hex":"#fafafa","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#dff0d8","n":1,"to":"mantis-100","toHex":"#e2f3dc","de":1.2},{"hex":"#d9edf7","n":1,"to":"pacific-100","toHex":"#d5edf4","de":2.1},{"hex":"#fcf8e3","n":1,"to":"marigold-100","toHex":"#f5ebd6","de":4.6},{"hex":"#f2dede","n":1,"to":"flame-100","toHex":"#f7dfd4","de":5.9},{"hex":"#e0e4e5","n":1,"to":"slate-200","toHex":"#e1e8ee","de":3.1},{"hex":"#d9dee0","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":2.7},{"hex":"#2f99da","n":1,"to":"pacific-500","toHex":"#2da7c7","de":21.5},{"hex":"#ffff00","n":1,"to":"marigold-500","toHex":"#cf9d33","de":54.9}],"vars":[".global-notice","a","> div","ol.dragging, ol.dragging ol","> li > div","@color-filelist-norecords-bg","@color-filelist-hero-item-bg","@color-fancy-primary-tabs-bg","@color-treeview-item-bg","&[data-control=\"delete-button\"]"]},{"slot":"text \u00b7 inverse","token":"--wn-text-inverse","uses":100,"canonical":"#ffffff","target":"base-white","targetHex":"#ffffff","de":0,"vals":[{"hex":"#ffffff","n":64,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#bdc3c7","n":13,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#ecf0f1","n":8,"to":"indigo-50","toHex":"#e8edef","de":1.3},{"hex":"#dddddd","n":4,"to":"indigo-100","toHex":"#d1dbe0","de":4.5},{"hex":"#c4c4c4","n":2,"to":"indigo-100","toHex":"#d1dbe0","de":8.8},{"hex":"#bcc3c7","n":2,"to":"slate-300","toHex":"#c9d6e0","de":7.5},{"hex":"#eeeeee","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.1},{"hex":"#feffff","n":1,"to":"slate-50","toHex":"#f7fafb","de":2},{"hex":"#e0e0e0","n":1,"to":"slate-200","toHex":"#e1e8ee","de":4.6},{"hex":"#cccccc","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":6.4},{"hex":"#c8cccd","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":5.8},{"hex":"#cfcfcf","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":5.7},{"hex":"#e4e7e8","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.2}],"vars":[".global-notice","&:before","> a.move","a.menu-control","@color-mainmenu-active","@color-sidebarnav-active-text","@color-sidebarnav-active-icon","@color-sidebarnav-counter-text","@color-sidebarnav-tree-group","@color-sidebarnav-tree-inactive-header"]},{"slot":"other \u00b7 other","token":"(unclassified \u2014 needs review)","uses":57,"canonical":"#000000","target":"base-black","targetHex":"#000000","de":0,"vals":[{"hex":"#000000","n":6,"to":"base-black","toHex":"#000000","de":0},{"hex":"#ffffff","n":5,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#555555","n":5,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#333333","n":5,"to":"slate-800","toHex":"#1c2b3b","de":13},{"hex":"#00b3ee","n":2,"to":"pacific-500","toHex":"#2da7c7","de":15.7},{"hex":"#7a43b6","n":2,"to":"slate-700","toHex":"#314457","de":62.9},{"hex":"#c3325f","n":2,"to":"flame-600","toHex":"#ab4a21","de":40},{"hex":"#95a5a6","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#e8eaeb","n":1,"to":"indigo-50","toHex":"#e8edef","de":1.4},{"hex":"#b73fd9","n":1,"to":"slate-500","toHex":"#60788c","de":84},{"hex":"#ea9b47","n":1,"to":"marigold-500","toHex":"#cf9d33","de":14.6},{"hex":"#a9a9a9","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":9.3},{"hex":"#e30713","n":1,"to":"flame-500","toHex":"#d65d29","de":29.3},{"hex":"#248bd0","n":1,"to":"pacific-500","toHex":"#2da7c7","de":26.3},{"hex":"#f29200","n":1,"to":"marigold-500","toHex":"#cf9d33","de":24.9},{"hex":"#f9b234","n":1,"to":"marigold-500","toHex":"#cf9d33","de":15.7},{"hex":"#2daae2","n":1,"to":"pacific-500","toHex":"#2da7c7","de":14.2},{"hex":"#c4ca10","n":1,"to":"marigold-500","toHex":"#cf9d33","de":35.7},{"hex":"#0f70b7","n":1,"to":"indigo-400","toHex":"#466d81","de":30.6},{"hex":"#3baa34","n":1,"to":"mantis-500","toHex":"#6cc551","de":11.9},{"hex":"#d04526","n":1,"to":"flame-500","toHex":"#d65d29","de":10.5},{"hex":"#363a56","n":1,"to":"slate-700","toHex":"#314457","de":9.2},{"hex":"#fafafa","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#f7f7f7","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.4},{"hex":"#bdc3c7","n":1,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#cccccc","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":6.4},{"hex":"#666666","n":1,"to":"slate-600","toHex":"#445a6b","de":14.3},{"hex":"#103141","n":1,"to":"indigo-700","toHex":"#0e2c3b","de":2.4},{"hex":"#2da7c7","n":1,"to":"pacific-500","toHex":"#2da7c7","de":0},{"hex":"#6cc551","n":1,"to":"mantis-500","toHex":"#6cc551","de":0},{"hex":"#52a838","n":1,"to":"mantis-600","toHex":"#569e41","de":10},{"hex":"#48b9d5","n":1,"to":"pacific-400","toHex":"#57b9d2","de":2.8},{"hex":"#de8754","n":1,"to":"flame-400","toHex":"#de7d54","de":6.3},{"hex":"#e01346","n":1,"to":"flame-500","toHex":"#d65d29","de":36},{"hex":"#222222","n":1,"to":"pacific-900","toHex":"#092128","de":10.1},{"hex":"#999999","n":1,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#eeeeee","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.1}],"vars":["&:after","&:before","&-extension","&-scss","&-xml","&-json","&-pdf","&-txt","&-ai","&-eps"]},{"slot":"text \u00b7 heading","token":"--wn-text-heading","uses":24,"canonical":"#2b3e50","target":"slate-700","targetHex":"#314457","de":2.7,"vals":[{"hex":"#2b3e50","n":8,"to":"slate-700","toHex":"#314457","de":2.7},{"hex":"#666666","n":4,"to":"slate-600","toHex":"#445a6b","de":14.3},{"hex":"#2a3e51","n":2,"to":"slate-700","toHex":"#314457","de":2.7},{"hex":"#c03f31","n":2,"to":"flame-600","toHex":"#ab4a21","de":14.5},{"hex":"#2f2d26","n":2,"to":"marigold-900","toHex":"#291f0a","de":11.5},{"hex":"#95a5a6","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#7e8c8d","n":1,"to":"indigo-300","toHex":"#7492a1","de":9.5},{"hex":"#2581b8","n":1,"to":"pacific-600","toHex":"#24869f","de":19.1},{"hex":"#293e50","n":1,"to":"slate-700","toHex":"#314457","de":2.9},{"hex":"#999999","n":1,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#405261","n":1,"to":"slate-600","toHex":"#445a6b","de":3.6}],"vars":["h2","h5","h3.section, > label","@color-filelist-title-hero","@color-report-widget-title","@color-treeview-item-title","h4","h4, p","h3","> .header"]},{"slot":"surface \u00b7 chrome","token":"--wn-surface-chrome","uses":24,"canonical":"#2b3e50","target":"slate-700","targetHex":"#314457","de":2.7,"vals":[{"hex":"#2b3e50","n":3,"to":"slate-700","toHex":"#314457","de":2.7},{"hex":"#ffffff","n":3,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#333333","n":2,"to":"slate-800","toHex":"#1c2b3b","de":13},{"hex":"#000000","n":2,"to":"base-black","toHex":"#000000","de":0},{"hex":"#f2f2f2","n":2,"to":"slate-100","toHex":"#f0f5f8","de":2.4},{"hex":"#f9f9f9","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#d9350f","n":1,"to":"flame-500","toHex":"#d65d29","de":18.6},{"hex":"#2b343d","n":1,"to":"slate-800","toHex":"#1c2b3b","de":6.8},{"hex":"#475354","n":1,"to":"slate-600","toHex":"#445a6b","de":10.6},{"hex":"#2581b8","n":1,"to":"pacific-600","toHex":"#24869f","de":19.1},{"hex":"#555555","n":1,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#f5f5f5","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.9},{"hex":"#d0d9dd","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":0.9},{"hex":"#b9dbef","n":1,"to":"pacific-200","toHex":"#abdce9","de":6.3},{"hex":"#f6e7b2","n":1,"to":"marigold-200","toHex":"#ecd8ad","de":6.9},{"hex":"#f6b5b2","n":1,"to":"flame-200","toHex":"#efbea9","de":10.8},{"hex":"#d3e9bf","n":1,"to":"mantis-200","toHex":"#c4e8b9","de":5.9}],"vars":["@color-accountmenu-bg","@color-sidebarnav-counter-bg","@color-sidebarnav-back-link-bg","@color-outer-bg","@color-breadcrumb-background","@color-fancy-secondary-tabs-bg","@color-treeview-light-submenu-bg",".flyout-toggle",".menu-toggle-icon",".sweet-overlay"]},{"slot":"icon \u00b7 icon","token":"--wn-icon","uses":19,"canonical":"#bdc3c7","target":"slate-300","targetHex":"#c9d6e0","de":7.6,"vals":[{"hex":"#bdc3c7","n":3,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#95a5a6","n":2,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#b7c0c2","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":6.9},{"hex":"#000000","n":1,"to":"base-black","toHex":"#000000","de":0},{"hex":"#cccccc","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":6.4},{"hex":"#4da7e8","n":1,"to":"pacific-500","toHex":"#2da7c7","de":21.3},{"hex":"#595959","n":1,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#333333","n":1,"to":"slate-800","toHex":"#1c2b3b","de":13},{"hex":"#808b93","n":1,"to":"indigo-300","toHex":"#7492a1","de":7.5},{"hex":"#999999","n":1,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#f1a84e","n":1,"to":"marigold-500","toHex":"#cf9d33","de":12.4},{"hex":"#555555","n":1,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#597f97","n":1,"to":"slate-500","toHex":"#60788c","de":5},{"hex":"#9f8e51","n":1,"to":"marigold-600","toHex":"#a67e29","de":18.1},{"hex":"#9f5551","n":1,"to":"flame-700","toHex":"#803819","de":21},{"hex":"#6d915e","n":1,"to":"mantis-700","toHex":"#417631","de":17.4}],"vars":[".list-icon",".tab-collapse-icon.primary",".column-icon","&:hover .column-icon","@fileupload-inactive-icon",".icon-search",".icon-message()","i.icon-chain-broken","i.icon-chain-broken, i.icon-crop, i.icon-asterisk, i.icon-level-up",".dropdown-arrow()"]},{"slot":"surface \u00b7 overlay","token":"--wn-surface-overlay","uses":16,"canonical":"#cbcbcb","target":"indigo-100","targetHex":"#d1dbe0","de":6.7,"vals":[{"hex":"#cbcbcb","n":5,"to":"indigo-100","toHex":"#d1dbe0","de":6.7},{"hex":"#ffffff","n":5,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#f9f9f9","n":2,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#fefefe","n":1,"to":"slate-50","toHex":"#f7fafb","de":2},{"hex":"#f7f7f7","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.4},{"hex":"#f8f8f8","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.3},{"hex":"#f5f5f5","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.9}],"vars":[".file-upload-modal-image-header",".tt-dropdown-menu",".clockpicker-popover",".popover-title",".popover-content","@dropdown-bg","@dropdown-link-hover-bg","@color-popover-bg","@color-popover-head-bg","@color-popup-content-bg"]},{"slot":"text \u00b7 muted","token":"--wn-text-muted","uses":15,"canonical":"#b5babd","target":"indigo-200","targetHex":"#a3b6c0","de":6.5,"vals":[{"hex":"#b5babd","n":5,"to":"indigo-200","toHex":"#a3b6c0","de":6.5},{"hex":"#999999","n":4,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#1f2d3d","n":1,"to":"slate-800","toHex":"#1c2b3b","de":1},{"hex":"#b6bfc7","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":5.4},{"hex":"#666666","n":1,"to":"slate-600","toHex":"#445a6b","de":14.3},{"hex":"#777777","n":1,"to":"slate-500","toHex":"#60788c","de":14.2},{"hex":"#555555","n":1,"to":"slate-600","toHex":"#445a6b","de":13},{"hex":"#bdbdbd","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":9.3}],"vars":["&:not(.is-disabled):hover","&.is-disabled","@color-filelist-norecords-text",".product-list-empty",".tt-hint",".is-disabled .pika-button","@input-color-disabled","@color-help-block-text","&::-webkit-input-placeholder","&:-moz-placeholder"]},{"slot":"border \u00b7 input","token":"--wn-border-input","uses":15,"canonical":"#b2b9be","target":"indigo-200","targetHex":"#a3b6c0","de":5.2,"vals":[{"hex":"#b2b9be","n":3,"to":"indigo-200","toHex":"#a3b6c0","de":5.2},{"hex":"#e3e7e9","n":2,"to":"indigo-50","toHex":"#e8edef","de":2.1},{"hex":"#f2f3f4","n":2,"to":"slate-100","toHex":"#f0f5f8","de":1.8},{"hex":"#999999","n":1,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#e0e0e0","n":1,"to":"slate-200","toHex":"#e1e8ee","de":4.6},{"hex":"#95a5a6","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#bdc3c7","n":1,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#d1d6d9","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":2.5},{"hex":"#cccccc","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":6.4},{"hex":"#c0c0c0","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":9.8},{"hex":"#aaaaaa","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":9.2}],"vars":["@color-custom-input-border","@color-custom-select-border",".field-repeater-add-item","div[data-control=\"selection-marker\"]",".theme-thumbnail",".theme-description","@input-border",".select2-search","@color-select-border","@color-select-choice-border"]},{"slot":"surface \u00b7 input","token":"--wn-surface-input","uses":15,"canonical":"#ffffff","target":"base-white","targetHex":"#ffffff","de":0,"vals":[{"hex":"#ffffff","n":6,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#f6f6f6","n":4,"to":"slate-50","toHex":"#f7fafb","de":1.7},{"hex":"#ecf0f1","n":2,"to":"indigo-50","toHex":"#e8edef","de":1.3},{"hex":"#f5f5f5","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.9},{"hex":"#bdc3c7","n":1,"to":"slate-300","toHex":"#c9d6e0","de":7.6},{"hex":"#999999","n":1,"to":"slate-400","toHex":"#91a6b8","de":12.8}],"vars":["@color-switch-input-bg","@color-custom-select-bg",".field-markdowneditor","li.field-repeater-item",".theme-thumbnail",".find-more-themes","input:disabled + label:before","@input-bg","@color-form-field-preview-bg","@color-form-field-bg"]},{"slot":"surface \u00b7 selected","token":"--wn-surface-selected","uses":13,"canonical":"#404040","target":"slate-700","targetHex":"#314457","de":13.9,"vals":[{"hex":"#404040","n":2,"to":"slate-700","toHex":"#314457","de":13.9},{"hex":"#ffffff","n":2,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#262626","n":1,"to":"pacific-900","toHex":"#092128","de":10.7},{"hex":"#fafafa","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#d5d9d8","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":3.8},{"hex":"#4da7e8","n":1,"to":"pacific-500","toHex":"#2da7c7","de":21.3},{"hex":"#9098a2","n":1,"to":"slate-400","toHex":"#91a6b8","de":7.6},{"hex":"#da5700","n":1,"to":"flame-500","toHex":"#d65d29","de":12.9},{"hex":"#33aaff","n":1,"to":"pacific-500","toHex":"#2da7c7","de":31.5},{"hex":"#6aab55","n":1,"to":"mantis-600","toHex":"#569e41","de":7},{"hex":"#999999","n":1,"to":"slate-400","toHex":"#91a6b8","de":12.8}],"vars":["@color-mainmenu-active-bg","@color-fancy-primary-tabs-active-bg","@color-fancy-primary-tabs-inactive-bg","@fileupload-object-active-bg","@color-markdowneditor-toolbar-btn-bg-active","@color-richeditor-toolbar-btn-bg-active","@color-breadcrumb-inactive-background","@color-balloon-control-active-bg",".is-selected .pika-button","@color-filter-bg-active"]},{"slot":"surface \u00b7 hover","token":"--wn-surface-hover","uses":12,"canonical":"#f5f5f5","target":"slate-50","targetHex":"#f7fafb","de":1.9,"vals":[{"hex":"#f5f5f5","n":3,"to":"slate-50","toHex":"#f7fafb","de":1.9},{"hex":"#999999","n":2,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#dddddd","n":2,"to":"indigo-100","toHex":"#d1dbe0","de":4.5},{"hex":"#ffffff","n":1,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#4da7e8","n":1,"to":"pacific-500","toHex":"#2da7c7","de":21.3},{"hex":"#bc4436","n":1,"to":"flame-600","toHex":"#ab4a21","de":13.1},{"hex":"#f9f9f9","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.2},{"hex":"#ff8000","n":1,"to":"flame-500","toHex":"#d65d29","de":26.3}],"vars":["&:not(.is-disabled):hover","@color-custom-select-bg-hover","&:hover","@color-markdowneditor-toolbar-btn-bg-hover","@color-richeditor-toolbar-btn-bg-hover","@btn-hover-bg","a:hover",".pika-button:hover","@color-datepicker-hover-bg","@table-bg-hover"]},{"slot":"text \u00b7 secondary","token":"--wn-text-secondary","uses":11,"canonical":"#999999","target":"slate-400","targetHex":"#91a6b8","de":12.8,"vals":[{"hex":"#999999","n":3,"to":"slate-400","toHex":"#91a6b8","de":12.8},{"hex":"#2b3e50","n":3,"to":"slate-700","toHex":"#314457","de":2.7},{"hex":"#8f8f8f","n":2,"to":"indigo-300","toHex":"#7492a1","de":13.3},{"hex":"#919898","n":1,"to":"indigo-300","toHex":"#7492a1","de":11.9},{"hex":"#95a5a6","n":1,"to":"indigo-200","toHex":"#a3b6c0","de":8.1},{"hex":"#405261","n":1,"to":"slate-600","toHex":"#445a6b","de":3.6}],"vars":["@color-outer-description","@color-fancy-secondary-tabs-inactive-text","@color-treeview-item-comment","@color-treeview-item-active-comment",".meta a.drag-handle",".meta a.find-remove-button",".description","p.description","@btn-secondary-color","@color-scoreboard-description"]},{"slot":"border \u00b7 focus","token":"--wn-border-focus","uses":10,"canonical":"#e0e0e0","target":"slate-200","targetHex":"#e1e8ee","de":4.6,"vals":[{"hex":"#e0e0e0","n":2,"to":"slate-200","toHex":"#e1e8ee","de":4.6},{"hex":"#e6802b","n":1,"to":"flame-500","toHex":"#d65d29","de":17},{"hex":"#2581b8","n":1,"to":"pacific-600","toHex":"#24869f","de":19.1},{"hex":"#ec0000","n":1,"to":"flame-500","toHex":"#d65d29","de":33.4},{"hex":"#e6e9e9","n":1,"to":"indigo-50","toHex":"#e8edef","de":1.8},{"hex":"#5fb6f5","n":1,"to":"pacific-500","toHex":"#2da7c7","de":20.9},{"hex":"#808c8d","n":1,"to":"indigo-300","toHex":"#7492a1","de":9.8},{"hex":"#d0d0d0","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":5.5},{"hex":"#dddddd","n":1,"to":"indigo-100","toHex":"#d1dbe0","de":4.5}],"vars":["&.active","&:focus, &.inspector-open","@table-active-border","@table-inactive-border","td.active.error",".tt-input:focus","&.active div","@color-select-border-focus","@color-tab-active-border","@nav-tabs-active-link-hover-border-color"]},{"slot":"border \u00b7 subtle","token":"--wn-border-subtle","uses":4,"canonical":"#e1e1e1","target":"indigo-50","targetHex":"#e8edef","de":4.4,"vals":[{"hex":"#e1e1e1","n":2,"to":"indigo-50","toHex":"#e8edef","de":4.4},{"hex":"#328ec8","n":1,"to":"pacific-500","toHex":"#2da7c7","de":20.2},{"hex":"#eeeeee","n":1,"to":"indigo-50","toHex":"#e8edef","de":2.1}],"vars":["@color-border-light","@color-treeview-light-submenu-border","@color-list-border-light"]},{"slot":"shadow \u00b7 shadow","token":"--wn-shadow","uses":3,"canonical":"#ffffff","target":"base-white","targetHex":"#ffffff","de":0,"vals":[{"hex":"#ffffff","n":2,"to":"base-white","toHex":"#ffffff","de":0},{"hex":"#178fe5","n":1,"to":"pacific-500","toHex":"#2da7c7","de":35}],"vars":[".icon-container:after",".is-selected .pika-button","@close-text-shadow"]},{"slot":"surface \u00b7 stripe","token":"--wn-surface-stripe","uses":3,"canonical":"#f5f5f5","target":"slate-50","targetHex":"#f7fafb","de":1.9,"vals":[{"hex":"#f5f5f5","n":2,"to":"slate-50","toHex":"#f7fafb","de":1.9},{"hex":"#f9f9f9","n":1,"to":"slate-50","toHex":"#f7fafb","de":1.2}],"vars":["@fileupload-list-accent-bg","table.oc-alternate-rows tbody tr:nth-child(2n)","@table-bg-accent"]},{"slot":"surface \u00b7 canvas","token":"--wn-surface-canvas","uses":2,"canonical":"#f9f9f9","target":"slate-50","targetHex":"#f7fafb","de":1.2,"vals":[{"hex":"#f9f9f9","n":2,"to":"slate-50","toHex":"#f7fafb","de":1.2}],"vars":["@ui-bg","@body-bg"]},{"slot":"text \u00b7 link","token":"--wn-text-link","uses":1,"canonical":"#39454a","target":"slate-700","targetHex":"#314457","de":9.2,"vals":[{"hex":"#39454a","n":1,"to":"slate-700","toHex":"#314457","de":9.2}],"vars":["@dropdown-link-color"]}],"orphans":[{"hex":"#2581b8","uses":5,"nearest":"pacific-600","de":19.1},{"hex":"#cc3300","uses":4,"nearest":"flame-500","de":17.2},{"hex":"#5fb6f5","uses":4,"nearest":"pacific-500","de":20.9},{"hex":"#8da85e","uses":3,"nearest":"mantis-300","de":20.2},{"hex":"#4da7e8","uses":3,"nearest":"pacific-500","de":21.3},{"hex":"#ec0000","uses":3,"nearest":"flame-500","de":33.4},{"hex":"#e01346","uses":2,"nearest":"flame-500","de":36},{"hex":"#33aaff","uses":2,"nearest":"pacific-500","de":31.5},{"hex":"#385487","uses":2,"nearest":"indigo-500","de":19.1},{"hex":"#00b3ee","uses":2,"nearest":"pacific-500","de":15.7},{"hex":"#7a43b6","uses":2,"nearest":"slate-700","de":62.9},{"hex":"#c3325f","uses":2,"nearest":"flame-600","de":40},{"hex":"#e6802b","uses":1,"nearest":"flame-500","de":17},{"hex":"#d9350f","uses":1,"nearest":"flame-500","de":18.6},{"hex":"#328ec8","uses":1,"nearest":"pacific-500","de":20.2},{"hex":"#5e35b1","uses":1,"nearest":"slate-700","de":67},{"hex":"#b73fd9","uses":1,"nearest":"slate-500","de":84},{"hex":"#e30713","uses":1,"nearest":"flame-500","de":29.3},{"hex":"#248bd0","uses":1,"nearest":"pacific-500","de":26.3},{"hex":"#f29200","uses":1,"nearest":"marigold-500","de":24.9},{"hex":"#f9b234","uses":1,"nearest":"marigold-500","de":15.7},{"hex":"#c4ca10","uses":1,"nearest":"marigold-500","de":35.7},{"hex":"#0f70b7","uses":1,"nearest":"indigo-400","de":30.6},{"hex":"#ffc107","uses":1,"nearest":"marigold-500","de":27.1},{"hex":"#b87410","uses":1,"nearest":"marigold-600","de":15.6},{"hex":"#3f91cc","uses":1,"nearest":"pacific-500","de":20.8},{"hex":"#9f8e51","uses":1,"nearest":"marigold-600","de":18.1},{"hex":"#9f5551","uses":1,"nearest":"flame-700","de":21},{"hex":"#6d915e","uses":1,"nearest":"mantis-700","de":17.4},{"hex":"#95b753","uses":1,"nearest":"mantis-400","de":16.3}]}</script>
+<script>
+(function(){
+"use strict";
+var D=JSON.parse(document.getElementById('payload').textContent);
+var LS='wn-token-map-v1';
+var picks={}; try{picks=JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){}
+function save(){try{localStorage.setItem(LS,JSON.stringify(picks));}catch(e){}}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function band(de){return de<2?['exact','#417631']:de<4?['imperceptible','#6cc551']:de<8?['side-by-side','#cf9d33']:de<15?['visible shift','#d65d29']:['no fit','#ab4a21'];}
+
+// bands strip
+var B=D.meta.bands, tot=D.meta.uses;
+var order=[['exact','#417631','exact'],['imperceptible','#6cc551','imperceptible'],
+           ['sidebyside','#cf9d33','side-by-side only'],['visible','#d65d29','visible shift'],['nofit','#ab4a21','no fit']];
+var bs=document.getElementById('bands'), bk=document.getElementById('bandkey');
+order.forEach(function(o){
+  var pct=B[o[0]]/tot*100;
+  var i=el('i',null,pct>7?Math.round(pct)+'%':'');
+  i.style.background=o[1]; i.style.width=pct+'%'; bs.appendChild(i);
+  var s=el('span'); var d=el('i'); d.style.background=o[1]; s.appendChild(d);
+  s.appendChild(document.createTextNode(o[2]+' — '+B[o[0]]+' uses')); bk.appendChild(s);
+});
+
+// scale
+var sc=document.getElementById('scale');
+Object.keys(D.ds).forEach(function(fam){
+  var row=el('div','srow');
+  row.appendChild(el('span','nm',fam));
+  var st=el('span','steps');
+  D.ds[fam].forEach(function(h,i){var b=el('i');b.style.background=h;b.title=fam+'-'+D.steps[i]+' '+h;st.appendChild(b);});
+  row.appendChild(st); sc.appendChild(row);
+});
+
+// tokens
+var host=document.getElementById('tokens');
+D.tokens.forEach(function(t){
+  var card=el('div','tok');
+  var hd=el('div','hd');
+  hd.appendChild(el('span','n',t.token));
+  hd.appendChild(el('span','r',t.slot));
+  hd.appendChild(el('span','pill n',t.uses+' uses'));
+  var bd0=band(t.de);
+  hd.appendChild(el('span','pill '+(t.de<4?'ok':t.de<15?'warn':'bad'),bd0[0]));
+  card.appendChild(hd);
+  var bd=el('div','bd');
+  var chosen=picks[t.token]||t.target;
+  var map=el('div','map');
+  var c1=el('span','chip'); var d1=el('span','d'); d1.style.background=t.canonical;
+  c1.appendChild(d1); c1.appendChild(el('span',null,'today '+t.canonical)); map.appendChild(c1);
+  map.appendChild(el('span','arrow','→'));
+  var tgt=el('span','chip'); var d2=el('span','d'); tgt.id='t-'+t.token;
+  function paintTarget(){
+    var hex=stepHex(chosen);
+    d2.style.background=hex;
+    tgt.lastChild.textContent=chosen+'  '+hex;
+  }
+  tgt.appendChild(d2); tgt.appendChild(el('span',null,''));
+  map.appendChild(tgt); bd.appendChild(map);
+  function stepHex(key){
+    var p=key.split('-'); if(p[0]==='base') return p[1]==='white'?'#ffffff':'#000000';
+    var idx=D.steps.indexOf(+p[1]); return (D.ds[p[0]]||[])[idx]||'#000';
+  }
+  paintTarget();
+  // step options: same family, neighbouring steps + the auto target
+  var opts=el('div','opts');
+  var famKey=chosen.split('-')[0];
+  var fams=famKey==='base'?['slate']:[famKey];
+  fams.forEach(function(f){
+    D.ds[f].forEach(function(h,i){
+      var key=f+'-'+D.steps[i];
+      var b=el('button','opt');b.type='button';
+      b.setAttribute('aria-pressed',String(key===chosen));
+      var d=el('span','d');d.style.background=h;b.appendChild(d);
+      b.appendChild(el('span',null,D.steps[i]));
+      b.addEventListener('click',function(){
+        chosen=key;picks[t.token]=key;save();paintTarget();
+        opts.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false');});
+        b.setAttribute('aria-pressed','true');refresh();
+      });
+      opts.appendChild(b);
+    });
+  });
+  bd.appendChild(opts);
+  var det=el('details');
+  det.appendChild(el('summary',null,t.vals.length+' current value'+(t.vals.length===1?'':'s')+' collapse into this token'));
+  var list=el('div','vars');
+  t.vals.slice(0,14).forEach(function(v){
+    var line=el('div');
+    line.appendChild(el('code',null,v.hex));
+    line.appendChild(document.createTextNode(' x'+v.n+'  →  '+v.to+'  (ΔE '+v.de+')'));
+    list.appendChild(line);
+  });
+  var vs=el('div','vars');
+  t.vars.forEach(function(v){ vs.appendChild(el('code',null,v)); });
+  det.appendChild(list); det.appendChild(vs); bd.appendChild(det);
+  card.appendChild(bd); host.appendChild(card);
+});
+
+// orphans
+var oh=document.getElementById('orphans');
+D.orphans.forEach(function(o){
+  var r=el('div','orph');
+  var d=el('span','d'); d.style.background=o.hex; r.appendChild(d);
+  r.appendChild(el('code',null,o.hex));
+  r.appendChild(el('span',null,o.uses+' use'+(o.uses===1?'':'s')));
+  r.appendChild(el('span',null,'nearest '+o.nearest+' (ΔE '+o.de+')'));
+  oh.appendChild(r);
+});
+
+function refresh(){
+  var n=Object.keys(picks).length, t=D.tokens.length;
+  document.getElementById('prog').textContent=n+' of '+t+' confirmed';
+  document.getElementById('fill').style.width=(t?n/t*100:0)+'%';
+}
+function toast(m){var e=el('div','toast',m);document.body.appendChild(e);setTimeout(function(){e.remove();},2000);}
+document.getElementById('copy').addEventListener('click',function(){
+  var L=['Winter core — colour token map decisions',
+         Object.keys(picks).length+' of '+D.tokens.length+' tokens confirmed',
+         'source: darkmode-audit/color-token-map.html',''];
+  D.tokens.forEach(function(t){
+    var c=picks[t.token];
+    L.push(t.token+': '+(c||t.target)+(c&&c!==t.target?'   [OVERRIDE — auto '+t.target+']':(c?'   [confirmed]':'   [not reviewed]')));
+  });
+  L.push(''); L.push('---JSON---');
+  L.push(JSON.stringify({version:1,confirmed:Object.keys(picks).length,total:D.tokens.length,
+    map:D.tokens.reduce(function(a,t){a[t.token]={step:picks[t.token]||t.target,confirmed:!!picks[t.token],auto:t.target};return a;},{})}));
+  var text=L.join('\n');
+  function fb(){var ta=el('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';
+    document.body.appendChild(ta);ta.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+    ta.remove();ok?toast('Copied — paste to Claude'):window.prompt('Copy:',text);}
+  if(navigator.clipboard&&navigator.clipboard.writeText)
+    navigator.clipboard.writeText(text).then(function(){toast('Copied — paste to Claude');},fb);
+  else fb();
+});
+document.getElementById('reset').addEventListener('click',function(){
+  if(!confirm('Clear confirmations?'))return; picks={};save();location.reload();
+});
+refresh();
+})();
+</script>
+</body>
+</html>

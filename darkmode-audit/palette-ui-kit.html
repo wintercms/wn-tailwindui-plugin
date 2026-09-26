@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Winter backend — UI kit v3 (restraint + depth pass)</title>
+<style>
+  *{ box-sizing:border-box; }
+  body{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; margin:0; background:#0b1220; color:#94a3b8; padding:22px 26px 70px; -webkit-font-smoothing:antialiased; }
+  h1{ color:#fff; font-size:20px; margin:0 0 4px; }
+  .sub{ font-size:13px; max-width:1000px; line-height:1.55; margin:0 0 6px; }
+  .modewrap>h2{ font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:#64748b; margin:24px 0 10px; }
+  svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+
+  /* ===== palette v2 + elevation/state layer (v3) ===== */
+  .ui{ border-radius:12px; padding:22px; }
+  .ui.light{
+    --bg:#ffffff; --surface:#f8fafc; --raised:#ffffff; --text:#0f172a; --muted:#64748b; --faint:#94a3b8;
+    --border:#e6eaf1; --border2:#d3dae4; --hairline:#eef1f6;
+    --hdr:#133a4e; --hdr-fg:#ffffff; --hdr-fg-dim:#9fb4bf;
+    --accent:#24869f; --accent-txt:#1b6477; --sel:#24869f;
+    --primary:#1b6477; --primary-fg:#ffffff; --primary-hov:#164f5e;
+    --default:#ffffff; --default-fg:#334155; --default-bd:#d3dae4; --default-hov:#f1f5f9;
+    --success:#417631; --warning:#b45309; --danger:#ab4a21; --info:#1b6477;
+    --shadow-sm:0 1px 2px rgba(15,23,42,.06); --shadow-md:0 4px 14px rgba(15,23,42,.10); --shadow-pop:0 8px 28px rgba(15,23,42,.16);
+    --tint:10%; --tint-hi:14%;
+  }
+  .ui.dark{
+    --bg:#0f172a; --surface:#1a2436; --raised:#243149; --text:#cbd5e1; --muted:#93a4bb; --faint:#64748b;
+    --border:#28374d; --border2:#3a4a63; --hairline:#1c2740;
+    --hdr:#123247; --hdr-fg:#eaf6f9; --hdr-fg-dim:#8fb6c6;
+    --accent:#57b9d2; --accent-txt:#8fd2e3; --sel:#3f92ad;
+    --primary:#57b9d2; --primary-fg:#08222b; --primary-hov:#6cc5db;
+    --default:#1a2436; --default-fg:#cbd5e1; --default-bd:#31425c; --default-hov:#243149;
+    --success:#a7dc97; --warning:#fbbf24; --danger:#e69e7f; --info:#8fd2e3;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35); --shadow-md:0 6px 20px rgba(0,0,0,.45); --shadow-pop:0 10px 34px rgba(0,0,0,.55);
+    --tint:16%; --tint-hi:22%;
+  }
+  .ui{ background:var(--bg); color:var(--text); font-size:13px; }
+
+  .ui .card{ border:1px solid var(--border); border-radius:12px; background:var(--raised); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:22px; }
+  .ui .sec{ font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); margin:0 0 9px; font-weight:600; }
+
+  /* buttons — one solid primary; everything else quiet */
+  .ui .btn{ font:600 13px/1 inherit; border-radius:8px; padding:9px 15px; display:inline-flex; align-items:center; gap:7px; border:1px solid transparent; background:transparent; color:var(--text); cursor:pointer; transition:background .12s,border-color .12s,box-shadow .12s,filter .12s; }
+  .ui .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 40%,transparent); }
+  .ui .btn.primary{ background:var(--primary); color:var(--primary-fg); box-shadow:var(--shadow-sm); }
+  .ui .btn.primary:hover{ background:var(--primary-hov); }
+  .ui .btn.default{ background:var(--default); color:var(--default-fg); border-color:var(--default-bd); }
+  .ui .btn.default:hover{ background:var(--default-hov); }
+  .ui .btn.ghost{ color:var(--muted); }
+  .ui .btn.ghost:hover{ background:color-mix(in srgb,var(--text) 7%,transparent); color:var(--text); }
+  .ui .btn.g-success{ color:var(--success); border-color:color-mix(in srgb,var(--success) 40%,transparent); }
+  .ui .btn.g-success:hover{ background:color-mix(in srgb,var(--success) 12%,var(--bg)); }
+  .ui .btn.g-warning{ color:var(--warning); border-color:color-mix(in srgb,var(--warning) 40%,transparent); }
+  .ui .btn.g-warning:hover{ background:color-mix(in srgb,var(--warning) 14%,var(--bg)); }
+  .ui .btn.g-danger{ color:var(--danger); border-color:color-mix(in srgb,var(--danger) 40%,transparent); }
+  .ui .btn.g-danger:hover{ background:color-mix(in srgb,var(--danger) 12%,var(--bg)); }
+  .ui .btn.link{ color:var(--accent-txt); padding:9px 8px; }
+  .ui .btn.link:hover{ text-decoration:underline; }
+  .ui .btn.icon{ padding:9px; color:var(--muted); }
+  .ui .btn.icon:hover{ background:color-mix(in srgb,var(--text) 7%,transparent); color:var(--text); }
+  .ui .btn[disabled]{ opacity:.4; cursor:default; pointer-events:none; }
+
+  .ui .ipt{ width:100%; padding:9px 11px; border-radius:8px; font-size:13px; color:var(--text); background:var(--bg); border:1px solid var(--border2); transition:border-color .12s,box-shadow .12s; }
+  .ui .ipt::placeholder{ color:var(--faint); }
+  .ui .ipt:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent); }
+
+  /* ===== LIST WIDGET ===== */
+  .ui .lw-bar{ display:flex; align-items:center; gap:9px; padding:13px 14px; }
+  .ui .lw-bar .spacer{ flex:1; }
+  .ui .search{ position:relative; min-width:240px; }
+  .ui .search .ipt{ padding-left:34px; }
+  .ui .search svg{ position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--faint); }
+  .ui .filters{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:0 14px 13px; }
+  .ui .seg{ display:inline-flex; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:2px; }
+  .ui .seg button{ border:0; background:transparent; color:var(--muted); font:600 12.5px/1 inherit; padding:6px 12px; border-radius:6px; cursor:pointer; }
+  .ui .seg button.on{ background:var(--raised); color:var(--accent-txt); box-shadow:var(--shadow-sm); }
+  .ui .chip{ display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:8px; background:var(--surface); border:1px solid var(--border); color:var(--text); font-size:12.5px; cursor:pointer; }
+  .ui .chip .k{ color:var(--muted); } .ui .chip svg{ width:14px;height:14px;color:var(--faint); }
+  .ui .chip.set{ border-color:color-mix(in srgb,var(--accent) 45%,var(--border)); background:color-mix(in srgb,var(--accent) 10%,var(--bg)); color:var(--accent-txt); }
+  .ui .chip.set .k{ color:color-mix(in srgb,var(--accent-txt) 75%,var(--muted)); }
+
+  .ui table.lw{ width:100%; border-collapse:collapse; }
+  .ui table.lw thead th{ text-align:left; padding:8px 14px; font:600 11px/1.2 inherit; letter-spacing:.045em; text-transform:uppercase; color:var(--muted); background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); white-space:nowrap; }
+  .ui table.lw thead th.num{ text-align:right; }
+  .ui table.lw thead th.srt{ color:var(--accent-txt); } .ui table.lw thead th .s{ margin-left:5px; vertical-align:-2px; color:var(--accent); }
+  .ui table.lw tbody td{ padding:11px 14px; border-bottom:1px solid var(--hairline); color:var(--muted); border-left:3px solid transparent; }
+  .ui table.lw tbody td.nm{ color:var(--text); font-weight:600; }
+  .ui table.lw tbody td.num{ text-align:right; font-variant-numeric:tabular-nums; color:var(--text); }
+  .ui table.lw tbody tr:hover td{ background:color-mix(in srgb,var(--sel) 7%,var(--bg)); }
+  .ui table.lw tbody tr.sel td{ background:color-mix(in srgb,var(--sel) 12%,var(--bg)); }
+  .ui table.lw tbody tr.sel td:first-child{ border-left-color:var(--sel); }
+  .ui .box{ width:16px; height:16px; border-radius:5px; border:1.5px solid var(--border2); display:inline-flex; align-items:center; justify-content:center; color:#fff; }
+  .ui .box.on,.ui .box.ind{ background:var(--accent); border-color:var(--accent); }
+  .ui .box svg{ width:12px; height:12px; stroke-width:2.4; }
+  /* tinted status pills */
+  .ui .pill{ border-radius:999px; padding:3px 10px; font-size:11.5px; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+  .ui .pill::before{ content:''; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:.9; }
+  .ui .pill.success{ color:var(--success); background:color-mix(in srgb,var(--success) var(--tint),var(--bg)); }
+  .ui .pill.warning{ color:var(--warning); background:color-mix(in srgb,var(--warning) var(--tint-hi),var(--bg)); }
+  .ui .pill.danger{ color:var(--danger); background:color-mix(in srgb,var(--danger) var(--tint),var(--bg)); }
+  .ui .pill.info{ color:var(--info); background:color-mix(in srgb,var(--info) var(--tint),var(--bg)); }
+  .ui .cog{ color:var(--faint); display:inline-flex; }
+  /* combined footer: count · totals · pager */
+  .ui .lw-foot{ display:flex; align-items:center; gap:16px; padding:11px 14px; background:var(--surface); border-top:1px solid var(--border); font-size:12.5px; color:var(--muted); }
+  .ui .lw-foot .tot{ margin-left:auto; text-align:right; }
+  .ui .lw-foot .tot b{ color:var(--text); }
+  .ui .pgr{ display:inline-flex; gap:3px; }
+  .ui .pgr button{ min-width:32px; height:32px; border-radius:8px; border:1px solid var(--border2); background:var(--raised); color:var(--text); font-size:12.5px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+  .ui .pgr button:hover:not([disabled]):not(.on){ background:var(--default-hov); }
+  .ui .pgr button.on{ background:var(--sel); border-color:var(--sel); color:var(--primary-fg); }
+  .ui .pgr button[disabled]{ opacity:.4; cursor:default; }
+
+  /* form */
+  .ui .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px 20px; padding:18px; }
+  .ui .fld label{ display:block; font-size:12px; font-weight:600; margin-bottom:6px; color:var(--text); }
+  .ui .fld .hint{ font-size:12px; color:var(--muted); margin-top:5px; }
+  .ui .fld.err .ipt{ border-color:var(--danger); box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 20%,transparent); }
+  .ui .fld.err .msg{ font-size:12px; color:var(--danger); margin-top:5px; }
+  .ui .sel-ipt{ display:flex; align-items:center; justify-content:space-between; }
+  .ui .radio{ display:flex; align-items:center; gap:9px; margin-bottom:8px; }
+  .ui .dot{ width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border2);display:inline-flex;align-items:center;justify-content:center; }
+  .ui .dot.on{ border-color:var(--accent); } .ui .dot.on::after{ content:'';width:8px;height:8px;border-radius:50%;background:var(--accent); }
+  .ui .switch{ width:42px;height:24px;border-radius:999px;background:var(--border2);position:relative;display:inline-block;transition:background .15s; }
+  .ui .switch::after{ content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.35);transition:left .15s; }
+  .ui .switch.on{ background:var(--success); } .ui .switch.on::after{ left:20px; }
+  .ui .balloon{ display:inline-flex;gap:7px; }
+  .ui .balloon span{ padding:6px 13px;border-radius:999px;border:1px solid var(--border2);font-size:12.5px;color:var(--muted);cursor:pointer; }
+  .ui .balloon span.on{ background:color-mix(in srgb,var(--accent) 14%,var(--bg));border-color:color-mix(in srgb,var(--accent) 45%,var(--border));color:var(--accent-txt);font-weight:600; }
+  .ui .tags{ display:flex;gap:7px;flex-wrap:wrap;padding:7px;border:1px solid var(--border2);border-radius:8px; }
+  .ui .tags .tg{ background:color-mix(in srgb,var(--accent) 12%,var(--bg));color:var(--accent-txt);border-radius:6px;padding:3px 9px;font-size:12px;font-weight:600;display:inline-flex;gap:6px;align-items:center; }
+  .ui .tags .tg svg{ width:12px;height:12px;opacity:.7; }
+
+  /* ===== TABS ===== */
+  .ui .fancy-hdr{ background:var(--hdr); padding:18px 18px 0; border-radius:12px 12px 0 0; box-shadow:var(--shadow-md); position:relative; }
+  .ui.dark .fancy-hdr{ border:1px solid #21384c; border-bottom:0; }
+  .ui .fancy-hdr .fh-fields{ display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:14px; }
+  .ui .fancy-hdr label{ display:block;font-size:11.5px;color:var(--hdr-fg-dim);margin-bottom:6px; }
+  .ui .fancy-hdr input{ width:100%;padding:9px 12px;border-radius:8px;border:0;font-size:13.5px;color:#fff;background:rgba(255,255,255,.12); }
+  .ui .fancy-hdr input::placeholder{ color:rgba(255,255,255,.6); }
+  .ui .ftabrow{ display:flex;gap:4px;padding-left:2px; }
+  .ui .ftab{ padding:10px 18px;font-size:13px;color:var(--hdr-fg-dim);border-radius:9px 9px 0 0;cursor:pointer; }
+  .ui .ftab:hover{ color:var(--hdr-fg); }
+  .ui .ftab.on{ background:var(--raised);color:var(--text);font-weight:600;box-shadow:inset 0 2px 0 var(--accent); }
+  .ui .fancy-body{ background:var(--raised);border:1px solid var(--border);border-top:0;padding:18px;border-radius:0 0 12px 12px;font-size:13px;color:var(--muted); }
+
+  .ui .mtabs{ display:flex;gap:4px;padding:8px 10px 0;background:var(--hdr);border-radius:10px 10px 0 0; }
+  .ui .mtab{ display:inline-flex;align-items:center;gap:8px;padding:8px 15px;font-size:12.5px;color:var(--hdr-fg-dim);background:color-mix(in srgb,#000 14%,var(--hdr));border-radius:8px 8px 0 0;cursor:pointer; }
+  .ui .mtab.on{ background:var(--raised);color:var(--text);font-weight:600; }
+  .ui .mtab svg{ width:13px;height:13px;opacity:.6; }
+  .ui .mtab-body{ background:var(--raised);border:1px solid var(--border);border-top:0;padding:14px;border-radius:0 0 10px 10px;font-size:12.5px;color:var(--muted); }
+
+  .ui .bc{ font-size:13px;color:var(--muted); }
+  .ui .bc a{ color:var(--muted);text-decoration:none; }
+  .ui .bc .sep{ color:var(--faint);margin:0 8px; }
+  .ui .bc .cur{ color:var(--accent-txt);font-weight:600; }
+
+  .ui .stabs{ display:flex;gap:2px;border-bottom:1px solid var(--border);padding:0 4px; }
+  .ui .stabs span{ padding:10px 15px;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer; }
+  .ui .stabs span:hover{ color:var(--text); }
+  .ui .stabs span.on{ color:var(--accent-txt);border-bottom-color:var(--accent);font-weight:600; }
+
+  .ui .ctabs{ display:flex;gap:3px; }
+  .ui .ctab{ padding:8px 15px;font-size:12.5px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-bottom:0;border-radius:8px 8px 0 0;cursor:pointer; }
+  .ui .ctab.on{ background:var(--raised);color:var(--accent-txt);font-weight:600;box-shadow:inset 0 2px 0 var(--accent); }
+  .ui .ctab-body{ border:1px solid var(--border);border-radius:0 8px 8px 8px;padding:16px;font-size:12.5px;color:var(--muted);background:var(--raised); }
+
+  /* alerts — tinted, hairline + accent bar */
+  .ui .alerts{ display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px; }
+  .ui .alert{ padding:11px 13px;border-radius:9px;font-size:13px;border:1px solid;border-left-width:3px; }
+  .ui .alert.success{ background:color-mix(in srgb,var(--success) var(--tint),var(--bg));border-color:color-mix(in srgb,var(--success) 30%,var(--bg));border-left-color:var(--success);color:var(--text); }
+  .ui .alert.info{ background:color-mix(in srgb,var(--info) var(--tint),var(--bg));border-color:color-mix(in srgb,var(--info) 30%,var(--bg));border-left-color:var(--info);color:var(--text); }
+  .ui .alert.warning{ background:color-mix(in srgb,var(--warning) var(--tint-hi),var(--bg));border-color:color-mix(in srgb,var(--warning) 30%,var(--bg));border-left-color:var(--warning);color:var(--text); }
+  .ui .alert.danger{ background:color-mix(in srgb,var(--danger) var(--tint),var(--bg));border-color:color-mix(in srgb,var(--danger) 30%,var(--bg));border-left-color:var(--danger);color:var(--text); }
+  .ui .alert b{ color:var(--c); } .ui .alert.success b{color:var(--success);} .ui .alert.info b{color:var(--info);} .ui .alert.warning b{color:var(--warning);} .ui .alert.danger b{color:var(--danger);}
+</style>
+</head>
+<body>
+  <h1>Winter backend — UI kit v3 <span style="font-size:13px;color:#64748b">(restraint + depth pass, per Fable review)</span></h1>
+  <p class="sub">Applied the design critique: one solid primary per view (rest quiet/ghost), tinted status pills &amp; alerts (no rainbow of solid fills), a real type scale (bold names, muted metadata), elevation (light shadows / dark surface-steps) + hover/focus states, flat modern tabs (no skew wings), a text breadcrumb, one combined list footer (totals right-aligned under Expenses + pager), no zebra, and SVG icons. Light then dark.</p>
+  <div id="root"></div>
+
+<script>
+const I = {
+  search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+  trash:'<svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>',
+  download:'<svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>',
+  cog:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 00-1.7-1l-.4-2.6h-4l-.4 2.6a7 7 0 00-1.7 1l-2.4-1-2 3.4 2 1.6a7 7 0 000 2l-2 1.6 2 3.4 2.4-1a7 7 0 001.7 1l.4 2.6h4l.4-2.6a7 7 0 001.7-1l2.4 1 2-3.4-2-1.6a7 7 0 00.1-1z"/></svg>',
+  chev:'<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>',
+  sort:'<svg viewBox="0 0 24 24"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg>',
+  x:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+  filter:'<svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg>',
+  check:'<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-11"/></svg>',
+  dash:'<svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg>',
+};
+function kit(){ return `
+  <p class="sec">List widget (ListController)</p>
+  <div class="card">
+    <div class="lw-bar">
+      <button class="btn primary">${I.plus} New Person</button>
+      <button class="btn default">Manage Phones</button>
+      <button class="btn g-danger">${I.trash} Delete</button>
+      <button class="btn icon" title="Export">${I.download}</button>
+      <span class="spacer"></span>
+      <div class="search">${I.search}<input class="ipt" placeholder="Search people…"></div>
+    </div>
+    <div class="filters">
+      <div class="seg"><button class="on">All</button><button>Active</button><button>Archived</button></div>
+      <span class="chip"><span class="k">Status</span> all ${I.chev}</span>
+      <span class="chip set">${I.check} Hide published</span>
+      <span class="chip set"><span class="k">Name</span> Smith</span>
+      <span class="chip"><span class="k">Expenses ≥</span> 500 ${I.chev}</span>
+      <button class="btn ghost">${I.filter} Filter</button>
+    </div>
+    <table class="lw">
+      <thead><tr>
+        <th style="width:38px"><span class="box"></span></th>
+        <th class="srt">ID ${I.chev.replace('width:16px;height:16px','').replace('<svg','<svg class="s" style="width:13px;height:13px"')}</th>
+        <th>Name</th><th>Bio</th><th>Status</th>
+        <th class="num">Expenses</th><th>Created</th><th style="width:40px"></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><span class="box"></span></td><td>6</td><td class="nm">Mary Smith</td><td>I am a user, I like fish</td><td><span class="pill success">Active</span></td><td class="num">$2,000.00</td><td>Jul 27, 2025</td><td><span class="cog">${I.cog}</span></td></tr>
+        <tr class="sel"><td><span class="box on">${I.check}</span></td><td>5</td><td class="nm">Jon Smith</td><td>I am a user, I like snakes</td><td><span class="pill warning">Pending</span></td><td class="num">$0.00</td><td>Jul 27, 2025</td><td><span class="cog">${I.cog}</span></td></tr>
+        <tr><td><span class="box"></span></td><td>4</td><td class="nm">Baby Herman</td><td>Cartoon baby with a temper</td><td><span class="pill danger">Suspended</span></td><td class="num">$550.00</td><td>Jul 22, 2025</td><td><span class="cog">${I.cog}</span></td></tr>
+        <tr><td><span class="box"></span></td><td>3</td><td class="nm">Eddie Valiant</td><td>Private investigator</td><td><span class="pill info">Invited</span></td><td class="num">$19,999.00</td><td>Jul 19, 2025</td><td><span class="cog">${I.cog}</span></td></tr>
+        <tr><td><span class="box"></span></td><td>2</td><td class="nm">John Smith</td><td>—</td><td><span class="pill success">Active</span></td><td class="num">$0.00</td><td>Jul 11, 2025</td><td><span class="cog">${I.cog}</span></td></tr>
+      </tbody>
+    </table>
+    <div class="lw-foot">
+      <span>Displayed 1–5 of 42</span>
+      <div class="pgr"><button disabled>«</button><button disabled>‹</button><button class="on">1</button><button>2</button><button>3</button><button>4</button><button>›</button><button>»</button></div>
+      <span class="tot">Page total <b>$2,000.00</b> · All records <b>$22,549.00</b></span>
+    </div>
+  </div>
+
+  <p class="sec">Form (FormController)</p>
+  <div class="card">
+    <div class="stabs"><span class="on">Edit</span><span>Categories</span><span>Manage</span></div>
+    <div class="grid2">
+      <div class="fld"><label>First name</label><input class="ipt" value="Mary"></div>
+      <div class="fld"><label>Last name</label><input class="ipt" value="Smith"></div>
+      <div class="fld err"><label>Email address</label><input class="ipt" value="not-an-email"><div class="msg">Please enter a valid email address.</div></div>
+      <div class="fld"><label>Role</label><div class="ipt sel-ipt">Publisher ${I.chev}</div></div>
+      <div class="fld" style="grid-column:1/3"><label>Bio</label><textarea class="ipt" rows="2">I am a user, I like fish.</textarea></div>
+      <div class="fld"><label>Options</label>
+        <div class="radio"><span class="dot on"></span> Publisher — publishing tools</div>
+        <div class="radio"><span class="dot"></span> Developer — developer tools</div></div>
+      <div class="fld"><label>Flags</label>
+        <label class="radio"><span class="box on">${I.check}</span> Send welcome email</label>
+        <div class="radio"><span class="switch on"></span> Super user</div>
+        <div class="radio"><span class="switch"></span> Is virtual</div></div>
+      <div class="fld"><label>Plan</label><div class="balloon"><span>Free</span><span class="on">Pro</span><span>Team</span><span>Enterprise</span></div></div>
+      <div class="fld"><label>Tags</label><div class="tags"><span class="tg">fish ${I.x}</span><span class="tg">writer ${I.x}</span><span class="tg">vip ${I.x}</span></div></div>
+    </div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;padding:0 18px 18px;align-items:center">
+      <button class="btn primary">Save</button>
+      <button class="btn default">Save &amp; close</button>
+      <span style="flex:1"></span>
+      <button class="btn g-success">Approve</button>
+      <button class="btn g-warning">Flag for review</button>
+      <button class="btn link">Preview</button>
+      <button class="btn g-danger">Delete</button>
+    </div>
+  </div>
+
+  <p class="sec">Tabs — all variants &amp; fancy chrome</p>
+  <div style="margin-bottom:16px">
+    <div class="bc" style="margin-bottom:10px"><a>Blog</a><span class="sep">/</span><a>Posts</a><span class="sep">/</span><span class="cur">New post</span></div>
+    <div class="fancy-hdr">
+      <div class="fh-fields"><div><label>Title</label><input value="Mary Smith"></div><div><label>URL</label><input value="/people/mary"></div></div>
+      <div class="ftabrow"><div class="ftab on">Edit</div><div class="ftab">Categories</div><div class="ftab">Manage</div></div>
+    </div>
+    <div class="fancy-body">Active-tab body — the tab sits flush on the Indigo Dye header with a Pacific accent line; the card body carries it below.</div>
+  </div>
+  <div style="display:flex;gap:28px;flex-wrap:wrap;margin-bottom:22px;align-items:flex-start">
+    <div><div style="font-size:11px;color:var(--faint);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em">Document tabs</div>
+      <div class="mtabs"><div class="mtab on">Record / fields ${I.x}</div><div class="mtab">New table ${I.x}</div><div class="mtab">Welcome</div></div>
+      <div class="mtab-body">Open editor documents.</div></div>
+    <div><div style="font-size:11px;color:var(--faint);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em">Secondary (underline)</div>
+      <div class="stabs" style="border:1px solid var(--border);border-radius:9px;min-width:250px"><span class="on">Settings</span><span>Meta</span><span>SEO</span></div></div>
+    <div><div style="font-size:11px;color:var(--faint);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em">Content (Markup / Code)</div>
+      <div class="ctabs"><span class="ctab on">Markup</span><span class="ctab">Code</span></div><div class="ctab-body">&lt;div class="jumbotron"&gt; … &lt;/div&gt;</div></div>
+  </div>
+
+  <p class="sec">Flash / alert messages</p>
+  <div class="card"><div class="alerts">
+    <div class="alert success"><b>Success</b> — the record was saved.</div>
+    <div class="alert info"><b>Info</b> — 3 records were imported.</div>
+    <div class="alert warning"><b>Warning</b> — some rows were skipped, review them.</div>
+    <div class="alert danger"><b>Error</b> — the record could not be deleted.</div>
+  </div></div>
+`; }
+document.getElementById('root').innerHTML =
+  `<div class="modewrap"><h2>Light</h2><div class="ui light">${kit()}</div></div>` +
+  `<div class="modewrap"><h2>Dark</h2><div class="ui dark">${kit()}</div></div>`;
+</script>
+</body>
+</html>
