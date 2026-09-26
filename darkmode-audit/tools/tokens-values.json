@@ -143,12 +143,6 @@
         "was": "#ffffff",
         "note": "border · inverse"
     },
-    "--wn-border-dark": {
-        "hex": "#050f14",
-        "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
-        "was": "#222222",
-        "note": "border · dark"
-    },
     "--wn-icon-muted": {
         "hex": "#a3b6c0",
         "section": "Neutral scale — snapped to the design system (these CHANGE colours)",
@@ -171,21 +165,6 @@
         "hex": "#da5700",
         "section": "Identity colours — value preserved, named from its LESS variable",
         "note": "was @color-balloon-control-active-bg"
-    },
-    "--wn-blockquote-level1-color": {
-        "hex": "#5e35b1",
-        "section": "Identity colours — value preserved, named from its LESS variable",
-        "note": "was @blockquote-level1-color"
-    },
-    "--wn-blockquote-level2-color": {
-        "hex": "#00bcd4",
-        "section": "Identity colours — value preserved, named from its LESS variable",
-        "note": "was @blockquote-level2-color"
-    },
-    "--wn-blockquote-level3-color": {
-        "hex": "#43a047",
-        "section": "Identity colours — value preserved, named from its LESS variable",
-        "note": "was @blockquote-level3-color"
     },
     "--wn-callout-danger-content-bg": {
         "hex": "#f8d6d5",
@@ -312,6 +291,11 @@
         "section": "Identity colours — value preserved, named from its LESS variable",
         "note": "was @color-flash-success-bg"
     },
+    "--wn-flashmessage-flash-warning-bg": {
+        "hex": "#de8754",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-warning-bg"
+    },
     "--wn-framework-flash-error-bg": {
         "hex": "#cc3300",
         "section": "Identity colours — value preserved, named from its LESS variable",
@@ -326,6 +310,11 @@
         "hex": "#8da85e",
         "section": "Identity colours — value preserved, named from its LESS variable",
         "note": "was @color-flash-success-bg"
+    },
+    "--wn-framework-flash-warning-bg": {
+        "hex": "#de8754",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-flash-warning-bg"
     },
     "--wn-highlight-active-text": {
         "hex": "#ffffff",
@@ -361,6 +350,16 @@
         "hex": "#f5f5f5",
         "section": "Identity colours — value preserved, named from its LESS variable",
         "note": "was @color-list-progress-bg"
+    },
+    "--wn-list-selection-bg": {
+        "hex": "#f8f0d5",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-list-selection-bg"
+    },
+    "--wn-list-selection-border": {
+        "hex": "#f6e7b2",
+        "section": "Identity colours — value preserved, named from its LESS variable",
+        "note": "was @color-list-selection-border"
     },
     "--wn-list-stripe-active": {
         "hex": "#ff9933",
@@ -556,6 +555,11 @@
         "hex": "#a5382c",
         "section": "Inline colours — value preserved, named from source file + role",
         "note": "fancylayout.less &[data-control=\"delete-button\"]"
+    },
+    "--wn-fancylayout-bg-hover": {
+        "hex": "#bc4436",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "fancylayout.less &[data-control=\"delete-button\"]:hover"
     },
     "--wn-fancylayout-text": {
         "hex": "#000000",
@@ -772,11 +776,6 @@
         "section": "Inline colours — value preserved, named from source file + role",
         "note": "repeater.less &:before"
     },
-    "--wn-richeditor-border": {
-        "hex": "#2581b8",
-        "section": "Inline colours — value preserved, named from source file + role",
-        "note": "richeditor.less &:focus, &.inspector-open"
-    },
     "--wn-selector-group-border": {
         "hex": "#e6802b",
         "section": "Inline colours — value preserved, named from source file + role",
@@ -806,11 +805,6 @@
         "hex": "#f8bb86",
         "section": "Inline colours — value preserved, named from source file + role",
         "note": "sweet-alert-animations.less @-webkit-keyframes pulseWarning"
-    },
-    "--wn-table-border": {
-        "hex": "#ec0000",
-        "section": "Inline colours — value preserved, named from source file + role",
-        "note": "table.less td.active.error"
     },
     "--wn-theme-selector-misc": {
         "hex": "#bdc3c7",
@@ -871,5 +865,15 @@
         "hex": "#103141",
         "section": "Focus indicators — chosen by the backdrop they sit on",
         "note": "ring/bar on light or brand surfaces; white only reaches 2.8:1 on the brand cyan"
+    },
+    "--wn-surface-error": {
+        "hex": "#fbecec",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "table error row background"
+    },
+    "--wn-table-error": {
+        "hex": "#ec0000",
+        "section": "Inline colours — value preserved, named from source file + role",
+        "note": "table error cell border/background"
     }
 }

@@ -5,7 +5,7 @@
  * The original appliers inferred each colour's role from selector/property
  * heuristics. Those heuristics were tuned interactively and are not worth
  * re-deriving: the result of that tuning is already sitting in the working tree
- * as `var(--wn-token, #originalhex)` at 657 sites, and the fallback preserves
+ * as `var(--wn-token, #originalhex)` at 661 sites, and the fallback preserves
  * the literal it replaced. Reading the tree back is therefore both simpler and
  * strictly more faithful than re-running the inference -- it cannot drift from
  * what was actually built and reviewed.

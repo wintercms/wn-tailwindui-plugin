@@ -481,163 +481,187 @@
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 101,
+        "line": 99,
+        "token": "--wn-focus-on-dark",
+        "hex": "#ffffff"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 100,
+        "token": "--wn-focus-on-light",
+        "hex": "#103141"
+    },
+    {
+        "file": "modules/backend/assets/less/core/variables.less",
+        "line": 103,
         "token": "--wn-surface-selected",
         "hex": "#475354"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 102,
+        "line": 104,
         "token": "--wn-text-inverse",
         "hex": "#ffffff"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 103,
+        "line": 105,
         "token": "--wn-text-secondary",
         "hex": "#919898"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 105,
+        "line": 107,
         "token": "--wn-surface-mid",
         "hex": "#7F8C8D"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 106,
+        "line": 108,
         "token": "--wn-text-secondary",
         "hex": "#95a5a6"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 107,
+        "line": 109,
         "token": "--wn-text-secondary",
         "hex": "#808c8d"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 108,
+        "line": 110,
         "token": "--wn-surface-canvas",
         "hex": "#fafafa"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 109,
+        "line": 111,
         "token": "--wn-surface-overlay",
         "hex": "#d5d9d8"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 113,
+        "line": 115,
         "token": "--wn-text-inverse",
         "hex": "#ffffff"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 116,
+        "line": 118,
         "token": "--wn-fancy-tab-inactive",
         "hex": "#2589a3"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 118,
+        "line": 120,
         "token": "--wn-text-secondary",
         "hex": "#999999"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 121,
+        "line": 123,
         "token": "--wn-text-secondary",
         "hex": "#7e8c8d"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 122,
+        "line": 124,
         "token": "--wn-text-muted",
         "hex": "#b6b6b6"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 126,
+        "line": 128,
         "token": "--wn-surface-raised",
         "hex": "#ffffff"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 127,
+        "line": 129,
         "token": "--wn-text-heading",
         "hex": "#2b3e50"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 128,
+        "line": 130,
         "token": "--wn-text-secondary",
         "hex": "#95a5a6"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 129,
+        "line": 131,
         "token": "--wn-text-muted",
         "hex": "#bdc3c7"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 134,
+        "line": 136,
         "token": "--wn-text-secondary",
         "hex": "#8f8f8f"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 135,
+        "line": 137,
         "token": "--wn-text-inverse",
         "hex": "#ffffff"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 136,
+        "line": 138,
         "token": "--wn-treeview-light-submenu-bg",
         "hex": "#2581b8"
     },
     {
         "file": "modules/backend/assets/less/core/variables.less",
-        "line": 137,
+        "line": 139,
         "token": "--wn-treeview-light-submenu-border",
         "hex": "#328ec8"
     },
     {
         "file": "modules/backend/assets/less/layout/fancylayout.less",
-        "line": 385,
+        "line": 404,
         "token": "--wn-text-heading",
         "hex": "#2b3e50"
     },
     {
         "file": "modules/backend/assets/less/layout/fancylayout.less",
-        "line": 441,
+        "line": 460,
         "token": "--wn-fancylayout-text",
         "hex": "#000000"
     },
     {
         "file": "modules/backend/assets/less/layout/fancylayout.less",
-        "line": 464,
+        "line": 483,
         "token": "--wn-text-heading",
         "hex": "#2b3e50"
     },
     {
         "file": "modules/backend/assets/less/layout/fancylayout.less",
-        "line": 666,
+        "line": 688,
         "token": "--wn-text-inverse",
         "hex": "#fff"
     },
     {
         "file": "modules/backend/assets/less/layout/fancylayout.less",
-        "line": 721,
+        "line": 757,
         "token": "--wn-fancylayout-bg",
         "hex": "#a5382c"
     },
     {
         "file": "modules/backend/assets/less/layout/fancylayout.less",
-        "line": 722,
+        "line": 758,
+        "token": "--wn-text-inverse",
+        "hex": "#fff"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 774,
+        "token": "--wn-fancylayout-bg-hover",
+        "hex": "#bc4436"
+    },
+    {
+        "file": "modules/backend/assets/less/layout/fancylayout.less",
+        "line": 776,
         "token": "--wn-text-inverse",
         "hex": "#fff"
     },
@@ -883,6 +907,66 @@
     },
     {
         "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 380,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 380,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 380,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 380,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 380,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 381,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 381,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 381,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 381,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 381,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
         "line": 381,
         "token": "--wn-surface-overlay",
         "hex": "#CBCBCB"
@@ -895,7 +979,97 @@
     },
     {
         "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 382,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 382,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 382,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 382,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 382,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
         "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 383,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 384,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 384,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 384,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 384,
+        "token": "--wn-surface-overlay",
+        "hex": "#CBCBCB"
+    },
+    {
+        "file": "modules/backend/formwidgets/fileupload/assets/less/fileupload.base.less",
+        "line": 384,
         "token": "--wn-surface-overlay",
         "hex": "#CBCBCB"
     },
@@ -1248,162 +1422,6 @@
         "hex": "#999"
     },
     {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
-        "line": 3,
-        "token": "--wn-border-focus",
-        "hex": "#DDD"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
-        "line": 4,
-        "token": "--wn-blockquote-level1-color",
-        "hex": "#5E35B1"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
-        "line": 5,
-        "token": "--wn-blockquote-level2-color",
-        "hex": "#00BCD4"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/_base_styles.less",
-        "line": 6,
-        "token": "--wn-blockquote-level3-color",
-        "hex": "#43A047"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/_froala.less",
-        "line": 57,
-        "token": "--wn-surface-hover",
-        "hex": "#f2f2f2"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/_froala.less",
-        "line": 134,
-        "token": "--wn-text",
-        "hex": "#666666"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 7,
-        "token": "--wn-text-faint",
-        "hex": "#dddddd"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 8,
-        "token": "--wn-text-link",
-        "hex": "#404040"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 9,
-        "token": "--wn-surface-mid",
-        "hex": "#999999"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 10,
-        "token": "--wn-surface-selected",
-        "hex": "#404040"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 11,
-        "token": "--wn-text-inverse",
-        "hex": "#ffffff"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 47,
-        "token": "--wn-surface-canvas",
-        "hex": "#f9f9f9"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 51,
-        "token": "--wn-surface-overlay",
-        "hex": "#ddd"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 54,
-        "token": "--wn-text-strong",
-        "hex": "#000"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 186,
-        "token": "--wn-border-input",
-        "hex": "#bdc3c7"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 190,
-        "token": "--wn-text",
-        "hex": "#6c7071"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 197,
-        "token": "--wn-richeditor-border",
-        "hex": "#2581b8"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 255,
-        "token": "--wn-text-muted",
-        "hex": "#bdbdbd"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 260,
-        "token": "--wn-border-input",
-        "hex": "#bdbdbd"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 265,
-        "token": "--wn-text-muted",
-        "hex": "#bdbdbd"
-    },
-    {
-        "file": "modules/backend/formwidgets/richeditor/assets/less/richeditor.less",
-        "line": 268,
-        "token": "--wn-border-input",
-        "hex": "#bdbdbd"
-    },
-    {
-        "file": "modules/backend/models/editorsetting/default_styles.less",
-        "line": 6,
-        "token": "--wn-text-muted",
-        "hex": "#AAA"
-    },
-    {
-        "file": "modules/backend/models/editorsetting/default_styles.less",
-        "line": 10,
-        "token": "--wn-border-dark",
-        "hex": "#222"
-    },
-    {
-        "file": "modules/backend/models/editorsetting/default_styles.less",
-        "line": 11,
-        "token": "--wn-border-dark",
-        "hex": "#222"
-    },
-    {
-        "file": "modules/backend/models/editorsetting/default_styles.less",
-        "line": 46,
-        "token": "--wn-surface-hover",
-        "hex": "#f5f5f5"
-    },
-    {
-        "file": "modules/backend/models/editorsetting/default_styles.less",
-        "line": 75,
-        "token": "--wn-border",
-        "hex": "#CCC"
-    },
-    {
         "file": "modules/backend/widgets/mediamanager/assets/less/mediamanager.less",
         "line": 8,
         "token": "--wn-mediamanager-border",
@@ -1736,25 +1754,25 @@
     {
         "file": "modules/backend/widgets/table/assets/less/table.less",
         "line": 137,
-        "token": "--wn-surface-hover",
+        "token": "--wn-surface-error",
         "hex": "#fbecec"
     },
     {
         "file": "modules/backend/widgets/table/assets/less/table.less",
         "line": 140,
-        "token": "--wn-table-border",
+        "token": "--wn-table-error",
         "hex": "#ec0000"
     },
     {
         "file": "modules/backend/widgets/table/assets/less/table.less",
         "line": 143,
-        "token": "--wn-table-border",
+        "token": "--wn-table-error",
         "hex": "#ec0000"
     },
     {
         "file": "modules/backend/widgets/table/assets/less/table.less",
         "line": 145,
-        "token": "--wn-table-border",
+        "token": "--wn-table-error",
         "hex": "#ec0000"
     },
     {
@@ -1975,6 +1993,12 @@
     },
     {
         "file": "modules/system/assets/less/framework.extras.less",
+        "line": 31,
+        "token": "--wn-framework-extras-misc",
+        "hex": "#FFF"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
         "line": 68,
         "token": "--wn-framework-flash-success-bg",
         "hex": "#8da85e"
@@ -1984,6 +2008,12 @@
         "line": 69,
         "token": "--wn-framework-flash-error-bg",
         "hex": "#cc3300"
+    },
+    {
+        "file": "modules/system/assets/less/framework.extras.less",
+        "line": 70,
+        "token": "--wn-framework-flash-warning-bg",
+        "hex": "#de8754"
     },
     {
         "file": "modules/system/assets/less/framework.extras.less",
@@ -2032,6 +2062,12 @@
         "line": 12,
         "token": "--wn-stripe-loader-color",
         "hex": "#0090c0"
+    },
+    {
+        "file": "modules/system/assets/less/snowboard.extras.less",
+        "line": 31,
+        "token": "--wn-snowboard-extras-misc",
+        "hex": "#FFF"
     },
     {
         "file": "modules/system/assets/less/snowboard.extras.less",
@@ -2287,37 +2323,31 @@
     },
     {
         "file": "modules/system/assets/less/updates/install.less",
-        "line": 254,
+        "line": 267,
         "token": "--wn-border",
         "hex": "#ccc"
     },
     {
         "file": "modules/system/assets/less/updates/install.less",
-        "line": 264,
-        "token": "--wn-border",
-        "hex": "#ccc"
-    },
-    {
-        "file": "modules/system/assets/less/updates/install.less",
-        "line": 289,
+        "line": 292,
         "token": "--wn-text-link",
         "hex": "#333"
     },
     {
         "file": "modules/system/assets/less/updates/install.less",
-        "line": 290,
+        "line": 293,
         "token": "--wn-surface-canvas",
         "hex": "#f9f9f9"
     },
     {
         "file": "modules/system/assets/less/updates/install.less",
-        "line": 291,
+        "line": 294,
         "token": "--wn-border-subtle",
         "hex": "#f0f0f0"
     },
     {
         "file": "modules/system/assets/less/updates/install.less",
-        "line": 294,
+        "line": 297,
         "token": "--wn-text-secondary",
         "hex": "#999"
     },
@@ -2983,6 +3013,12 @@
     },
     {
         "file": "modules/system/assets/ui/less/flashmessage.less",
+        "line": 14,
+        "token": "--wn-flashmessage-flash-warning-bg",
+        "hex": "#de8754"
+    },
+    {
+        "file": "modules/system/assets/ui/less/flashmessage.less",
         "line": 15,
         "token": "--wn-flashmessage-flash-info-bg",
         "hex": "#5fb6f5"
@@ -3421,7 +3457,7 @@
     },
     {
         "file": "modules/system/assets/ui/less/list.less",
-        "line": 614,
+        "line": 644,
         "token": "--wn-surface-raised",
         "hex": "#fff"
     },
@@ -3512,7 +3548,7 @@
     {
         "file": "modules/system/assets/ui/less/list.variables.less",
         "line": 32,
-        "token": "--wn-surface-stripe",
+        "token": "--wn-surface-accent",
         "hex": "#ECF0F1"
     },
     {
@@ -3523,25 +3559,37 @@
     },
     {
         "file": "modules/system/assets/ui/less/list.variables.less",
-        "line": 38,
+        "line": 34,
+        "token": "--wn-list-selection-bg",
+        "hex": "#f8f0d5"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 35,
+        "token": "--wn-list-selection-border",
+        "hex": "#f6e7b2"
+    },
+    {
+        "file": "modules/system/assets/ui/less/list.variables.less",
+        "line": 41,
         "token": "--wn-list-active-sort",
         "hex": "#c63e26"
     },
     {
         "file": "modules/system/assets/ui/less/list.variables.less",
-        "line": 39,
+        "line": 42,
         "token": "--wn-text-faint",
         "hex": "#E4E7E8"
     },
     {
         "file": "modules/system/assets/ui/less/list.variables.less",
-        "line": 40,
+        "line": 43,
         "token": "--wn-list-progress-bg",
         "hex": "#F5F5F5"
     },
     {
         "file": "modules/system/assets/ui/less/list.variables.less",
-        "line": 42,
+        "line": 45,
         "token": "--wn-status-list-text",
         "hex": "#7e8c8d"
     },
@@ -3550,6 +3598,12 @@
         "line": 11,
         "token": "--wn-loading-indicator-text",
         "hex": "#999999"
+    },
+    {
+        "file": "modules/system/assets/ui/less/loader.less",
+        "line": 231,
+        "token": "--wn-loader-misc",
+        "hex": "#FFF"
     },
     {
         "file": "modules/system/assets/ui/less/loader.less",
@@ -3750,48 +3804,6 @@
         "hex": "#c0c0c0"
     },
     {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 10,
-        "token": "--wn-text-strong",
-        "hex": "#000"
-    },
-    {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 36,
-        "token": "--wn-border-strong",
-        "hex": "#999"
-    },
-    {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 68,
-        "token": "--wn-surface-raised",
-        "hex": "#fff"
-    },
-    {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 78,
-        "token": "--wn-surface-raised",
-        "hex": "#fff"
-    },
-    {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 84,
-        "token": "--wn-border-dark",
-        "hex": "#000"
-    },
-    {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 88,
-        "token": "--wn-border-dark",
-        "hex": "#000"
-    },
-    {
-        "file": "modules/system/assets/ui/less/site.print.less",
-        "line": 97,
-        "token": "--wn-border-focus",
-        "hex": "#ddd"
-    },
-    {
         "file": "modules/system/assets/ui/less/site.typography.less",
         "line": 116,
         "token": "--wn-text-inverse",
@@ -3836,42 +3848,48 @@
     {
         "file": "modules/system/assets/ui/less/tab.less",
         "line": 22,
+        "token": "--wn-focus-on-light",
+        "hex": "#103141"
+    },
+    {
+        "file": "modules/system/assets/ui/less/tab.less",
+        "line": 23,
         "token": "--wn-surface-raised",
         "hex": "#ffffff"
     },
     {
         "file": "modules/system/assets/ui/less/tab.less",
-        "line": 23,
+        "line": 24,
         "token": "--wn-border-subtle",
         "hex": "#e3e5e7"
     },
     {
         "file": "modules/system/assets/ui/less/tab.less",
-        "line": 31,
+        "line": 32,
         "token": "--wn-text-inverse",
         "hex": "#fff"
     },
     {
         "file": "modules/system/assets/ui/less/tab.less",
-        "line": 33,
+        "line": 34,
         "token": "--wn-border-focus",
         "hex": "#ddd"
     },
     {
         "file": "modules/system/assets/ui/less/tab.less",
-        "line": 39,
+        "line": 40,
         "token": "--wn-border-focus",
         "hex": "#ddd"
     },
     {
         "file": "modules/system/assets/ui/less/tab.less",
-        "line": 41,
+        "line": 42,
         "token": "--wn-border-focus",
         "hex": "#ddd"
     },
     {
         "file": "modules/system/assets/ui/less/tab.less",
-        "line": 334,
+        "line": 366,
         "token": "--wn-border-focus",
         "hex": "#d6d6d6"
     },
