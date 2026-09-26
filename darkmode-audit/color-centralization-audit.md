@@ -332,7 +332,7 @@ Wing = `span.title::before` / `::after` (skewed slivers). "Title" = the pill bac
 | Selector | Lines | Current | Target |
 |---|---|---|---|
 | header band `.form-tabless-fields, .control-tabs.primary-tabs > … ul.nav-tabs` | 507-510 | `#1a4653` | `--drk-accent-raised` |
-| active-tab wings `.control-tabs.primary-tabs > … li.active … span.title:before/:after` | 1720-1722 | `var(--drk-bg-color-a)` | **INCONSISTENT** — wings use page-bg, not the accent; decide: match title (accent) vs. blend into content (bg-a). Document intent. |
+| active-tab wings `.control-tabs.primary-tabs > … li.active … span.title:before/:after` | — | `var(--drk-bg-color-a)` | **Resolved:** wings match their title, and the active title takes the canvas colour of the panel it opens (from core's `--wn-surface-canvas` token), as in light mode. The explicit override was removed. |
 
 ### PRIMARY-TABS.MASTER-AREA (Builder editor tabs) — `fancy-layout.css` (unlayered)
 
