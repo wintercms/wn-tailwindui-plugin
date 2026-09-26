@@ -2067,64 +2067,65 @@
 
     /* Icon picker modal: ships its own light palette (white panels and tiles),
        but inherits dark-mode text, so labels were light grey on white. Its
-       styles are Vue-scoped, hence the extra .aim-modal on each selector. */
-    .aim-modal .aim-modal--content {
+       styles are Vue-scoped and injected after this file with equal specificity,
+       so each rule is anchored on the open modal (.aim-modal.aim-open) to win. */
+    .aim-modal.aim-open .aim-modal--content {
         background-color: var(--drk-bg-color-a);
         color: var(--drk-color);
     }
 
-    .aim-modal .aim-modal--header,
-    .aim-modal .aim-modal--footer {
+    .aim-modal.aim-open .aim-modal--header,
+    .aim-modal.aim-open .aim-modal--footer {
         background-color: var(--drk-bg-color-b);
         color: var(--drk-color);
     }
 
-    .aim-modal .aim-modal--header-logo-title {
+    .aim-modal.aim-open .aim-modal--header-logo-title {
         color: var(--drk-color);
     }
 
-    .aim-modal .aim-modal--sidebar {
+    .aim-modal.aim-open .aim-modal--sidebar {
         background-color: transparent;
     }
 
-    .aim-modal .aim-modal--sidebar-tab-item {
+    .aim-modal.aim-open .aim-modal--sidebar-tab-item {
         color: var(--drk-color-muted);
     }
 
-    .aim-modal .aim-modal--sidebar-tab-item.aesthetic-active {
+    .aim-modal.aim-open .aim-modal--sidebar-tab-item.aesthetic-active {
         background-color: var(--drk-bg-color-b);
         color: var(--drk-color);
     }
 
-    .aim-modal .aim-sidebar-preview {
+    .aim-modal.aim-open .aim-sidebar-preview {
         background-color: var(--drk-bg-color-b);
         border-color: var(--drk-border-color);
     }
 
-    .aim-modal .aim-icon-item {
+    .aim-modal.aim-open .aim-icon-item {
         background-color: var(--drk-bg-color-b);
         color: var(--drk-color);
     }
 
-    .aim-modal .aim-icon-item:hover {
+    .aim-modal.aim-open .aim-icon-item:hover {
         background-color: var(--drk-bg-color-hover);
     }
 
-    .aim-modal .aim-icon-item.aesthetic-selected {
+    .aim-modal.aim-open .aim-icon-item.aesthetic-selected {
         background-color: var(--drk-bg-color-selection);
     }
 
-    .aim-modal .aim-icon-item-name {
+    .aim-modal.aim-open .aim-icon-item-name {
         color: var(--drk-color-muted);
     }
 
-    .aim-modal .aim-modal--icon-search input {
+    .aim-modal.aim-open .aim-modal--icon-search input {
         background-color: var(--drk-bg-color-inset);
         border: 1px solid var(--drk-border-color);
         color: var(--drk-color);
     }
 
-    .aim-modal .aim-modal--footer .btn-secondary {
+    .aim-modal.aim-open .aim-modal--footer .btn-secondary {
         background-color: var(--drk-bg-color-btn);
         border-color: var(--drk-border-color);
         color: var(--drk-color);
