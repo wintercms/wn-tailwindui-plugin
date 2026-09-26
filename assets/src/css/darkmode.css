@@ -62,9 +62,52 @@
     --drk-accent-active: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 43%, var(--drk-bg-color-a));
     --drk-accent-recessed: color-mix(in srgb, var(--brand-secondary-dark, var(--brand-secondary, #2da7c7)) 20%, var(--drk-bg-color-a));
 
+    /* Core colour tokens (wintercms/winter#1541), redefined for dark mode. Core
+       paints through these, so most of the backend darkens here rather than
+       selector by selector; the rules below only cover what differs from them.
+       Identity tokens are redefined only where the light value is unreadable on a
+       dark surface or this file already repainted them consistently. */
+    --wn-text: var(--drk-color);
+    --wn-text-heading: var(--drk-color);
+    --wn-text-strong: var(--drk-color);
+    --wn-text-link: var(--drk-color);
+    --wn-text-muted: var(--drk-color-muted);
+    --wn-text-secondary: var(--drk-color-muted);
+    --wn-text-faint: var(--drk-color-faint);
+    --wn-icon-muted: var(--drk-color-muted);
+    --wn-icon-strong: var(--drk-color);
+    --wn-border: var(--drk-border-color);
+    --wn-border-subtle: var(--drk-border-color);
+    --wn-border-focus: var(--drk-border-color);
+    --wn-border-input: var(--drk-border-color);
+    --wn-border-strong: var(--drk-border-color-strong);
+    --wn-surface-canvas: var(--drk-bg-color-a);
+    --wn-surface-raised: var(--drk-bg-color-b);
+    --wn-surface-mid: var(--drk-bg-color-b);
+    --wn-surface-overlay: var(--drk-bg-color-c);
+    --wn-surface-chrome: var(--drk-bg-color-c);
+    --wn-surface-input: var(--drk-bg-color-inset);
+    --wn-surface-hover: var(--drk-bg-color-hover);
+    --wn-surface-selected: var(--drk-bg-color-selection);
+    --wn-surface-stripe: #121922;
+    --wn-surface-accent: #0c121a;
+
+    --wn-table-odd-row: var(--drk-bg-color-b);
+    --wn-table-even-row: #121922;
+    --wn-table-disabled-field: var(--drk-bg-color-inset);
+    --wn-alert-text: var(--drk-color);
+    --wn-alert-text-2: var(--drk-color-muted);
+    --wn-callout-text: var(--drk-color);
+    --wn-callout-warning-header-bg: var(--drk-bg-color-a);
+    --wn-chart-border: var(--drk-border-color);
+    --wn-status-list-text: #bbbbbb;
+    --wn-scoreboard-title: #bbbbbb;
+    --wn-scoreboard-body: var(--drk-color);
+    --wn-scoreboard-description: var(--drk-color-muted);
+    --wn-fileupload-base-bg-2: #43474a;
+
     body {
         color: var(--drk-color);
-        background: var(--drk-bg-color-a);
     }
 
     .layout.control-tabs.wn-logo-transparent:not(.has-tabs):after,
@@ -72,7 +115,6 @@
     .layout-cell.wn-logo-transparent:after {
         background: transparent;
     }
-
 
     nav#layout-mainmenu {
         background-color: var(--drk-bg-color-b);
@@ -121,7 +163,6 @@
         background-color: var(--drk-border-color);
     }
 
-
     /* sidenav */
     nav.layout-sidenav {
         background: var(--drk-bg-color-b);
@@ -168,16 +209,8 @@
         color: #bbb;
     }
 
-    .table > thead > tr > th {
-        border-bottom-color: var(--drk-border-color);
-    }
-
     .table-striped > tbody > tr:nth-child(odd) > td {
         background-color: #1d242e;
-    }
-
-    .table > tbody > tr > td {
-        border-top-color: var(--drk-border-color);
     }
 
     .text-muted {
@@ -186,23 +219,16 @@
 
     input.form-control.icon.search.growable:focus,
     input.form-control[name="search"]:focus {
-        border-color: #1f6feb;
-        outline: none;
         box-shadow: 0 0 0 3px #0c2d6b;
     }
 
     .toolbar-widget {
         .clear-input-text {
-            color: var(--drk-color);
             background-color: var(--drk-bg-color-inset);
             &:hover, &:focus {
                 color: var(--drk-color);
             }
         }
-    }
-
-    .field-recordfinder .btn {
-        color: #fff;
     }
 
     .select2-dropdown {
@@ -213,7 +239,6 @@
     }
 
     .select2-container--default .select2-selection {
-        background-color: #010409;
         border: 1px solid var(--drk-border-color);
         box-shadow: 0 0 transparent;
     }
@@ -258,7 +283,6 @@
         background: #005087 !important;
     }
 
-
     /* tooltip */
     .tooltip-inner {
         background: #d1d1d1;
@@ -282,7 +306,6 @@
     }
 
     /* End tooltip */
-
 
     /* Dashboard */
     .report-widget {
@@ -314,15 +337,6 @@
         color: #c8c8c8;
     }
 
-    .control-status-list > ul li {
-        color: #bbb;
-        border-bottom-color: var(--drk-border-color);
-    }
-
-    .control-status-list > ul li:last-child {
-        border-bottom: none;
-    }
-
     .control-status-list > ul li .status-text.success {
         color: #31ac5f;
     }
@@ -342,14 +356,6 @@
     .report-widget a:not(.btn):hover,
     .report-widget a:not(.btn):focus {
         color: #00ffff;
-    }
-
-    .report-widget a:not(.btn).status-label.primary {
-        color: #fff;
-    }
-
-    .control-chart div.chart-legend table {
-        color: #bbb;
     }
 
     .dropdown-menu .dropdown-container > ul {
@@ -379,10 +385,6 @@
 
     .dropdown.dropup .dropdown-menu .dropdown-container > ul:after {
         border-top-color: var(--drk-bg-color-c);
-    }
-
-    .dropdown-menu .divider {
-        background-color: var(--drk-border-color);
     }
 
     .dropdown-menu .dropdown-container > ul:first-child {
@@ -419,8 +421,6 @@
 
     /* END Dashboard */
 
-
-
     /* CMS */
     .control-scrollpanel {
         background-color: var(--drk-bg-color-c);
@@ -430,7 +430,6 @@
     .control-treeview {
         ol li {
             > div {
-                background-color: var(--drk-bg-color-b);
                 a {
                     color: #c5c5c5;
                 }
@@ -489,7 +488,6 @@
 
         &.filelist-hero {
             ul li {
-                background: var(--drk-bg-color-b);
 
                 &.separator {
                     background: var(--drk-bg-color-a);
@@ -593,10 +591,6 @@
         background-color: var(--drk-accent-raised) !important;
     }
 
-    #layout-side-panel div.control-toolbar input.form-control {
-        box-shadow: none;
-    }
-
     /* Froala richtext editor */
     .field-richeditor {
         .fr-view {
@@ -619,10 +613,6 @@
     .field-richeditor .fr-view table td,
     .field-richeditor .fr-view table th {
         border-color: var(--drk-border-color);
-    }
-
-    .control-assetlist ul li a.link {
-        color: var(--drk-color);
     }
 
     .control-assetlist ul li a.link:hover {
@@ -650,7 +640,6 @@
 
     .component-list .components div.layout div.layout-row div.layout-cell {
         border-top: 1px solid var(--drk-border-color);
-        background: var(--drk-bg-color-b);
     }
 
     .draggable-component-item:hover,
@@ -668,12 +657,6 @@
         background: var(--drk-bg-color-c);
     }
 
-    /* G20: theme-editor Components sidebar (.control-filelist.component-list)
-       divides its group rows with a light #e6ebed top border. */
-    .control-filelist.component-list ul li.group {
-        border-top-color: var(--drk-border-color);
-    }
-
     div.control-componentlist div.components div.layout-cell > div.popover-highlight {
         background: var(--drk-bg-color-c) !important;
         border: 1px solid var(--drk-border-color);
@@ -682,20 +665,11 @@
     .draggable-component-item > div:after,
     .component-list .components div.layout-cell > div:after,
     div.control-componentlist div.components div.layout-cell > div:after {
-        color: var(--drk-bg-color-b);
         text-shadow: 0 0 1px #6fc2f1;
     }
 
     .component-list .components div.layout div.layout-row div.layout-cell > div:before {
-        color: var(--drk-bg-color-b);
         text-shadow: 0 0 1px #6fc2f1;
-    }
-
-    div.control-componentlist div.components div.layout-cell > div:before,
-    .component-list .components div.layout-cell > div span.name,
-    div.control-componentlist div.components div.layout-cell > div span.name,
-    div.control-componentlist div.components div.layout-cell > div a.remove {
-        color: var(--drk-color);
     }
 
     .component-list .components div.layout-cell > div span.description,
@@ -716,18 +690,10 @@
         background-color: transparent;
     }
 
-    .fancy-layout .form-buttons .btn {
-        border: 0;
-    }
-
     #cms-master-tabs.fancy-layout .control-tabs.primary-tabs > div > ul.nav-tabs > li a span.title {
         margin: -2px 0px;
         background: var(--drk-bg-color-a);
         padding: 5px 5px 3px 5px;
-    }
-
-    .fancy-layout .control-tabs.secondary-tabs > div > ul.nav-tabs {
-        background-color: var(--drk-bg-color-b);
     }
 
     #cms-master-tabs .control-tabs.primary-tabs > div > ul.nav-tabs > li a > span.title > span {
@@ -740,7 +706,6 @@
     }
 
     /* END - CMS */
-
 
     /* backend/media */
     .whiteboard {
@@ -757,18 +722,6 @@
 
     table.name-value-list td {
         color: #31ac5f;
-    }
-
-    div.panel.border-left {
-        border-left-color: var(--drk-border-color);
-    }
-
-    div.panel.border-right {
-        border-right-color: var(--drk-border-color);
-    }
-
-    div.panel.border-bottom {
-        border-bottom-color: var(--drk-border-color);
     }
 
     div.panel.triangle-down:after {
@@ -840,12 +793,7 @@
         background: inherit;
     }
 
-    div[data-control="media-manager"] .upload-progress h5 {
-        color: var(--drk-color);
-    }
-
     /* END - backend/media */
-
 
     /* List - Список */
     .list-scrollable-container:after,
@@ -872,13 +820,8 @@
         border-bottom-color: var(--drk-border-color);
     }
 
-    table.table.data thead {
-        background: var(--drk-bg-color-b);
-    }
-
     table.table.data tbody td,
     table.table.data tbody th {
-        color: var(--drk-color);
         border-top: 1px solid var(--drk-border-color);
     }
 
@@ -902,11 +845,6 @@
         background: #192634 !important;
         color: var(--drk-color);
         ;
-    }
-
-    table.table.data tbody tr:nth-child(even) td,
-    table.table.data tbody tr:nth-child(even) th {
-        background-color: #0c121a;
     }
 
     table.table.data thead td > a,
@@ -973,7 +911,6 @@
         color: var(--drk-color);
     }
 
-
     table.table.data thead td,
     table.table.data thead th {
         border-top: 1px solid #34495e !important;
@@ -985,12 +922,6 @@
         border-right: 1px solid #0180ff;
     }
 
-    /* G5: relation-manager embeds frame their list with a light #eee box. */
-    .relation-behavior .control-list,
-    .relation-behavior .control-list.list-scrollable {
-        border-color: var(--drk-border-color);
-    }
-
     /* List totals header/footer rows: core paints them light #f2f2f2 bands. */
     table.table.data tr.table-totals,
     table.table.data tr.table-totals td,
@@ -998,21 +929,6 @@
         background-color: var(--drk-bg-color-b);
         color: var(--drk-color);
         border-color: var(--drk-border-color);
-    }
-
-    .table > thead > tr > td.active,
-    .table > tbody > tr > td.active,
-    .table > tfoot > tr > td.active,
-    .table > thead > tr > th.active,
-    .table > tbody > tr > th.active,
-    .table > tfoot > tr > th.active,
-    .table > thead > tr.active > td,
-    .table > tbody > tr.active > td,
-    .table > tfoot > tr.active > td,
-    .table > thead > tr.active > th,
-    .table > tbody > tr.active > th,
-    .table > tfoot > tr.active > th {
-        background-color: #1e1600;
     }
 
     table.table.data thead th.sort-asc.active {
@@ -1026,12 +942,6 @@
     table.table.data tbody tr.active:nth-child(even) td,
     table.table.data tbody tr.active:nth-child(even) th {
         background-color: #0e253c;
-    }
-
-    .field-checkboxlist .field-checkboxlist-inner {
-        background-color: var(--drk-bg-color-b);
-        border-color: var(--drk-border-color);
-        box-shadow: none;
     }
 
     .field-checkboxlist .checkboxlist-controls > div > a:hover > i {
@@ -1081,33 +991,16 @@
         color: #d7ba7d;
     }
 
-
     /* breadcrumb */
     .control-breadcrumb {
-        background-color: var(--drk-bg-color-c);
         border: solid 1px var(--drk-border-color);
     }
 
-    .control-breadcrumb li {
-        background-color: var(--drk-bg-color-b);
-    }
-
-    .control-breadcrumb li:before {
-        border-left: 15px solid var(--drk-bg-color-c);
-    }
-
-    .control-breadcrumb li:after {
-        border-left: 15px solid var(--drk-bg-color-b);
-    }
-
     .control-breadcrumb li:last-child {
-        background-color: transparent;
         color: var(--drk-color);
     }
 
     /* END - breadcrumb */
-
-
 
     /* Form */
     .loading-indicator-container .loading-indicator {
@@ -1148,26 +1041,11 @@
         color: #fa8072;
     }
 
-    .form-control[disabled],
-    .form-control[readonly],
-    fieldset[disabled] .form-control {
-        background-color: #010409 !important;
-        color: var(--drk-color);
-    }
-
     /* Fieldset form widget: core gives it a light #f5f5f5 panel — darken it. */
     .fieldset {
         background-color: var(--drk-bg-color-inset);
         border-color: var(--drk-border-color);
         color: var(--drk-color);
-    }
-
-    .field-codeeditor {
-        border: 2px solid #27709c;
-    }
-
-    .field-repeater .field-repeater-add-item {
-        border-color: var(--drk-border-color);
     }
 
     .field-repeater li.field-repeater-item {
@@ -1188,11 +1066,6 @@
     .field-mediafinder.style-image-single .find-button {
         background: #43474a;
         border: 2px dotted #898989;
-    }
-
-    .field-fileupload.style-image-single .upload-button,
-    .field-fileupload.style-image-multi .upload-button {
-        background-color: #43474a;
     }
 
     .field-mediafinder.style-image-single .find-button .find-button-icon:before {
@@ -1289,7 +1162,6 @@
     .fr-toolbar .fr-command.fr-btn i,
     .fr-toolbar .fr-command.fr-btn svg path {
         color: var(--drk-color);
-        fill: var(--drk-color);
     }
 
     .fr-toolbar .fr-command.fr-btn:hover,
@@ -1437,19 +1309,11 @@
         border-top-color: #9f0700;
     }
 
-
     /* alert */
     .sweet-alert {
-        background-color: var(--drk-bg-color-a);
-        color: var(--drk-color);
         border: solid 1px var(--drk-border-color);
         box-shadow: var(--drk-box-shadow);
     }
-
-    .sweet-alert h2 {
-        color: var(--drk-color);
-    }
-
 
     /* Modals */
     .modal-content {
@@ -1476,12 +1340,10 @@
         background: rgb(0 0 0 / 50%);
     }
 
-
     /* Flash message */
     .flash-message {
         background: var(--drk-bg-color-a);
         color: var(--drk-color);
-        border-style: solid;
         border-width: 1px;
         box-shadow: var(--drk-box-shadow);
     }
@@ -1506,13 +1368,7 @@
         border-color: rgb(248 81 73 / 40%);
     }
 
-
     /* Callout */
-    .callout > .header {
-        background: var(--drk-bg-color-a);
-        color: var(--drk-color);
-        border-style: solid;
-    }
 
     .callout.callout-success > .header {
         background-image: linear-gradient(rgb(46 160 67 / 15%), rgb(46 160 67 / 15%));
@@ -1526,7 +1382,6 @@
 
     .callout.callout-warning > .header {
         background-image: linear-gradient(rgb(187 128 9 / 15%), rgb(187 128 9 / 15%));
-        border-color: rgb(187 128 9 / 40%);
     }
 
     .callout.callout-danger > .header {
@@ -1536,7 +1391,6 @@
 
     .callout .content {
         background: var(--drk-bg-color-a);
-        color: var(--drk-color);
     }
 
     .callout .content a {
@@ -1558,20 +1412,17 @@
     }
 
     .callout.callout-warning > .content {
-        background-image: linear-gradient(rgb(187 128 9 / 15%), rgb(187 128 9 / 15%));
         border-color: rgb(187 128 9 / 40%);
     }
 
     .callout.callout-warning > .header+.content {
         background-color: var(--drk-bg-color-a);
-        background-image: none;
     }
 
     .callout.callout-danger > .content {
         background-image: linear-gradient(rgb(248 81 73 / 15%), rgb(248 81 73 / 15%));
         border-color: rgb(248 81 73 / 40%);
     }
-
 
     /* permission editor */
     .permissioneditor table th {
@@ -1592,7 +1443,6 @@
     .permissioneditor table td.permission-name {
         color: #3fb950;
     }
-
 
     /* theme-selector-layout - /backend/cms/themes */
     .theme-selector-layout .theme-thumbnail {
@@ -1642,7 +1492,6 @@
         border-bottom: 1px solid var(--drk-border-color);
     }
 
-
     /* Tabs */
     .control-tabs.primary-tabs {
         > div > ul.nav-tabs > li a > span.title {
@@ -1660,18 +1509,9 @@
                 a > span.title {
                     background-color: var(--drk-bg-color-a) !important;
 
-                    &:before {
-                        border-left: 2px solid #555;
-                    }
-
-                    &:after {
-                        border-right: 2px solid #555;
-                    }
-
                     &:before,
                     &:after {
                         background: var(--drk-bg-color-a) !important;
-                        border-width: 2px !important;
                         border: none;
                     }
                 }
@@ -1687,10 +1527,6 @@
                         }
 
                         > span.title {
-                            &:before,
-                            &:after {
-                                border-color: #21262d;
-                            }
 
                             span {
                                 color: #fff;
@@ -1703,11 +1539,6 @@
     }
 
     /* Tab-content panel inherits a light gray-200 top border from core. */
-    .control-tabs > .tab-content,
-    .control-tabs > div > .tab-content,
-    .control-tabs > div > div > .tab-content {
-        border-top-color: var(--drk-border-color);
-    }
 
     .control-tabs > ul.nav-tabs > li.active a,
     .control-tabs > div > ul.nav-tabs > li.active a,
@@ -1741,11 +1572,6 @@
         background: var(--drk-bg-color-c);
     }
 
-    .control-tabs.content-tabs > ul.nav-tabs li {
-        border-top-color: var(--drk-border-color);
-        border-right-color: var(--drk-border-color);
-    }
-
     .control-tabs.content-tabs > ul.nav-tabs li:first-child {
         border-left-color: var(--drk-border-color);
     }
@@ -1773,15 +1599,10 @@
 
     /* End - Tabs */
 
-
     /* control-table */
-    .control-table .table-container {
-        border-color: var(--drk-border-color);
-    }
 
     .control-table .toolbar {
         background: var(--drk-bg-color-b);
-        border-bottom-color: var(--drk-border-color);
     }
 
     .control-table.active .toolbar {
@@ -1789,52 +1610,24 @@
     }
 
     .control-table .toolbar a.btn {
-        color: var(--drk-color);
         border: 0;
     }
 
     .control-table table.headers th {
-        color: var(--drk-color);
         background: #0d1520;
-        border-right-color: var(--drk-border-color);
     }
 
     .control-table.active table.headers:after {
         border-bottom-color: var(--drk-border-color);
     }
 
-    .control-table table.data tr {
-        background-color: var(--drk-bg-color-b);
-    }
-
-    .control-table table.data tr:nth-child(2n) {
-        background-color: #121922;
-    }
-
-    .control-table table.data td {
-        border-color: var(--drk-border-color);
-    }
-
     .control-table td[data-column-type=string] input[type=text] {
         background: var(--drk-bg-color-inset);
-    }
-
-    .control-table table td,
-    .control-table table th {
-        color: var(--drk-color);
     }
 
     .control-table td[data-column-type=checkbox] div[data-checkbox-element] {
         background-color: #3c3a3a;
         border-color: var(--drk-border-color);
-    }
-
-    /* Readonly cells (e.g. Translate's source-string column) get a light
-       #f7f7f7 fill from core's table.css — invisible light-on-light text in
-       dark mode. Match core's full selector to win specificity (0,4,2). */
-    .control-table table.data td .content-container.readonly {
-        background: var(--drk-bg-color-inset);
-        color: var(--drk-color);
     }
 
     /* Table-widget cell dropdown (e.g. Builder's migration column-type
@@ -1860,7 +1653,6 @@
     .control-table table.data td.active .content-container {
         background: var(--drk-bg-color-inset);
     }
-
 
     /* eventlogs */
     .plugin-exception-beautifier .beautifier-message-container {
@@ -1902,13 +1694,6 @@
        (.dark #winter-log-viewer... outranks core's id-only inline rules.) */
     #winter-log-viewer {
         background: var(--drk-bg-color-a);
-        color: var(--drk-color);
-    }
-
-    #winter-log-viewer table.table tr td,
-    #winter-log-viewer table.table tr th {
-        color: var(--drk-color);
-        border-color: var(--drk-border-color);
     }
 
     #winter-log-viewer .btn.btn-secondary[disabled] {
@@ -2039,7 +1824,6 @@
         border-color: var(--drk-border-color);
     }
 
-
     /* Widget Winter.User Statistics */
     .user-statistics-widget {
         background: #000;
@@ -2071,18 +1855,7 @@
         color: cyan
     }
 
-
     /* Winter.Builder */
-    .fancy-layout.control-tabs.master-tabs > div > div.tabs-container > ul.nav-tabs > li.active[data-tab-id="welcome"] a > span.title,
-    .fancy-layout.control-tabs.master-tabs > div > div.tabs-container > ul.nav-tabs > li.active[data-tab-id="welcome"] a > span.title:before,
-    .fancy-layout.control-tabs.master-tabs > div > div.tabs-container > ul.nav-tabs > li.active[data-tab-id="welcome"] a > span.title:after {
-        background: var(--drk-bg-color-a);
-    }
-
-    #layout-side-panel div.control-toolbar.separator,
-    .compact-toolbar div.control-toolbar.separator {
-        border-bottom-color: var(--drk-border-color);
-    }
 
     #layout-side-panel div.control-toolbar input.form-control,
     .compact-toolbar div.control-toolbar input.form-control {
@@ -2147,20 +1920,9 @@
         color: var(--drk-color-danger) !important;
     }
 
-    .fancy-layout .form-tabless-fields a.btn.btn-primary {
-        border: none;
-        color: var(--drk-color);
-        background: transparent;
-    }
-
     #builder-master-tabs .control-tabs > div > ul.nav-tabs > li a > span.title > span {
         border-top: 0;
     }
-
-    .control-table table.headers:after {
-        border-bottom-color: var(--drk-border-color);
-    }
-
 
     /* Winter.Docs */
     #docs-content h1,
@@ -2200,5 +1962,11 @@
 
     #docs-content pre code {
         background: #2c2f38;
+    }
+
+    /* The switch knob stays light in both modes, but core paints it with
+       --wn-surface-hover, which is dark here. */
+    label.custom-switch > .slide-button {
+        background-color: #f0f5f8;
     }
 }
