@@ -574,9 +574,11 @@
        wings → --drk-accent-recessed. Retune all of it from :root.
        ================================================================ */
 
-    /* Header band + primary-tab nav bar */
-    .fancy-layout .form-tabless-fields,
-    .fancy-layout .control-tabs.primary-tabs > div > ul.nav-tabs {
+    /* Header band + primary-tab nav bar. Scoped to the top-level form like
+       core's fancy-layout rules, so a nested form's fields and tabs don't pick
+       up the header colour. */
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .form-tabless-fields,
+    .fancy-layout *:not(.nested-form):not(.modal-body) > .form-widget > .layout-row > .control-tabs.primary-tabs > div > ul.nav-tabs {
         background-color: var(--drk-accent-raised) !important;
     }
 
@@ -2022,6 +2024,110 @@
 
     #docs-content pre code {
         background: #2c2f38;
+    }
+
+    /* Date and time pickers: their selected/today states use the brand palette,
+       which is tuned for light surfaces. Today was navy on a dark cell, the
+       selected date white on brand green (~2:1), the clock's selected hour a pale
+       bubble behind light numerals, and its header digits navy. */
+    .pika-single .is-selected .pika-button,
+    .pika-single .is-selected .pika-button:hover {
+        background-color: var(--drk-color-accent) !important;
+        color: var(--drk-bg-color-a) !important;
+        box-shadow: none !important;
+    }
+
+    .pika-single .is-today .pika-button {
+        color: var(--drk-color-accent) !important;
+        font-weight: bold;
+    }
+
+    .pika-single .pika-prev,
+    .pika-single .pika-next {
+        filter: invert(1);
+        opacity: .7;
+    }
+
+    .clockpicker-popover .clockpicker-canvas-bg {
+        fill: var(--drk-bg-color-selection);
+    }
+
+    .clockpicker-popover .clockpicker-canvas-fg,
+    .clockpicker-popover .clockpicker-canvas-bearing {
+        fill: var(--drk-color-accent);
+    }
+
+    .clockpicker-popover .clockpicker-canvas line {
+        stroke: var(--drk-color-accent);
+    }
+
+    .clockpicker-popover .popover-title .text-primary {
+        color: var(--drk-color-accent);
+    }
+
+    /* Icon picker modal: ships its own light palette (white panels and tiles),
+       but inherits dark-mode text, so labels were light grey on white. Its
+       styles are Vue-scoped, hence the extra .aim-modal on each selector. */
+    .aim-modal .aim-modal--content {
+        background-color: var(--drk-bg-color-a);
+        color: var(--drk-color);
+    }
+
+    .aim-modal .aim-modal--header,
+    .aim-modal .aim-modal--footer {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+    }
+
+    .aim-modal .aim-modal--header-logo-title {
+        color: var(--drk-color);
+    }
+
+    .aim-modal .aim-modal--sidebar {
+        background-color: transparent;
+    }
+
+    .aim-modal .aim-modal--sidebar-tab-item {
+        color: var(--drk-color-muted);
+    }
+
+    .aim-modal .aim-modal--sidebar-tab-item.aesthetic-active {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+    }
+
+    .aim-modal .aim-sidebar-preview {
+        background-color: var(--drk-bg-color-b);
+        border-color: var(--drk-border-color);
+    }
+
+    .aim-modal .aim-icon-item {
+        background-color: var(--drk-bg-color-b);
+        color: var(--drk-color);
+    }
+
+    .aim-modal .aim-icon-item:hover {
+        background-color: var(--drk-bg-color-hover);
+    }
+
+    .aim-modal .aim-icon-item.aesthetic-selected {
+        background-color: var(--drk-bg-color-selection);
+    }
+
+    .aim-modal .aim-icon-item-name {
+        color: var(--drk-color-muted);
+    }
+
+    .aim-modal .aim-modal--icon-search input {
+        background-color: var(--drk-bg-color-inset);
+        border: 1px solid var(--drk-border-color);
+        color: var(--drk-color);
+    }
+
+    .aim-modal .aim-modal--footer .btn-secondary {
+        background-color: var(--drk-bg-color-btn);
+        border-color: var(--drk-border-color);
+        color: var(--drk-color);
     }
 
     /* The switch knob stays light in both modes, but core paints it with
