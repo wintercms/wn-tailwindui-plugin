@@ -6,6 +6,8 @@ precisely because the first set did not.
 Everything assumes you run from the **Winter core root** (the directory with
 `artisan/` and `modules/`), or that `WINTER_ROOT` is set.
 
+The scripts need PHP 8.1+, the same as Winter itself: they are developer tools run against a Winter install, not code the plugin loads.
+
 ---
 
 ## The one thing to know
@@ -22,7 +24,13 @@ carried in the fallback.** That single property is the whole safety story:
 
 ## Changing a colour
 
-The common case. Edit the value in `tokens-values.json`, then:
+The common case. The first time, on a fresh checkout, capture the pristine baselines that `verify.php` compares against (they are generated and gitignored, and `verify.php` exits 2 without them):
+
+```bash
+php plugins/winter/tailwindui/darkmode-audit/tools/verify.php --capture
+```
+
+Then edit the value in `tokens-values.json` and:
 
 ```bash
 php plugins/winter/tailwindui/darkmode-audit/tools/apply.php     # regenerates tokens.less

@@ -20,20 +20,28 @@ foreach ($it as $f) {
         if (!preg_match_all('/var\(\s*(--wn-[a-z0-9-]+)\s*,\s*(#[0-9a-fA-F]{3,8})\s*\)/', $line, $m, PREG_SET_ORDER)) {
             continue;
         }
-        // mask the existing var() calls so their fallbacks are not re-matched
-        $masked = $line; $store = [];
-        foreach ($m as $k => $mm) {
-            $tag = "\x01$k\x01";
-            $store[$tag] = $mm[0];
-            $masked = str_replace($mm[0], $tag, $masked);
-        }
-        foreach ($m as $mm) {
+        // Mask every var() call so a literal serving as a fallback is never
+        // re-matched, and re-mask after each pass so the calls a pass just created
+        // are hidden too. (Iterating once per existing var() without re-masking
+        // re-wrapped the literal the previous pass had wrapped, nesting var() calls.)
+        $store = [];
+        $mask = function (string $s) use (&$store): string {
+            return preg_replace_callback('/var\([^()]*\)/', function ($x) use (&$store) {
+                $tag = "\x01" . count($store) . "\x01";
+                $store[$tag] = $x[0];
+                return $tag;
+            }, $s);
+        };
+        $masked = $mask($line);
+        $pairs = [];
+        foreach ($m as $mm) { $pairs[$mm[1] . '|' . strtolower($mm[2])] = $mm; }
+        foreach ($pairs as $mm) {
             [$whole, $token, $hex] = $mm;
             $pat = '/(?<![\w(#])' . preg_quote($hex, '/') . '\b/i';
-            $masked = preg_replace_callback($pat, function ($x) use ($token, &$edits) {
+            $masked = $mask(preg_replace_callback($pat, function ($x) use ($token, &$edits) {
                 $edits++;
                 return 'var(' . $token . ', ' . $x[0] . ')';
-            }, $masked);
+            }, $masked));
         }
         $out = strtr($masked, $store);
         if ($out !== $line) { $lines[$i] = $out; $changed = true; }
@@ -41,3 +49,13 @@ foreach ($it as $f) {
     if ($changed) { file_put_contents($f->getPathname(), implode("\n", $lines) . "\n"); $files++; }
 }
 printf("filled %d partially-tokenised literals across %d files\n", $edits, $files);
+
+// The new references are only replayable (apply.php after unapply.php) once they
+// are in token-map.json, so re-capture the map from the tree we just wrote.
+if ($edits) {
+    passthru(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg(__DIR__ . '/extract-map.php'), $rc);
+    if ($rc !== 0) {
+        fwrite(STDERR, "extract-map.php failed (exit $rc): token-map.json is stale\n");
+        exit(1);
+    }
+}

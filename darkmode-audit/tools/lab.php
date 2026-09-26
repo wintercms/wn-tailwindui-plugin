@@ -56,9 +56,22 @@ function contrastRatio(string $a, string $b): float {
  * directory looking for something only the core root has.
  */
 function coreRoot(): string {
+    $isRoot = fn ($d) => is_file($d . '/artisan') && is_file($d . '/modules/system/assets/ui/storm.less');
+
+    // WINTER_ROOT wins when set (build.sh and the README accept it too); a wrong
+    // value is an error rather than a silent fall back to the working directory.
+    $env = getenv('WINTER_ROOT');
+    if ($env !== false && $env !== '') {
+        if ($isRoot($env)) {
+            return rtrim($env, '/');
+        }
+        fwrite(STDERR, "WINTER_ROOT is set but is not a Winter core root: $env\n");
+        exit(1);
+    }
+
     $d = getcwd();
     for ($i = 0; $i < 8; $i++) {
-        if (is_file($d . '/artisan') && is_file($d . '/modules/system/assets/ui/storm.less')) {
+        if ($isRoot($d)) {
             return $d;
         }
         $up = dirname($d);

@@ -30,7 +30,19 @@ else
 fi
 
 STATE=$(mktemp)
-trap 'rm -f "$STATE"' EXIT
+RESTORED=0
+
+# Put plugins back the way they were. Runs from the EXIT trap too, so an
+# interrupted or failed build never leaves previously enabled plugins disabled.
+restore_plugins() {
+  [ "$RESTORED" -eq 1 ] && return
+  while IFS=$'\t' read -r n e; do
+    [ "$e" = "Yes" ] && php artisan plugin:enable "$n" >/dev/null 2>&1
+  done < "$STATE"
+  RESTORED=1
+}
+trap 'restore_plugins; rm -f "$STATE"' EXIT
+trap 'exit 130' INT TERM
 
 php artisan plugin:list 2>/dev/null \
   | awk -F'|' 'NF>3{gsub(/ /,"",$2); gsub(/ /,"",$5); if($2!="" && $2!="Pluginname") print $2"\t"$5}' > "$STATE"
@@ -40,26 +52,28 @@ while IFS=$'\t' read -r n e; do
   [ "$e" = "Yes" ] && php artisan plugin:disable "$n" >/dev/null 2>&1
 done < "$STATE"
 
+# Keep each compiler's exit status: a compiler killed mid-run can print nothing
+# the error patterns below recognise, and must still fail the build.
 LESS_OUT=$(php artisan winter:util compile less 2>&1)
+LESS_RC=$?
 MIX_OUT=$(php artisan mix:compile -p module-system --production --no-progress --no-interaction 2>&1)
+MIX_RC=$?
 
-while IFS=$'\t' read -r n e; do
-  [ "$e" = "Yes" ] && php artisan plugin:enable "$n" >/dev/null 2>&1
-done < "$STATE"
+restore_plugins
 
 LE=$(echo "$LESS_OUT" | grep -icE 'error|undefined|exception|not found' || true)
 ME=$(echo "$MIX_OUT"  | grep -icE '^ERROR|Module build failed' || true)
-if [ "$LE" -gt 0 ]; then
-  echo "  LESS: $LE error line(s)"
+if [ "$LE" -gt 0 ] || [ "$LESS_RC" -ne 0 ]; then
+  echo "  LESS: exit $LESS_RC, $LE error line(s)"
   echo "$LESS_OUT" | grep -iE 'error|undefined|exception|not found' | head -4 | sed 's/^/    /'
 else
   echo "  LESS: clean"
 fi
-if [ "$ME" -gt 0 ]; then
-  echo "  MIX:  $ME error line(s)"
+if [ "$ME" -gt 0 ] || [ "$MIX_RC" -ne 0 ]; then
+  echo "  MIX:  exit $MIX_RC, $ME error line(s)"
   echo "$MIX_OUT" | grep -iE '^ERROR|Module build failed' | head -4 | sed 's/^/    /'
 else
   echo "  MIX:  clean"
 fi
 echo "  plugins restored: $ENABLED enabled"
-[ "$LE" -eq 0 ] && [ "$ME" -eq 0 ]
+[ "$LE" -eq 0 ] && [ "$ME" -eq 0 ] && [ "$LESS_RC" -eq 0 ] && [ "$MIX_RC" -eq 0 ]

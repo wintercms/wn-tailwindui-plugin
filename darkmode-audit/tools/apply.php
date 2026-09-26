@@ -28,21 +28,46 @@ foreach ($byFile as $rel => $byLine) {
     foreach ($byLine as $ln => $entries) {
         $i = $ln - 1;
         if (!isset($lines[$i])) { continue; }
-        if (str_contains($lines[$i], 'var(--wn-')) { $skipped += count($entries); continue; }
-        foreach ($entries as $e) {
+        // Skip per entry, not per line: a line can hold several literals and a
+        // partial application must be able to finish. The same token/literal pair
+        // can appear more than once on a line (gradient stops), so count how many
+        // are already applied and wrap only the remainder.
+        $groups = [];
+        foreach ($entries as $e) { $groups[$e['token'] . '|' . strtolower($e['hex'])][] = $e; }
+        foreach ($groups as $group) {
+            $e = $group[0];
             $h = $e['hex'];
             $short = (strlen($h) === 7 && $h[1] === $h[2] && $h[3] === $h[4] && $h[5] === $h[6])
                 ? '#' . $h[1] . $h[3] . $h[5] : null;
-            foreach (array_filter([$h, $short]) as $needle) {
-                $pat = '/(?<![\w(])' . preg_quote($needle, '/') . '\b/i';
-                if (!preg_match($pat, $lines[$i])) { continue; }
-                // preserve the literal's original casing so unapply round-trips exactly
-                $lines[$i] = preg_replace_callback(
-                    $pat, fn ($m) => 'var(' . $e['token'] . ', ' . $m[0] . ')', $lines[$i], 1
-                );
-                $repl++; $changed = true;
-                break;
+            $needles = array_filter([$h, $short]);
+            $applied = 0;
+            foreach ($needles as $needle) {
+                $applied += preg_match_all('/var\(\s*' . preg_quote($e['token'], '/') . '\s*,\s*' . preg_quote($needle, '/') . '\s*\)/i', $lines[$i]);
             }
+            $todo = count($group) - $applied;
+            $skipped += min($applied, count($group));
+            if ($todo <= 0) { continue; }
+
+            // Mask existing var() calls so a literal already serving as a fallback is
+            // never wrapped a second time.
+            $store = [];
+            $masked = preg_replace_callback('/var\([^()]*\)/', function ($m) use (&$store) {
+                $tag = "\x01" . count($store) . "\x01";
+                $store[$tag] = $m[0];
+                return $tag;
+            }, $lines[$i]);
+            foreach ($needles as $needle) {
+                if ($todo <= 0) { break; }
+                $pat = '/(?<![\w(#])' . preg_quote($needle, '/') . '\b/i';
+                // preserve the literal's original casing so unapply round-trips exactly
+                $masked = preg_replace_callback(
+                    $pat, fn ($m) => 'var(' . $e['token'] . ', ' . $m[0] . ')', $masked, $todo, $n
+                );
+                $todo -= $n;
+                $repl += $n;
+                if ($n) { $changed = true; }
+            }
+            $lines[$i] = strtr($masked, $store);
         }
     }
     if ($changed) { file_put_contents($path, implode("\n", $lines) . ($nl ? "\n" : '')); $files++; }

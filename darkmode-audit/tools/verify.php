@@ -23,15 +23,29 @@ $targets = [
 ];
 
 if (in_array('--capture', $argv, true)) {
-    echo "reverting to pristine…\n";
-    passthru('php ' . escapeshellarg(__DIR__ . '/unapply.php'));
-    echo "building…\n";
-    passthru('WINTER_ROOT=' . escapeshellarg($root) . ' ' . escapeshellarg(__DIR__ . '/build.sh'));
+    // Every step must succeed: a baseline copied after a failed build would be
+    // stale CSS that silently validates whatever it is compared against.
+    $env   = 'WINTER_ROOT=' . escapeshellarg($root) . ' ';
+    $php   = escapeshellarg(PHP_BINARY) . ' ';
+    $step  = function (string $label, string $cmd): bool {
+        echo "{$label}…\n";
+        passthru($cmd, $rc);
+        if ($rc !== 0) { fwrite(STDERR, "$label failed (exit $rc)\n"); }
+        return $rc === 0;
+    };
+    $reapply = fn () => $step('re-applying', $env . $php . escapeshellarg(__DIR__ . '/apply.php'))
+        && $step('rebuilding', $env . escapeshellarg(__DIR__ . '/build.sh'));
+
+    if (!$step('reverting to pristine', $env . $php . escapeshellarg(__DIR__ . '/unapply.php'))) { exit(1); }
+    if (!$step('building pristine', $env . escapeshellarg(__DIR__ . '/build.sh'))) {
+        // leave the tree applied, not half-reverted
+        $reapply();
+        fwrite(STDERR, "no baseline written\n");
+        exit(1);
+    }
     if (!is_dir($dir)) { mkdir($dir, 0755, true); }
     foreach ($targets as $name => $rel) { copy($root . '/' . $rel, "$dir/$name"); }
-    echo "re-applying…\n";
-    passthru('php ' . escapeshellarg(__DIR__ . '/apply.php'));
-    passthru('WINTER_ROOT=' . escapeshellarg($root) . ' ' . escapeshellarg(__DIR__ . '/build.sh'));
+    if (!$reapply()) { exit(1); }
     echo "baselines captured in tools/baseline/\n";
     exit(0);
 }
@@ -69,18 +83,33 @@ function flatten(string $css, array $NAMED, bool $collapse): array {
 }
 
 /**
- * The colours a selector paints, as a sorted multiset.
+ * The colours a selector paints, per role.
  *
  * cssnano repacks shorthands once a rewrite makes two values textually equal
  * (`border:1px solid` + `border-color:#ddd #ddd transparent` becomes
  * `border:1px solid #ddd` + `border-bottom:1px solid transparent`). The
  * declaration text differs; the painted result does not. Comparing the colours
  * a rule sets, rather than the text of each declaration, tells the two apart.
+ *
+ * Grouped by role (text, background, border/outline, shadow, other) rather than
+ * merged per selector: swapping `color:#000;background:#fff` for the reverse
+ * paints the same set of colours but is plainly a repaint. Repacking only ever
+ * moves a colour between longhands of the same role, so it still compares equal.
  */
+function colourRole(string $prop): string {
+    $prop = strtolower(trim($prop));
+    if (in_array($prop, ['color', 'caret-color', 'fill', 'stroke'], true)) { return 'text'; }
+    if (str_starts_with($prop, 'background')) { return 'background'; }
+    if (str_starts_with($prop, 'border') || str_starts_with($prop, 'outline')) { return 'border'; }
+    if (str_ends_with($prop, 'shadow')) { return 'shadow'; }
+    return 'other';
+}
+
 function coloursBySelector(array $flat): array {
     $out = [];
     foreach ($flat as $k => $v) {
-        $sel = substr($k, 0, strrpos($k, '{'));
+        $at   = strrpos($k, '{');
+        $sel  = substr($k, 0, $at) . ' <' . colourRole(substr($k, $at + 1)) . '>';
         if (preg_match_all('/#[0-9a-f]{6}\b|\b(?:transparent|currentcolor)\b/i', $v, $m)) {
             foreach ($m[0] as $c) { $out[$sel][] = strtolower($c); }
         }
