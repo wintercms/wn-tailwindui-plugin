@@ -582,13 +582,38 @@
         background-color: var(--drk-accent-raised) !important;
     }
 
-    /* Breadcrumb bar + current segment */
+    /* Breadcrumb: the whole structure on the accent scale, as core draws it in
+       light mode from the brand colour (which the runtime brand CSS would
+       otherwise keep bright here): recessed segments whose arrow tips match them,
+       header-coloured separators, and the current segment raised. */
     .fancy-layout .control-breadcrumb {
         background-color: var(--drk-accent-bar) !important;
     }
+
+    .fancy-layout .control-breadcrumb li {
+        background-color: var(--drk-accent-recessed) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li::after {
+        border-left-color: var(--drk-accent-recessed) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:not(:last-child)::before {
+        border-left-color: var(--drk-accent-raised) !important;
+    }
+
     .fancy-layout .control-breadcrumb li:last-child,
     .fancy-layout .control-breadcrumb li.active {
         background-color: var(--drk-accent-active) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:last-child::after,
+    .fancy-layout .control-breadcrumb li.active::after {
+        border-left-color: var(--drk-accent-active) !important;
+    }
+
+    .fancy-layout .control-breadcrumb li:last-child::before {
+        border-left-color: var(--drk-accent-bar) !important;
     }
 
     /* Master-tabs (Builder/CMS document "browser" tabs) — bar */
