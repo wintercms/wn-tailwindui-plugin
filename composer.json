@@ -28,7 +28,9 @@
     "require": {
         "php": ">=7.2",
         "composer/installers": "~1.11",
-        "mexitek/phpcolors": "^1.0"
+        "mexitek/phpcolors": "^1.0",
+        "winter/wn-backend-module": "^1.2.15 || dev-develop",
+        "winter/wn-system-module": "^1.2.15 || dev-develop"
     },
     "config": {
         "allow-plugins": {
