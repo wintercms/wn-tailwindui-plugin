@@ -12,6 +12,7 @@ _Last updated: 2026-09-14. Pick-up doc for continuing on another machine._
    the tooling in `tools/`, and what is still open. The interactive reports below
    (`color-consolidation.html`, `color-token-map.html`) were the approval gate and are
    now **superseded** — their groupings predate the fit guard that shipped.
+5. **Dark mode now runs on the core tokens: shipped in PR #58.** wintercms/winter#1541 merged, and `darkmode.css` redefines the `--wn-*` tokens under `.dark`. 86 per-element declarations proved redundant and were removed, the token block darkened ~650 element-properties that had kept light-mode colours, and the `color-misuse-audit.md` top consolidation wins are applied (one accent, one selection colour, neutral headings). Measured with `tools/dark-tokens/` (see its README); light mode verified unchanged on 25 pages.
 4. **A full design mock exists** (`palette-ui-kit-fable.html`) — a *prototype* of the future skin direction. Reviewed by "Fable" at **A− / shippable direction**. NOT implemented in the real skin.
 
 ## Branches / PRs
@@ -67,7 +68,7 @@ Self-contained HTML prototype of the proposed TailwindUI skin. Single `#stage`, 
 
 **C. Mechanical replacement** — emit the approved tokens as a `:root` block, find-replace the 428 core hardcodes → `var(--wn-*)` (scriptable from the report/audit map), rebuild `winter.css`.
 
-**D. Dark mode = token redefinition** — once core renders from ~20 `--wn-*` vars, dark mode becomes a redefinition block under `.dark`; the plugin's `darkmode.css` per-element overrides (~64 KB) largely delete themselves. Then also apply the ~34 `color-misuse-audit.md` fixes.
+**D. Dark mode = token redefinition** — _done (TL;DR item 5); what remains are the 178 declarations that express deliberate element-specific choices, and anything on pages outside the 25 measured._ Original plan: once core renders from ~20 `--wn-*` vars, dark mode becomes a redefinition block under `.dark`; the plugin's `darkmode.css` per-element overrides (~64 KB) largely delete themselves. Then also apply the ~34 `color-misuse-audit.md` fixes.
 
 ## The point of all this
 
